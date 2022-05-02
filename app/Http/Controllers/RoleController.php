@@ -20,7 +20,7 @@ class RoleController extends Controller
         //     abort(403);
         // }
         $roles = Role::all();
-        return view('role.index',compact('roles'));
+        return view('role.index', compact('roles'));
     }
 
     /**
@@ -30,7 +30,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        return view('role.create');
     }
 
     /**
@@ -41,7 +41,12 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // if(!Auth::user()->can('role.create')){
+        //     return abort(403);
+        // }
+        $request->validate(['name' => 'required|string|unique:roles,name']);
+        Role::create(['name' => $request->get('name')]);
+        return redirect()->route('role.index')->with('message', 'Role created successfully');
     }
 
     /**

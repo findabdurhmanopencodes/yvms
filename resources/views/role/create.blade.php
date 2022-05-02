@@ -1,27 +1,37 @@
-<x-admin-layout>
-    <x-slot name="title">Add role</x-slot>
-    <x-slot name="breadcrumbTitle">Add new role</x-slot>
-    <x-slot name="breadcrumbItems">
-        <li class="breadcrumb-item"><a href="{{route('role.index')}}">Roles</a></li>
-        <li class="breadcrumb-item active">New</li>
-    </x-slot>
+@extends('layouts.app')
+
+@section('title', 'Add Role')
+@section('breadcrumb-list')
+    <li class="active"><a href="{{ route('role.index', []) }}">Roles</a></li>
+    <li class="active">Add role</li>
+@endsection
+@section('content')
+    <div class="page-header">
+        <h1>
+            Add Role
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            <small>
+                register new roles
+            </small>
+        </h1>
+    </div>
     <div class="row">
-        <div class="col-12">
-            <form  method="POST" action="{{ route('role.store', []) }}">
+        <div class="col-8 mx-auto">
+            <form method="POST" action="{{ route('role.store', []) }}">
                 @csrf
-                <div class="row">
-                    <div class="col-md-12 form-group">
-                        <x-jet-label for="name" value="{{__('Name')}}"/>
-                        {!! Form::text('name', null, ['class'=>'form-control '.($errors->has('name')?'is-invalid':''),'placeholder'=>'Name']) !!}
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="name"> Role Name </label>
+                    <div class="col-sm-9">
+                        <input type="text" value="{{old('name')}}" id="name" placeholder="Role Name" name="name" class="col-xs-10 col-sm-5">
                         @error('name')
-                        <small class="text-danger"><b>{{$message}}</b></small>
+                            <small class="text-danger"><b>{{ $message }}</b></small>
                         @enderror
                     </div>
                 </div>
-                <button class=" btn btn-outline-primary btn-rounded btn-floating">
-                    <i class="fal fa-plus"></i> Add Role
+                <button class="btn-sm btn btn-outline-primary btn-rounded btn-floating">
+                    <i class="fa fa-plus"></i> Add Role
                 </button>
             </form>
         </div>
     </div>
-</x-admin-layout>
+@endsection
