@@ -3,10 +3,50 @@
 @section('breadcrumb-list')
     <li class="active">Roles</li>
 @endsection
+@push('css')
+    <link rel="stylesheet" type="text/css" href="{{ asset('sweetalert/package/dist/sweetalert2.min.css') }}">
+@endpush
+@push('js')
+    <script>
+        function deleteRole(roleId, parent) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/role/' + roleId,
+                        data: {
+                            "id": roleId,
+                            "_method": 'DELETE',
+                            "_token": $('meta[name="csrf-token"]').attr('content'),
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            $(parent).closest('tr')[0].remove();
+                            Swal.fire(
+                                "Deleted!",
+                                "Role has been deleted.",
+                                "success"
+                            )
+                        },
+                        error: function(data) {
+                            if (data.status) {
+                                Swal.fire("Forbidden!", "You can't delete this role!", "error");
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+@endpush
 @section('content')
-    @push('styles')
-        <link rel="stylesheet" type="text/css" href="{{ asset('sweetalert/sweetalert.css') }}">
-    @endpush
     <x-slot name="title">All Roles</x-slot>
     <x-slot name="breadcrumbTitle">All roles</x-slot>
     <div class="py-2 pr-4">
@@ -51,7 +91,7 @@
                                     <i class="fa fa-pencil">
                                     </i>
                                 </a>
-                                <a class="btn btn-danger btn-sm" href="#" onclick="deleteRole({{ $role->id }});">
+                                <a class="btn btn-danger btn-sm" href="#" onclick="deleteRole({{ $role->id }},this);">
                                     <i class="fa fa-trash">
                                     </i>
                                 </a>
@@ -70,34 +110,4 @@
         </div>
         <!-- /.card-body -->
     </div>
-
-    <form method="POST" id="deleteForm">
-        @method('delete')
-        @csrf
-    </form>
-    @push('scripts')
-        <script src="{{ asset('sweetalert/sweetalert.min.js') }}"></script>
-        <script>
-            function deleteRole(roleId) {
-                var url = '/role/' + roleId;
-                $('#deleteForm').attr('action', url);
-                swal({
-                    title: "Are you sure?",
-                    text: "You will not be able to recover this imaginary file!",
-                    icon: 'warning',
-                    buttons: {
-                        cancel: true,
-                        delete: 'Yes, Delete It'
-                    },
-                }).then(
-                    function(isConfirm) {
-                        if (isConfirm) {
-                            $('#deleteForm').submit()
-                        }
-                        return false;
-                    }
-                )
-            }
-        </script>
-    @endpush
 @endsection

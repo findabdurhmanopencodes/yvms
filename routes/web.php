@@ -24,6 +24,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 //Role & Permission
 Route::resource('role',RoleController::class);
+Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
+
 // Route::resources([
 
 // ]);

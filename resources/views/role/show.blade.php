@@ -1,10 +1,14 @@
-<x-admin-layout>
-    @push('styles')
-        <link rel="stylesheet" type="text/css" href="{{ asset('sweetalert/sweetalert.css') }}">
-        <!-- iCheck for checkboxes and radio inputs -->
-        <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+@extends('layouts.app')
+@section('title','Role detail')
+@section('breadcrumb-list')
+    <li class=""><a href="{{ route('role.index', []) }}">Roles</a></li>
+    <li class="active">{{ $role->name }}</li>
+@endsection
 
+@section('content')
+    @push('styles')
+    <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
     @endpush
     <x-slot name="title">Permission of {{ $role->name }}</x-slot>
     <x-slot name="breadcrumbTitle">All permissions</x-slot>
@@ -12,18 +16,10 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Permissions</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
         </div>
         <div class="p-0 card-body">
             <div class="px-2 m-1">
-                <form action="{{ route('role.assignPermissionTo', ['role' => $role->id]) }}" method="POST">
+                <form action="{{ route('roles.permissions.give', ['role' => $role->id]) }}" method="POST">
                     @csrf
                     <label for="">Select Permission</label>
 
@@ -130,4 +126,4 @@
             }
         </script>
     @endpush
-</x-admin-layout>
+@endsection
