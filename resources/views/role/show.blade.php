@@ -1,91 +1,61 @@
 @extends('layouts.app')
-@section('title','Role detail')
+@section('title', 'Role detail')
 @section('breadcrumb-list')
     <li class=""><a href="{{ route('role.index', []) }}">Roles</a></li>
     <li class="active">{{ $role->name }}</li>
 @endsection
+@push('css')
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-duallistbox.min.css') }}" />
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-multiselect.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/select2.min.css') }}" />
+@endpush
+@push('js')
+    <script src="{{ asset('assets/js/jquery.bootstrap-duallistbox.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.raty.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap-multiselect.min.js') }}"></script>
+    <script src="{{ asset('assets/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery-typeahead.js') }}"></script>
+    <script>
+        $(function() {
+            var demo1 = $('select[name="permission_list[]"]').bootstrapDualListbox({
+                infoTextFiltered: '<span class="label label-purple label-lg">Filtered</span>',
+            });
 
+        })
+    </script>
+@endpush
 @section('content')
-    @push('styles')
-    <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
-    @endpush
-    <x-slot name="title">Permission of {{ $role->name }}</x-slot>
-    <x-slot name="breadcrumbTitle">All permissions</x-slot>
-
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Permissions</h3>
+            <h3 class="card-title">Permissions List</h3>
         </div>
         <div class="p-0 card-body">
             <div class="px-2 m-1">
                 <form action="{{ route('roles.permissions.give', ['role' => $role->id]) }}" method="POST">
                     @csrf
-                    <label for="">Select Permission</label>
+                    <div class="form-group">
+                        {{-- <label class="col-sm-2 control-label no-padding-top" for="duallist"> Select Permission </label> --}}
 
-                    <div class="row">
-                        <div class="col-md-9">
-                            <select name="permissions[]" id="" class="form-control select2" multiple>
+                        <div class="col-sm-12">
+                            <select multiple="multiple" size="10" name="permission_list[]" id="duallist">
+                                @foreach ($permissions as $key => $permission)
+                                    <option value="{{ $permission->id }}" selected>{{ $permission->name }}</option>
+                                @endforeach
                                 @foreach ($freePermissions as $permission)
                                     <option value="{{ $permission->id }}">{{ $permission->name }}</option>
                                 @endforeach
                             </select>
-                            @error('permissions')
-                                <small class="text-danger"><b>{{ $message }}</b></small>
-                            @enderror
-                        </div>
-                        <div class="text-right col-md-3">
-                            <button class="btn btn-block btn-outline-primary">
+                            <div class="hr hr-16 hr-dotted"></div>
+                            <button class="btn btn-primary">
                                 <i class="fal fa-plus"></i>
-                                Add Permission
+                                Update Permission List
                             </button>
                         </div>
                     </div>
                 </form>
             </div>
-            <div>
-                <table class="table table-striped projects">
-                    <thead>
-                        <tr>
-                            <th style="width: 1%">
-                                #
-                            </th>
-                            <th style="width: 20%">
-                                Name
-                            </th>
-                            <th style="width: 20%">
-                                Created at
-                            </th>
-                            <th style="width: 10%">
-                                Action
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (count($permissions) == 0)
-                            <tr>
-                                <td colspan="4" class="text-center"><b>No permission available!</b></td>
-                            </tr>
-                        @endif
-                        @foreach ($permissions as $key => $permission)
-                            <tr>
-                                <td>{{ $key + 1 }}</td>
-                                <td>
-                                    <a>{{ $permission->name }}</a>
-                                </td>
-                                <td>{{ $permission->created_at }}</td>
-                                <td class="text-right project-actions">
-                                    <a class="btn btn-sm" href="#"
-                                        onclick="revokePermissionOf({{ $permission->id }});">
-                                        <i class="fad fa-trash">
-                                        </i>
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+
         </div>
         <!-- /.card-body -->
     </div>

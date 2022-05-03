@@ -118,12 +118,15 @@ class RoleController extends Controller
         // if(!Auth::user()->can('role.permission.assign')){
         //     return abort(403);
         // }
-        $request->validate(['permissions'=>'required']);
-        $permissions = $request->get('permissions');
+        foreach ($role->permissions()->get() as $permission) {
+            $role->revokePermissionTo($permission);
+        }
+        $request->validate(['permission_list'=>'required']);
+        $permissions = $request->get('permission_list');
         foreach($permissions as $permission){
             $role->givePermissionTo(Permission::find($permission));
         }
-        return redirect(route('roles.show',['role'=>$role->id]));
+        return redirect(route('role.show',['role'=>$role->id]));
     }
 
     public function revokePermission(Request $request,Role $role,Permission $permission)
