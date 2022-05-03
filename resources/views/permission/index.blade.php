@@ -15,7 +15,7 @@
             <h3 class="card-title">Permissions</h3>
         </div>
         <div class="p-0 card-body">
-            <table class="table table-striped projects">
+            <table class="table table-striped table-striped table-bordered table-hover dataTable no-footer">
                 <thead>
                     <tr>
                         <th style="width: 1%">

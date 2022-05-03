@@ -68,7 +68,7 @@ class PermissionController extends Controller
      */
     public function edit(Permission $permission)
     {
-        //
+        return view('permission.create',compact('permission'));
     }
 
     /**
@@ -80,7 +80,9 @@ class PermissionController extends Controller
      */
     public function update(Request $request, Permission $permission)
     {
-        //
+        $data = $request->validate(['name' => 'required|string|unique:permissions,name,'.$permission->id]);
+        $permission->update($data);
+        return redirect()->route('permission.index')->with('message', 'Permission created successfully');
     }
 
     /**
