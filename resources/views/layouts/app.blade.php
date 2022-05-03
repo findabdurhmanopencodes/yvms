@@ -13,7 +13,7 @@
     <!-- bootstrap & fontawesome -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
     <link href="{{ asset('fontawesome/css/all.min.css') }}" rel="stylesheet">
-    
+
     <!-- page specific plugin styles -->
 
     <!-- text fonts -->
@@ -430,7 +430,7 @@
                 </li>
 
                 <li
-                    class="{{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'role') === 0? 'active open': '' }}">
+                    class="{{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0? 'active open': '' }}">
                     <a href="#" class="dropdown-toggle">
                         <i class="menu-icon ace-icon fa fa-lock"></i>
                         <span class="menu-text">
@@ -451,7 +451,7 @@
 
                         <li
                             class="{{ strpos(Route::currentRouteName(), 'permission.index') === 0 ? 'active' : '' }}">
-                            <a href="{{ route('role.index', []) }}">
+                            <a href="{{ route('permission.index', []) }}">
                                 <i class="menu-icon fa fa-caret-right"></i>
                                 Permissions
                             </a>

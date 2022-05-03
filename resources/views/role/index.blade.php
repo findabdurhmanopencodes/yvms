@@ -3,9 +3,6 @@
 @section('breadcrumb-list')
     <li class="active">Roles</li>
 @endsection
-@push('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('sweetalert/package/dist/sweetalert2.min.css') }}">
-@endpush
 @push('js')
     <script>
         function deleteRole(roleId, parent) {

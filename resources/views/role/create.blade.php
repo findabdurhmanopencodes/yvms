@@ -31,7 +31,7 @@
                         @enderror
                     </div>
                 </div>
-                <button class="btn-sm btn btn-outline-primary btn-rounded btn-floating">
+                <button class="btn-sm btn btn-primary btn-rounded btn-floating">
                     <i class="fa fa-plus"></i> {{isset($role)?'Update Role':'Add Role'}}
                 </button>
             </form>

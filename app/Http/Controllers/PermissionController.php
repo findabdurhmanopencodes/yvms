@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
@@ -13,13 +14,12 @@ class PermissionController extends Controller
      */
     public function index()
     {
-
         // $user = Auth::user();
         // if(!$user->hasRole('super-admin') && !$user->hasPermissionTo('permission.viewAll')){
         //     abort(403);
         // }
-        // $permissions = Permission::all();
-        // return view('permission.index',compact('permissions'));
+        $permissions = Permission::all();
+        return view('permission.index', compact('permissions'));
     }
 
     /**
@@ -29,7 +29,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        //
+        return view('permission.create');
     }
 
     /**
@@ -41,15 +41,21 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         //
+        // if(!Auth::user()->can('permission.create')){
+        //     return abort(403);
+        // }
+        $request->validate(['name' => 'required|string|unique:permissions,name']);
+        Permission::create(['name' => $request->get('name')]);
+        return redirect()->route('permission.index')->with('message', 'Permission created successfully');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Permission $permission)
     {
         //
     }
@@ -57,10 +63,10 @@ class PermissionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Permission $permission)
     {
         //
     }
@@ -69,10 +75,10 @@ class PermissionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Permission $permission)
     {
         //
     }
@@ -80,11 +86,14 @@ class PermissionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,Permission $permission)
     {
-        //
+        $permission->delete();
+        if ($request->ajax()) {
+            return response()->json(array('msg' => 'deleted successfully'), 200);
+        }
     }
 }

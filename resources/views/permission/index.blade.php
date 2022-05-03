@@ -1,24 +1,18 @@
-<x-admin-layout>
-    @push('styles')
-        <link rel="stylesheet" type="text/css" href="{{ asset('sweetalert/sweetalert.css') }}">
-    @endpush
-    <x-slot name="title">All Permissions</x-slot>
-    <x-slot name="breadcrumbTitle">All permissions</x-slot>
+@extends('layouts.app')
+@section('title', 'Permissions')
+@section('breadcrumb-list')
+    <li class="active">Permissions</li>
+@endsection
+
+@section('content')
     <div class="py-2 pr-4">
-        <a href="{{ route('permission.create') }}" class="float-right"><i class="fal fa-plus"></i></a>
+        <a href="{{ route('permission.create') }}" class="float-right btn btn-sm btn-primary"><i class="fal fa-plus"></i>
+            Add Permission</a>
         <div class="clearfix"></div>
     </div>
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Permissions</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
         </div>
         <div class="p-0 card-body">
             <table class="table table-striped projects">
@@ -39,10 +33,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (count($permissions)==0)
-                    <tr>
-                        <td colspan="4" class="text-center"><b>No permission available!</b></td>
-                    </tr>
+                    @if (count($permissions) == 0)
+                        <tr>
+                            <td colspan="4" class="text-center"><b>No permission available!</b></td>
+                        </tr>
                     @endif
                     @foreach ($permissions as $key => $permission)
                         <tr>
@@ -52,12 +46,13 @@
                             </td>
                             <td>{{ $permission->created_at }}</td>
                             <td class="text-right project-actions">
-                                <a class="btn btn-sm"
+                                <a class="btn btn-sm btn-primary"
                                     href="{{ route('permission.edit', ['permission' => $permission->id]) }}">
-                                    <i class="fal fa-pencil-alt">
+                                    <i class="fa fa-pencil">
                                     </i>
                                 </a>
-                                <a class="btn btn-sm" href="#" onclick="deletePermission({{ $permission->id }});">
+                                <a class="btn btn-sm btn-danger" href="#"
+                                    onclick="deletePermission({{ $permission->id }},this);">
                                     <i class="fad fa-trash">
                                     </i>
                                 </a>
@@ -74,29 +69,65 @@
         @method('delete')
         @csrf
     </form>
-    @push('scripts')
-        <script src="{{ asset('sweetalert/sweetalert.min.js') }}"></script>
+    @push('js')
         <script>
-            function deletePermission(permissionId) {
-                var url = '/permission/' + permissionId;
-                $('#deleteForm').attr('action', url);
-                swal({
+            function deletePermission(permissionId, parent) {
+                event.preventDefault();
+                Swal.fire({
                     title: "Are you sure?",
-                    text: "You will not be able to recover this imaginary file!",
-                    icon: 'warning',
-                    buttons: {
-                        cancel: true,
-                        delete: 'Yes, Delete It'
-                    },
-                }).then(
-                    function(isConfirm){
-                        if(isConfirm){
-                            $('#deleteForm').submit()
-                        }
-                        return false;
+                    text: "You won't be able to revert this!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, delete it!"
+                }).then(function(result) {
+                    if (result.value) {
+                        $.ajax({
+                            type: "POST",
+                            url: '/permission/' + permissionId,
+                            data: {
+                                "id": permissionId,
+                                "_method": 'DELETE',
+                                "_token": $('meta[name="csrf-token"]').attr('content'),
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                                $(parent).closest('tr')[0].remove();
+                                Swal.fire(
+                                    "Deleted!",
+                                    "Permission has been deleted.",
+                                    "success"
+                                )
+                            },
+                            error: function(data) {
+                                if (data.status) {
+                                    Swal.fire("Forbidden!", "You can't delete this permission!", "error");
+                                }
+                            }
+                        });
                     }
-                )
+                });
             }
+
+            // function deletePermission(permissionId, item) {
+            //     var url = '/permission/' + permissionId;
+            //     $('#deleteForm').attr('action', url);
+            //     swal({
+            //         title: "Are you sure?",
+            //         text: "You will not be able to recover this imaginary file!",
+            //         icon: 'warning',
+            //         buttons: {
+            //             cancel: true,
+            //             delete: 'Yes, Delete It'
+            //         },
+            //     }).then(
+            //         function(isConfirm) {
+            //             if (isConfirm) {
+            //                 $('#deleteForm').submit()
+            //             }
+            //             return false;
+            //         }
+            //     )
+            // }
         </script>
     @endpush
-</x-admin-layout>
+@endsection

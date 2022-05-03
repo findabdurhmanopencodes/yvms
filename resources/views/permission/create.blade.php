@@ -1,27 +1,33 @@
-<x-admin-layout>
-    <x-slot name="title">Add permission</x-slot>
-    <x-slot name="breadcrumbTitle">Add new permission</x-slot>
-    <x-slot name="breadcrumbItems">
-        <li class="breadcrumb-item"><a href="{{route('permission.index')}}">Permissions</a></li>
-        <li class="breadcrumb-item active">New</li>
-    </x-slot>
+@extends('layouts.app')
+@section('title', 'Add Permission')
+@section('breadcrumb-list')
+    <li class=""><a href="{{ route('permission.index', []) }}">Permissions</a></li>
+    <li class="active">Add Permission</li>
+@endsection
+
+@section('content')
     <div class="row">
         <div class="col-12">
-            <form  method="POST" action="{{ route('permission.store', []) }}">
+            <form method="POST"
+                action="{{ isset($permission)? route('permission.update', ['permission' => $permission->id]): route('permission.store', []) }}">
                 @csrf
-                <div class="row">
-                    <div class="col-md-12 form-group">
-                        <x-jet-label for="name" value="{{__('Name')}}"/>
-                        {!! Form::text('name', null, ['class'=>'form-control '.($errors->has('name')?'is-invalid':''),'placeholder'=>'Name']) !!}
+                @isset($permission)
+                    @method('PATCH')
+                @endisset
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="name"> Permission Name </label>
+                    <div class="col-sm-9">
+                        <input type="text" value="{{ old('name') ?? (isset($permission) ? $permission->name : '') }}"
+                            id="name" placeholder="Permission Name" name="name" class="col-xs-10 col-sm-5">
                         @error('name')
-                        <small class="text-danger"><b>{{$message}}</b></small>
+                            <small class="text-danger"><b>{{ $message }}</b></small>
                         @enderror
                     </div>
                 </div>
-                <button class=" btn btn-outline-primary btn-rounded btn-floating">
-                    <i class="fal fa-plus"></i> Add Permission
+                <button class="btn-sm btn btn-primary btn-rounded btn-floating">
+                    <i class="fa fa-plus"></i> {{ isset($permission) ? 'Update Permission' : 'Add Permission' }}
                 </button>
             </form>
         </div>
     </div>
-</x-admin-layout>
+@endsection
