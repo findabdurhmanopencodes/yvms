@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,18 +20,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
 //Role & Permission
-Route::resource('role',RoleController::class);
-Route::resource('permission',PermissionController::class);
-Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
 
-// Route::resources([
-
-// ]);
-//
-
-
+Route::middleware(['auth'])->group(function () {
+    Route::resource('role',RoleController::class);
+    Route::resource('permission',PermissionController::class);
+    Route::view('/dashboard','dashboard')->name('dashboard');
+    Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
+    Route::get('/profile',[UserController::class,'profile']);
+});
 require __DIR__.'/auth.php';
