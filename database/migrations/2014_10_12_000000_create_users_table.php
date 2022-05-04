@@ -22,6 +22,9 @@ return new class extends Migration
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
+            $table->foreignId('created_by')->nullable()->constrained('users','id')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users','id')->nullOnDelete();
+            $table->foreignId('deleted_by')->nullable()->constrained('users','id')->nullOnDelete();
             $table->timestamps();
         });
     }
