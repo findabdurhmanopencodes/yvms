@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/profile/{user?}',[UserController::class,'profile'])->name('profile.show');
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -27,6 +29,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('permission',PermissionController::class);
     Route::view('/dashboard','dashboard')->name('dashboard');
     Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
-    Route::get('/profile',[UserController::class,'profile']);
 });
 require __DIR__.'/auth.php';
