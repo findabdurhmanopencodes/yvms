@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Zone;
 use App\Http\Requests\StoreZoneRequest;
 use App\Http\Requests\UpdateZoneRequest;
+use GuzzleHttp\Psr7\Request;
 
 class ZoneController extends Controller
 {
@@ -15,7 +16,8 @@ class ZoneController extends Controller
      */
     public function index()
     {
-        //
+        $zones = Zone::all();
+        return view('zone.index', compact('zones'));
     }
 
     /**
@@ -79,8 +81,11 @@ class ZoneController extends Controller
      * @param  \App\Models\Zone  $zone
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Zone $zone)
+    public function destroy(Zone $zone, Request $request)
     {
-        //
+        $zone->delete();
+        if ($request->ajax()) {
+            return response()->json(array('msg' => 'deleted successfully'), 200);
+        }
     }
 }

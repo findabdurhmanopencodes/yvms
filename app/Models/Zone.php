@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Zone extends Model
 {
     use HasFactory;
+
+    public function woredas(){
+        return $this->hasMany(Woreda::class);
+    }
+
+    public function region(){
+        return $this->belongsTo(Region::class);
+    }
 }

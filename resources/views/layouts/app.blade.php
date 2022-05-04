@@ -461,6 +461,57 @@
                     </ul>
                 </li>
 
+                <li class="{{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0? 'active open': '' }}">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-cog"></i>
+                        <span class="menu-text">
+                            Setting
+                        </span>
+
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+
+                    <b class="arrow"></b>
+
+                    <ul class="submenu">
+                        <li class="{{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0? 'active open': '' }}">
+                            <a href="#" class="dropdown-toggle">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Location Setting
+                                <b class="arrow fa fa-angle-down"></b>
+                            </a>
+
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                <li class="{{ strpos(Route::currentRouteName(), 'region.index') === 0 ? 'active' : '' }}">
+                                    <a href="{{ route('region.index', []) }}">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        Region
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+
+                                <li class="{{ strpos(Route::currentRouteName(), 'zone.index') === 0 ? 'active' : '' }}">
+                                    <a href="{{ route('zone.index', []) }}">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        Zone
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+
+                                <li class="{{ strpos(Route::currentRouteName(), 'woreda.index') === 0 ? 'active' : '' }}">
+                                    <a href="{{ route('woreda.index', []) }}">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        Woreda
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+                            </ul>
+                        </li>
+
             </ul><!-- /.nav-list -->
 
             <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">

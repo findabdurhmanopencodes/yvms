@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Region extends Model
 {
     use HasFactory;
+
+    public function zones(){
+        return $this->hasMany(Zone::class);
+    }
 }

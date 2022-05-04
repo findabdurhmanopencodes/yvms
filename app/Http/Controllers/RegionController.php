@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Region;
 use App\Http\Requests\StoreRegionRequest;
 use App\Http\Requests\UpdateRegionRequest;
+use GuzzleHttp\Psr7\Request;
 
 class RegionController extends Controller
 {
@@ -15,7 +16,8 @@ class RegionController extends Controller
      */
     public function index()
     {
-        //
+        $regions = Region::all();
+        return view('region.index', compact('regions'));
     }
 
     /**
@@ -25,7 +27,7 @@ class RegionController extends Controller
      */
     public function create()
     {
-        //
+        return view('region.create');
     }
 
     /**
@@ -36,7 +38,10 @@ class RegionController extends Controller
      */
     public function store(StoreRegionRequest $request)
     {
-        //
+        dd('sdfsd');
+        $request->validate(['name' => 'required|string|unique:permissions,name', 'code' => 'required|string|unique:permissions,name']);
+        Region::create(['name' => $request->get('name')]);
+        return redirect()->route('permission.index')->with('message', 'Permission created successfully');
     }
 
     /**
@@ -79,8 +84,11 @@ class RegionController extends Controller
      * @param  \App\Models\Region  $region
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Region $region)
+    public function destroy(Region $region, Request $request)
     {
-        //
+        $region->delete();
+        if ($request->ajax()) {
+            return response()->json(array('msg' => 'deleted successfully'), 200);
+        }
     }
 }

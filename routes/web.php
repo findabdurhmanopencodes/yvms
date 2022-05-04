@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WoredaController;
+use App\Http\Controllers\ZoneController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,5 +32,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('permission',PermissionController::class);
     Route::view('/dashboard','dashboard')->name('dashboard');
     Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
+    Route::resource('region', RegionController::class);
+    Route::resource('zone', ZoneController::class);
+    Route::resource('woreda', WoredaController::class);
 });
 require __DIR__.'/auth.php';
