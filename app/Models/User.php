@@ -24,10 +24,17 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'father_name',
+        'grand_father_name',
         'email',
         'password',
     ];
+
+    public function name()
+    {
+        return $this->first_name.' '.$this->father_name.' '.$this->grand_father_name;
+    }
 
     /**
      * The attributes that should be hidden for serialization.
