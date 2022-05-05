@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('father_name');
             $table->string('grand_father_name');
             $table->string('email')->unique();
+            $table->date('dob');
+            $table->string('gender');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
