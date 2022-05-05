@@ -1,33 +1,65 @@
 @extends('layouts.app')
 @section('title', 'All Users')
-@section('breadcrumb-list')
-    <li class="active">Users</li>
+@section('breadcrumbList')
+    <li class="breadcrum-item active">Users</li>
 @endsection
+@push('js')
+    <script>
+        $(function() {
+            var datatable = $('#kt_datatable').KTDatatable({
+                "columns": [{
+                        "width": "25px"
+                    },
+                    {
+                        "width": "25px"
+                    }
+                ],
+            });
+            // var table = $('#kt_datatable');
+
+            // begin first table
+            // table.DataTable({
+            //     responsive: true,
+            //     pageLength: 10,
+            // })
+        });
+    </script>
+@endpush
 @section('content')
     <div class="py-2 pr-4">
         <a href="{{ route('user.create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add User</a>
     </div>
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Users</h3>
+    <div class="card card-custom">
+        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+            <div class="card-title">
+                <h3 class="card-label">List of Users</h3>
+            </div>
+            <div class="card-toolbar">
+
+                <!--begin::Button-->
+                <a href="{{ route('user.create', []) }}" class="btn btn-primary font-weight-bolder">
+                    <span class="svg-icon svg-icon-md">
+                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                        <i class="fal fa-plus"></i>
+                        <!--end::Svg Icon-->
+                    </span>Add New User</a>
+                <!--end::Button-->
+            </div>
         </div>
-        <div class="p-0 card-body">
-            <table class="table table-striped table-bordered table-hover dataTable no-footer table-striped projects">
+        <div class="card-body">
+            <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
                 <thead>
                     <tr>
-                        <th style="width: 1%">
+                        <th>
                             #
                         </th>
-                        <th style="width: 20%">
+                        <th>
                             Full Name
                         </th>
-                        <th style="width: 20%">
+                        <th>
                             Email
                         </th>
-                        <th style="width: 20%">
-                            Created at
-                        </th>
-                        <th style="width: 10%">
+                        <th>
                             Action
                         </th>
                     </tr>
@@ -42,7 +74,6 @@
                             <td>
                                 <a>{{ $user->email }}</a>
                             </td>
-                            <td>{{ $user->created_at->diffForHumans() }}</td>
                             <td class="text-right project-actions">
                                 <a class="btn btn-sm  btn-primary" href="{{ route('user.show', ['user' => $user->id]) }}">
                                     <i class="fa fa-eye">

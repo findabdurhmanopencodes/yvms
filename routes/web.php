@@ -5,9 +5,11 @@ use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\ZoneController;
 use App\Models\TrainingSession;
+use App\Models\Volunteer;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,12 +26,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 //Role & Permission
-
+Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
 Route::middleware(['auth'])->group(function () {
+
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
+    Route::resource('applicant', VolunteerController::class);
     Route::resource('training_session', TrainingSessionController::class);
     Route::resource('user', UserController::class);
     Route::resource('region', RegionController::class);

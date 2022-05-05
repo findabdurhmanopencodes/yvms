@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', 'All Users')
-@section('breadcrumb-list')
+@section('breadcrumbList')
     <li class=""><a href="{{ route('user.index', []) }}">Users</a></li>
     <li class="active">Add User</li>
 @endsection

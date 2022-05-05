@@ -14,12 +14,16 @@ use Andegna\Validator\DateValidator;
 use Andegna\DateTimeFactory;
 use Carbon\Carbon;
 use DateTime;
+use Yajra\Datatables\Facades\Datatables;
 
 class UserController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            return datatables()->of(User::select())->make(true);
+        }
         // if(!Auth::user()->can('user.index')){
         //     return abort(403);
         // }

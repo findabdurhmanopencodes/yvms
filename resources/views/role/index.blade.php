@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', 'All Roles')
-@section('breadcrumb-list')
+@section('breadcrumbList')
     <li class="active">Roles</li>
 @endsection
 @section('breadcrumbTitle', 'Roles')

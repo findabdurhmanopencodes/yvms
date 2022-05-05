@@ -83,4 +83,9 @@ class VolunteerController extends Controller
     {
         //
     }
+
+    public function application_form()
+    {
+        return view('application.form');
+    }
 }
