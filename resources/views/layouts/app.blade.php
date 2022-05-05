@@ -12,6 +12,8 @@
 
     <!-- bootstrap & fontawesome -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/font-awesome/4.5.0/css/font-awesome.min.css') }}" />
+
     <link href="{{ asset('fontawesome/css/all.min.css') }}" rel="stylesheet">
 
     <!-- page specific plugin styles -->
@@ -23,7 +25,6 @@
     <!-- ace styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/ace.min.css') }}" class="ace-main-stylesheet"
         id="main-ace-style" />
-    <link rel="stylesheet" href="assets/font-awesome/4.5.0/css/font-awesome.min.css" />
     <!--[if lte IE 9]>
    <link rel="stylesheet" href="assets/css/ace-part2.min.css" class="ace-main-stylesheet" />
   <![endif]-->
@@ -425,10 +426,38 @@
                         <i class="menu-icon fa fa-tachometer"></i>
                         <span class="menu-text"> Dashboard </span>
                     </a>
-
                     <b class="arrow"></b>
                 </li>
 
+                <li
+                    class="{{ strpos(Route::currentRouteName(), 'training_session') === 0 || strpos(Route::currentRouteName(), 'permission') === 0? 'active open': '' }}">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon ace-icon fa fa-lock"></i>
+                        <span class="menu-text">
+                            Training Session
+                        </span>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                    <ul class="submenu">
+                        <li class="{{ strpos(Route::currentRouteName(), 'training_session.index') === 0 ? 'active' : '' }}">
+                            <a href="{{ route('training_session.index', []) }}">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Training Sessions
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+                        <li
+                            class="{{ strpos(Route::currentRouteName(), 'permission.index') === 0 ? 'active' : '' }}">
+                            <a href="{{ route('permission.index', []) }}">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Volenteers
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                    </ul>
+                </li>
                 <li
                     class="{{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0? 'active open': '' }}">
                     <a href="#" class="dropdown-toggle">
@@ -460,39 +489,6 @@
                         </li>
                     </ul>
                 </li>
-
-                <li
-                    class="{{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0? 'active open': '' }}">
-                    <a href="#" class="dropdown-toggle">
-                        <i class="menu-icon ace-icon fa fa-lock"></i>
-                        <span class="menu-text">
-                            Volenteers
-                        </span>
-                        <b class="arrow fa fa-angle-down"></b>
-                    </a>
-                    <b class="arrow"></b>
-                    <ul class="submenu">
-                        <li class="{{ strpos(Route::currentRouteName(), 'role.index') === 0 ? 'active' : '' }}">
-                            <a href="{{ route('role.index', []) }}">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                Roles
-                            </a>
-
-                            <b class="arrow"></b>
-                        </li>
-
-                        <li
-                            class="{{ strpos(Route::currentRouteName(), 'permission.index') === 0 ? 'active' : '' }}">
-                            <a href="{{ route('permission.index', []) }}">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                Permissions
-                            </a>
-
-                            <b class="arrow"></b>
-                        </li>
-                    </ul>
-                </li>
-
             </ul><!-- /.nav-list -->
 
             <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
