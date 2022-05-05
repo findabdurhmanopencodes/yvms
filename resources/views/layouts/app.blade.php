@@ -49,91 +49,6 @@
             <button class="p-0 btn burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
                 <span></span>
             </button>
-<<<<<<< HEAD
-
-            <div class="navbar-header pull-left">
-                <a href="#" class="navbar-brand">
-                    <small>
-                        <i class="fa fa-leaf"></i>
-                        Ministry Of Peace
-                    </small>
-                </a>
-            </div>
-            <div class="navbar-buttons navbar-header pull-right" role="navigation">
-                <ul class="nav ace-nav">
-                    <li class="grey dropdown-modal">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <i class="ace-icon fa fa-tasks"></i>
-                            <span class="badge badge-grey">4</span>
-                        </a>
-
-                        <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
-                            <li class="dropdown-header">
-                                <i class="ace-icon fa fa-check"></i>
-                                4 Tasks to complete
-                            </li>
-
-                            <li class="dropdown-content">
-                                <ul class="dropdown-menu dropdown-navbar">
-                                    <li>
-                                        <a href="#">
-                                            <div class="clearfix">
-                                                <span class="pull-left">Software Update</span>
-                                                <span class="pull-right">65%</span>
-                                            </div>
-
-                                            <div class="progress progress-mini">
-                                                <div style="width:65%" class="progress-bar"></div>
-                                            </div>
-                                        </a>
-                                    </li>
-
-                                    <li>
-                                        <a href="#">
-                                            <div class="clearfix">
-                                                <span class="pull-left">Hardware Upgrade</span>
-                                                <span class="pull-right">35%</span>
-                                            </div>
-
-                                            <div class="progress progress-mini">
-                                                <div style="width:35%" class="progress-bar progress-bar-danger"></div>
-                                            </div>
-                                        </a>
-                                    </li>
-
-                                    <li>
-                                        <a href="#">
-                                            <div class="clearfix">
-                                                <span class="pull-left">Unit Testing</span>
-                                                <span class="pull-right">15%</span>
-                                            </div>
-
-                                            <div class="progress progress-mini">
-                                                <div style="width:15%" class="progress-bar progress-bar-warning"></div>
-                                            </div>
-                                        </a>
-                                    </li>
-
-                                    <li>
-                                        <a href="#">
-                                            <div class="clearfix">
-                                                <span class="pull-left">Bug Fixes</span>
-                                                <span class="pull-right">90%</span>
-                                            </div>
-
-                                            <div class="progress progress-mini progress-striped active">
-                                                <div style="width:90%" class="progress-bar progress-bar-success"></div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li class="dropdown-footer">
-                                <a href="#">
-                                    See tasks with details
-                                    <i class="ace-icon fa fa-arrow-right"></i>
-=======
             <!--end::Aside Mobile Toggle-->
             <!--begin::Header Menu Mobile Toggle-->
             <button class="p-0 ml-4 btn burger-icon" id="kt_header_mobile_toggle">
@@ -211,7 +126,6 @@
                                 <a href="{{ route('dashboard', []) }}" class="menu-link">
                                     <i class="menu-icon flaticon-home"></i>
                                     <span class="menu-text">Dashboard</span>
->>>>>>> d37351df108ea71d92bb4007bbfb6c5a381c6f7b
                                 </a>
                             </li>
                             <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0 ? 'menu-item-open' : '' }}"
@@ -271,181 +185,6 @@
                 </div>
                 <!--end::Aside Menu-->
             </div>
-<<<<<<< HEAD
-        </div><!-- /.navbar-container -->
-    </div>
-
-    <div class="main-container ace-save-state" id="main-container">
-        <script type="text/javascript">
-            try {
-                ace.settings.loadState('main-container')
-            } catch (e) {}
-        </script>
-
-        <div id="sidebar" class="sidebar responsive ace-save-state">
-            <script type="text/javascript">
-                try {
-                    ace.settings.loadState('sidebar')
-                } catch (e) {}
-            </script>
-
-
-
-            <ul class="nav nav-list">
-
-                <li class="{{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'active' : '' }}">
-                    <a href="{{ route('dashboard', []) }}">
-                        <i class="menu-icon fa fa-home"></i>
-                        <span class="menu-text"> Home </span>
-                    </a>
-
-                    <b class="arrow"></b>
-                </li>
-
-                <li class="{{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'active' : '' }}">
-                    <a href="{{ route('dashboard', []) }}">
-                        <i class="menu-icon fa fa-tachometer"></i>
-                        <span class="menu-text"> Dashboard </span>
-                    </a>
-
-                    <b class="arrow"></b>
-                </li>
-
-             <!-------------------------------------------- -->   
-                <li class="">
-                    <a href="#" class="dropdown-toggle">
-                        <i class="menu-icon fa fa-wrench"></i>
-                        <span class="menu-text">
-								Setting
-							</span>
-
-                        <b class="arrow fa fa-angle-down"></b>
-                    </a>
-
-                    <b class="arrow"></b>
-
-                    <ul class="submenu">
-                        <li class="">
-
-                            <a href="#" class="dropdown-toggle">
-                                <i class="menu-icon fa fa-caret-right"></i> Application Setting
-                                <b class="arrow fa fa-angle-down"></b>
-                            </a>
-
-                            <b class="arrow"></b>
-
-                            <ul class="submenu">
-                                <li class="{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'active' : '' }}">
-                                    <a href="top-menu.html">
-                                        <i class="menu-icon fa fa-caret-right"></i> Educational Level
-                                    </a>
-
-                                    <b class="arrow"></b>
-                                </li>
-
-                                <li class="{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'active' : '' }}">
-                                    <a href="two-menu-1.html">
-                                        <i class="menu-icon fa fa-caret-right"></i> Fields of study
-                                    </a>
-
-                                    <b class="arrow"></b>
-                                </li>
-
-                                <li class="{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'active' : '' }}">
-                                    <a href="two-menu-2.html">
-                                        <i class="menu-icon fa fa-caret-right"></i> Disablity type
-                                    </a>
-
-                                    <b class="arrow"></b>
-                                </li>
-
-                             
-
-                           
-
-                              
-                            </ul>
-                        </li>
-
-            
-                        <li class="">
-                            <a href="#" class="dropdown-toggle">
-                                <i class="menu-icon fa fa-caret-right"></i> Location Setting
-                                <b class="arrow fa fa-angle-down"></b>
-                            </a>
-
-                            <b class="arrow"></b>
-
-                            <ul class="submenu">
-                                <li class="{ strpos(Route::currentRouteName(), 'region') === 0 ? 'active' : '' }}">
-                                    <a href="#">
-                                        <i class="menu-icon fa fa-caret-right"></i> Region
-                                    </a>
-
-                                    <b class="arrow"></b>
-                                </li>
-
-                                <li class="{ strpos(Route::currentRouteName(), 'zone') === 0 ? 'active' : '' }}">
-                                    <a href="#">
-                                        <i class="menu-icon fa fa-caret-right"></i> Zone
-                                    </a>
-
-                                    <b class="arrow"></b>
-                                </li>
-
-                                <li class="{ strpos(Route::currentRouteName(), 'woreda') === 0 ? 'active' : '' }}">
-                                    <a href="#">
-                                        <i class="menu-icon fa fa-caret-right"></i> Woreda
-                                    </a>
-
-                                    <b class="arrow"></b>
-                                </li>
-
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <!-------------------------------------------- -->
-
-
-
-                <li class="{{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0? 'active open': '' }}">
-                    <a href="#" class="dropdown-toggle">
-                        <i class="menu-icon ace-icon fa fa-lock"></i>
-                        <span class="menu-text">
-                            Role &amp; Permission
-                        </span>
-                        <b class="arrow fa fa-angle-down"></b>
-                    </a>
-                    <b class="arrow"></b>
-                    <ul class="submenu">
-                        <li class="{{ strpos(Route::currentRouteName(), 'role.index') === 0 ? 'active' : '' }}">
-                            <a href="{{ route('role.index', []) }}">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                Roles
-                            </a>
-
-                            <b class="arrow"></b>
-                        </li>
-
-                        <li
-                            class="{{ strpos(Route::currentRouteName(), 'permission.index') === 0 ? 'active' : '' }}">
-                            <a href="{{ route('permission.index', []) }}">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                Permissions
-                            </a>
-
-                            <b class="arrow"></b>
-                        </li>
-                    </ul>
-                </li>
-
-            </ul><!-- /.nav-list -->
-
-            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-                <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state"
-                    data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
-=======
             <!--begin::Wrapper-->
             <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
                 <!--begin::Header-->
@@ -530,7 +269,6 @@
                     <!--end::Container-->
                 </div>
                 <!--end::Entry-->
->>>>>>> d37351df108ea71d92bb4007bbfb6c5a381c6f7b
             </div>
             <!--end::Content-->
         </div>
@@ -675,7 +413,7 @@
                         "success": "#1BC5BD",
                         "info": "#8950FC",
                         "warning": "#FFA800",
-                        "danger": "#F64E60",
+                        "danger": "#F64E60",`
                         "light": "#F3F6F9",
                         "dark": "#212121"
                     },
