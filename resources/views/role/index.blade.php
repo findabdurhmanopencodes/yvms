@@ -44,8 +44,6 @@
     </script>
 @endpush
 @section('content')
-    <x-slot name="title">All Roles</x-slot>
-    <x-slot name="breadcrumbTitle">All roles</x-slot>
     <div class="py-2 pr-4">
         <a href="{{ route('role.create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add Role</a>
     </div>

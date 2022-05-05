@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('statuses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('volunteer_id')->nullable()->constrained('volunteers')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->smallInteger('acceptance_status')->default(0);
+            $table->text('rejection_reason')->nullable();
+            $table->smallInteger('status')->default(0);
             $table->timestamps();
         });
     }
