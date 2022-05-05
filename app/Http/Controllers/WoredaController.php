@@ -74,9 +74,12 @@ class WoredaController extends Controller
      * @param  \App\Models\Woreda  $woreda
      * @return \Illuminate\Http\Response
      */
-    public function edit(Woreda $woreda)
+    public function edit($id, Request $request)
     {
-        //
+        $woreda = Woreda::find($id);
+        // dd($zone->region->name);
+        $zones = Zone::where('id', '!=', $woreda->zone->id)->get();
+        return view('woreda.edit', compact(['woreda', 'zones']));
     }
 
     /**
@@ -86,9 +89,14 @@ class WoredaController extends Controller
      * @param  \App\Models\Woreda  $woreda
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateWoredaRequest $request, Woreda $woreda)
+    public function update(UpdateWoredaRequest $request, $id)
     {
-        //
+        $woreda = Woreda::find($id);
+        $woreda->name = $request->get('name');
+        $woreda->code = $request->get('code');
+        $woreda->zone_id = $request->get('zone');
+        $woreda->save();
+        return redirect()->route('woreda.index')->with('message', 'Woreda edited successfully');
     }
 
     /**

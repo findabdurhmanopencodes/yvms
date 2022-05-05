@@ -156,7 +156,7 @@
 
                                                 <div class="form-group row">
                                                     <div class="col-lg-6">
-                                                        <label>Woreda:</label>
+                                                        <label>Zone:</label>
                                                         <br>
                                                         <select class="form-control select2" id="kt_select2_1" name="woreda" required>
                                                             <option value=""></option>
