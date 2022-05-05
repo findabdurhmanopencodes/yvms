@@ -6,8 +6,9 @@
 @push('js')
     <script src="{{ asset('assets/js/pages/custom/wizard/wizard-2.js') }}"></script>
     <script src="{{ asset('assets/js/pages/custom/profile/profile.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/crud/file-upload/dropzonejs.js') }}"></script>
-
+    <script>
+        $(function() {})
+    </script>
     <script>
         $(function() {
             $('#region').select2({
@@ -348,16 +349,13 @@
                                         <div class="row">
                                             <div class="col-xl-12">
                                                 <!--begin::Select-->
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-sm-12">Ministry
-                                                        Document</label>
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="dropzone dropzone-default" id="ministry_document">
-                                                            <div class="dropzone-msg dz-message needsclick">
-                                                                <h3 class="dropzone-msg-title">Drop files here or click to
-                                                                    upload.</h3>
-                                                            </div>
-                                                        </div>
+                                                <div class="form-group">
+                                                    <label>Ministry Document</label>
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input"
+                                                            name="ministry_document" id="ministry_document" />
+                                                        <label class="custom-file-label" for="customFile">Choose
+                                                            file</label>
                                                     </div>
                                                 </div>
                                                 <!--end::Input-->
@@ -366,16 +364,13 @@
                                         <div class="row">
                                             <div class="col-xl-12">
                                                 <!--begin::Select-->
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-sm-12">BSC
-                                                        Document</label>
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="dropzone dropzone-default" id="bsc_document">
-                                                            <div class="dropzone-msg dz-message needsclick">
-                                                                <h3 class="dropzone-msg-title">Drop files here or click to
-                                                                    upload.</h3>
-                                                            </div>
-                                                        </div>
+                                                <div class="form-group">
+                                                    <label>BSC Document</label>
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" name="bsc_document"
+                                                            id="bsc_document" />
+                                                        <label class="custom-file-label" for="customFile">Choose
+                                                            file</label>
                                                     </div>
                                                 </div>
                                                 <!--end::Input-->
@@ -385,16 +380,13 @@
                                         <div class="row">
                                             <div class="col-xl-12">
                                                 <!--begin::Select-->
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-sm-12">MSC
-                                                        Document</label>
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="dropzone dropzone-default" id="msc_document">
-                                                            <div class="dropzone-msg dz-message needsclick">
-                                                                <h3 class="dropzone-msg-title">Drop files here or click to
-                                                                    upload.</h3>
-                                                            </div>
-                                                        </div>
+                                                <div class="form-group">
+                                                    <label>MSC Document</label>
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" name="msc_document"
+                                                            id="msc_document" />
+                                                        <label class="custom-file-label" for="customFile">Choose
+                                                            file</label>
                                                     </div>
                                                 </div>
                                                 <!--end::Input-->
@@ -404,16 +396,13 @@
                                         <div class="row">
                                             <div class="col-xl-12">
                                                 <!--begin::Select-->
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-sm-12">PHD
-                                                        Document</label>
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="dropzone dropzone-default" id="phd_document">
-                                                            <div class="dropzone-msg dz-message needsclick">
-                                                                <h3 class="dropzone-msg-title">Drop files here or click to
-                                                                    upload.</h3>
-                                                            </div>
-                                                        </div>
+                                                <div class="form-group">
+                                                    <label>PHD Document</label>
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" name="phd_document"
+                                                            id="phd_document" />
+                                                        <label class="custom-file-label" for="customFile">Choose
+                                                            file</label>
                                                     </div>
                                                 </div>
                                                 <!--end::Input-->
@@ -448,15 +437,13 @@
                                         <div class="row">
                                             <div class="col-xl-12">
                                                 <!--begin::Select-->
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-sm-12">Kebele Id</label>
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="dropzone dropzone-default" id="kebele_id">
-                                                            <div class="dropzone-msg dz-message needsclick">
-                                                                <h3 class="dropzone-msg-title">Drop files here or click to
-                                                                    upload.</h3>
-                                                            </div>
-                                                        </div>
+                                                <div class="form-group">
+                                                    <label>Kebele Id</label>
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" name="kebele_id"
+                                                            id="kebele_id" />
+                                                        <label class="custom-file-label" for="customFile">Choose
+                                                            file</label>
                                                     </div>
                                                 </div>
                                                 <!--end::Input-->
@@ -465,15 +452,13 @@
                                         <div class="row">
                                             <div class="col-xl-12">
                                                 <!--begin::Select-->
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-sm-12">Ethical Licence</label>
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="dropzone dropzone-default" id="ethical_license">
-                                                            <div class="dropzone-msg dz-message needsclick">
-                                                                <h3 class="dropzone-msg-title">Drop files here or click to
-                                                                    upload.</h3>
-                                                            </div>
-                                                        </div>
+                                                <div class="form-group">
+                                                    <label>Ethical Licence</label>
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" name="ethical_license"
+                                                            id="ethical_license" />
+                                                        <label class="custom-file-label" for="customFile">Choose
+                                                            file</label>
                                                     </div>
                                                 </div>
                                                 <!--end::Input-->
@@ -483,17 +468,14 @@
                                         <div class="row">
                                             <div class="col-xl-12">
                                                 <!--begin::Select-->
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-sm-12">Non Pregnancy Medicaid
-                                                        Approval</label>
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="dropzone dropzone-default"
-                                                            id="non_pregnant_validation_document">
-                                                            <div class="dropzone-msg dz-message needsclick">
-                                                                <h3 class="dropzone-msg-title">Drop files here or click to
-                                                                    upload.</h3>
-                                                            </div>
-                                                        </div>
+                                                <div class="form-group">
+                                                    <label>Non Pregnancy Medicaid Approval</label>
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input"
+                                                            name="non_pregnant_validation_document"
+                                                            id="non_pregnant_validation_document" />
+                                                        <label class="custom-file-label" for="customFile">Choose
+                                                            file</label>
                                                     </div>
                                                 </div>
                                                 <!--end::Input-->

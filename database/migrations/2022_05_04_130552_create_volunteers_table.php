@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('photo')->nullable();
             $table->string('bsc_document');
             $table->string('msc_document')->nullable();
+            $table->string('phd_document')->nullable();
             $table->string('ministry_document');
             $table->string('non_pregnant_validation_document')->nullable();
             $table->string('ethical_license')->nullable();

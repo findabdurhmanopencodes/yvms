@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
-
+Route::post('application/document/upload',[VolunteerController::class,'application_document_upload'])->name('document.upload');
 //Role & Permission
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
 Route::middleware(['auth'])->group(function () {
