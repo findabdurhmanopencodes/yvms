@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Woreda;
 use App\Http\Requests\StoreWoredaRequest;
 use App\Http\Requests\UpdateWoredaRequest;
+use GuzzleHttp\Psr7\Request;
 
 class WoredaController extends Controller
 {
@@ -15,7 +16,8 @@ class WoredaController extends Controller
      */
     public function index()
     {
-        //
+        $woredas = Woreda::all();
+        return view('woreda.index', compact('woredas'));
     }
 
     /**
@@ -79,8 +81,11 @@ class WoredaController extends Controller
      * @param  \App\Models\Woreda  $woreda
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Woreda $woreda)
+    public function destroy(Woreda $woreda , Request $request)
     {
-        //
+        $woreda->delete();
+        if ($request->ajax()) {
+            return response()->json(array('msg' => 'deleted successfully'), 200);
+        }
     }
 }

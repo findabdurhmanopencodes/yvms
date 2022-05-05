@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Woreda extends Model
 {
     use HasFactory;
+
+    public function zone(){
+        return $this->belongsTo(Zone::class);
+    }
 }
