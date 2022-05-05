@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>@stack('title') | {{ env('APP_NAME') }}</title>
+    <title>@yield('title') | {{ env('APP_NAME') }}</title>
     <meta name="description" content="Page with empty content" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -26,7 +26,7 @@
     <link href="{{ asset('assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('fontawesome/css/all.min.css') }}" rel="stylesheet">
     <!--end::Layout Themes-->
-    @stack('cssPage')
+    @stack('css')
     <link rel="shortcut icon" href="{{ asset('ju_logo.png') }}" />
 </head>
 <!--end::Head-->
@@ -122,13 +122,15 @@
                         data-menu-dropdown-timeout="500">
                         <!--begin::Menu Nav-->
                         <ul class="menu-nav">
-                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'menu-item-active' : '' }}"
+                                aria-haspopup="true">
                                 <a href="{{ route('dashboard', []) }}" class="menu-link">
                                     <i class="menu-icon flaticon-home"></i>
                                     <span class="menu-text">Dashboard</span>
                                 </a>
                             </li>
-                            <li class="menu-item menu-item-submenu {{ (strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0) ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+                            <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0 ? 'menu-item-open' : '' }}"
+                                aria-haspopup="true" data-menu-toggle="hover">
 
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <i class="menu-icon flaticon-lock"></i>
@@ -143,7 +145,8 @@
                                                 <span class="menu-text">Roles &amp; Permissions</span>
                                             </span>
                                         </li>
-                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'role.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'role.index') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
                                             <a href="{{ route('role.index', []) }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
@@ -151,7 +154,8 @@
                                                 <span class="menu-text">Roles</span>
                                             </a>
                                         </li>
-                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'permission.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'permission.index') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
                                             <a href="{{ route('permission.index', []) }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
@@ -163,8 +167,8 @@
                                 </div>
                             </li>
 
-                            {{-- || strpos(Route::currentRouteName(), 'woreda') === 0) || strpos(Route::currentRouteName(), 'zone') === 0 --}}
-                            <li class="menu-item menu-item-submenu {{ (strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ) ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+                            <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
+                                aria-haspopup="true" data-menu-toggle="hover">
 
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <i class="menu-icon flaticon-settings"></i>
@@ -179,7 +183,8 @@
                                                 <span class="menu-text">Settings</span>
                                             </span>
                                         </li>
-                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'region.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'region.index') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
                                             <a href="{{ route('region.index', []) }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
@@ -187,7 +192,8 @@
                                                 <span class="menu-text">Region</span>
                                             </a>
                                         </li>
-                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'zone.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'zone.index') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
                                             <a href="{{ route('zone.index', []) }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
@@ -195,7 +201,8 @@
                                                 <span class="menu-text">Zone</span>
                                             </a>
                                         </li>
-                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'woreda.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'woreda.index') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
                                             <a href="{{ route('woreda.index', []) }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
@@ -206,7 +213,9 @@
                                     </ul>
                                 </div>
                             </li>
-
+                            @include('aside.ms')
+                            @include('aside.aj')
+                            @include('aside.seya')
                         </ul>
                     </div>
                     <!--end::Menu Container-->
@@ -265,12 +274,12 @@
                                 <!--begin::Page Heading-->
                                 <div class="mr-5 d-flex align-items-baseline">
                                     <!--begin::Page Title-->
-                                    <h5 class="my-2 mr-5 text-dark font-weight-bold">@stack('breadcrumbTitle')</h5>
+                                    <h5 class="my-2 mr-5 text-dark font-weight-bold">@yield('breadcrumbTitle')</h5>
                                     <!--end::Page Title-->
                                     <!--begin::Breadcrumb-->
                                     <ul
                                         class="p-0 my-2 breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold font-size-sm">
-                                        @stack('breadcrumbList')
+                                        @yield('breadcrumbList')
                                         {{-- <li class="breadcrumb-item">
                                                 <a href="" class="text-muted">General</a>
                                             </li>
@@ -494,7 +503,7 @@
     <!--end::Page Vendors-->
     <!--begin::Page Scripts(used by this page)-->
     <script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
-    @stack('jsPage')
+    @stack('js')
     <!--end::Page Scripts-->
     <script>
         @if (Session::has('message'))
