@@ -1,6 +1,7 @@
 "use strict";
 
 var KTDatatableRemoteAjaxDemo = function() {
+    console.log(HOST_URL);
     // Private functions
 
     // basic demo

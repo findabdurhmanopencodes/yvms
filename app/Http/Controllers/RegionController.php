@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Region;
 use App\Http\Requests\StoreRegionRequest;
 use App\Http\Requests\UpdateRegionRequest;
-use GuzzleHttp\Psr7\Request;
+use Illuminate\Http\Request;
 
 class RegionController extends Controller
 {
@@ -14,8 +14,12 @@ class RegionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            return datatables()->of(Region::select())->make(true);
+        }
+
         $regions = Region::all();
         return view('region.index', compact('regions'));
     }

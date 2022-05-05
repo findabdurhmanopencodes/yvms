@@ -1,113 +1,235 @@
 @extends('layouts.app')
-@section('title', 'Regions')
+@section('title', 'All Regions')
 @section('breadcrumb-list')
     <li class="active">Regions</li>
 @endsection
-
-@push('css')
-    {{-- <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" /> --}}
-@endpush
-
-@section('content')
-<div class="card card-custom gutter-b">
-    
-<!-- Button trigger modal-->
-{{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    Launch demo modal
-</button> --}}
-
-<!-- Modal-->
-<form method="POST" action="{{ route('region.store', []) }}">
-    @csrf
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg"  role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add new Region</h5>
-                    <button type="button" class="close" data-dismiss="modal" -label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="card-body">
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <div class="col-lg-6">
-                                    <label>Region Name:</label>
-                                    <input type="text" class="form-control" placeholder="region name" name="name"/>
-                                </div>
-                                <div class="col-lg-6">
-                                    <label>Region Code:</label>
-                                    <input type="text" class="form-control" placeholder="region code" name="code"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary font-weight-bold">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-    <div class="card-header flex-wrap py-3">
-        <div class="card-title">
-            <h3 class="card-label">Regions
-            {{-- <span class="d-block text-muted pt-2 font-size-sm">sorting &amp; pagination remote datasource</span></h3> --}}
-        </div>
-        <div class="card-toolbar">
-            <!--begin::Button-->
-            <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModal">
-            <span class="svg-icon svg-icon-md">
-                <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <rect x="0" y="0" width="24" height="24" />
-                        <circle fill="#000000" cx="9" cy="15" r="6" />
-                        <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
-                    </g>
-                </svg>
-                <!--end::Svg Icon-->
-            </span>Add Region</a>
-            <!--end::Button-->
-        </div>
-    </div>
-    <div class="card-body">
-        <table class="table table-striped table-class" id= "table-id">
-  
-            <thead>
-              <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Code</th>
-                  <th>Actions</th>
-              </tr>
-              
-            </thead>
-            <tbody>
-                @foreach ($regions as $key => $region)
-                    <tr>
-                        <td>{{ $key + 1 }}</td>
-                        <td>{{ $region->name }}</td>
-                        <td>{{ $region->code }}</td>
-                        <td></td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
+@section('breadcrumbTitle', 'Regions')
+@section('breadcrumbList')
+    <li class="breadcrumb-item">
+        <a href="" class="text-muted">Regions</a>
+    </li>
 @endsection
 
 @push('js')
-<script>
-    $(document).ready(function () {
-        $('#dtBasicExample').DataTable();
-        $('.dataTables_length').addClass('bs-select');
-    });
-</script>
-    {{-- <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/crud/datatables/basic/basic.js') }}"></script> --}}
+    <script>
+        var HOST_URL = "{{ route('region.index') }}";
+
+        function deleteRegion(regionId, parent) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/region/' + regionId,
+                        data: {
+                            "id": regionId,
+                            "_method": 'DELETE',
+                            "_token": $('meta[name="csrf-token"]').attr('content'),
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            $(parent).closest('tr')[0].remove();
+                            Swal.fire(
+                                "Deleted!",
+                                "Role has been deleted.",
+                                "success"
+                            )
+                        },
+                        error: function(data) {
+                            if (data.status) {
+                                Swal.fire("Forbidden!", "You can't delete this role!", "error");
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+    <script>
+        $( document ).ready(function() {
+            console.log( "ready!" );
+        });
+        var COLUMNS = [{
+                field: 'id',
+                title: '#',
+                sortable: 'asc',
+                width: 30,
+                type: 'number',
+                selector: false,
+                textAlign: 'center',
+                template: function(row, index) {
+                    return index + 1;
+                }
+            },
+            {
+                field: 'name',
+                title: 'Name',
+                sortable: 'asc',
+            },
+            {
+                field: 'code',
+                title: 'Code',
+                sortable: 'asc',
+            },
+            {
+                field: 'Actions',
+                title: 'Actions',
+                sortable: false,
+                width: 100,
+                overflow: 'visible',
+                autoHide: false,
+                template: function(row) {
+                    var regionId = row.id;
+                    return '\
+                                    <div class="d-flex">\
+                                                <a href="javascript:;" onclick="deleteRegion(' + regionId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
+                                                    <i class="far fa-trash"></i>\
+                                                </a>\
+                                                \
+                                                <a href="/role/' + regionId + '" class="btn btn-sm btn-clean btn-icon" >\
+                                                    <i class="far fa-eye"></i>\
+                                                </a>\
+                                                <a href="/role/' + regionId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                                                    <i class="far fa-pen"></i>\
+                                                </a>\
+                                                \
+                                            </div>\
+                                            ';
+                },
+            }
+        ]
+    </script>
+    <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
 @endpush
+@section('content')
+    <!--begin::Card-->
+    <div class="card card-custom">
+        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+            <div class="card-title">
+                <h3 class="card-label">List of regions
+                    <span class="text-muted pt-2 font-size-sm d-block">Regions</span>
+                </h3>
+            </div>
+            <div class="card-toolbar">
+
+                <!--begin::Button-->
+                <a href="{{ route('region.create', []) }}" class="btn btn-primary font-weight-bolder">
+                    <span class="svg-icon svg-icon-md">
+                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                        <i class="fal fa-plus"></i>
+                        <!--end::Svg Icon-->
+                    </span>Add New Region</a>
+
+                    <form method="POST" action="{{ route('region.store', []) }}">
+                        @csrf
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg"  role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Add new Region</h5>
+                                        <button type="button" class="close" data-dismiss="modal" -label="Close">
+                                            <i aria-hidden="true" class="ki ki-close"></i>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="card-body">
+                                            <div class="card-body">
+                                                <div class="form-group row">
+                                                    <div class="col-lg-6">
+                                                        <label>Region Name:</label>
+                                                        <input type="text" class="form-control" placeholder="region name" name="name"/>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label>Region Code:</label>
+                                                        <input type="text" class="form-control" placeholder="region code" name="code"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary font-weight-bold">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                <!--end::Button-->
+            </div>
+        </div>
+        <div class="card-body">
+            <!--begin: Datatable-->
+            <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+            <!--end: Datatable-->
+        </div>
+    </div>
+    <!--end::Card-->
+    {{-- <div class="py-2 pr-4">
+        <a href="{{ route('role.create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add Role</a>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"></h3>
+        </div>
+        <div class="p-0 card-body">
+            <table class="table table-striped table-bordered table-hover dataTable no-footer table-striped projects">
+                <thead>
+                    <tr>
+                        <th style="width: 1%">
+                            #
+                        </th>
+                        <th style="width: 20%">
+                            Name
+                        </th>
+                        <th style="width: 20%">
+                            Created at
+                        </th>
+                        <th style="width: 10%">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($roles as $key => $role)
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td>
+                                <a>{{ $role->name }}</a>
+                            </td>
+                            <td>{{ $role->created_at }}</td>
+                            <td class="text-right project-actions">
+                                <a class="btn btn-sm  btn-primary" href="{{ route('role.show', ['role' => $role->id]) }}">
+                                    <i class="fa fa-eye">
+                                    </i>
+                                </a>
+                                <a class="btn btn-sm  btn-primary" href="{{ route('role.edit', ['role' => $role->id]) }}">
+                                    <i class="fa fa-pencil">
+                                    </i>
+                                </a>
+                                <a class="btn btn-danger btn-sm" href="#" onclick="deleteRole({{ $role->id }},this);">
+                                    <i class="fa fa-trash">
+                                    </i>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    @empty($roles)
+                        <tr>
+                            <td colspan="3">
+                                <b>Roles not found</b>
+                            </td>
+                        </tr>
+                    @endempty
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div> --}}
+@endsection

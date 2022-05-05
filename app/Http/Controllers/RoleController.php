@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Yajra\Datatables\Facades\Datatables;
 
 class RoleController extends Controller
 {
@@ -15,8 +16,12 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        dd(new Datatables());
+        if ($request->ajax()) {
+            return datatables()->of(Role::select())->make(true);
+        }
         $user = Auth::user();
         // if(!$user->hasRole('super-admin') && !$user->hasPermissionTo('role.viewAll')){
         //     abort(403);
@@ -62,6 +67,8 @@ class RoleController extends Controller
         //
         $permissions = $role->permissions()->get();
         $freePermissions = DB::table('permissions')->whereNotIn('id',$role->permissions()->pluck('id'))->get();
+        // dd($freePermissions);
+        // dd($permissions);
         return view('role.show',compact('role','permissions','freePermissions'));
     }
 
@@ -108,7 +115,7 @@ class RoleController extends Controller
     {
         $permissions = $role->permissions()->get();
         if($request->ajax()){
-            // return datatables()->of($permissions)->make(true);
+            return datatables()->of($permissions)->make(true);
         }
         // return redirect(route('roles.permissions.index',['role'=>$role->role]));
     }
@@ -121,8 +128,8 @@ class RoleController extends Controller
         foreach ($role->permissions()->get() as $permission) {
             $role->revokePermissionTo($permission);
         }
-        $request->validate(['permission_list'=>'required']);
-        $permissions = $request->get('permission_list');
+        $request->validate(['permissions'=>'required']);
+        $permissions = $request->get('permissions');
         foreach($permissions as $permission){
             $role->givePermissionTo(Permission::find($permission));
         }

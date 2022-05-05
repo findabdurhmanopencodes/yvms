@@ -98,7 +98,7 @@
                         <td>{{ $key + 1 }}</td>
                         <td>{{ $zone->name }}</td>
                         <td>{{ $zone->code }}</td>
-                        {{-- <td>{{ $region->region()->name }}</td> --}}
+                        {{-- <td>{{ $region->region()   ->name }}</td> --}}
                         <td></td>
                     </tr>
                 @endforeach
