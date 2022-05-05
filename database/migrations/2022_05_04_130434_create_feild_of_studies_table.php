@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('feild_of_studies', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->timestamps();
         });
     }
-
+  
     /**
      * Reverse the migrations.
      *

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\FeildOfStudy;
 use App\Http\Requests\StoreFeildOfStudyRequest;
 use App\Http\Requests\UpdateFeildOfStudyRequest;
+// use GuzzleHttp\Psr7\Request;
+use Illuminate\Http\Request;
 
 class FeildOfStudyController extends Controller
 {
@@ -15,7 +17,10 @@ class FeildOfStudyController extends Controller
      */
     public function index()
     {
-        //
+       // $feild_of_studies = FeildOfStudy::all();
+        $feild_of_studies = FeildOfStudy::paginate(10);
+
+        return view('fieldofstudy.index', compact('feild_of_studies'));
     }
 
     /**
@@ -25,6 +30,7 @@ class FeildOfStudyController extends Controller
      */
     public function create()
     {
+        return view('fieldofstudy.create');
         //
     }
 
@@ -36,7 +42,10 @@ class FeildOfStudyController extends Controller
      */
     public function store(StoreFeildOfStudyRequest $request)
     {
-        //
+        
+        $request->validate(['name' => 'required|string|unique:feild_of_studies,name']);
+        FeildOfStudy::create(['name' => $request->get('name')]);
+        return redirect()->route('feild_of_study.index')->with('message', 'Feild of Study created successfully');
     }
 
     /**
@@ -45,10 +54,14 @@ class FeildOfStudyController extends Controller
      * @param  \App\Models\FeildOfStudy  $feildOfStudy
      * @return \Illuminate\Http\Response
      */
-    public function show(FeildOfStudy $feildOfStudy)
+    public function show($id)
     {
-        //
+        
+        return view('fieldofstudy.show', [
+            'FeildOfStudy' => FeildOfStudy::findOrFail($id)
+        ]);
     }
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -58,6 +71,7 @@ class FeildOfStudyController extends Controller
      */
     public function edit(FeildOfStudy $feildOfStudy)
     {
+        return view('fieldofstudy.edit',compact('feild_of_studies'));
         //
     }
 
@@ -70,6 +84,10 @@ class FeildOfStudyController extends Controller
      */
     public function update(UpdateFeildOfStudyRequest $request, FeildOfStudy $feildOfStudy)
     {
+
+        $data = $request->validate(['name' => 'required|string|unique:feildOfStudy,name,'.$feildOfStudy->id]);
+        $feildOfStudy->update($data);
+        return redirect()->route('feild_of_study.index')->with('message', 'feild Of Study created successfully');
         //
     }
 
@@ -79,8 +97,11 @@ class FeildOfStudyController extends Controller
      * @param  \App\Models\FeildOfStudy  $feildOfStudy
      * @return \Illuminate\Http\Response
      */
-    public function destroy(FeildOfStudy $feildOfStudy)
+    public function destroy(Request $request,FeildOfStudy $feildOfStudy)
     {
-        //
+        $feildOfStudy->delete();
+        if ($request->ajax()) {
+            return response()->json(array('msg' => 'deleted successfully'), 200);
+        }
     }
 }

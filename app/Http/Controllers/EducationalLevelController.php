@@ -15,7 +15,11 @@ class EducationalLevelController extends Controller
      */
     public function index()
     {
-        //
+        // if(!Auth::user()->can('.index')){
+        //     return abort(403);
+        // }
+        $educational_levels = EducationalLevel::paginate(10);
+        return view('educationalLevel.index', compact('educational_levels'));
     }
 
     /**

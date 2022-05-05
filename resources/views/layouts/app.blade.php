@@ -183,13 +183,14 @@
                                             </span>
                                         </li>
                                         @include('aside.ms')
+                                        @include('aside.seya')
                                     </ul>
                                 </div>
                                 
                             </li>
                             {{-- @include('aside.ms') --}}
                             @include('aside.aj')
-                            @include('aside.seya')
+                            
                         </ul>
                     </div>
                     <!--end::Menu Container-->

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FeildOfStudyController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
@@ -42,5 +43,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('region', RegionController::class);
     Route::resource('zone', ZoneController::class);
     Route::resource('woreda', WoredaController::class);
+
+    Route::resource('educational_level',EducationalLevelController::class);
+    Route::resource('feild_of_study', FeildOfStudyController::class);
+    Route::resource('disablity', DisablityController::class);
 });
 require __DIR__.'/auth.php';
