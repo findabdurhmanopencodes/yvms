@@ -25,8 +25,10 @@
     <link href="{{ asset('assets/css/themes/layout/brand/dark.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('fontawesome/css/all.min.css') }}" rel="stylesheet">
+
     <!--end::Layout Themes-->
     @stack('css')
+    <link rel="stylesheet" type="text/css" href="{{ asset('calendar/css/redmond.calendars.picker.css') }}">
     <link rel="shortcut icon" href="{{ asset('ju_logo.png') }}" />
 </head>
 <!--end::Head-->
@@ -55,7 +57,7 @@
         <!--begin::Page-->
         <div class="d-flex flex-row flex-column-fluid page">
             <!--begin::Wrapper-->
-            <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+            <div class="d-flex flex-column flex-row-fluid wrapper" style="padding-top: 80px;" id="kt_wrapper">
                 <!--begin::Header-->
                 <div id="kt_header" class="header header-fixed">
                     <!--begin::Container-->
@@ -134,7 +136,7 @@
                 </div>
                 <!--end::Header-->
                 <!--begin::Content-->
-                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                <div class="content d-flex flex-column flex-column-fluid p-0" id="kt_content">
                     <!--begin::Entry-->
                     <div class="d-flex flex-column-fluid">
                         <!--begin::Container-->
@@ -147,7 +149,7 @@
                 </div>
                 <!--end::Content-->
                 <!--begin::Footer-->
-                <div class="footer bg-white py-4 d-flex flex-lg-column" id="kt_footer">
+                <div class="footer bg-white py-4 d-flex flex-lg-column mt-4" id="kt_footer">
                     <!--begin::Container-->
                     <div
                         class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
@@ -248,6 +250,15 @@
     <!--end::Page Vendors-->
     <!--begin::Page Scripts(used by this page)-->
     <script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
+
+    <script src="{{ asset('calendar/js/jquery.plugin.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.plus.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.picker.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.ethiopian.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.ethiopian-am.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.picker-am.js') }}"></script>
+
     @stack('js')
     <!--end::Page Scripts-->
     <script>
@@ -257,6 +268,7 @@
             })
         @endif
     </script>
+
 </body>
 <!--end::Body-->
 
