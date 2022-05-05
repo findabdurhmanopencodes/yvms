@@ -122,13 +122,15 @@
                         data-menu-dropdown-timeout="500">
                         <!--begin::Menu Nav-->
                         <ul class="menu-nav">
-                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'menu-item-active' : '' }}"
+                                aria-haspopup="true">
                                 <a href="{{ route('dashboard', []) }}" class="menu-link">
                                     <i class="menu-icon flaticon-home"></i>
                                     <span class="menu-text">Dashboard</span>
                                 </a>
                             </li>
-                            <li class="menu-item menu-item-submenu {{ (strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0) ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+                            <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0 ? 'menu-item-open' : '' }}"
+                                aria-haspopup="true" data-menu-toggle="hover">
 
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <i class="menu-icon flaticon-lock"></i>
@@ -143,7 +145,8 @@
                                                 <span class="menu-text">Roles &amp; Permissions</span>
                                             </span>
                                         </li>
-                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'role.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'role.index') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
                                             <a href="{{ route('role.index', []) }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
@@ -151,7 +154,8 @@
                                                 <span class="menu-text">Roles</span>
                                             </a>
                                         </li>
-                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'permission.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'permission.index') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
                                             <a href="{{ route('permission.index', []) }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
@@ -163,8 +167,8 @@
                                 </div>
                             </li>
 
-                            {{-- || strpos(Route::currentRouteName(), 'woreda') === 0) || strpos(Route::currentRouteName(), 'zone') === 0 --}}
-                            <li class="menu-item menu-item-submenu {{ (strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ) ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+                            <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
+                                aria-haspopup="true" data-menu-toggle="hover">
 
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <i class="menu-icon flaticon-lock"></i>
@@ -179,7 +183,8 @@
                                                 <span class="menu-text">Settings</span>
                                             </span>
                                         </li>
-                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'region.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'region.index') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
                                             <a href="{{ route('region.index', []) }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
@@ -187,7 +192,8 @@
                                                 <span class="menu-text">Region</span>
                                             </a>
                                         </li>
-                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'zone.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'zone.index') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
                                             <a href="{{ route('zone.index', []) }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
@@ -195,7 +201,8 @@
                                                 <span class="menu-text">Zone</span>
                                             </a>
                                         </li>
-                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'woreda.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'woreda.index') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
                                             <a href="{{ route('woreda.index', []) }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
@@ -206,7 +213,9 @@
                                     </ul>
                                 </div>
                             </li>
-
+                            @include('aside.ms')
+                            @include('aside.aj')
+                            @include('aside.seya')
                         </ul>
                     </div>
                     <!--end::Menu Container-->
