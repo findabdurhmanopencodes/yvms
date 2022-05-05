@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 
-class TrainingSessionSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,8 +16,7 @@ class TrainingSessionSeeder extends Seeder
     public function run()
     {
         //
-        Permission::create(['name'=>'training_session.index']);
-
-        
+        Permission::create(['name'=>'user.index']);
+        Permission::create(['name'=>'user.create']);
     }
 }

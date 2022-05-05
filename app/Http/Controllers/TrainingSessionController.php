@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTrainingSessionRequest;
 use App\Http\Requests\UpdateTrainingSessionRequest;
 use App\Models\TrainingSession;
+use Illuminate\Support\Facades\Auth;
 
 class TrainingSessionController extends Controller
 {
@@ -15,7 +16,11 @@ class TrainingSessionController extends Controller
      */
     public function index()
     {
-        //
+        if(!Auth::user()->can('training_session.index')){
+            return abort(403);
+        }
+        $trainingSessions = TrainingSession::paginate(10);
+        return view('training_session.index',compact('trainingSessions'));
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\UserController;
 use App\Models\TrainingSession;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,8 @@ Route::get('/', function () {
 //Role & Permission
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('training_session',TrainingSession::class);
+    Route::resource('training_session',TrainingSessionController::class);
+    Route::resource('user',UserController::class);
     Route::resource('role',RoleController::class);
     Route::resource('permission',PermissionController::class);
     Route::view('/dashboard','dashboard')->name('dashboard');
