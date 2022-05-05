@@ -4,13 +4,13 @@
 @section('content')
 
 <div class="py-2 pr-4">
-    <a href="{{ route('educational_level.create') }}" class="float-right btn btn-sm btn-primary"><i class="fal fa-plus"></i>
-        Add Level of Education</a>
+    <a href="{{ route('disablity.create') }}" class="float-right btn btn-sm btn-primary"><i class="fal fa-plus"></i>
+        Add disablity type </a>
     <div class="clearfix"></div>
 </div>
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Level of Education</h3>
+        <h3 class="card-title">Disablity type </h3>
     </div>
     <div class="p-0 card-body">
         <table class="table table-striped table-striped table-bordered table-hover dataTable no-footer">
@@ -31,26 +31,26 @@
                 </tr>
             </thead>
             <tbody>
-                @if (count($educational_levels) == 0)
+                @if (count($disablities) == 0)
                     <tr>
-                        <td colspan="4" class="text-center"><b> No educational level available!</b></td>
+                        <td colspan="4" class="text-center"><b> No disablity type available!</b></td>
                     </tr>
                 @endif
-                @foreach ($educational_levels as $key => $educational_level)
+                @foreach ($disablities as $key => $disablity)
                
                     <tr>
                         <td>{{ $key + 1 }}</td>
                         <td>
-                            <a>{{ $educational_level->name }}</a>
+                            <a>{{ $disablity->name }}</a>
                         </td>
-                        <td>{{ $educational_level->created_at }}</td>
+                        <td>{{ $disablity->created_at }}</td>
                         <td class="text-right project-actions">
                             <a class="btn btn-sm btn-primary btn-round" href="#">
                                 {{-- {{ route('Level of Education.edit', ['educationalLevel' => $educational_levels->id]) }} --}}
                                 <i class="fa fa-pencil"></i>
                                 Edit
                             </a>
-                            <a class="btn btn-sm btn-danger btn-round" href="#" onclick="DeleteEducationalLevel({{ $educational_level->id }},this);">
+                            <a class="btn btn-sm btn-danger btn-round" href="#" onclick="Deletedisablity({{ $disablity->id }},this);">
                                 <i class="fad fa-trash"></i>
                                 Delete
                             </a>
@@ -71,7 +71,7 @@
 </form>
 @push('js')
     <script>
-        function DeleteEducationalLevel(permissionId, parent) {
+        function Deletedisablity(permissionId, parent) {
             event.preventDefault();
             Swal.fire({
                 title: "Are you sure?",

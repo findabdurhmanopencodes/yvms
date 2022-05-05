@@ -1,6 +1,7 @@
 <?php
-
+use App\Http\Controllers\DisablityController;
 use App\Http\Controllers\FeildOfStudyController;
+use App\Http\Controllers\EducationalLevelController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;

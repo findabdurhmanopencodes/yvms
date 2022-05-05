@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Disablity;
 use App\Http\Requests\StoreDisablityRequest;
 use App\Http\Requests\UpdateDisablityRequest;
+use Illuminate\Http\Request;
 
 class DisablityController extends Controller
 {
@@ -15,7 +16,10 @@ class DisablityController extends Controller
      */
     public function index()
     {
-        //
+         // $feild_of_studies = FeildOfStudy::all();
+         $disablities = Disablity::paginate(10);
+
+         return view('disablity.index', compact('disablities'));
     }
 
     /**
@@ -25,7 +29,7 @@ class DisablityController extends Controller
      */
     public function create()
     {
-        //
+        return view('disablity.create');
     }
 
     /**
@@ -36,18 +40,21 @@ class DisablityController extends Controller
      */
     public function store(StoreDisablityRequest $request)
     {
-        //
+        $request->validate(['name' => 'required|string|unique:disablities,name']);
+        Disablity::create(['name' => $request->get('name')]);
+        return redirect()->route('disablity.index')->with('message', 'Disablity type created successfully');
     }
-
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\Disablity  $disablity
      * @return \Illuminate\Http\Response
      */
-    public function show(Disablity $disablity)
+    public function show($id)
     {
-        //
+        return view('disablity.show', [
+            'Disablity' => Disablity::findOrFail($id)
+        ]);
     }
 
     /**
@@ -58,7 +65,7 @@ class DisablityController extends Controller
      */
     public function edit(Disablity $disablity)
     {
-        //
+        return view('fieldofstudy.create',compact('disablities'));
     }
 
     /**
@@ -70,8 +77,12 @@ class DisablityController extends Controller
      */
     public function update(UpdateDisablityRequest $request, Disablity $disablity)
     {
+        $data = $request->validate(['name' => 'required|string|unique:disablities,name,'.$disablity->id]);
+        $disablity->update($data);
+        return redirect()->route('disablity.index')->with('message', 'Disablity created successfully');
         //
     }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -79,8 +90,11 @@ class DisablityController extends Controller
      * @param  \App\Models\Disablity  $disablity
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Disablity $disablity)
+    public function destroy(Disablity $disablity, Request $request)
     {
-        //
+        $disablity->delete();
+        if ($request->ajax()) {
+            return response()->json(array('msg' => 'deleted successfully'), 200);
+        }
     }
 }
