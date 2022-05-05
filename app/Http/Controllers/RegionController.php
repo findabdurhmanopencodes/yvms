@@ -38,10 +38,9 @@ class RegionController extends Controller
      */
     public function store(StoreRegionRequest $request)
     {
-        dd('sdfsd');
         $request->validate(['name' => 'required|string|unique:permissions,name', 'code' => 'required|string|unique:permissions,name']);
-        Region::create(['name' => $request->get('name')]);
-        return redirect()->route('permission.index')->with('message', 'Permission created successfully');
+        Region::create(['name' => $request->get('name'), 'code'=>$request->get('code')]);
+        return redirect()->route('region.index')->with('message', 'Region created successfully');
     }
 
     /**
@@ -84,11 +83,11 @@ class RegionController extends Controller
      * @param  \App\Models\Region  $region
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Region $region, Request $request)
+    public function destroy(Request $request, Region $region)
     {
         $region->delete();
-        if ($request->ajax()) {
-            return response()->json(array('msg' => 'deleted successfully'), 200);
-        }
+        // if ($request->ajax()) {
+            return response()->json(array('msg' => 'deleted successfully'));
+        // }
     }
 }

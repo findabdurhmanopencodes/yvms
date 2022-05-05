@@ -9,6 +9,17 @@ class Zone extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = [
+        'name',
+        'code',
+        'region_id'
+    ];
+
     public function woredas(){
         return $this->hasMany(Woreda::class);
     }

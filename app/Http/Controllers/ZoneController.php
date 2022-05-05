@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Zone;
 use App\Http\Requests\StoreZoneRequest;
 use App\Http\Requests\UpdateZoneRequest;
+use App\Models\Region;
 use GuzzleHttp\Psr7\Request;
 
 class ZoneController extends Controller
@@ -14,10 +15,11 @@ class ZoneController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Region $region)
     {
         $zones = Zone::all();
-        return view('zone.index', compact('zones'));
+        $regions = $region::all();
+        return view('zone.index', compact(['zones', 'regions']));
     }
 
     /**
@@ -25,9 +27,10 @@ class ZoneController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Region $region)
     {
-        //
+        $regions = $region::all();
+        return view('zone.create', compact('regions'));
     }
 
     /**
@@ -38,7 +41,14 @@ class ZoneController extends Controller
      */
     public function store(StoreZoneRequest $request)
     {
-        //
+        $zone = new Zone();
+        $request->validate(['name' => 'required|string|unique:zones,name', 'code' => 'required|string|unique:zones,code']);
+        // $zone->name = $request->get('name');
+        // $zone->code = $request->get('code');
+        // $zone->region_id = $request->get('region');
+        // $zone->save();
+        Zone::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'region_id' => $request->get('region')]);
+        return redirect()->route('zone.index')->with('message', 'Zone created successfully');
     }
 
     /**

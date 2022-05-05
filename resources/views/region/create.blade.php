@@ -8,8 +8,9 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            <form method="POST"
-                action="{{ isset($region)? route('region.update', ['region' => $region->id]): route('region.store', []) }}">
+            {{-- {{ Form::open(array('url' => 'region', 'method')) }} --}}
+            {{-- {!! Form::open(['url' => 'region/store', 'method' => 'POST']) !!} --}}
+            <form method="POST" action="{{ isset($region)? route('region.update', ['region' => $region->id]): route('region.store', []) }}">
                 @csrf
                 @isset($region)
                     @method('PATCH')
@@ -36,6 +37,8 @@
                     <i class="fa fa-plus"></i> {{ isset($region) ? 'Update Region' : 'Add Region' }}
                 </button>
             </form>
+                {{-- {{ Form::close() }} --}}
+            {{-- {!! Form::close() !!} --}}
         </div>
     </div>
 @endsection

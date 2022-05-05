@@ -5,10 +5,71 @@
 @endsection
 
 @section('content')
-    <div class="py-2 pr-4">
+    {{-- <div class="py-2 pr-4">
         <a href="{{ route('region.create') }}" class="float-right btn btn-sm btn-primary"><i class="fal fa-plus"></i>
             Add Region</a>
         <div class="clearfix"></div>
+    </div> --}}
+    <div class="py-2 pr-4">
+        <a href="#my-region-form" role="button" class="pull-right btn btn-sm btn-primary" data-toggle="modal"><i class="fal fa-plus"></i>
+            &nbsp; Add Region &nbsp;
+        </a>
+        <div class="clearfix"></div>
+    </div>
+
+    <div id="my-region-form" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <form method="POST" action="{{ route('region.store', []) }}">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="smaller lighter blue no-margin">Register new region</h3>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="form-region-name" class="col-12 control-label no-padding-right">
+                                    Name: <span style="color: red;"></span>
+                                </label>
+    
+                                <div class="col-12">
+                                    <input type="text" id="form-region-name" placeholder="region name" name="name" required/>
+                                    @error('name')
+                                        <small class="text-danger"><b>{{ $message }}</b></small>
+                                    @enderror
+                                </div>
+                            </div>
+    
+                            <div class="form-group col-md-6">
+                                <label for="form-region-code" class="col-12 control-label no-padding-right">
+                                    Code: <span style="color: red;"></span>
+                                </label>
+    
+                                <div class="col-12">
+                                    <input type="text" id="form-region-code" placeholder="region code" name="code" required/>
+                                    @error('code')
+                                        <small class="text-danger"><b>{{ $message }}</b></small>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            Submit
+                        </button>
+                        <button class="btn btn-sm btn-danger pull-right" data-dismiss="modal">
+                            <i class="ace-icon fa fa-times"></i>
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
     <div class="card">
         <div class="card-header">
@@ -51,7 +112,7 @@
                                 <a>{{ $region->code }}</a>
                             </td>
                             <td>{{ $region->created_at }}</td>
-                            <td class="text-right project-actions">
+                            <td class="project-actions">
                                 <a class="btn btn-sm btn-primary"
                                     href="{{ route('region.edit', ['region' => $region->id]) }}">
                                     <i class="fa fa-pencil">
