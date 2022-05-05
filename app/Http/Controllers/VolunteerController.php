@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Volunteer;
 use App\Http\Requests\StoreVolunteerRequest;
 use App\Http\Requests\UpdateVolunteerRequest;
+use App\Models\Disablity;
 
 class VolunteerController extends Controller
 {
@@ -86,6 +87,7 @@ class VolunteerController extends Controller
 
     public function application_form()
     {
-        return view('application.form');
+        $disabilities = Disablity::all();
+        return view('application.form',compact('disabilities'));
     }
 }

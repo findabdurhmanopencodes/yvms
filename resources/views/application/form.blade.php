@@ -191,6 +191,21 @@
                                                     name.</span>
                                             </div>
                                             <!--end::Input-->
+                                            <div class="col-xl-6">
+                                                <!--begin::Input-->
+                                                <div class="form-group">
+                                                    <label>Disablity</label>
+                                                    <select name="disability" id="disability"
+                                                        class="form-control form-control-solid form-control-lg">
+                                                        <option value="">Select</option>
+                                                        @foreach ($disabilities as $disable)
+                                                            <option value="{{ $disable->id }}">{{ $disable->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-xl-6">
@@ -242,18 +257,6 @@
                                                         placeholder="Email" value="{{ old('email') }}" />
                                                     <span class="form-text text-muted">Please enter your email
                                                         address.</span>
-                                                </div>
-                                                <!--end::Input-->
-                                            </div>
-                                            <div class="col-xl-12">
-                                                <!--begin::Input-->
-                                                <div class="form-group">
-                                                    <label>Disablity</label>
-                                                    <select name="disability" id="disability"
-                                                        class="form-control form-control-solid form-control-lg">
-                                                        <option value="">Select</option>
-
-                                                    </select>
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
