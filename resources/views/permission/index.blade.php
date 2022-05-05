@@ -1,133 +1,122 @@
 @extends('layouts.app')
-@section('title', 'Permissions')
-@section('breadcrumb-list')
-    <li class="active">Permissions</li>
+@section('title', 'All Permissions')
+@section('breadcrumbTitle', 'All Permissions')
+@section('breadcrumbList')
+    <li class="breadcrumb-item active">Permissions</li>
 @endsection
 
-@section('content')
-    <div class="py-2 pr-4">
-        <a href="{{ route('permission.create') }}" class="float-right btn btn-sm btn-primary"><i class="fal fa-plus"></i>
-            Add Permission</a>
-        <div class="clearfix"></div>
-    </div>
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Permissions</h3>
-        </div>
-        <div class="p-0 card-body">
-            <table class="table table-striped table-striped table-bordered table-hover dataTable no-footer">
-                <thead>
-                    <tr>
-                        <th style="width: 1%">
-                            #
-                        </th>
-                        <th style="width: 20%">
-                            Name
-                        </th>
-                        <th style="width: 20%">
-                            Created At
-                        </th>
-                        <th style="width: 10%">
-                            Action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (count($permissions) == 0)
-                        <tr>
-                            <td colspan="4" class="text-center"><b>No permission available!</b></td>
-                        </tr>
-                    @endif
-                    @foreach ($permissions as $key => $permission)
-                        <tr>
-                            <td>{{ $key + 1 }}</td>
-                            <td>
-                                <a>{{ $permission->name }}</a>
-                            </td>
-                            <td>{{ $permission->created_at }}</td>
-                            <td class="text-right project-actions">
-                                <a class="btn btn-sm btn-primary"
-                                    href="{{ route('permission.edit', ['permission' => $permission->id]) }}">
-                                    <i class="fa fa-pencil">
-                                    </i>
-                                </a>
-                                <a class="btn btn-sm btn-danger" href="#"
-                                    onclick="deletePermission({{ $permission->id }},this);">
-                                    <i class="fad fa-trash">
-                                    </i>
-                                </a>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        <!-- /.card-body -->
-    </div>
+@push('js')
+    <script>
+        var HOST_URL = "{{ route('permission.index') }}";
 
-    <form method="POST" id="deleteForm">
-        @method('delete')
-        @csrf
-    </form>
-    @push('js')
-        <script>
-            function deletePermission(permissionId, parent) {
-                event.preventDefault();
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: "You won't be able to revert this!",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!"
-                }).then(function(result) {
-                    if (result.value) {
-                        $.ajax({
-                            type: "POST",
-                            url: '/permission/' + permissionId,
-                            data: {
-                                "id": permissionId,
-                                "_method": 'DELETE',
-                                "_token": $('meta[name="csrf-token"]').attr('content'),
-                            },
-                            dataType: 'json',
-                            success: function(data) {
-                                $(parent).closest('tr')[0].remove();
-                                Swal.fire(
-                                    "Deleted!",
-                                    "Permission has been deleted.",
-                                    "success"
-                                )
-                            },
-                            error: function(data) {
-                                if (data.status) {
-                                    Swal.fire("Forbidden!", "You can't delete this permission!", "error");
-                                }
+        function deletePermission(permissionId, parent) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/permission/' + permissionId,
+                        data: {
+                            "id": permissionId,
+                            "_method": 'DELETE',
+                            "_token": $('meta[name="csrf-token"]').attr('content'),
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            $(parent).closest('tr')[0].remove();
+                            Swal.fire(
+                                "Deleted!",
+                                "Permission has been deleted.",
+                                "success"
+                            )
+                        },
+                        error: function(data) {
+                            if (data.status) {
+                                Swal.fire("Forbidden!", "You can't delete this permission!", "error");
                             }
-                        });
-                    }
-                });
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+    <script>
+        var COLUMNS = [{
+                field: 'id',
+                title: '#',
+                sortable: 'asc',
+                width: 30,
+                type: 'number',
+                selector: false,
+                textAlign: 'center',
+                template: function(row, index) {
+                    return index + 1;
+                }
+            },
+            {
+                field: 'name',
+                title: 'Name',
+                sortable: 'asc',
+            },
+            {
+                field: 'Actions',
+                title: 'Actions',
+                sortable: false,
+                width: 100,
+                overflow: 'visible',
+                autoHide: false,
+                template: function(row) {
+                    var permissionId = row.id;
+                    return '\
+                                                <div class="d-flex" style="justify-content: space-between;">\
+                                                            <a href="javascript:;" onclick="deletePermission(' +
+                        permissionId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
+                                                                <i class="far fa-trash"></i>\
+                                                            </a>\
+                                                            \
+                                                            <a href="/permission/' + permissionId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                                                                <i class="far fa-pen"></i>\
+                                                            </a>\
+                                                            \
+                                                        </div>\
+                                                        ';
+                },
             }
+        ]
+    </script>
+    <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
+@endpush
+@section('content')
+    <!--begin::Card-->
+    <div class="card card-custom">
+        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+            <div class="card-title">
+                <h3 class="card-label">List of permissions
+                    <span class="text-muted pt-2 font-size-sm d-block">Permissions</span>
+                </h3>
+            </div>
+            <div class="card-toolbar">
 
-            // function deletePermission(permissionId, item) {
-            //     var url = '/permission/' + permissionId;
-            //     $('#deleteForm').attr('action', url);
-            //     swal({
-            //         title: "Are you sure?",
-            //         text: "You will not be able to recover this imaginary file!",
-            //         icon: 'warning',
-            //         buttons: {
-            //             cancel: true,
-            //             delete: 'Yes, Delete It'
-            //         },
-            //     }).then(
-            //         function(isConfirm) {
-            //             if (isConfirm) {
-            //                 $('#deleteForm').submit()
-            //             }
-            //             return false;
-            //         }
-            //     )
-            // }
-        </script>
-    @endpush
+                <!--begin::Button-->
+                <a href="{{ route('permission.create', []) }}" class="btn btn-primary font-weight-bolder">
+                    <span class="svg-icon svg-icon-md">
+                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                        <i class="fal fa-plus"></i>
+                        <!--end::Svg Icon-->
+                    </span>Add New Permission</a>
+                <!--end::Button-->
+            </div>
+        </div>
+        <div class="card-body">
+            <!--begin: Datatable-->
+            <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+            <!--end: Datatable-->
+        </div>
+    </div>
 @endsection
