@@ -5,8 +5,35 @@
 @endpush
 @push('js')
     <script src="{{ asset('assets/js/pages/custom/wizard/wizard-2.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/custom/profile/profile.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/crud/file-upload/dropzonejs.js') }}"></script>
+
     <script>
         $(function() {
+            $('#region').select2({
+                placeholder: "Select a region"
+            });
+            $('#gender').select2({
+                placeholder: "Select a gender"
+            });
+
+            $('#zone').select2({
+                placeholder: "Select a zone"
+            });
+
+            $('#woreda').select2({
+                placeholder: "Select a woreda"
+            });
+
+            $('#educational_level').select2({
+                placeholder: "Select a Education Level"
+            });
+            $('#disability').select2({
+                placeholder: "Select a Field of Disability"
+            });
+            $('#field_of_study').select2({
+                placeholder: "Select a Field of Study"
+            });
             var calendar = $.calendars.instance('ethiopian', 'am');
             $('#dob').calendarsPicker({
                 calendar: calendar
@@ -30,24 +57,12 @@
                                     <div class="wizard-icon">
                                         <span class="svg-icon svg-icon-2x">
                                             <!--begin::Svg Icon | path:assets/media/svg/icons/General/User.svg-->
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                                viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                    <polygon points="0 0 24 0 24 24 0 24" />
-                                                    <path
-                                                        d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z"
-                                                        fill="#000000" fill-rule="nonzero" opacity="0.3" />
-                                                    <path
-                                                        d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z"
-                                                        fill="#000000" fill-rule="nonzero" />
-                                                </g>
-                                            </svg>
+                                            <i class="fa fa-user"></i>
                                             <!--end::Svg Icon-->
                                         </span>
                                     </div>
                                     <div class="wizard-label">
-                                        <h3 class="wizard-title">Personal Information</h3>
+                                        <h3 class="wizard-title">Basic Information</h3>
                                         <div class="wizard-desc">Fill Information Details</div>
                                     </div>
                                 </div>
@@ -59,16 +74,7 @@
                                     <div class="wizard-icon">
                                         <span class="svg-icon svg-icon-2x">
                                             <!--begin::Svg Icon | path:assets/media/svg/icons/Map/Compass.svg-->
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                                viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                    <rect x="0" y="0" width="24" height="24" />
-                                                    <path
-                                                        d="M12,21 C7.02943725,21 3,16.9705627 3,12 C3,7.02943725 7.02943725,3 12,3 C16.9705627,3 21,7.02943725 21,12 C21,16.9705627 16.9705627,21 12,21 Z M14.1654881,7.35483745 L9.61055177,10.3622525 C9.47921741,10.4489666 9.39637436,10.592455 9.38694497,10.7495509 L9.05991526,16.197949 C9.04337012,16.4735952 9.25341309,16.7104632 9.52905936,16.7270083 C9.63705011,16.7334903 9.74423017,16.7047714 9.83451193,16.6451626 L14.3894482,13.6377475 C14.5207826,13.5510334 14.6036256,13.407545 14.613055,13.2504491 L14.9400847,7.80205104 C14.9566299,7.52640477 14.7465869,7.28953682 14.4709406,7.27299168 C14.3629499,7.26650974 14.2557698,7.29522855 14.1654881,7.35483745 Z"
-                                                        fill="#000000" />
-                                                </g>
-                                            </svg>
+                                            <i class="fa fa-location-arrow"></i>
                                             <!--end::Svg Icon-->
                                         </span>
                                     </div>
@@ -85,22 +91,30 @@
                                     <div class="wizard-icon">
                                         <span class="svg-icon svg-icon-2x">
                                             <!--begin::Svg Icon | path:assets/media/svg/icons/Map/Compass.svg-->
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                                viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                    <rect x="0" y="0" width="24" height="24" />
-                                                    <path
-                                                        d="M12,21 C7.02943725,21 3,16.9705627 3,12 C3,7.02943725 7.02943725,3 12,3 C16.9705627,3 21,7.02943725 21,12 C21,16.9705627 16.9705627,21 12,21 Z M14.1654881,7.35483745 L9.61055177,10.3622525 C9.47921741,10.4489666 9.39637436,10.592455 9.38694497,10.7495509 L9.05991526,16.197949 C9.04337012,16.4735952 9.25341309,16.7104632 9.52905936,16.7270083 C9.63705011,16.7334903 9.74423017,16.7047714 9.83451193,16.6451626 L14.3894482,13.6377475 C14.5207826,13.5510334 14.6036256,13.407545 14.613055,13.2504491 L14.9400847,7.80205104 C14.9566299,7.52640477 14.7465869,7.28953682 14.4709406,7.27299168 C14.3629499,7.26650974 14.2557698,7.29522855 14.1654881,7.35483745 Z"
-                                                        fill="#000000" />
-                                                </g>
-                                            </svg>
+                                            <i class="fa fa-user-graduate"></i>
                                             <!--end::Svg Icon-->
                                         </span>
                                     </div>
                                     <div class="wizard-label">
-                                        <h3 class="wizard-title">Educational &amp; Other Document</h3>
+                                        <h3 class="wizard-title">Educational Document</h3>
                                         <div class="wizard-desc">Upload Educational Document</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Wizard Step 3 Nav-->
+                            <!--begin::Wizard Step 3 Nav-->
+                            <div class="wizard-step" data-wizard-type="step">
+                                <div class="wizard-wrapper">
+                                    <div class="wizard-icon">
+                                        <span class="svg-icon svg-icon-2x">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Map/Compass.svg-->
+                                            <i class="fa fa-ellipsis-h"></i>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </div>
+                                    <div class="wizard-label">
+                                        <h3 class="wizard-title">Other Documents</h3>
+                                        <div class="wizard-desc">Upload other Document</div>
                                     </div>
                                 </div>
                             </div>
@@ -116,34 +130,67 @@
                                 <form class="form" id="kt_form">
                                     <!--begin: Wizard Step 1-->
                                     <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
-                                        <h4 class="mb-10 font-weight-bold text-dark">Enter your Personal Details</h4>
-                                        <!--begin::Input-->
-                                        <div class="form-group">
-                                            <label>First Name</label>
-                                            <input type="text" class="form-control form-control-solid form-control-lg"
-                                                name="first_name" placeholder="First Name"
-                                                value="{{ old('first_name') }}" />
-                                            <span class="form-text text-muted">Please enter your first name.</span>
+                                        <h4 class="mb-10 font-weight-bold text-dark">Enter your Basic Details</h4>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label text-right">Photo</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <div class="image-input image-input-outline" id="kt_profile_avatar"
+                                                    style="background-image: url({{ asset('user.png') }})">
+                                                    <div class="image-input-wrapper"
+                                                        style="background-image: url({{ asset('user.png') }})"></div>
+                                                    <label
+                                                        class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                                        data-action="change" data-toggle="tooltip" title=""
+                                                        data-original-title="Change avatar">
+                                                        <i class="fa fa-pen icon-sm text-muted"></i>
+                                                        <input type="file" name="photo" accept=".png, .jpg, .jpeg" />
+                                                        <input type="hidden" name="profile_avatar_remove" />
+                                                    </label>
+                                                    <span
+                                                        class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                                        data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                                        <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                    </span>
+                                                    <span
+                                                        class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                                        data-action="remove" data-toggle="tooltip" title="Remove avatar">
+                                                        <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                    </span>
+                                                </div>
+                                                <span class="form-text text-muted">Allowed file types: png, jpg,
+                                                    jpeg.</span>
+                                            </div>
                                         </div>
-                                        <!--end::Input-->
-                                        <!--begin::Input-->
-                                        <div class="form-group">
-                                            <label>Father Name</label>
-                                            <input type="text" class="form-control form-control-solid form-control-lg"
-                                                name="father_name" placeholder="Father Name"
-                                                value="{{ old('father_name') }}" />
-                                            <span class="form-text text-muted">Please enter your father name.</span>
+                                        <div class="row">
+                                            <!--begin::Input-->
+                                            <div class="form-group col-md-6">
+                                                <label>First Name</label>
+                                                <input type="text" class="form-control form-control-solid form-control-lg"
+                                                    name="first_name" placeholder="First Name"
+                                                    value="{{ old('first_name') }}" />
+                                                <span class="form-text text-muted">Please enter your first name.</span>
+                                            </div>
+                                            <!--end::Input-->
+                                            <!--begin::Input-->
+                                            <div class="form-group col-md-6">
+                                                <label>Father Name</label>
+                                                <input type="text" class="form-control form-control-solid form-control-lg"
+                                                    name="father_name" placeholder="Father Name"
+                                                    value="{{ old('father_name') }}" />
+                                                <span class="form-text text-muted">Please enter your father name.</span>
+                                            </div>
+                                            <!--end::Input-->
+                                            <!--begin::Input-->
+                                            <div class="form-group col-md-6">
+                                                <label>Grand Father Name</label>
+                                                <input type="text" class="form-control form-control-solid form-control-lg"
+                                                    name="grand_father_name" placeholder="Grand Father Name"
+                                                    value="{{ old('grand_father_name') }}" />
+                                                <span class="form-text text-muted">Please enter your grand father
+                                                    name.</span>
+                                            </div>
+                                            <!--end::Input-->
                                         </div>
-                                        <!--end::Input-->
-                                        <!--begin::Input-->
-                                        <div class="form-group">
-                                            <label>Grand Father Name</label>
-                                            <input type="text" class="form-control form-control-solid form-control-lg"
-                                                name="grand_father_name" placeholder="Grand Father Name"
-                                                value="{{ old('grand_father_name') }}" />
-                                            <span class="form-text text-muted">Please enter your grand father name.</span>
-                                        </div>
-                                        <!--end::Input-->
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <!--begin::Input-->
@@ -162,7 +209,7 @@
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label>Gender</label>
-                                                    <select name="gender"
+                                                    <select name="gender" id="gender"
                                                         class="form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
                                                         <option value="M">Male</option>
@@ -197,6 +244,18 @@
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
+                                            <div class="col-xl-12">
+                                                <!--begin::Input-->
+                                                <div class="form-group">
+                                                    <label>Disablity</label>
+                                                    <select name="disability" id="disability"
+                                                        class="form-control form-control-solid form-control-lg">
+                                                        <option value="">Select</option>
+
+                                                    </select>
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
                                         </div>
                                     </div>
                                     <!--end: Wizard Step 1-->
@@ -209,8 +268,8 @@
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label>Region</label>
-                                                    <select name="country"
-                                                        class="form-control form-control-solid form-control-lg">
+                                                    <select name="region" id='region'
+                                                        class="form-control form-control-solid form-control-md">
                                                         <option value="">Select</option>
                                                         <option value="ZW">Zimbabwe</option>
                                                     </select>
@@ -220,8 +279,8 @@
                                             <div class="col-xl-4">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
-                                                    <label>Zone</label>
-                                                    <select name="country"
+                                                    <label>Zone&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                    <select name="zone" id="zone"
                                                         class="form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
                                                         <option value="ZW">Zimbabwe</option>
@@ -234,7 +293,7 @@
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label>Woreda</label>
-                                                    <select name="country"
+                                                    <select name="woreda" id="woreda"
                                                         class="form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
                                                         <option value="ZW">Zimbabwe</option>
@@ -245,6 +304,204 @@
                                         </div>
                                     </div>
                                     <!--end: Wizard Step 2-->
+
+                                    <!--begin: Wizard Step 3-->
+                                    <div class="pb-5" data-wizard-type="step-content">
+                                        <h4 class="mb-10 font-weight-bold text-dark">Educational Document</h4>
+                                        <div class="row">
+                                            <div class="col-xl-5">
+                                                <!--begin::Select-->
+                                                <div class="form-group">
+                                                    <label>Educational Level</label>
+                                                    <select name="educational_level" id="educational_level"
+                                                        class="form-control form-control-solid form-control-lg">
+                                                        <option value="">Select</option>
+                                                        <option value="ZW">Zimbabwe</option>
+                                                    </select>
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+                                            <div class="col-xl-5">
+                                                <!--begin::Select-->
+                                                <div class="form-group">
+                                                    <label>Field of Study</label>
+                                                    <select name="field_of_study" id="field_of_study"
+                                                        class="form-control form-control-solid form-control-lg">
+                                                        <option value="">Select</option>
+                                                        <option value="ZW">Zimbabwe</option>
+
+                                                    </select>
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+
+                                            <div class="col-xl-2">
+                                                <!--begin::Select-->
+                                                <div class="form-group">
+                                                    <label>GPA</label>
+                                                    <input name="gpa" id="gpa" class="form-control form-control-lg"
+                                                        type="number" max="4" min="1" />
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <!--begin::Select-->
+                                                <div class="form-group row">
+                                                    <label class="col-form-label col-sm-12">Ministry
+                                                        Document</label>
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="dropzone dropzone-default" id="ministry_document">
+                                                            <div class="dropzone-msg dz-message needsclick">
+                                                                <h3 class="dropzone-msg-title">Drop files here or click to
+                                                                    upload.</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <!--begin::Select-->
+                                                <div class="form-group row">
+                                                    <label class="col-form-label col-sm-12">BSC
+                                                        Document</label>
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="dropzone dropzone-default" id="bsc_document">
+                                                            <div class="dropzone-msg dz-message needsclick">
+                                                                <h3 class="dropzone-msg-title">Drop files here or click to
+                                                                    upload.</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <!--begin::Select-->
+                                                <div class="form-group row">
+                                                    <label class="col-form-label col-sm-12">MSC
+                                                        Document</label>
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="dropzone dropzone-default" id="msc_document">
+                                                            <div class="dropzone-msg dz-message needsclick">
+                                                                <h3 class="dropzone-msg-title">Drop files here or click to
+                                                                    upload.</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <!--begin::Select-->
+                                                <div class="form-group row">
+                                                    <label class="col-form-label col-sm-12">PHD
+                                                        Document</label>
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="dropzone dropzone-default" id="phd_document">
+                                                            <div class="dropzone-msg dz-message needsclick">
+                                                                <h3 class="dropzone-msg-title">Drop files here or click to
+                                                                    upload.</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end: Wizard Step 3-->
+
+                                    <!--begin: Wizard Step 4-->
+                                    <div class="pb-5" data-wizard-type="step-content">
+                                        <h4 class="mb-10 font-weight-bold text-dark">Other Mandatory Documents</h4>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <!--begin::Select-->
+                                                <div class="form-group">
+                                                    <label>Contact Name</label>
+                                                    <input type="text" name="contact_name" id="contact_name"
+                                                        class="form-control form-control-solid form-control-md">
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <!--begin::Select-->
+                                                <div class="form-group">
+                                                    <label>Contact Phone</label>
+                                                    <input type="tel" name="contact_phone" id="contact_phone"
+                                                        class="form-control form-control-solid form-control-md">
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <!--begin::Select-->
+                                                <div class="form-group row">
+                                                    <label class="col-form-label col-sm-12">Kebele Id</label>
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="dropzone dropzone-default" id="kebele_id">
+                                                            <div class="dropzone-msg dz-message needsclick">
+                                                                <h3 class="dropzone-msg-title">Drop files here or click to
+                                                                    upload.</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <!--begin::Select-->
+                                                <div class="form-group row">
+                                                    <label class="col-form-label col-sm-12">Ethical Licence</label>
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="dropzone dropzone-default" id="ethical_license">
+                                                            <div class="dropzone-msg dz-message needsclick">
+                                                                <h3 class="dropzone-msg-title">Drop files here or click to
+                                                                    upload.</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <!--begin::Select-->
+                                                <div class="form-group row">
+                                                    <label class="col-form-label col-sm-12">Non Pregnancy Medicaid
+                                                        Approval</label>
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="dropzone dropzone-default"
+                                                            id="non_pregnant_validation_document">
+                                                            <div class="dropzone-msg dz-message needsclick">
+                                                                <h3 class="dropzone-msg-title">Drop files here or click to
+                                                                    upload.</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end: Wizard Step 4-->
+
                                     <!--begin: Wizard Actions-->
                                     <div class="d-flex justify-content-between border-top mt-5 pt-10">
                                         <div class="mr-2">

@@ -50,37 +50,58 @@ var KTWizard2 = function () {
 			_formEl,
 			{
 				fields: {
-					fname: {
-						validators: {
-							notEmpty: {
-								message: 'First name is required'
-							}
-						}
-					},
-					lname: {
-						validators: {
-							notEmpty: {
-								message: 'Last Name is required'
-							}
-						}
-					},
-					phone: {
-						validators: {
-							notEmpty: {
-								message: 'Phone is required'
-							}
-						}
-					},
-					email: {
-						validators: {
-							notEmpty: {
-								message: 'Email is required'
-							},
-							emailAddress: {
-								message: 'The value is not a valid email address'
-							}
-						}
-					}
+					// first_name: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'First name is required'
+					// 		}
+					// 	}
+					// },
+					// father_name: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Father Name is required'
+					// 		}
+					// 	}
+					// },
+					// grand_father_name: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Grand Father Name is required'
+					// 		}
+					// 	}
+					// },
+					// dob: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Date of Birth is required'
+					// 		}
+					// 	}
+					// },
+					// gender: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Gender is required'
+					// 		}
+					// 	}
+					// },
+					// phone: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Phone is required'
+					// 		}
+					// 	}
+					// },
+					// email: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Email is required'
+					// 		},
+					// 		emailAddress: {
+					// 			message: 'The value is not a valid email address'
+					// 		}
+					// 	}
+					// }
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
@@ -94,41 +115,27 @@ var KTWizard2 = function () {
 			_formEl,
 			{
 				fields: {
-					address1: {
-						validators: {
-							notEmpty: {
-								message: 'Address is required'
-							}
-						}
-					},
-					postcode: {
-						validators: {
-							notEmpty: {
-								message: 'Postcode is required'
-							}
-						}
-					},
-					city: {
-						validators: {
-							notEmpty: {
-								message: 'City is required'
-							}
-						}
-					},
-					state: {
-						validators: {
-							notEmpty: {
-								message: 'State is required'
-							}
-						}
-					},
-					country: {
-						validators: {
-							notEmpty: {
-								message: 'Country is required'
-							}
-						}
-					}
+					// region: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Region is required'
+					// 		}
+					// 	}
+					// },
+					// zone: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Zone is required'
+					// 		}
+					// 	}
+					// },
+					// woreda: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Woreda is required'
+					// 		}
+					// 	}
+					// },
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
@@ -142,27 +149,27 @@ var KTWizard2 = function () {
 			_formEl,
 			{
 				fields: {
-					delivery: {
-						validators: {
-							notEmpty: {
-								message: 'Delivery type is required'
-							}
-						}
-					},
-					packaging: {
-						validators: {
-							notEmpty: {
-								message: 'Packaging type is required'
-							}
-						}
-					},
-					preferreddelivery: {
-						validators: {
-							notEmpty: {
-								message: 'Preferred delivery window is required'
-							}
-						}
-					}
+					// delivery: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Delivery type is required'
+					// 		}
+					// 	}
+					// },
+					// packaging: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Packaging type is required'
+					// 		}
+					// 	}
+					// },
+					// preferreddelivery: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Preferred delivery window is required'
+					// 		}
+					// 	}
+					// }
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
