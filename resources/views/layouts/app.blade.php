@@ -167,7 +167,7 @@
                             <li class="menu-item menu-item-submenu {{ (strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ) ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 
                                 <a href="javascript:;" class="menu-link menu-toggle">
-                                    <i class="menu-icon flaticon-lock"></i>
+                                    <i class="menu-icon flaticon-settings"></i>
                                     <span class="menu-text">Setting</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -296,108 +296,6 @@
                     </div>
                     <!--end::Entry-->
                 </div>
-<<<<<<< HEAD
-            </div><!-- /.sidebar-shortcuts -->
-
-            <ul class="nav nav-list">
-                <li class="{{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'active' : '' }}">
-                    <a href="{{ route('dashboard', []) }}">
-                        <i class="menu-icon fa fa-tachometer"></i>
-                        <span class="menu-text"> Dashboard </span>
-                    </a>
-
-                    <b class="arrow"></b>
-                </li>
-
-                <li
-                    class="{{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0? 'active open': '' }}">
-                    <a href="#" class="dropdown-toggle">
-                        <i class="menu-icon ace-icon fa fa-lock"></i>
-                        <span class="menu-text">
-                            Role &amp; Permission
-                        </span>
-                        <b class="arrow fa fa-angle-down"></b>
-                    </a>
-                    <b class="arrow"></b>
-                    <ul class="submenu">
-                        <li class="{{ strpos(Route::currentRouteName(), 'role.index') === 0 ? 'active' : '' }}">
-                            <a href="{{ route('role.index', []) }}">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                Roles
-                            </a>
-
-                            <b class="arrow"></b>
-                        </li>
-
-                        <li
-                            class="{{ strpos(Route::currentRouteName(), 'permission.index') === 0 ? 'active' : '' }}">
-                            <a href="{{ route('permission.index', []) }}">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                Permissions
-                            </a>
-
-                            <b class="arrow"></b>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="{{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0? 'active open': '' }}">
-                    <a href="#" class="dropdown-toggle">
-                        <i class="menu-icon fa fa-cog"></i>
-                        <span class="menu-text">
-                            Setting
-                        </span>
-
-                        <b class="arrow fa fa-angle-down"></b>
-                    </a>
-
-                    <b class="arrow"></b>
-
-                    <ul class="submenu">
-                        <li class="{{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0? 'active open': '' }}">
-                            <a href="#" class="dropdown-toggle">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                Location Setting
-                                <b class="arrow fa fa-angle-down"></b>
-                            </a>
-
-                            <b class="arrow"></b>
-                            <ul class="submenu">
-                                <li class="{{ strpos(Route::currentRouteName(), 'region.index') === 0 ? 'active' : '' }}">
-                                    <a href="{{ route('region.index', []) }}">
-                                        <i class="menu-icon fa fa-caret-right"></i>
-                                        Region
-                                    </a>
-
-                                    <b class="arrow"></b>
-                                </li>
-
-                                <li class="{{ strpos(Route::currentRouteName(), 'zone.index') === 0 ? 'active' : '' }}">
-                                    <a href="{{ route('zone.index', []) }}">
-                                        <i class="menu-icon fa fa-caret-right"></i>
-                                        Zone
-                                    </a>
-
-                                    <b class="arrow"></b>
-                                </li>
-
-                                <li class="{{ strpos(Route::currentRouteName(), 'woreda.index') === 0 ? 'active' : '' }}">
-                                    <a href="{{ route('woreda.index', []) }}">
-                                        <i class="menu-icon fa fa-caret-right"></i>
-                                        Woreda
-                                    </a>
-
-                                    <b class="arrow"></b>
-                                </li>
-                            </ul>
-                        </li>
-
-            </ul><!-- /.nav-list -->
-
-            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-                <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state"
-                    data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
-=======
                 <!--end::Content-->
                 <!--begin::Footer-->
                 <div class="py-4 bg-white footer d-flex flex-lg-column" id="kt_footer">
@@ -421,7 +319,6 @@
                     <!--end::Container-->
                 </div>
                 <!--end::Footer-->
->>>>>>> 41cda8e0b26f6c08ef8d9f61d65206ff8c7f83b4
             </div>
         </div>
         <!--end::Aside-->
