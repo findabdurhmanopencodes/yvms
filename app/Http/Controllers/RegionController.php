@@ -64,9 +64,10 @@ class RegionController extends Controller
      * @param  \App\Models\Region  $region
      * @return \Illuminate\Http\Response
      */
-    public function edit(Region $region)
+    public function edit($id)
     {
-        //
+        $regions = Region::find($id);
+        return view('region.edit', compact('regions'));
     }
 
     /**
@@ -76,9 +77,13 @@ class RegionController extends Controller
      * @param  \App\Models\Region  $region
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRegionRequest $request, Region $region)
+    public function update(UpdateRegionRequest $request, $id)
     {
-        //
+        $region = Region::find($id);
+        $region->name = $request->get('name');
+        $region->code = $request->get('code');
+        $region->save();
+        return redirect()->route('region.index')->with('message', 'Region edited successfully');
     }
 
     /**

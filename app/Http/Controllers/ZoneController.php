@@ -6,7 +6,7 @@ use App\Models\Zone;
 use App\Http\Requests\StoreZoneRequest;
 use App\Http\Requests\UpdateZoneRequest;
 use App\Models\Region;
-use GuzzleHttp\Psr7\Request;
+use Illuminate\Http\Request;
 
 class ZoneController extends Controller
 {
@@ -15,10 +15,17 @@ class ZoneController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Region $region)
+    public function index(Region $region, Request $request)
     {
+        if ($request->ajax()) {
+            return datatables()->of(Zone::select())->make(true);
+        }
+        // $user = Auth::user();
+        // if(!$user->hasRole('super-admin') && !$user->hasPermissionTo('role.viewAll')){
+        //     abort(403);
+        // }
         $zones = Zone::all();
-        $regions = $region::all();
+        $regions = Region::all();
         return view('zone.index', compact(['zones', 'regions']));
     }
 
@@ -68,9 +75,12 @@ class ZoneController extends Controller
      * @param  \App\Models\Zone  $zone
      * @return \Illuminate\Http\Response
      */
-    public function edit(Zone $zone)
+    public function edit($id, Request $request)
     {
-        //
+        $zone = Zone::find($id);
+        // dd($zone->region->name);
+        $regions = Region::where('id', '!=', $zone->region->id)->get();
+        return view('zone.edit', compact(['zone', 'regions']));
     }
 
     /**
@@ -80,9 +90,14 @@ class ZoneController extends Controller
      * @param  \App\Models\Zone  $zone
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateZoneRequest $request, Zone $zone)
+    public function update(UpdateZoneRequest $request, $id)
     {
-        //
+        $zone = Zone::find($id);
+        $zone->name = $request->get('name');
+        $zone->code = $request->get('code');
+        $zone->region_id = $request->get('region');
+        $zone->save();
+        return redirect()->route('zone.index')->with('message', 'Zone edited successfully');
     }
 
     /**

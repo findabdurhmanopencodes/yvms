@@ -18,7 +18,6 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        dd(new Datatables());
         if ($request->ajax()) {
             return datatables()->of(Role::select())->make(true);
         }

@@ -1,20 +1,20 @@
 @extends('layouts.app')
-@section('title', 'All Regions')
+@section('title', 'All Woredas')
 @section('breadcrumb-list')
-    <li class="active">Regions</li>
+    <li class="active">Woredas</li>
 @endsection
-@section('breadcrumbTitle', 'Regions')
+@section('breadcrumbTitle', 'Woredas')
 @section('breadcrumbList')
     <li class="breadcrumb-item">
-        <a href="" class="text-muted">Regions</a>
+        <a href="" class="text-muted">Woredas</a>
     </li>
 @endsection
 
 @push('js')
     <script>
-        var HOST_URL = "{{ route('region.index') }}";
+        var HOST_URL = "{{ route('woreda.index') }}";
 
-        function deleteRegion(regionId, parent) {
+        function deleteZone(woredaId, parent) {
             event.preventDefault();
             Swal.fire({
                 title: "Are you sure?",
@@ -26,9 +26,9 @@
                 if (result.value) {
                     $.ajax({
                         type: "POST",
-                        url: '/region/' + regionId,
+                        url: '/woreda/' + woredaId,
                         data: {
-                            "id": regionId,
+                            "id": woredaId,
                             "_method": 'DELETE',
                             "_token": $('meta[name="csrf-token"]').attr('content'),
                         },
@@ -78,6 +78,11 @@
                 sortable: 'asc',
             },
             {
+                field: 'zone_id',
+                title: 'Zone',
+                sortable: 'asc',
+            },
+            {
                 field: 'Actions',
                 title: 'Actions',
                 sortable: false,
@@ -85,14 +90,14 @@
                 overflow: 'visible',
                 autoHide: false,
                 template: function(row) {
-                    var regionId = row.id;
+                    var woredaId = row.id;
                     return '\
                                     <div class="d-flex">\
-                                                <a href="javascript:;" onclick="deleteRegion(' + regionId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
+                                                <a href="javascript:;" onclick="deleteZone(' + woredaId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-trash"></i>\
                                                 </a>\
                                                 \
-                                                <a href="/region/' + regionId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                                                <a href="/woreda/' + woredaId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-pen"></i>\
                                                 </a>\
                                                 \
@@ -103,14 +108,15 @@
         ]
     </script>
     <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/crud/forms/widgets/select2.js') }}"></script>
 @endpush
 @section('content')
     <!--begin::Card-->
     <div class="card card-custom">
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label">List of regions
-                    <span class="text-muted pt-2 font-size-sm d-block">Regions</span>
+                <h3 class="card-label">List of woredas
+                    <span class="text-muted pt-2 font-size-sm d-block">Woredas</span>
                 </h3>
             </div>
             <div class="card-toolbar">
@@ -121,15 +127,15 @@
                         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                         <i class="fal fa-plus"></i>
                         <!--end::Svg Icon-->
-                    </span>Add New Region</a>
+                    </span>Add New Woreda</a>
 
-                    <form method="POST" action="{{ route('region.store', []) }}">
+                    <form method="POST" action="{{ route('woreda.store', []) }}">
                         @csrf
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg"  role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Add new Region</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Add new Woreda</h5>
                                         <button type="button" class="close" data-dismiss="modal" -label="Close">
                                             <i aria-hidden="true" class="ki ki-close"></i>
                                         </button>
@@ -139,12 +145,25 @@
                                             <div class="card-body">
                                                 <div class="form-group row">
                                                     <div class="col-lg-6">
-                                                        <label>Region Name:</label>
-                                                        <input type="text" class="form-control" placeholder="region name" name="name"/>
+                                                        <label>Woreda Name:</label>
+                                                        <input type="text" class="form-control" placeholder="woreda name" name="name" required/>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <label>Region Code:</label>
-                                                        <input type="text" class="form-control" placeholder="region code" name="code"/>
+                                                        <label>Woreda Code:</label>
+                                                        <input type="text" class="form-control" placeholder="woreda code" name="code" required/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <div class="col-lg-6">
+                                                        <label>Woreda:</label>
+                                                        <br>
+                                                        <select class="form-control select2" id="kt_select2_1" name="woreda" required>
+                                                            <option value=""></option>
+                                                            @foreach ($zones as $zone)
+                                                                <option value="{{ $zone->id }}">{{ $zone->code }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
