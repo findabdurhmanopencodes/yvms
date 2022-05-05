@@ -1,7 +1,13 @@
 @extends('layouts.app')
-@section('title', 'Roles')
+@section('title', 'All Roles')
 @section('breadcrumb-list')
     <li class="active">Roles</li>
+@endsection
+@section('breadcrumbTitle', 'Roles')
+@section('breadcrumbList')
+    <li class="breadcrumb-item">
+        <a href="" class="text-muted">Roles</a>
+    </li>
 @endsection
 @push('js')
     <script>
@@ -44,12 +50,15 @@
     </script>
 @endpush
 @section('content')
-    <div class="py-2 pr-4">
+    <div class="">
+        <a href="{{ route('role.create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add Role</a>
+    </div>
+    {{-- <div class="py-2 pr-4">
         <a href="{{ route('role.create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add Role</a>
     </div>
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Roles</h3>
+            <h3 class="card-title"></h3>
         </div>
         <div class="p-0 card-body">
             <table class="table table-striped table-bordered table-hover dataTable no-footer table-striped projects">
@@ -104,5 +113,5 @@
             </table>
         </div>
         <!-- /.card-body -->
-    </div>
+    </div> --}}
 @endsection
