@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\TraininingCenter;
 use App\Http\Requests\StoreTraininingCenterRequest;
 use App\Http\Requests\UpdateTraininingCenterRequest;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class TraininingCenterController extends Controller
 {
@@ -13,9 +15,17 @@ class TraininingCenterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            return datatables()->of(TraininingCenter::select())->make(true);
+        }
+        // $user = Auth::user();
+        // if(!$user->hasRole('super-admin') && !$user->hasPermissionTo('role.viewAll')){
+        //     abort(403);
+        // }
+        $roles = TraininingCenter::all();
+        return view('training_center.index', compact('roles'));
     }
 
     /**
@@ -25,7 +35,7 @@ class TraininingCenterController extends Controller
      */
     public function create()
     {
-        //
+        return view("training_center.create");
     }
 
     /**
@@ -36,7 +46,15 @@ class TraininingCenterController extends Controller
      */
     public function store(StoreTraininingCenterRequest $request)
     {
-        //
+
+        $request->validate([
+            'logo' => 'image|mimes:jpg,png,jpeg,svg|max:2048|',
+            'name' => 'min:2|required|string|unique:trainining_centers,name',
+            'code' => 'required|string|unique:trainining_centers,code',
+        ]);
+        $path = $request->file('logo')->store('public/Training Centers');
+        TraininingCenter::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'logo' => $path]);
+        return redirect()->route('TrainingCenter.index')->with('message', 'Training Center created successfully');
     }
 
     /**
@@ -56,9 +74,11 @@ class TraininingCenterController extends Controller
      * @param  \App\Models\TraininingCenter  $traininingCenter
      * @return \Illuminate\Http\Response
      */
-    public function edit(TraininingCenter $traininingCenter)
+    public function edit($TrainingCenter)
+
     {
-        //
+
+        return view('training_center.create', ['trainingCenter' => TraininingCenter::findOrFail($TrainingCenter)]);
     }
 
     /**
@@ -68,9 +88,16 @@ class TraininingCenterController extends Controller
      * @param  \App\Models\TraininingCenter  $traininingCenter
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTraininingCenterRequest $request, TraininingCenter $traininingCenter)
+    public function update(UpdateTraininingCenterRequest $request,  $traininingCenter)
     {
-        //
+        $TrainingCenter=TraininingCenter::findOrFail($traininingCenter);
+
+        $data = $request->validate([
+        'logo' => 'image|mimes:jpg,png,jpeg,svg|max:2048|',
+        'name' => 'min:2|required|string|unique:trainining_centers,name,'.$traininingCenter,
+        'code' => 'required|string|unique:trainining_centers,code,'.$traininingCenter]);
+        $TrainingCenter->update($data);
+        return redirect()->route('TrainingCenter.index')->with('message', 'Training Center updated successfully');
     }
 
     /**

@@ -170,7 +170,7 @@
                                 aria-haspopup="true" data-menu-toggle="hover">
 
                                 <a href="javascript:;" class="menu-link menu-toggle">
-                                    <i class="menu-icon flaticon-lock"></i>
+                                    <i class="menu-icon flaticon-settings"></i>
                                     <span class="menu-text">Setting</span>
                                     <i class="menu-arrow"></i>
                                 </a>
@@ -182,6 +182,8 @@
                                                 <span class="menu-text">Settings</span>
                                             </span>
                                         </li>
+                                        @include('aside.aj')
+
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'region.index') === 0 ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
                                             <a href="{{ route('region.index', []) }}" class="menu-link">
@@ -213,7 +215,7 @@
                                 </div>
                             </li>
                             @include('aside.ms')
-                            @include('aside.aj')
+                            {{-- @include('aside.aj') --}}
                             @include('aside.seya')
                         </ul>
                     </div>
