@@ -163,7 +163,8 @@
                                 </div>
                             </li>
 
-                            <li class="menu-item menu-item-submenu {{ (strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0) || strpos(Route::currentRouteName(), 'zone') === 0) ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+                            {{-- || strpos(Route::currentRouteName(), 'woreda') === 0) || strpos(Route::currentRouteName(), 'zone') === 0 --}}
+                            <li class="menu-item menu-item-submenu {{ (strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ) ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <i class="menu-icon flaticon-lock"></i>
