@@ -35,6 +35,7 @@ class User extends Authenticatable
         'password',
     ];
 
+
     public function name()
     {
         return $this->first_name.' '.$this->father_name.' '.$this->grand_father_name;
