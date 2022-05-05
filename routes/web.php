@@ -23,7 +23,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/profile/{user?}',[UserController::class,'profile'])->name('profile.show');
 
 Route::get('/', function () {
     return view('welcome'); // make this login
@@ -48,5 +47,21 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('educational_level',EducationalLevelController::class);
     Route::resource('feild_of_study', FeildOfStudyController::class);
     Route::resource('disablity', DisablityController::class);
+    Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
+    Route::resource('training_session', TrainingSessionController::class);
+    Route::resource('user', UserController::class);
+    Route::resource('region', RegionController::class);
+    Route::resource('zone', ZoneController::class);
+    Route::resource('woreda', WoredaController::class);
+    Route::resource('role', RoleController::class);
+    Route::resource('permission', PermissionController::class);
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::get('role/{role}/permission', [RoleController::class, 'permissions'])->name('role.permission.index');
+    Route::post('role/{role}/permission', [RoleController::class, 'givePermission'])->name('role.permission.give');
+    Route::delete('role/{role}/permission/{permission}', [RoleController::class, 'revokePermission'])->name('role.permission.revoke');
+    Route::post('role/{role}/giveAllPermission', [RoleController::class, 'giveAllPermission'])->name('role.giveAllPermission');
+    Route::post('role/{role}/removeAllPermission', [RoleController::class, 'removeAllPermission'])->name('role.removeAllPermission');
+    Route::post('users/{user}/role', [UserController::class, 'assignRole'])->name('users.assignRole');
+    Route::post('users/{user}/role/remove', [UserController::class, 'removeRole'])->name('users.removeRole');
 });
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

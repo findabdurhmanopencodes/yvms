@@ -1,39 +1,41 @@
 @extends('layouts.app')
 
 @section('title', 'Add Role')
-@section('breadcrumb-list')
-    <li class="active"><a href="{{ route('role.index', []) }}">Roles</a></li>
-    <li class="active">Add role</li>
+@section('breadcrumbTitle', 'Add New Role')
+
+@section('breadcrumbList')
+    <li class="breadcrumb-item"><a href="{{ route('role.index', []) }}">Roles</a></li>
+    <li class="breadcrumb-item active">Add role</li>
 @endsection
 @section('content')
-    <div class="page-header">
-        <h1>
-            Add Role
-            <i class="ace-icon fa fa-angle-double-right"></i>
-            <small>
-                register new roles
-            </small>
-        </h1>
-    </div>
-    <div class="row">
-        <div class="col-8 mx-auto">
-            <form method="POST" action="{{ isset($role)? route('role.update',['role'=> $role->id]) : route('role.store', []) }}">
+    <div class="card card-custom gutter-b example example-compact">
+        <div class="card-header">
+            <h3 class="card-title">Add Role Form</h3>
+        </div>
+        <div class="card-body">
+            <form class="form" method="POST"
+                action="{{ isset($role) ? route('role.update', ['role' => $role->id]) : route('role.store', []) }}">
                 @csrf
                 @isset($role)
                     @method('PATCH')
                 @endisset
-                <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right" for="name"> Role Name </label>
-                    <div class="col-sm-9">
-                        <input type="text" value="{{old('name')?? (isset($role)?$role->name:'')}}" id="name" placeholder="Role Name" name="name" class="col-xs-10 col-sm-5">
+                <div class="card-body row">
+                    <div class="form-group col-md-12">
+                        <label>Name</label>
+                        <input type="text" name="name"
+                            class="form-control form-control-solid" value="{{ old('name') ?? (isset($role) ? $role->name : '') }}"
+                            placeholder="Enter role name" />
+                        <span class="form-text text-muted">Please enter role name</span>
                         @error('name')
                             <small class="text-danger"><b>{{ $message }}</b></small>
                         @enderror
                     </div>
                 </div>
-                <button class="btn-sm btn btn-primary btn-rounded btn-floating">
-                    <i class="fa fa-plus"></i> {{isset($role)?'Update Role':'Add Role'}}
-                </button>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary mr-2"><i class="fa fa-plus"></i>
+                        {{ isset($role) ? 'Update Role' : 'Add Role' }}</button>
+                    <button type="reset" class="btn btn-secondary">Cancel</button>
+                </div>
             </form>
         </div>
     </div>

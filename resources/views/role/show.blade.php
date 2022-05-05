@@ -1,99 +1,202 @@
 @extends('layouts.app')
 @section('title', 'Role detail')
-@section('breadcrumb-list')
-    <li class=""><a href="{{ route('role.index', []) }}">Roles</a></li>
-    <li class="active">{{ $role->name }}</li>
+@section('breadcrumbList')
+    <li class="breadcrumb-item"><a href="{{ route('role.index', []) }}">Roles</a></li>
+    <li class="breadcrumb-item active">{{ $role->name }}</li>
 @endsection
-@push('css')
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-duallistbox.min.css') }}" />
-    <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-multiselect.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/select2.min.css') }}" />
-@endpush
 @push('js')
-    <script src="{{ asset('assets/js/jquery.bootstrap-duallistbox.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.raty.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap-multiselect.min.js') }}"></script>
-    <script src="{{ asset('assets/js/select2.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery-typeahead.js') }}"></script>
+    <script>
+        var HOST_URL = "{{ route('role.permission.index', ['role' => $role->id]) }}";
+    </script>
     <script>
         $(function() {
-            var demo1 = $('select[name="permission_list[]"]').bootstrapDualListbox({
-                infoTextFiltered: '<span class="label label-purple label-lg">Filtered</span>',
+            $('#select_permission').select2({
+                placeholder: "Select a permission"
             });
+        });
 
-        })
+        function revokeAllPermission() {
+            swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, revoke all permission!"
+            }).then(function(result) {
+                if (result.value) {
+                    $('#formRevokeAllPermission').submit();
+                }
+            });
+        }
+
+        function giveAllPermission() {
+            swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, give all permission!"
+            }).then(function(result) {
+                if (result.value) {
+                    $('#formGiveAllPermission').submit();
+                }
+            });
+        }
+
+        function deleteRole(permissionId, parent) {
+            event.preventDefault();
+            swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/role/' + {{ $role->id }} + '/permission/' + permissionId,
+                        data: {
+                            "id": permissionId,
+                            "_method": 'DELETE',
+                            "_token": $('meta[name="csrf-token"]').attr('content'),
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            $(parent).closest('tr')[0].remove();
+                            swal.fire(
+                                "Deleted!",
+                                "Role has been deleted.",
+                                "success"
+                            )
+                        },
+                        error: function(data) {
+                            if (data.status) {
+                                swal.fire("Forbidden!", "You can't delete this role!", "error");
+                            }
+                        }
+                    });
+                }
+            });
+        }
+        var COLUMNS = [{
+                field: 'id',
+                title: '#',
+                sortable: 'asc',
+                width: 30,
+                type: 'number',
+                selector: false,
+                textAlign: 'center',
+                template: function(row, index) {
+                    return index + 1;
+                }
+            },
+            {
+                field: 'name',
+                title: 'Name',
+                sortable: 'asc',
+            },
+            {
+                field: 'Actions',
+                title: 'Actions',
+                sortable: false,
+                width: 100,
+                overflow: 'visible',
+                autoHide: false,
+                template: function(row) {
+                    var permissionId = row.id;
+                    return '\
+                        <div class="d-flex">\
+                        <a href="javascript:;" onclick="deleteRole(' +
+                        permissionId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
+                        <i class="far fa-trash"></i>\
+                        </a>\
+                        \
+                        </div>\
+                        ';
+                },
+            }
+        ];
     </script>
+    <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
 @endpush
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Permissions List</h3>
-        </div>
-        <div class="p-0 card-body">
-            <div class="px-2 m-1">
-                <form action="{{ route('roles.permissions.give', ['role' => $role->id]) }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        {{-- <label class="col-sm-2 control-label no-padding-top" for="duallist"> Select Permission </label> --}}
 
-                        <div class="col-sm-12">
-                            <select multiple="multiple" size="10" name="permission_list[]" id="duallist">
-                                @foreach ($permissions as $key => $permission)
-                                    <option value="{{ $permission->id }}" selected>{{ $permission->name }}</option>
-                                @endforeach
-                                @foreach ($freePermissions as $permission)
-                                    <option value="{{ $permission->id }}">{{ $permission->name }}</option>
-                                @endforeach
-                            </select>
-                            <div class="hr hr-16 hr-dotted"></div>
-                            <button class="btn btn-primary">
-                                <i class="fal fa-plus"></i>
-                                Update Permission List
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-        </div>
-        <!-- /.card-body -->
-    </div>
-
-    <form method="POST" id="deleteForm">
+    <form action="{{ route('role.giveAllPermission', ['role' => $role->id]) }}" id="formGiveAllPermission" method="post">
         @csrf
     </form>
-    @push('scripts')
-        <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
-        <script src="{{ asset('sweetalert/sweetalert.min.js') }}"></script>
-        <script>
-            $(function() {
-                $('.select2').select2();
-                $('#date').datetimepicker({
-                    format: 'L'
-                });
-            });
+    <form action="{{ route('role.removeAllPermission', ['role' => $role->id]) }}" id="formRevokeAllPermission"
+        method="post">
+        @csrf
+    </form>
+    <div class="card card-custom">
+        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+            <div class="card-title">
+                <h3 class="card-label">All roles
+                    <span class="d-block text-muted pt-2 font-size-sm"></span>
+                </h3>
+            </div>
+            <div class="card-toolbar">
+            </div>
+        </div>
+        <div class="card-body">
+            <!--begin: Search Form-->
+            <!--begin::Search Form-->
+            <div class="mb-7">
+                <div class="row align-items-center">
+                    <div class="col-lg-12">
+                        <div class="row align-items-center">
+                            <form action="{{ route('role.permission.give', ['role' => $role->id]) }}"
+                                class="col-12 row" method="POST">
+                                <div class="col-md-10">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-12 my-2 my-md-0">
+                                            <div class="form-group row">
+                                                <div class="col-sm-12">
+                                                    <select
+                                                        class="form-control select2 @error('permission') is-invalid @enderror"
+                                                        id="select_permission" multiple name="permissions[]">
+                                                        <option value=""></option>
+                                                        @foreach ($freePermissions as $permission)
+                                                            <option value="{{ $permission->id }}">
+                                                                {{ $permission->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('permission')
+                                                        <div class="fv-plugins-message-container">
+                                                            <div data-field="permission" data-validator="stringLength"
+                                                                class="fv-help-block">{{ $message }}</div>
+                                                        </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @csrf
+                                <div class="col-md-2 mt-5 mt-lg-0">
+                                    <input type="submit" class="btn btn-light-primary px-6 font-weight-bold"
+                                        value="Assign Permission">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-primary px-6 font-weight-bold" onclick="giveAllPermission();">Give All
+                                Permission</button>
+                            <button class="btn btn-danger px-6 font-weight-bold" onclick="revokeAllPermission();">Remove All
+                                Permission</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end::Search Form-->
+            <!--end: Search Form-->
+            <!--begin: Datatable-->
+            <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+            <!--end: Datatable-->
+        </div>
+    </div>
+    <!--end::Card-->
 
-            function revokePermissionOf(permissionId) {
-                var url = '/role/{{ $role->id }}/revoke/' + permissionId;
-                $('#deleteForm').attr('action', url);
-                swal({
-                    title: "Are you sure?",
-                    text: "You will not be able to recover this imaginary file!",
-                    icon: 'warning',
-                    buttons: {
-                        cancel: true,
-                        delete: 'Yes, Delete It'
-                    },
-                }).then(
-                    function(isConfirm) {
-                        if (isConfirm) {
-                            $('#deleteForm').submit()
-                        }
-                        return false;
-                    }
-                )
-            }
-        </script>
-    @endpush
 @endsection
