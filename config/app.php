@@ -183,6 +183,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         RichanFongdasen\EloquentBlameable\ServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        
 
         /*
          * Package Service Providers...
