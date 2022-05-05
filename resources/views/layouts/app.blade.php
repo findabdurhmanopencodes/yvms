@@ -302,7 +302,9 @@
                 <div class=" flex-column-fluid">
                     <!--begin::Container-->
                     <div class="container mt-6">
+
                         @yield('content')
+
                     </div>
                     <!--end::Container-->
                 </div>
