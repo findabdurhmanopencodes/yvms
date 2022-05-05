@@ -9,8 +9,11 @@
         <a href="" class="text-muted">Roles</a>
     </li>
 @endsection
+
 @push('js')
     <script>
+        var HOST_URL = "{{ route('role.index') }}";
+
         function deleteRole(roleId, parent) {
             event.preventDefault();
             Swal.fire({
@@ -48,11 +51,82 @@
             });
         }
     </script>
+    <script>
+        var COLUMNS = [{
+                field: 'id',
+                title: '#',
+                sortable: 'asc',
+                width: 30,
+                type: 'number',
+                selector: false,
+                textAlign: 'center',
+                template: function(row, index) {
+                    return index + 1;
+                }
+            },
+            {
+                field: 'name',
+                title: 'Name',
+                sortable: 'asc',
+            },
+            {
+                field: 'Actions',
+                title: 'Actions',
+                sortable: false,
+                width: 100,
+                overflow: 'visible',
+                autoHide: false,
+                template: function(row) {
+                    var roleId = row.id;
+                    return '\
+                                    <div class="d-flex">\
+                                                <a href="javascript:;" onclick="deleteRole(' + roleId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
+                                                    <i class="far fa-trash"></i>\
+                                                </a>\
+                                                \
+                                                <a href="/role/' + roleId + '" class="btn btn-sm btn-clean btn-icon" >\
+                                                    <i class="far fa-eye"></i>\
+                                                </a>\
+                                                <a href="/role/' + roleId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                                                    <i class="far fa-pen"></i>\
+                                                </a>\
+                                                \
+                                            </div>\
+                                            ';
+                },
+            }
+        ]
+    </script>
+    <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
 @endpush
 @section('content')
-    <div class="">
-        <a href="{{ route('role.create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add Role</a>
+    <!--begin::Card-->
+    <div class="card card-custom">
+        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+            <div class="card-title">
+                <h3 class="card-label">List of roles
+                    <span class="text-muted pt-2 font-size-sm d-block">Roles</span>
+                </h3>
+            </div>
+            <div class="card-toolbar">
+
+                <!--begin::Button-->
+                <a href="{{ route('role.create', []) }}" class="btn btn-primary font-weight-bolder">
+                    <span class="svg-icon svg-icon-md">
+                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                        <i class="fal fa-plus"></i>
+                        <!--end::Svg Icon-->
+                    </span>Add New Role</a>
+                <!--end::Button-->
+            </div>
+        </div>
+        <div class="card-body">
+            <!--begin: Datatable-->
+            <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+            <!--end: Datatable-->
+        </div>
     </div>
+    <!--end::Card-->
     {{-- <div class="py-2 pr-4">
         <a href="{{ route('role.create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add Role</a>
     </div>
