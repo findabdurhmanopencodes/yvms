@@ -62,7 +62,7 @@
             </button>
 
             <div class="navbar-header pull-left">
-                <a href="index.html" class="navbar-brand">
+                <a href="#" class="navbar-brand">
                     <small>
                         <i class="fa fa-leaf"></i>
                         Ministry Of Peace
@@ -389,37 +389,19 @@
                 } catch (e) {}
             </script>
 
-            <div class="sidebar-shortcuts" id="sidebar-shortcuts">
-                <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-                    <button class="btn btn-success">
-                        <i class="ace-icon fa fa-signal"></i>
-                    </button>
 
-                    <button class="btn btn-info">
-                        <i class="ace-icon fa fa-pencil"></i>
-                    </button>
-
-                    <button class="btn btn-warning">
-                        <i class="ace-icon fa fa-users"></i>
-                    </button>
-
-                    <button class="btn btn-danger">
-                        <i class="ace-icon fa fa-cogs"></i>
-                    </button>
-                </div>
-
-                <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
-                    <span class="btn btn-success"></span>
-
-                    <span class="btn btn-info"></span>
-
-                    <span class="btn btn-warning"></span>
-
-                    <span class="btn btn-danger"></span>
-                </div>
-            </div><!-- /.sidebar-shortcuts -->
 
             <ul class="nav nav-list">
+
+                <li class="{{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'active' : '' }}">
+                    <a href="{{ route('dashboard', []) }}">
+                        <i class="menu-icon fa fa-home"></i>
+                        <span class="menu-text"> Home </span>
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
+
                 <li class="{{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'active' : '' }}">
                     <a href="{{ route('dashboard', []) }}">
                         <i class="menu-icon fa fa-tachometer"></i>
@@ -429,8 +411,105 @@
                     <b class="arrow"></b>
                 </li>
 
-                <li
-                    class="{{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0? 'active open': '' }}">
+             <!-------------------------------------------- -->   
+                <li class="">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-wrench"></i>
+                        <span class="menu-text">
+								Setting
+							</span>
+
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+
+                    <b class="arrow"></b>
+
+                    <ul class="submenu">
+                        <li class="">
+
+                            <a href="#" class="dropdown-toggle">
+                                <i class="menu-icon fa fa-caret-right"></i> Application Setting
+                                <b class="arrow fa fa-angle-down"></b>
+                            </a>
+
+                            <b class="arrow"></b>
+
+                            <ul class="submenu">
+                                <li class="{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'active' : '' }}">
+                                    <a href="top-menu.html">
+                                        <i class="menu-icon fa fa-caret-right"></i> Educational Level
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+
+                                <li class="{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'active' : '' }}">
+                                    <a href="two-menu-1.html">
+                                        <i class="menu-icon fa fa-caret-right"></i> Fields of study
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+
+                                <li class="{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'active' : '' }}">
+                                    <a href="two-menu-2.html">
+                                        <i class="menu-icon fa fa-caret-right"></i> Disablity type
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+
+                             
+
+                           
+
+                              
+                            </ul>
+                        </li>
+
+            
+                        <li class="">
+                            <a href="#" class="dropdown-toggle">
+                                <i class="menu-icon fa fa-caret-right"></i> Location Setting
+                                <b class="arrow fa fa-angle-down"></b>
+                            </a>
+
+                            <b class="arrow"></b>
+
+                            <ul class="submenu">
+                                <li class="{ strpos(Route::currentRouteName(), 'region') === 0 ? 'active' : '' }}">
+                                    <a href="#">
+                                        <i class="menu-icon fa fa-caret-right"></i> Region
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+
+                                <li class="{ strpos(Route::currentRouteName(), 'zone') === 0 ? 'active' : '' }}">
+                                    <a href="#">
+                                        <i class="menu-icon fa fa-caret-right"></i> Zone
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+
+                                <li class="{ strpos(Route::currentRouteName(), 'woreda') === 0 ? 'active' : '' }}">
+                                    <a href="#">
+                                        <i class="menu-icon fa fa-caret-right"></i> Woreda
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <!-------------------------------------------- -->
+
+
+
+                <li class="{{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0? 'active open': '' }}">
                     <a href="#" class="dropdown-toggle">
                         <i class="menu-icon ace-icon fa fa-lock"></i>
                         <span class="menu-text">

@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/profile/{user?}',[UserController::class,'profile'])->name('profile.show');
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome'); // make this login
 });
 
 //Role & Permission
