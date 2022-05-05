@@ -461,6 +461,38 @@
                     </ul>
                 </li>
 
+                <li
+                    class="{{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0? 'active open': '' }}">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon ace-icon fa fa-lock"></i>
+                        <span class="menu-text">
+                            Volenteers
+                        </span>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                    <ul class="submenu">
+                        <li class="{{ strpos(Route::currentRouteName(), 'role.index') === 0 ? 'active' : '' }}">
+                            <a href="{{ route('role.index', []) }}">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Roles
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li
+                            class="{{ strpos(Route::currentRouteName(), 'permission.index') === 0 ? 'active' : '' }}">
+                            <a href="{{ route('permission.index', []) }}">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Permissions
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+                    </ul>
+                </li>
+
             </ul><!-- /.nav-list -->
 
             <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
