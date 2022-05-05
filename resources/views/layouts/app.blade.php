@@ -174,9 +174,20 @@
                                     <span class="menu-text">Setting</span>
                                     <i class="menu-arrow"></i>
                                 </a>
-                                @include('aside.ms')
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                            <span class="menu-link">
+                                                <span class="menu-text">Settings</span>
+                                            </span>
+                                        </li>
+                                        @include('aside.ms')
+                                    </ul>
+                                </div>
+                                
                             </li>
-                            @include('aside.ms')
+                            {{-- @include('aside.ms') --}}
                             @include('aside.aj')
                             @include('aside.seya')
                         </ul>
