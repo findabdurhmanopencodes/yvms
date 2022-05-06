@@ -78,14 +78,14 @@
                                 <ul class="menu-nav">
                                     <li
                                         class="menu-item {{ strpos(Route::currentRouteName(), 'home') === 0 ? 'menu-item-active' : '' }}">
-                                        <a href="{{ route('home') }}" class="menu-link menu-toggle">
+                                        <a href="{{ route('home') }}" class="menu-link">
                                             <span class="menu-text">Home</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
                                     <li
                                         class="menu-item {{ strpos(Route::currentRouteName(), 'about_us') === 0 ? 'menu-item-active' : '' }}">
-                                        <a href="{{ route('home') }}" class="menu-link menu-toggle">
+                                        <a href="{{ route('home') }}" class="menu-link">
                                             <span class="menu-text">About Us</span>
                                             <i class="menu-arrow"></i>
                                         </a>

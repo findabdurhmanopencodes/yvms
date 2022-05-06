@@ -113,4 +113,8 @@ class ZoneController extends Controller
             return response()->json(array('msg' => 'deleted successfully'), 200);
         }
     }
+    public function fetch(Region $region)
+    {
+        return datatables()->of(Zone::select()->where('region_id','=',$region->id))->make(true);
+    }
 }

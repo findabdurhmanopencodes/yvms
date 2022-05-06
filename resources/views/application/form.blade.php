@@ -14,6 +14,7 @@
             $('#region').select2({
                 placeholder: "Select a region"
             });
+
             $('#gender').select2({
                 placeholder: "Select a gender"
             });
@@ -40,6 +41,58 @@
                 calendar: calendar
             });
         })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#region').on('change', function() {
+                var itemId = this.value;
+                var regionName = $("#region option:selected").text();
+                regionName = regionName.trim();
+                // $('#payment_service_name').text(regionName);
+                $("#zone").html('');
+                $.ajax({
+                    url: "api/region/" + itemId + "/zone",
+                    type: "GET",
+                    data: {
+                        service_id: itemId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        $('#zone').html(
+                            '<option value="">Select Zone</option>');
+                        $.each(result.data, function(key, value) {
+                            $("#zone").append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+                        $('#woreda').html(
+                            '<option value="">Select Woreda</option>');
+                    }
+                });
+            });
+            $('#zone').on('change', function() {
+                var itemId = this.value;
+                var zoneName = $("#zone option:selected").text();
+                zoneName = zoneName.trim();
+                $("#woreda").html('');
+                $.ajax({
+                    url: "api/zone/" + itemId + "/woreda",
+                    type: "GET",
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        $('#woreda').html(
+                            '<option value="">Select Woreda</option>');
+                        $.each(result.data, function(key, value) {
+                            $("#woreda").append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            });
+        });
     </script>
 @endpush
 @section('content')
@@ -181,7 +234,8 @@
                                             <!--begin::Input-->
                                             <div class="form-group col-md-6">
                                                 <label>Father Name</label>
-                                                <input type="text" class="@error('father_name') is-invalid @enderror form-control form-control-solid form-control-lg"
+                                                <input type="text"
+                                                    class="@error('father_name') is-invalid @enderror form-control form-control-solid form-control-lg"
                                                     name="father_name" placeholder="Father Name"
                                                     value="{{ old('father_name') }}" />
                                                 @error('father_name')
@@ -193,7 +247,8 @@
                                             <!--begin::Input-->
                                             <div class="form-group col-md-6">
                                                 <label>Grand Father Name</label>
-                                                <input type="text" class="@error('grand_father_name') is-invalid @enderror form-control form-control-solid form-control-lg"
+                                                <input type="text"
+                                                    class="@error('grand_father_name') is-invalid @enderror form-control form-control-solid form-control-lg"
                                                     name="grand_father_name" placeholder="Grand Father Name"
                                                     value="{{ old('grand_father_name') }}" />
                                                 @error('grand_father_name')
@@ -230,8 +285,8 @@
                                                 <div class="form-group">
                                                     <label>Date Of Birth</label>
                                                     <input type="text" id="dob"
-                                                        class="@error('dob') is-invalid @enderror form-control form-control-solid form-control-lg" name="dob"
-                                                        placeholder="Date of Birth" autocomplete="off"
+                                                        class="@error('dob') is-invalid @enderror form-control form-control-solid form-control-lg"
+                                                        name="dob" placeholder="Date of Birth" autocomplete="off"
                                                         value="{{ old('dob') }}" />
                                                     @error('dob')
                                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -248,8 +303,12 @@
                                                     <select name="gender" id="gender"
                                                         class="@error('gender') is-invalid @enderror form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
-                                                        <option value="M" {{ old('gender') == 'M'?'selected':'' }}>Male</option>
-                                                        <option value="F" {{ old('gender') == 'F'?'selected':'' }}>Female</option>
+                                                        <option value="M" {{ old('gender') == 'M' ? 'selected' : '' }}>
+                                                            Male
+                                                        </option>
+                                                        <option value="F" {{ old('gender') == 'F' ? 'selected' : '' }}>
+                                                            Female
+                                                        </option>
                                                     </select>
                                                     @error('gender')
                                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -265,8 +324,8 @@
                                                 <div class="form-group">
                                                     <label>Phone</label>
                                                     <input type="tel"
-                                                        class="@error('phone') is-invalid @enderror form-control form-control-solid form-control-lg" name="phone"
-                                                        placeholder="Phone" value="{{ old('phone') }}" />
+                                                        class="@error('phone') is-invalid @enderror form-control form-control-solid form-control-lg"
+                                                        name="phone" placeholder="Phone" value="{{ old('phone') }}" />
                                                     @error('phone')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
@@ -280,8 +339,8 @@
                                                 <div class="form-group">
                                                     <label>Email</label>
                                                     <input type="email"
-                                                        class="@error('email') is-invalid @enderror form-control form-control-solid form-control-lg" name="email"
-                                                        placeholder="Email" value="{{ old('email') }}" />
+                                                        class="@error('email') is-invalid @enderror form-control form-control-solid form-control-lg"
+                                                        name="email" placeholder="Email" value="{{ old('email') }}" />
                                                     @error('email')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
@@ -301,12 +360,13 @@
                                             <div class="col-xl-4">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
-                                                    <label>Region</label>
+                                                    <label class="d-block">Region</label>
                                                     <select name="region" id='region'
-                                                        class="form-control form-control-solid form-control-md">
+                                                        class="form-control d-block form-control-solid">
                                                         <option value="">Select</option>
                                                         @foreach ($regions as $region)
-                                                        <option value="{{ $region->id}}">{{ $region->name }}</option>
+                                                            <option value="{{ $region->id }}">{{ $region->name }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -315,7 +375,7 @@
                                             <div class="col-xl-4">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
-                                                    <label>Zone&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                    <label class="d-block">Zone</label>
                                                     <select name="zone" id="zone"
                                                         class="form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
@@ -327,7 +387,7 @@
                                             <div class="col-xl-4">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
-                                                    <label>Woreda</label>
+                                                    <label class="d-block">Woreda</label>
                                                     <select name="woreda" id="woreda"
                                                         class="form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>

@@ -17,7 +17,5 @@ class TrainingSessionSeeder extends Seeder
     {
         //
         Permission::create(['name'=>'training_session.index']);
-
-        
     }
 }

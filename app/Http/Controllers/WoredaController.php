@@ -105,11 +105,15 @@ class WoredaController extends Controller
      * @param  \App\Models\Woreda  $woreda
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Woreda $woreda , Request $request)
+    public function destroy(Woreda $woreda, Request $request)
     {
         $woreda->delete();
         if ($request->ajax()) {
             return response()->json(array('msg' => 'deleted successfully'), 200);
         }
+    }
+    public function fetch(Zone $zone)
+    {
+        return datatables()->of(Woreda::select()->where('zone_id', '=', $zone->id))->make(true);
     }
 }

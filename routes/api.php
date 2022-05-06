@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\WoredaController;
+use App\Http\Controllers\ZoneController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::get('region/{region}/zone',[ZoneController::class,'fetch'])->name('api.zone.fetch');
+Route::get('zone/{zone}/woreda',[WoredaController::class,'fetch'])->name('api.woreda.fetch');
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

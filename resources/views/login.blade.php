@@ -1,4 +1,3 @@
-
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -9,7 +8,7 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 		<link href="{{ asset('assets/css/pages/users/login-1.css') }} ">
-	
+
 		<link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}">
 		<link href="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.css') }}">
 		<link href="{{ asset('assets/css/style.bundle.css') }}">
@@ -20,7 +19,7 @@
 		<link href="{{ asset('assets/css/themes/layout/brand/dark.css') }}">
 		<link href="{{ asset('assets/css/themes/layout/aside/dark.css') }}">
 		<!--end::Layout Themes-->
-		<link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}">    
+		<link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}">
         <style>
 
 
