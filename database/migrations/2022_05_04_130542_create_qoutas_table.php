@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('qoutas', function (Blueprint $table) {
             $table->id();
+            $table->integer('quotable_id');
+            $table->string('quotable_type');
+            $table->integer('quantity');
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ use App\Http\Controllers\EducationalLevelController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TotalQuotaController;
 use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
@@ -33,7 +34,7 @@ Route::post('application/document/upload',[VolunteerController::class,'applicati
 //Role & Permission
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['guest'])->group(function () {
     Route::resource('training_session',TrainingSessionController::class);
     Route::resource('user',UserController::class);
     Route::resource('region',RegionController::class);

@@ -16,9 +16,11 @@ return new class extends Migration
         Schema::create('training_sessions', function (Blueprint $table) {
             $table->id();
             $table->date('start_date');
-            $table->date('moto')->nullable();
+            $table->date('end_date');
+            $table->string('moto')->nullable();
             $table->date('registration_start_date');
             $table->date('registration_dead_line');
+            $table->integer('quantity');
             $table->tinyInteger('status');
             $table->timestamps();
         });

@@ -204,6 +204,7 @@
                                     </ul>
                                 </div>
                             </li>
+                            @include('aside.ms_aside')
 
                             <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
                                 aria-haspopup="true" data-menu-toggle="hover">
@@ -273,11 +274,11 @@
                                     id="kt_quick_user_toggle">
                                     <span
                                         class="mr-1 text-muted font-weight-bold font-size-base d-none d-md-inline">Hi,</span>
-                                    <span
-                                        class="mr-3 text-dark-50 font-weight-bolder font-size-base d-none d-md-inline">{{ Auth::user()->first_name }}</span>
+                                    {{-- <span
+                                        class="mr-3 text-dark-50 font-weight-bolder font-size-base d-none d-md-inline">{{ Auth::user()->first_name }}</span> --}}
                                     <span class="symbol symbol-35 symbol-light-success">
-                                        <span
-                                            class="symbol-label font-size-h5 font-weight-bold">{{ Auth::user()->first_name[0] }}</span>
+                                        {{-- <span
+                                            class="symbol-label font-size-h5 font-weight-bold">{{ Auth::user()->first_name[0] }}</span> --}}
                                     </span>
                                 </div>
                             </div>
@@ -377,12 +378,12 @@
             <!--begin::Header-->
             <div class="mt-5 d-flex align-items-center">
                 <div class="mr-5 symbol symbol-100">
-                    <div class="symbol-label" style="background-image:url({{ Auth::user()->photo }})"></div>
+                    {{-- <div class="symbol-label" style="background-image:url({{ Auth::user()->photo }})"></div> --}}
                     <i class="symbol-badge bg-success"></i>
                 </div>
                 <div class="d-flex flex-column">
-                    <a href="#"
-                        class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">{{ Auth::user()->name() }}</a>
+                    {{-- <a href="#"
+                        class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">{{ Auth::user()->name() }}</a> --}}
                     <div class="mt-1 text-muted"></div>
                     <div class="mt-2 navi">
                         <a href="#" class="navi-item">
@@ -391,8 +392,8 @@
                                     <span class="svg-icon svg-icon-lg svg-icon-primary">
                                         <i class="fal fa-id-card-alt"></i>
                                     </span>
-                                </span>
-                                <span class="navi-text text-muted text-hover-primary">{{ Auth::user()->uid }}</span>
+                                {{-- </span>
+                                <span class="navi-text text-muted text-hover-primary">{{ Auth::user()->uid }}</span> --}}
                             </span>
                         </a>
                     </div>

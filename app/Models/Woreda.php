@@ -23,4 +23,8 @@ class Woreda extends Model
     public function zone(){
         return $this->belongsTo(Zone::class);
     }
+
+    public function quotas(){
+        return $this->morphMany(Qouta::class, 'quotable');
+    }
 }
