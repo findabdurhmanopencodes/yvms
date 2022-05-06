@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Andegna\DateTimeFactory;
 use App\Http\Requests\StoreTrainingSessionRequest;
 use App\Http\Requests\UpdateTrainingSessionRequest;
 use App\Models\TrainingSession;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,8 +47,10 @@ class TrainingSessionController extends Controller
      */
     public function store(StoreTrainingSessionRequest $request)
     {
+        $date_now = Carbon::now();
+        $date_now_et = DateTimeFactory::fromDateTime($date_now)->format('d/m/y');
         $request->validate([
-            'start_date' => ['required', 'date'],
+            'start_date' => ['required', 'date', 'after:'.$date_now_et],
             'end_date' => ['required', 'date', 'after:'.$request->get('start_date')],
             'registration_start_date' => ['required', 'date', 'after:'.$request->get('start_date'), 'before:'.$request->get('end_date')],
             'registration_dead_line' => ['required', 'date', 'after:'.$request->get('registration_start_date'), 'before:'.$request->get('end_date')],
