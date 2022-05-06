@@ -5,7 +5,7 @@ use App\Http\Controllers\EducationalLevelController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\TrainingSessionController;
+use App\Http\Controllers\TraininingCenterController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\WoredaController;
@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/profile/{user?}',[UserController::class,'profile'])->name('profile.show');
 
 Route::get('/', function () {
     return view('welcome');
@@ -67,5 +68,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('role/{role}/removeAllPermission', [RoleController::class, 'removeAllPermission'])->name('role.removeAllPermission');
     Route::post('users/{user}/role', [UserController::class, 'assignRole'])->name('users.assignRole');
     Route::post('users/{user}/role/remove', [UserController::class, 'removeRole'])->name('users.removeRole');
+    Route::resource('TrainingCenter',TraininingCenterController::class);
+    Route::view('/dashboard','dashboard')->name('dashboard');
+    Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
 });
 require __DIR__ . '/auth.php';

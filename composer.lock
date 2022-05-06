@@ -3258,15 +3258,23 @@
                 "symfony/console": "4.4.37 || 5.3.14 || 5.3.15 || 5.4.3 || 5.4.4 || 6.0.3 || 6.0.4"
             },
             "require-dev": {
+<<<<<<< HEAD
                 "bamarni/composer-bin-plugin": "^1.2",
                 "hoa/console": "3.17.05.02"
+=======
+                "bamarni/composer-bin-plugin": "^1.2"
+>>>>>>> 063f2f31038f83c4a5de1bd69959f21230ae59f6
             },
             "suggest": {
                 "ext-pcntl": "Enabling the PCNTL extension makes PsySH a lot happier :)",
                 "ext-pdo-sqlite": "The doc command requires SQLite to work.",
                 "ext-posix": "If you have PCNTL, you'll want the POSIX extension as well.",
+<<<<<<< HEAD
                 "ext-readline": "Enables support for arrow-key history navigation, and showing and manipulating command history.",
                 "hoa/console": "A pure PHP readline implementation. You'll want this if your PHP install doesn't already support readline or libedit."
+=======
+                "ext-readline": "Enables support for arrow-key history navigation, and showing and manipulating command history."
+>>>>>>> 063f2f31038f83c4a5de1bd69959f21230ae59f6
             },
             "bin": [
                 "bin/psysh"
