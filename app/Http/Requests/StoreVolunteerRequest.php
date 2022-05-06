@@ -17,6 +17,19 @@ class StoreVolunteerRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'msc_document.required_if'=>'The MSC document field is required when educational level is MSC.',
+            'phd_document.required_if'=>'The PHD document field is required when educational level is PHD.',
+        ];
+    }
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -40,13 +53,20 @@ class StoreVolunteerRequest extends FormRequest
             'zone' => ['required'],
             'woreda' => ['required'],
             //Eductional Documents
-            'educational_level' => ['required'],
+            'educational_level' => ['required','numeric','min:0','max:3'],
             'field_of_study' => ['required'],
             'gpa' => ['required','numeric','between:2.0,4.0'],
             'ministry_document' => ['required','file','max:4096','mimes:pdf,png,jpg,jpeg,bmp,tiff',],
             'bsc_document' => ['required','file','max:4096','mimes:pdf,png,jpg,jpeg,bmp,tiff','max:4096',],
-            'msc_document' => ['required_if:educational_level,==,1','file','max:4096','mimes:pdf,png,jpg,jpeg,bmp,tiff',],
+            'msc_document' => ['required_if:educational_level,==,1','required_if:educational_level,==,2','file','max:4096','mimes:pdf,png,jpg,jpeg,bmp,tiff',],
             'phd_document' => ['required_if:educational_level,==,2','file','max:4096','mimes:pdf,png,jpg,jpeg,bmp,tiff',],
+            //Other Mandatory Documents
+            'contact_name' => 'required',
+            'contact_phone' => 'required',
+            'kebele_id' => ['required','file','max:4096','mimes:pdf,png,jpg,jpeg,bmp,tiff',],
+            'ethical_license' => ['required','file','max:4096','mimes:pdf,png,jpg,jpeg,bmp,tiff',],
+            'non_pregnant_validation_document' => ['required_if:gender,==,F','file','max:4096','mimes:pdf,png,jpg,jpeg,bmp,tiff',],
+
         ];
     }
 }

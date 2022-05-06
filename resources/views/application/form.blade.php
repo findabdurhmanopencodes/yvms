@@ -2,6 +2,14 @@
 @section('title', 'Application Form')
 @push('css')
     <link href="{{ asset('assets/css/pages/wizard/wizard-2.css') }}" rel="stylesheet" type="text/css" />
+    <style>
+        .select2,
+        .select2-container,
+        .select2-container--default,
+        .select2-container--below {
+            width: 100% !important;
+        }
+    </style>
 @endpush
 @push('js')
     <script src="{{ asset('assets/js/pages/custom/wizard/wizard-2.js') }}"></script>
@@ -111,6 +119,15 @@
                 }
                 regionName = regionName.trim();
             });
+        });
+        $('#gender').on('change', function() {
+            var itemId = this.value;
+            if (itemId == 'F') {
+                $('#non_pregnant_validation_document_form_group').removeClass('d-none');
+            } else {
+                $('#non_pregnant_validation_document_form_group').addClass('d-none');
+            }
+
         });
     </script>
 @endpush
@@ -239,7 +256,7 @@
                                         <div class="row">
                                             <!--begin::Input-->
                                             <div class="form-group col-md-6 ">
-                                                <label>First Name</label>
+                                                <label class="d-block">First Name</label>
                                                 <input type="text"
                                                     class="@error('first_name') is-invalid @enderror form-control form-control-solid form-control-lg"
                                                     name="first_name" placeholder="First Name"
@@ -252,7 +269,7 @@
                                             <!--end::Input-->
                                             <!--begin::Input-->
                                             <div class="form-group col-md-6">
-                                                <label>Father Name</label>
+                                                <label class="d-block">Father Name</label>
                                                 <input type="text"
                                                     class="@error('father_name') is-invalid @enderror form-control form-control-solid form-control-lg"
                                                     name="father_name" placeholder="Father Name"
@@ -265,7 +282,7 @@
                                             <!--end::Input-->
                                             <!--begin::Input-->
                                             <div class="form-group col-md-6">
-                                                <label>Grand Father Name</label>
+                                                <label class="d-block">Grand Father Name</label>
                                                 <input type="text"
                                                     class="@error('grand_father_name') is-invalid @enderror form-control form-control-solid form-control-lg"
                                                     name="grand_father_name" placeholder="Grand Father Name"
@@ -280,7 +297,7 @@
                                             <div class="col-xl-6">
                                                 <!--begin::Input-->
                                                 <div class="form-group">
-                                                    <label>Disablity</label>
+                                                    <label class="d-block">Disablity</label>
                                                     <select name="disability" id="disability"
                                                         class="@error('disability') is-invalid @enderror form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
@@ -302,7 +319,7 @@
                                             <div class="col-xl-6">
                                                 <!--begin::Input-->
                                                 <div class="form-group">
-                                                    <label>Date Of Birth</label>
+                                                    <label class="d-block">Date Of Birth</label>
                                                     <input type="text" id="dob"
                                                         class="@error('dob') is-invalid @enderror form-control form-control-solid form-control-lg"
                                                         name="dob" placeholder="Date of Birth" autocomplete="off"
@@ -318,7 +335,7 @@
                                             <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
-                                                    <label>Gender</label>
+                                                    <label class="d-block">Gender</label>
                                                     <select name="gender" id="gender"
                                                         class="@error('gender') is-invalid @enderror form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
@@ -341,7 +358,7 @@
                                             <div class="col-xl-6">
                                                 <!--begin::Input-->
                                                 <div class="form-group">
-                                                    <label>Phone</label>
+                                                    <label class="d-block">Phone</label>
                                                     <input type="tel"
                                                         class="@error('phone') is-invalid @enderror form-control form-control-solid form-control-lg"
                                                         name="phone" placeholder="Phone" value="{{ old('phone') }}" />
@@ -356,7 +373,7 @@
                                             <div class="col-xl-6">
                                                 <!--begin::Input-->
                                                 <div class="form-group">
-                                                    <label>Email</label>
+                                                    <label class="d-block">Email</label>
                                                     <input type="email"
                                                         class="@error('email') is-invalid @enderror form-control form-control-solid form-control-lg"
                                                         name="email" placeholder="Email" value="{{ old('email') }}" />
@@ -435,7 +452,7 @@
                                             <div class="col-xl-5">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
-                                                    <label>Educational Level</label>
+                                                    <label class="d-block">Educational Level</label>
                                                     <select name="educational_level" id="educational_level"
                                                         class="@error('educational_level') is-invalid @enderror form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
@@ -454,7 +471,7 @@
                                             <div class="col-xl-5">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
-                                                    <label>Field of Study</label>
+                                                    <label class="d-block">Field of Study</label>
                                                     <select name="field_of_study" id="field_of_study"
                                                         class="@error('field_of_study') is-invalid @enderror form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
@@ -473,7 +490,7 @@
                                             <div class="col-xl-2">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
-                                                    <label>GPA</label>
+                                                    <label class="d-block">GPA</label>
                                                     <input name="gpa" id="gpa"
                                                         class="@error('gpa') is-invalid @enderror form-control"
                                                         type="number" value="{{ old('gpa') }}" max="4" min="1" />
@@ -489,7 +506,7 @@
                                             <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
-                                                    <label>Ministry Document</label>
+                                                    <label class="d-block">Ministry Document</label>
                                                     <div class="custom-file">
                                                         <input type="file"
                                                             class="@error('ministry_document') is-invalid @enderror  custom-file-input"
@@ -508,13 +525,13 @@
                                             <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
-                                                    <label>BSC Document</label>
+                                                    <label class="d-block">BSC Document</label>
                                                     <div class="custom-file">
                                                         <input type="file"
-                                                        value="{{old('bsc_document')}}"
                                                             class="@error('bsc_document') is-invalid @enderror custom-file-input"
                                                             name="bsc_document" id="bsc_document" />
-                                                        <label class="custom-file-label" for="customFile">Choose file</label>
+                                                        <label class="custom-file-label" for="customFile">Choose
+                                                            file</label>
                                                         @error('bsc_document')
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
@@ -528,7 +545,7 @@
                                             <div class="col-xl-6 d-none" id="msc_document_form_group">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
-                                                    <label>MSC Document</label>
+                                                    <label class="d-block">MSC Document</label>
                                                     <div class="custom-file">
                                                         <input type="file"
                                                             class="@error('msc_document') is-invalid @enderror custom-file-input"
@@ -545,7 +562,7 @@
                                             <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group d-none" id="phd_document_form_group">
-                                                    <label>PHD Document</label>
+                                                    <label class="d-block">PHD Document</label>
                                                     <div class="custom-file">
                                                         <input type="file"
                                                             class="@error('phd_document') is-invalid @enderror custom-file-input"
@@ -570,18 +587,26 @@
                                             <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
-                                                    <label>Contact Name</label>
-                                                    <input type="text" name="contact_name" id="contact_name"
-                                                        class="form-control form-control-solid form-control-md">
+                                                    <label class="d-block">Contact Name</label>
+                                                    <input type="text" value="{{ old('contact_name') }}"
+                                                        name="contact_name" id="contact_name"
+                                                        class="@error('contact_name') is-invalid @enderror form-control form-control-solid form-control-md">
+                                                    @error('contact_name')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
                                             <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
-                                                    <label>Contact Phone</label>
-                                                    <input type="tel" name="contact_phone" id="contact_phone"
-                                                        class="form-control form-control-solid form-control-md">
+                                                    <label class="d-block">Contact Phone</label>
+                                                    <input type="tel" value="{{ old('contact_hone') }}"
+                                                        name="contact_phone" id="contact_phone"
+                                                        class="@error('contact_phone') is-invalid @enderror form-control form-control-solid form-control-md">
+                                                    @error('contact_phone')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
@@ -590,12 +615,16 @@
                                             <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
-                                                    <label>Kebele Id</label>
+                                                    <label class="d-block">Kebele Id</label>
                                                     <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="kebele_id"
-                                                            id="kebele_id" />
+                                                        <input type="file"
+                                                            class="@error('kebele_id') is-invalid @enderror custom-file-input"
+                                                            name="kebele_id" id="kebele_id" />
                                                         <label class="custom-file-label" for="customFile">Choose
                                                             file</label>
+                                                        @error('kebele_id')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <!--end::Input-->
@@ -604,12 +633,16 @@
                                             <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
-                                                    <label>Ethical Licence</label>
+                                                    <label class="d-block">Ethical Licence</label>
                                                     <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="ethical_license"
-                                                            id="ethical_license" />
+                                                        <input type="file"
+                                                            class="@error('ethical_license') is-invalid @enderror custom-file-input"
+                                                            name="ethical_license" id="ethical_license" />
                                                         <label class="custom-file-label" for="customFile">Choose
                                                             file</label>
+                                                            @error('ethical_license')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <!--end::Input-->
@@ -618,14 +651,18 @@
                                         <div class="row">
                                             <div class="col-xl-12">
                                                 <!--begin::Select-->
-                                                <div class="form-group">
-                                                    <label>Non Pregnancy Medicaid Approval</label>
+                                                <div class="form-group d-none"
+                                                    id="non_pregnant_validation_document_form_group">
+                                                    <label class="d-block">Non Pregnancy Medicaid Approval</label>
                                                     <div class="custom-file">
                                                         <input type="file" class="custom-file-input"
                                                             name="non_pregnant_validation_document"
                                                             id="non_pregnant_validation_document" />
-                                                        <label class="custom-file-label" for="customFile">Choose
+                                                        <label class="@error('non_pregnant_validation_document') is-invalid @enderror custom-file-label" for="customFile">Choose
                                                             file</label>
+                                                            @error('non_pregnant_validation_document')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <!--end::Input-->
