@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Zone;
 use App\Http\Requests\StoreZoneRequest;
 use App\Http\Requests\UpdateZoneRequest;
+use App\Models\Region;
+use Illuminate\Http\Request;
 
 class ZoneController extends Controller
 {
@@ -13,9 +15,18 @@ class ZoneController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Region $region, Request $request)
     {
-        //
+        if ($request->ajax()) {
+            return datatables()->of(Zone::select())->make(true);
+        }
+        // $user = Auth::user();
+        // if(!$user->hasRole('super-admin') && !$user->hasPermissionTo('role.viewAll')){
+        //     abort(403);
+        // }
+        $zones = Zone::all();
+        $regions = Region::all();
+        return view('zone.index', compact(['zones', 'regions']));
     }
 
     /**
@@ -23,9 +34,10 @@ class ZoneController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Region $region)
     {
-        //
+        $regions = $region::all();
+        return view('zone.create', compact('regions'));
     }
 
     /**
@@ -36,7 +48,14 @@ class ZoneController extends Controller
      */
     public function store(StoreZoneRequest $request)
     {
-        //
+        $zone = new Zone();
+        $request->validate(['name' => 'required|string|unique:zones,name', 'code' => 'required|string|unique:zones,code']);
+        // $zone->name = $request->get('name');
+        // $zone->code = $request->get('code');
+        // $zone->region_id = $request->get('region');
+        // $zone->save();
+        Zone::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'region_id' => $request->get('region')]);
+        return redirect()->route('zone.index')->with('message', 'Zone created successfully');
     }
 
     /**
@@ -56,9 +75,12 @@ class ZoneController extends Controller
      * @param  \App\Models\Zone  $zone
      * @return \Illuminate\Http\Response
      */
-    public function edit(Zone $zone)
+    public function edit($id, Request $request)
     {
-        //
+        $zone = Zone::find($id);
+        // dd($zone->region->name);
+        $regions = Region::where('id', '!=', $zone->region->id)->get();
+        return view('zone.edit', compact(['zone', 'regions']));
     }
 
     /**
@@ -68,9 +90,14 @@ class ZoneController extends Controller
      * @param  \App\Models\Zone  $zone
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateZoneRequest $request, Zone $zone)
+    public function update(UpdateZoneRequest $request, $id)
     {
-        //
+        $zone = Zone::find($id);
+        $zone->name = $request->get('name');
+        $zone->code = $request->get('code');
+        $zone->region_id = $request->get('region');
+        $zone->save();
+        return redirect()->route('zone.index')->with('message', 'Zone edited successfully');
     }
 
     /**
@@ -79,8 +106,11 @@ class ZoneController extends Controller
      * @param  \App\Models\Zone  $zone
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Zone $zone)
+    public function destroy(Zone $zone, Request $request)
     {
-        //
+        $zone->delete();
+        if ($request->ajax()) {
+            return response()->json(array('msg' => 'deleted successfully'), 200);
+        }
     }
 }

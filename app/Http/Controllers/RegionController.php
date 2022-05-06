@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Region;
 use App\Http\Requests\StoreRegionRequest;
 use App\Http\Requests\UpdateRegionRequest;
+use Illuminate\Http\Request;
 
 class RegionController extends Controller
 {
@@ -13,9 +14,14 @@ class RegionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            return datatables()->of(Region::select())->make(true);
+        }
+
+        $regions = Region::all();
+        return view('region.index', compact('regions'));
     }
 
     /**
@@ -25,7 +31,7 @@ class RegionController extends Controller
      */
     public function create()
     {
-        //
+        return view('region.create');
     }
 
     /**
@@ -36,7 +42,9 @@ class RegionController extends Controller
      */
     public function store(StoreRegionRequest $request)
     {
-        //
+        $request->validate(['name' => 'required|string|unique:permissions,name', 'code' => 'required|string|unique:permissions,name']);
+        Region::create(['name' => $request->get('name'), 'code'=>$request->get('code')]);
+        return redirect()->route('region.index')->with('message', 'Region created successfully');
     }
 
     /**
@@ -56,9 +64,10 @@ class RegionController extends Controller
      * @param  \App\Models\Region  $region
      * @return \Illuminate\Http\Response
      */
-    public function edit(Region $region)
+    public function edit($id)
     {
-        //
+        $regions = Region::find($id);
+        return view('region.edit', compact('regions'));
     }
 
     /**
@@ -68,9 +77,13 @@ class RegionController extends Controller
      * @param  \App\Models\Region  $region
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRegionRequest $request, Region $region)
+    public function update(UpdateRegionRequest $request, $id)
     {
-        //
+        $region = Region::find($id);
+        $region->name = $request->get('name');
+        $region->code = $request->get('code');
+        $region->save();
+        return redirect()->route('region.index')->with('message', 'Region edited successfully');
     }
 
     /**
@@ -79,8 +92,11 @@ class RegionController extends Controller
      * @param  \App\Models\Region  $region
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Region $region)
+    public function destroy(Request $request, Region $region)
     {
-        //
+        $region->delete();
+        // if ($request->ajax()) {
+            return response()->json(array('msg' => 'deleted successfully'));
+        // }
     }
 }
