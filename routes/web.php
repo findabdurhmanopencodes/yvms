@@ -30,6 +30,7 @@ Route::get('/', function () {
 Route::post('application/document/upload',[VolunteerController::class,'application_document_upload'])->name('document.upload');
 //Role & Permission
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
+Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');

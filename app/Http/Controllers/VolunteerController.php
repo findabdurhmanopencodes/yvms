@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Andegna\DateTimeFactory;
 use App\Models\Volunteer;
 use App\Http\Requests\StoreVolunteerRequest;
 use App\Http\Requests\UpdateVolunteerRequest;
 use App\Models\Disablity;
+use Carbon\Carbon;
+use DateTime;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class VolunteerController extends Controller
 {
@@ -88,6 +93,27 @@ class VolunteerController extends Controller
     public function application_form()
     {
         $disabilities = Disablity::all();
-        return view('application.form',compact('disabilities'));
+        return view('application.form', compact('disabilities'));
+    }
+
+    public function apply(StoreVolunteerRequest $request)
+    {
+        $date =  DateTime::createFromFormat('d/m/Y', $request->get('dob'));
+        $year = $date->format('Y');
+        $month = $date->format('m');
+        $day = $date->format('d');
+        $date = Carbon::now();
+        $after = Carbon::now()->subYears(35);
+        $dob_GC = DateTimeFactory::of($year, $month, $day)->toGregorian();
+        $before = Carbon::now()->subYears(18);
+        if (!Carbon::createFromDate($dob_GC)->isBetween($after, $before)) {
+            $afterET = DateTimeFactory::fromDateTime($after)->format('d/m/Y');
+            $beforeET = DateTimeFactory::fromDateTime($before)->format('d/m/Y');
+            $validationException = ValidationException::withMessages([
+                'dob' => 'The Date of Birth must be a date after ' . $afterET . ' before ' . $beforeET,
+            ]);
+            throw $validationException;
+        }
+        dd('u');
     }
 }

@@ -46,7 +46,7 @@ class UserController extends Controller
             'first_name' => ['required', 'string', 'max:255','min:3'],
             'father_name' => ['required', 'string', 'max:255','min:3'],
             'grand_father_name' => ['required', 'string', 'max:255','min:3'],
-            'dob' => ['required', 'date', 'max:255'],
+            'dob' => ['required', 'date'],
             'gender' => ['required', 'string', 'in:M,F'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],

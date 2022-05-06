@@ -13,7 +13,7 @@ var KTWizard2 = function () {
 		// Initialize form wizard
 		_wizard = new KTWizard(_wizardEl, {
 			startStep: 1, // initial active step number
-			clickableSteps: false // to make steps clickable this set value true and add data-wizard-clickable="true" in HTML for class="wizard" element
+			clickableSteps: true // to make steps clickable this set value true and add data-wizard-clickable="true" in HTML for class="wizard" element
 		});
 
 		// Validation before going to next page
@@ -183,95 +183,41 @@ var KTWizard2 = function () {
 			_formEl,
 			{
 				fields: {
-					locaddress1: {
-						validators: {
-							notEmpty: {
-								message: 'Address is required'
-							}
-						}
-					},
-					locpostcode: {
-						validators: {
-							notEmpty: {
-								message: 'Postcode is required'
-							}
-						}
-					},
-					loccity: {
-						validators: {
-							notEmpty: {
-								message: 'City is required'
-							}
-						}
-					},
-					locstate: {
-						validators: {
-							notEmpty: {
-								message: 'State is required'
-							}
-						}
-					},
-					loccountry: {
-						validators: {
-							notEmpty: {
-								message: 'Country is required'
-							}
-						}
-					}
-				},
-				plugins: {
-					trigger: new FormValidation.plugins.Trigger(),
-					bootstrap: new FormValidation.plugins.Bootstrap()
-				}
-			}
-		));
-
-		// Step 5
-		_validations.push(FormValidation.formValidation(
-			_formEl,
-			{
-				fields: {
-					ccname: {
-						validators: {
-							notEmpty: {
-								message: 'Credit card name is required'
-							}
-						}
-					},
-					ccnumber: {
-						validators: {
-							notEmpty: {
-								message: 'Credit card number is required'
-							},
-							creditCard: {
-								message: 'The credit card number is not valid'
-							}
-						}
-					},
-					ccmonth: {
-						validators: {
-							notEmpty: {
-								message: 'Credit card month is required'
-							}
-						}
-					},
-					ccyear: {
-						validators: {
-							notEmpty: {
-								message: 'Credit card year is required'
-							}
-						}
-					},
-					cccvv: {
-						validators: {
-							notEmpty: {
-								message: 'Credit card CVV is required'
-							},
-							digits: {
-								message: 'The CVV value is not valid. Only numbers is allowed'
-							}
-						}
-					}
+					// locaddress1: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Address is required'
+					// 		}
+					// 	}
+					// },
+					// locpostcode: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Postcode is required'
+					// 		}
+					// 	}
+					// },
+					// loccity: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'City is required'
+					// 		}
+					// 	}
+					// },
+					// locstate: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'State is required'
+					// 		}
+					// 	}
+					// },
+					// loccountry: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Country is required'
+					// 		}
+					// 	}
+					// }
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),

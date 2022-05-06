@@ -128,8 +128,10 @@
                         <!--begin: Wizard Form-->
                         <div class="row">
                             <div class="offset-xxl-2 col-xxl-8">
-                                <form class="form" id="kt_form">
+                                <form class="form" action="{{ route('aplication.apply', []) }}"
+                                    enctype="multipart/form-data" method="POST" id="kt_form">
                                     <!--begin: Wizard Step 1-->
+                                    @csrf
                                     <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
                                         <h4 class="mb-10 font-weight-bold text-dark">Enter your Basic Details</h4>
                                         <div class="form-group row">
@@ -164,29 +166,39 @@
                                         </div>
                                         <div class="row">
                                             <!--begin::Input-->
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group col-md-6 ">
                                                 <label>First Name</label>
-                                                <input type="text" class="form-control form-control-solid form-control-lg"
+                                                <input type="text"
+                                                    class="@error('first_name') is-invalid @enderror form-control form-control-solid form-control-lg"
                                                     name="first_name" placeholder="First Name"
                                                     value="{{ old('first_name') }}" />
+                                                @error('first_name')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                                 <span class="form-text text-muted">Please enter your first name.</span>
                                             </div>
                                             <!--end::Input-->
                                             <!--begin::Input-->
                                             <div class="form-group col-md-6">
                                                 <label>Father Name</label>
-                                                <input type="text" class="form-control form-control-solid form-control-lg"
+                                                <input type="text" class="@error('father_name') is-invalid @enderror form-control form-control-solid form-control-lg"
                                                     name="father_name" placeholder="Father Name"
                                                     value="{{ old('father_name') }}" />
+                                                @error('father_name')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                                 <span class="form-text text-muted">Please enter your father name.</span>
                                             </div>
                                             <!--end::Input-->
                                             <!--begin::Input-->
                                             <div class="form-group col-md-6">
                                                 <label>Grand Father Name</label>
-                                                <input type="text" class="form-control form-control-solid form-control-lg"
+                                                <input type="text" class="@error('grand_father_name') is-invalid @enderror form-control form-control-solid form-control-lg"
                                                     name="grand_father_name" placeholder="Grand Father Name"
                                                     value="{{ old('grand_father_name') }}" />
+                                                @error('grand_father_name')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                                 <span class="form-text text-muted">Please enter your grand father
                                                     name.</span>
                                             </div>
@@ -196,13 +208,18 @@
                                                 <div class="form-group">
                                                     <label>Disablity</label>
                                                     <select name="disability" id="disability"
-                                                        class="form-control form-control-solid form-control-lg">
+                                                        class="@error('disability') is-invalid @enderror form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
                                                         @foreach ($disabilities as $disable)
                                                             <option value="{{ $disable->id }}">{{ $disable->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
+                                                    @error('disability')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                    <span class="form-text text-muted">Please select if any
+                                                        disability</span>
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
@@ -213,9 +230,12 @@
                                                 <div class="form-group">
                                                     <label>Date Of Birth</label>
                                                     <input type="text" id="dob"
-                                                        class="form-control form-control-solid form-control-lg" name="dob"
+                                                        class="@error('dob') is-invalid @enderror form-control form-control-solid form-control-lg" name="dob"
                                                         placeholder="Date of Birth" autocomplete="off"
                                                         value="{{ old('dob') }}" />
+                                                    @error('dob')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                     <span class="form-text text-muted">Please enter your date of
                                                         birth.</span>
                                                 </div>
@@ -226,11 +246,15 @@
                                                 <div class="form-group">
                                                     <label>Gender</label>
                                                     <select name="gender" id="gender"
-                                                        class="form-control form-control-solid form-control-lg">
+                                                        class="@error('gender') is-invalid @enderror form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
-                                                        <option value="M">Male</option>
-                                                        <option value="F">Female</option>
+                                                        <option value="M" {{ old('gender') == 'M'?'selected':'' }}>Male</option>
+                                                        <option value="F" {{ old('gender') == 'F'?'selected':'' }}>Female</option>
                                                     </select>
+                                                    @error('gender')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                    <span class="form-text text-muted">Please select your gender.</span>
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
@@ -241,8 +265,11 @@
                                                 <div class="form-group">
                                                     <label>Phone</label>
                                                     <input type="tel"
-                                                        class="form-control form-control-solid form-control-lg" name="phone"
+                                                        class="@error('phone') is-invalid @enderror form-control form-control-solid form-control-lg" name="phone"
                                                         placeholder="Phone" value="{{ old('phone') }}" />
+                                                    @error('phone')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                     <span class="form-text text-muted">Please enter your phone
                                                         number.</span>
                                                 </div>
@@ -253,8 +280,11 @@
                                                 <div class="form-group">
                                                     <label>Email</label>
                                                     <input type="email"
-                                                        class="form-control form-control-solid form-control-lg" name="email"
+                                                        class="@error('email') is-invalid @enderror form-control form-control-solid form-control-lg" name="email"
                                                         placeholder="Email" value="{{ old('email') }}" />
+                                                    @error('email')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                     <span class="form-text text-muted">Please enter your email
                                                         address.</span>
                                                 </div>
@@ -495,7 +525,8 @@
                                         </div>
                                         <div>
                                             <button class="btn btn-success font-weight-bold text-uppercase px-9 py-4"
-                                                data-wizard-type="action-submit">Submit</button>
+                                                data-wizard-type="action-submit"
+                                                style="min-width: 150px; background-color:rgb(249 ,92 ,57);color:white;font-weight:bold;">Apply</button>
                                             <button class="btn btn-primary font-weight-bold text-uppercase px-9 py-4"
                                                 data-wizard-type="action-next">Next Step</button>
                                         </div>
