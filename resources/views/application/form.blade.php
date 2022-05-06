@@ -52,6 +52,50 @@
     </script>
     <script>
         $(document).ready(function() {
+            @if (old('region'))
+            $("#zone").html('');
+                var oldZone = {{old('zone')}};
+                $.ajax({
+                    url: "api/region/" + oldZone + "/zone",
+                    type: "GET",
+                    data: {
+                        service_id: oldZone,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        // $('#zone').html(
+                        //     '<option value="">Select Zone</option>');
+                        $.each(result.data, function(key, value) {
+                            $("#zone").append('<option '+oldZone+' == '+ value.id +'  value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+                        $('#woreda').html(
+                            '<option value="">Select Woreda</option>');
+                    }
+                });
+            @endif
+            @if (old('woreda'))
+                $("#woreda").html('');
+                $('#woreda').html('<option value="">Select Woreda</option>');
+                var oldZone = {{old('zone')}};
+                var oldWoreda = {{old('woreda')}};
+                $.ajax({
+                    url: "api/zone/" + oldZone + "/woreda",
+                    type: "GET",
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        $.each(result.data, function(key, value) {
+                            var isSelected = value.id == oldWoreda ?'selected':'';
+                            $("#woreda").append('<option '+ isSelected + ' value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            @endif
             $('#region').on('change', function() {
                 var itemId = this.value;
                 var regionName = $("#region option:selected").text();
@@ -542,7 +586,7 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-xl-6 d-none" id="msc_document_form_group">
+                                            <div class="col-xl-6 {{ (old('educational_level')==1 || old('educational_level')==2)?'':'d-none'}}" id="msc_document_form_group">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label class="d-block">MSC Document</label>
@@ -561,7 +605,7 @@
                                             </div>
                                             <div class="col-xl-6">
                                                 <!--begin::Select-->
-                                                <div class="form-group d-none" id="phd_document_form_group">
+                                                <div class="form-group {{ old('educational_level')==2?'':'d-none' }}" id="phd_document_form_group">
                                                     <label class="d-block">PHD Document</label>
                                                     <div class="custom-file">
                                                         <input type="file"
@@ -601,7 +645,7 @@
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label class="d-block">Contact Phone</label>
-                                                    <input type="tel" value="{{ old('contact_hone') }}"
+                                                    <input type="tel" value="{{ old('contact_phone') }}"
                                                         name="contact_phone" id="contact_phone"
                                                         class="@error('contact_phone') is-invalid @enderror form-control form-control-solid form-control-md">
                                                     @error('contact_phone')
@@ -651,7 +695,7 @@
                                         <div class="row">
                                             <div class="col-xl-12">
                                                 <!--begin::Select-->
-                                                <div class="form-group d-none"
+                                                <div class="form-group {{ old('gender')=='F'?'':'d-none' }}"
                                                     id="non_pregnant_validation_document_form_group">
                                                     <label class="d-block">Non Pregnancy Medicaid Approval</label>
                                                     <div class="custom-file">
