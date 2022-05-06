@@ -36,7 +36,23 @@ class TrainingSessionController extends Controller
      */
     public function create()
     {
-        return view('training_session.create');
+        $bool_Arr = [];
+        $date_now = Carbon::now();
+        $date_now_et = DateTimeFactory::fromDateTime($date_now)->format('m/d/y');
+        // dd(new DateTime($date_now_et));
+        $training_sessions = TrainingSession::all();
+        foreach ($training_sessions as $training_session) {
+            if (new DateTime($date_now_et) >  new DateTime(date("Y-d-m", strtotime($training_session->end_date)))) {
+                array_push($bool_Arr, false);
+            }else{
+                array_push($bool_Arr, true);
+            }
+        }
+        if (in_array(true, $bool_Arr)) {
+            return redirect()->route('training_session.index');
+        }else{
+            return view('training_session.create');
+        }
     }
 
     /**
