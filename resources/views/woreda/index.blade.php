@@ -10,6 +10,17 @@
     </li>
 @endsection
 
+@push('css')
+    <style>
+        .select2,
+        .select2-container,
+        .select2-container--default,
+        .select2-container--below {
+            width: 100% !important;
+        }
+    </style>
+@endpush
+
 @push('js')
     <script>
         var HOST_URL = "{{ route('woreda.index') }}";
@@ -53,7 +64,9 @@
     </script>
     <script>
         $( document ).ready(function() {
-            console.log( "ready!" );
+            $('#zone').select2({
+                placeholder: "Select a zone"
+            });
         });
         var COLUMNS = [{
                 field: 'id',
@@ -78,7 +91,7 @@
                 sortable: 'asc',
             },
             {
-                field: 'zone_id',
+                field: 'zone',
                 title: 'Zone',
                 sortable: 'asc',
             },
@@ -158,7 +171,7 @@
                                                     <div class="col-lg-6">
                                                         <label>Zone:</label>
                                                         <br>
-                                                        <select class="form-control select2" id="kt_select2_1" name="woreda" required>
+                                                        <select class="form-control select2" id="zone" name="woreda" required>
                                                             <option value=""></option>
                                                             @foreach ($zones as $zone)
                                                                 <option value="{{ $zone->id }}">{{ $zone->code }}</option>

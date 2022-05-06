@@ -18,7 +18,9 @@ class WoredaController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return datatables()->of(Woreda::select())->make(true);
+            return datatables()->of(Woreda::select())->addColumn('zone', function (Woreda $woreda){
+                return $woreda->zone->name;
+            })->make(true);
         }
         // $user = Auth::user();
         // if(!$user->hasRole('super-admin') && !$user->hasPermissionTo('role.viewAll')){
