@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code');
-            $table->foreignIdFor(Zone::class);
+            $table->foreignIdFor(Zone::class)->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -23,4 +23,8 @@ class Region extends Model
     public function zones(){
         return $this->hasMany(Zone::class);
     }
+
+    public function quotas(){
+        return $this->morphMany(Qouta::class, 'quotable');
+    }
 }

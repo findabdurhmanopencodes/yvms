@@ -94,6 +94,9 @@ class RegionController extends Controller
      */
     public function destroy(Request $request, Region $region)
     {
+        foreach ($region->zones as $zone) {
+            $zone->delete();
+        }
         $region->delete();
         // if ($request->ajax()) {
             return response()->json(array('msg' => 'deleted successfully'));

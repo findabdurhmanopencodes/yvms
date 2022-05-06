@@ -8,6 +8,8 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TraininingCenterController;
+use App\Http\Controllers\TotalQuotaController;
+use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\WoredaController;

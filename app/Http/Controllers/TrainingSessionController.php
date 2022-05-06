@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Andegna\DateTimeFactory;
 use App\Http\Requests\StoreTrainingSessionRequest;
 use App\Http\Requests\UpdateTrainingSessionRequest;
 use App\Models\TrainingSession;
+use Carbon\Carbon;
+use DateTime;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 
 class TrainingSessionController extends Controller
 {
@@ -14,13 +19,14 @@ class TrainingSessionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // if(!Auth::user()->can('training_session.index')){
-        //     return abort(403);
-        // }
-        $trainingSessions = TrainingSession::paginate(10);
-        return view('training_session.index',compact('trainingSessions'));
+        if ($request->ajax()) {
+            return datatables()->of(TrainingSession::select())->make(true);
+        }
+
+        $training_session = TrainingSession::all();
+        return view('training_session.index', compact('training_session'));
     }
 
     /**
@@ -30,7 +36,7 @@ class TrainingSessionController extends Controller
      */
     public function create()
     {
-        //
+        return view('training_session.create');
     }
 
     /**
@@ -41,7 +47,25 @@ class TrainingSessionController extends Controller
      */
     public function store(StoreTrainingSessionRequest $request)
     {
-        //
+        $date_now = Carbon::now();
+        $date_now_et = DateTimeFactory::fromDateTime($date_now)->format('d/m/y');
+        $request->validate([
+            'start_date' => ['required', 'date', 'after:'.$date_now_et],
+            'end_date' => ['required', 'date', 'after:'.$request->get('start_date')],
+            'registration_start_date' => ['required', 'date', 'after:'.$request->get('start_date'), 'before:'.$request->get('end_date')],
+            'registration_dead_line' => ['required', 'date', 'after:'.$request->get('registration_start_date'), 'before:'.$request->get('end_date')],
+            'quantity' => 'required'
+        ]);
+
+        $trainingSession = new TrainingSession();
+        $trainingSession->start_date = new DateTime($request->get('start_date'));
+        $trainingSession->end_date = new DateTime($request->get('end_date'));
+        $trainingSession->registration_start_date = new DateTime($request->get('registration_start_date'));
+        $trainingSession->registration_dead_line = new DateTime($request->get('registration_dead_line'));
+        $trainingSession->quantity = $request->get('quantity');
+        $trainingSession->status = 0;
+        $trainingSession->save();
+        return redirect()->route('training_session.index')->with('message', 'Region edited successfully');
     }
 
     /**
@@ -61,9 +85,9 @@ class TrainingSessionController extends Controller
      * @param  \App\Models\TrainingSession  $trainingSession
      * @return \Illuminate\Http\Response
      */
-    public function edit(TrainingSession $trainingSession)
+    public function edit(TrainingSession $training_session)
     {
-        //
+        return view('training_session.create', compact('training_session'));
     }
 
     /**
@@ -86,6 +110,7 @@ class TrainingSessionController extends Controller
      */
     public function destroy(TrainingSession $trainingSession)
     {
-        //
+        $trainingSession->delete();
+        return response()->json(array('msg' => 'deleted successfully'));
     }
 }
