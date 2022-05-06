@@ -25,10 +25,6 @@ class StoreVolunteerRequest extends FormRequest
      */
     public function rules()
     {
-        // $date = new Carbon();
-        // dump($date->format('d/m/Y'));
-        // dd($this->request->get('dob'));
-        // dd('ab');
         return [
             //first wizard validation
             'first_name' => ['required', 'string', 'min:2', 'max:50'],
@@ -47,10 +43,10 @@ class StoreVolunteerRequest extends FormRequest
             'educational_level' => ['required'],
             'field_of_study' => ['required'],
             'gpa' => ['required','numeric','between:2.0,4.0'],
-            'ministry_document' => ['required','file','size:10'],
-            'bsc_document' => ['required','file','size:10','mimes:pdf,png,jpg,jpeg,'],
-            'msc_document' => ['required_if:educational_level,==,1','file','size:10'],
-            'phd_document' => ['required_if:educational_level,==,2','file','size:10'],
+            'ministry_document' => ['required','file','max:4096','mimes:pdf,png,jpg,jpeg,bmp,tiff',],
+            'bsc_document' => ['required','file','max:4096','mimes:pdf,png,jpg,jpeg,bmp,tiff','max:4096',],
+            'msc_document' => ['required_if:educational_level,==,1','file','max:4096','mimes:pdf,png,jpg,jpeg,bmp,tiff',],
+            'phd_document' => ['required_if:educational_level,==,2','file','max:4096','mimes:pdf,png,jpg,jpeg,bmp,tiff',],
         ];
     }
 }

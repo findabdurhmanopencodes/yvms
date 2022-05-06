@@ -441,7 +441,7 @@
                                                         <option value="">Select</option>
                                                         @foreach ($educationLevels as $key => $level)
                                                             <option
-                                                                {{ old('educational_level')!=null && old('educational_level') == $key ? 'selected' : '' }}
+                                                                {{ old('educational_level') != null && old('educational_level') == $key ? 'selected' : '' }}
                                                                 value="{{ $key }}">{{ $level }}</option>
                                                         @endforeach
                                                     </select>
@@ -476,7 +476,7 @@
                                                     <label>GPA</label>
                                                     <input name="gpa" id="gpa"
                                                         class="@error('gpa') is-invalid @enderror form-control"
-                                                        type="number" value="{{old('gpa')}}" max="4" min="1" />
+                                                        type="number" value="{{ old('gpa') }}" max="4" min="1" />
 
                                                     @error('gpa')
                                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -496,11 +496,12 @@
                                                             name="ministry_document" id="ministry_document" />
                                                         <label class="custom-file-label" for="customFile">Choose
                                                             file</label>
+                                                        @error('ministry_document')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
 
-                                                    @error('ministry_document')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
+
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
@@ -510,15 +511,14 @@
                                                     <label>BSC Document</label>
                                                     <div class="custom-file">
                                                         <input type="file"
+                                                        value="{{old('bsc_document')}}"
                                                             class="@error('bsc_document') is-invalid @enderror custom-file-input"
                                                             name="bsc_document" id="bsc_document" />
-                                                        <label class="custom-file-label" for="customFile">Choose
-                                                            file</label>
+                                                        <label class="custom-file-label" for="customFile">Choose file</label>
+                                                        @error('bsc_document')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
-
-                                                    @error('bsc_document')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
@@ -535,11 +535,10 @@
                                                             name="msc_document" id="msc_document" />
                                                         <label class="custom-file-label" for="customFile">Choose
                                                             file</label>
+                                                        @error('msc_document')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
-
-                                                    @error('msc_document')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
@@ -553,11 +552,10 @@
                                                             name="phd_document" id="phd_document" />
                                                         <label class="custom-file-label" for="customFile">Choose
                                                             file</label>
+                                                        @error('phd_document')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
-
-                                                    @error('phd_document')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
