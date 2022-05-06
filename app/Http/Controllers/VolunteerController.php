@@ -10,6 +10,7 @@ use App\Models\Disablity;
 use App\Models\EducationalLevel;
 use App\Models\FeildOfStudy;
 use App\Models\Region;
+use App\Models\TrainingSession;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -95,6 +96,10 @@ class VolunteerController extends Controller
 
     public function application_form()
     {
+        $availableSession = TrainingSession::availableSession();
+        if(count($availableSession)<=0){
+            return view('application.no-open-form');
+        }
         $disabilities = Disablity::all();
         $regions = Region::all();
         $educationLevels = EducationalLevel::$educationalLevel;
