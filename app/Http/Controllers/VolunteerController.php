@@ -95,7 +95,7 @@ class VolunteerController extends Controller
     {
         $disabilities = Disablity::all();
         $regions = Region::all();
-        return view('application.form', compact('disabilities','regions'));
+        return view('application.form', compact('disabilities', 'regions'));
     }
 
     public function apply(StoreVolunteerRequest $request)

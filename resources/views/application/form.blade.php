@@ -362,13 +362,16 @@
                                                 <div class="form-group">
                                                     <label class="d-block">Region</label>
                                                     <select name="region" id='region'
-                                                        class="form-control d-block form-control-solid">
+                                                        class="@error('region') is-invalid @enderror form-control d-block form-control-solid">
                                                         <option value="">Select</option>
                                                         @foreach ($regions as $region)
-                                                            <option value="{{ $region->id }}">{{ $region->name }}
+                                                            <option {{ (old('region')==$region->id) ?'selected':''}} value="{{ $region->id }}">{{ $region->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
+                                                    @error('region')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
@@ -377,9 +380,12 @@
                                                 <div class="form-group">
                                                     <label class="d-block">Zone</label>
                                                     <select name="zone" id="zone"
-                                                        class="form-control form-control-solid form-control-lg">
+                                                        class="@error('zone') is-invalid @enderror form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
                                                     </select>
+                                                    @error('zone')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
@@ -389,9 +395,12 @@
                                                 <div class="form-group">
                                                     <label class="d-block">Woreda</label>
                                                     <select name="woreda" id="woreda"
-                                                        class="form-control form-control-solid form-control-lg">
+                                                        class="@error('woreda') is-invalid @enderror form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
                                                     </select>
+                                                    @error('woreda')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                                 <!--end::Input-->
                                             </div>

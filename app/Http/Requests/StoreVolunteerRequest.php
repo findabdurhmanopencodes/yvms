@@ -40,6 +40,9 @@ class StoreVolunteerRequest extends FormRequest
             'phone' => ['required', 'regex:/^(\+251|0)9[0-9]{8}/', 'unique:volunteers,phone'],
             'email' => ['required', 'email', 'unique:volunteers,id'],
             //second wizard validation
+            'region' => ['required'],
+            'zone' => ['required'],
+            'woreda' => ['required'],
             
         ];
     }
