@@ -16,9 +16,9 @@ class TrainingSessionController extends Controller
      */
     public function index()
     {
-        if(!Auth::user()->can('training_session.index')){
-            return abort(403);
-        }
+        // if(!Auth::user()->can('training_session.index')){
+        //     return abort(403);
+        // }
         $trainingSessions = TrainingSession::paginate(10);
         return view('training_session.index',compact('trainingSessions'));
     }

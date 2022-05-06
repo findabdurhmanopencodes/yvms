@@ -15,6 +15,7 @@
         type="text/css" />
     <!--end::Page Vendors Styles-->
     <!--begin::Global Theme Styles(used by all pages)-->
+  
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
@@ -221,13 +222,24 @@
                                             </span>
                                         </li>
                                         @include('aside.ms')
+                                        @include('aside.seya')
                                     </ul>
                                 </div>
                                 
                             </li>
                             {{-- @include('aside.ms') --}}
                             @include('aside.aj')
-                            @include('aside.seya')
+
+                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'woreda.index') === 0 ? 'menu-item-active' : '' }}"
+                            aria-haspopup="true">
+                            <a href="" class="menu-link">
+                                <i class="menu-icon flaticon-users">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">Applications </span>
+                            </a>
+                        </li>
+                       
                         </ul>
                     </div>
                     <!--end::Menu Container-->
@@ -462,7 +474,7 @@
                         "success": "#1BC5BD",
                         "info": "#8950FC",
                         "warning": "#FFA800",
-                        "danger": "#F64E60",
+                        "danger": "#F64E60",`
                         "light": "#F3F6F9",
                         "dark": "#212121"
                     },
