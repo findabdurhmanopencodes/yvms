@@ -191,7 +191,17 @@
                             </li>
                             {{-- @include('aside.ms') --}}
                             @include('aside.aj')
-                            
+
+                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'woreda.index') === 0 ? 'menu-item-active' : '' }}"
+                            aria-haspopup="true">
+                            <a href="" class="menu-link">
+                                <i class="menu-icon flaticon-users">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">Applications </span>
+                            </a>
+                        </li>
+                       
                         </ul>
                     </div>
                     <!--end::Menu Container-->
