@@ -30,6 +30,7 @@ class StoreVolunteerRequest extends FormRequest
         // dd($this->request->get('dob'));
         // dd('ab');
         return [
+            //first wizard validation
             'first_name' => ['required', 'string', 'min:2', 'max:50'],
             'father_name' => ['required', 'string', 'min:2', 'max:50'],
             'grand_father_name' => ['required', 'string', 'min:2', 'max:50'],
@@ -38,6 +39,8 @@ class StoreVolunteerRequest extends FormRequest
             'gender' => ['required'],
             'phone' => ['required', 'regex:/^(\+251|0)9[0-9]{8}/', 'unique:volunteers,phone'],
             'email' => ['required', 'email', 'unique:volunteers,id'],
+            //second wizard validation
+            
         ];
     }
 }

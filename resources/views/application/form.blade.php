@@ -305,7 +305,9 @@
                                                     <select name="region" id='region'
                                                         class="form-control form-control-solid form-control-md">
                                                         <option value="">Select</option>
-                                                        <option value="ZW">Zimbabwe</option>
+                                                        @foreach ($regions as $region)
+                                                        <option value="{{ $region->id}}">{{ $region->name }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <!--end::Input-->
@@ -317,7 +319,6 @@
                                                     <select name="zone" id="zone"
                                                         class="form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
-                                                        <option value="ZW">Zimbabwe</option>
                                                     </select>
                                                 </div>
                                                 <!--end::Input-->
@@ -330,7 +331,6 @@
                                                     <select name="woreda" id="woreda"
                                                         class="form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
-                                                        <option value="ZW">Zimbabwe</option>
                                                     </select>
                                                 </div>
                                                 <!--end::Input-->

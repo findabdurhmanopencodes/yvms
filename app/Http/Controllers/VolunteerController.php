@@ -7,6 +7,7 @@ use App\Models\Volunteer;
 use App\Http\Requests\StoreVolunteerRequest;
 use App\Http\Requests\UpdateVolunteerRequest;
 use App\Models\Disablity;
+use App\Models\Region;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -93,7 +94,8 @@ class VolunteerController extends Controller
     public function application_form()
     {
         $disabilities = Disablity::all();
-        return view('application.form', compact('disabilities'));
+        $regions = Region::all();
+        return view('application.form', compact('disabilities','regions'));
     }
 
     public function apply(StoreVolunteerRequest $request)
