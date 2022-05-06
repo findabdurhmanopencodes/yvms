@@ -43,7 +43,14 @@ class StoreVolunteerRequest extends FormRequest
             'region' => ['required'],
             'zone' => ['required'],
             'woreda' => ['required'],
-            
+            //Eductional Documents
+            'educational_level' => ['required'],
+            'field_of_study' => ['required'],
+            'gpa' => ['required','numeric','between:2.0,4.0'],
+            'ministry_document' => ['required','file','size:10'],
+            'bsc_document' => ['required','file','size:10','mimes:pdf,png,jpg,jpeg,'],
+            'msc_document' => ['required_if:educational_level,==,1','file','size:10'],
+            'phd_document' => ['required_if:educational_level,==,2','file','size:10'],
         ];
     }
 }

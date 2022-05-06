@@ -33,7 +33,8 @@ return new class extends Migration
             $table->string('non_pregnant_validation_document')->nullable();
             $table->string('ethical_license')->nullable();
             $table->string('kebele_id');
-            $table->foreignId('educational_level_id')->nullable()->constrained('educational_levels','id')->nullOnDelete()->cascadeOnUpdate();
+            $table->smallInteger('educational_level')->default(0);
+            // $table->foreignId('educational_level_id')->nullable()->constrained('educational_levels','id')->nullOnDelete()->cascadeOnUpdate();
             $table->foreignId('training_session_id')->nullable()->constrained('training_sessions','id')->nullOnDelete()->cascadeOnUpdate();
             $table->foreignId('field_of_study_id')->nullable()->constrained('feild_of_studies')->nullOnDelete()->cascadeOnUpdate();
             $table->foreignId('woreda_id')->nullable()->constrained('woredas')->nullOnDelete()->cascadeOnUpdate();
