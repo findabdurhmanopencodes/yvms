@@ -7,6 +7,8 @@ use App\Models\Volunteer;
 use App\Http\Requests\StoreVolunteerRequest;
 use App\Http\Requests\UpdateVolunteerRequest;
 use App\Models\Disablity;
+use App\Models\EducationalLevel;
+use App\Models\FeildOfStudy;
 use App\Models\Region;
 use Carbon\Carbon;
 use DateTime;
@@ -95,7 +97,9 @@ class VolunteerController extends Controller
     {
         $disabilities = Disablity::all();
         $regions = Region::all();
-        return view('application.form', compact('disabilities', 'regions'));
+        $educationLevels = EducationalLevel::$educationalLevel;
+        $fields = FeildOfStudy::all();
+        return view('application.form', compact('disabilities', 'regions', 'educationLevels','fields'));
     }
 
     public function apply(StoreVolunteerRequest $request)

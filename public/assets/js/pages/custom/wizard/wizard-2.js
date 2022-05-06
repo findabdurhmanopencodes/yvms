@@ -12,7 +12,7 @@ var KTWizard2 = function () {
 	var initWizard = function () {
 		// Initialize form wizard
 		_wizard = new KTWizard(_wizardEl, {
-			startStep: 2, // initial active step number
+			startStep: 3, // initial active step number
 			clickableSteps: true // to make steps clickable this set value true and add data-wizard-clickable="true" in HTML for class="wizard" element
 		});
 

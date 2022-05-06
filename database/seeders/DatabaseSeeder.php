@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\EducationalLevel;
 use App\Models\Woreda;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -21,6 +22,8 @@ class DatabaseSeeder extends Seeder
             RegionSeeder::class,
             ZoneSeeder::class,
             WoredaSeeder::class,
+            EducationalLevelSeeder::class,
+            FeildOfStudySeeder::class,
         ]);
     }
 }

@@ -94,6 +94,26 @@
             });
         });
     </script>
+    <script>
+        $(function() {
+            $('#educational_level').on('change', function() {
+                var itemId = this.value;
+                var regionName = $("#educational_level option:selected").text();
+                if (itemId == 1) {
+                    $('#msc_document_form_group').removeClass('d-none');
+                    $('#phd_document_form_group').addClass('d-none');
+                }
+                else if (itemId == 2) {
+                    $('#msc_document_form_group').removeClass('d-none');
+                    $('#phd_document_form_group').removeClass('d-none');
+                } else {
+                    $('#msc_document_form_group').addClass('d-none');
+                    $('#phd_document_form_group').addClass('d-none');
+                }
+                regionName = regionName.trim();
+            });
+        });
+    </script>
 @endpush
 @section('content')
 
@@ -365,7 +385,8 @@
                                                         class="@error('region') is-invalid @enderror form-control d-block form-control-solid">
                                                         <option value="">Select</option>
                                                         @foreach ($regions as $region)
-                                                            <option {{ (old('region')==$region->id) ?'selected':''}} value="{{ $region->id }}">{{ $region->name }}
+                                                            <option {{ old('region') == $region->id ? 'selected' : '' }}
+                                                                value="{{ $region->id }}">{{ $region->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -419,7 +440,11 @@
                                                     <select name="educational_level" id="educational_level"
                                                         class="form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
-                                                        <option value="ZW">Zimbabwe</option>
+                                                        @foreach ($educationLevels as $key => $level)
+                                                            <option
+                                                                {{ old('educational_level') === $key ? 'selected' : '' }}
+                                                                value="{{ $key }}">{{ $level }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <!--end::Input-->
@@ -431,25 +456,27 @@
                                                     <select name="field_of_study" id="field_of_study"
                                                         class="form-control form-control-solid form-control-lg">
                                                         <option value="">Select</option>
-                                                        <option value="ZW">Zimbabwe</option>
-
+                                                        @foreach ($fields as $field)
+                                                            <option
+                                                                {{ old('field_of_study') == $field->id ? 'selected' : '' }}
+                                                                value="{{ $field->id }}">{{ $field->name }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
-
                                             <div class="col-xl-2">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label>GPA</label>
-                                                    <input name="gpa" id="gpa" class="form-control form-control-lg"
-                                                        type="number" max="4" min="1" />
+                                                    <input name="gpa" id="gpa" class="form-control" type="number" max="4"
+                                                        min="1" />
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-xl-12">
+                                            <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label>Ministry Document</label>
@@ -462,9 +489,7 @@
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xl-12">
+                                            <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label>BSC Document</label>
@@ -480,7 +505,7 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-xl-12">
+                                            <div class="col-xl-6 d-none" id="msc_document_form_group">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label>MSC Document</label>
@@ -493,12 +518,9 @@
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-xl-12">
+                                            <div class="col-xl-6">
                                                 <!--begin::Select-->
-                                                <div class="form-group">
+                                                <div class="form-group d-none" id="phd_document_form_group">
                                                     <label>PHD Document</label>
                                                     <div class="custom-file">
                                                         <input type="file" class="custom-file-input" name="phd_document"
@@ -537,7 +559,7 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-xl-12">
+                                            <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label>Kebele Id</label>
@@ -550,9 +572,8 @@
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xl-12">
+
+                                            <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label>Ethical Licence</label>
@@ -566,7 +587,6 @@
                                                 <!--end::Input-->
                                             </div>
                                         </div>
-
                                         <div class="row">
                                             <div class="col-xl-12">
                                                 <!--begin::Select-->
