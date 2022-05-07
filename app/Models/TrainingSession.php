@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,4 +24,10 @@ class TrainingSession extends Model
         'quantity',
         'status'
     ];
+
+    static public function availableSession()
+    {
+        $today = Carbon::today();
+        return TrainingSession::where('registration_start_date', '<=', $today)->where('registration_dead_line', '>=', $today)->get();
+    }
 }

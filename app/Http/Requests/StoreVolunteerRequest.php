@@ -25,7 +25,7 @@ class StoreVolunteerRequest extends FormRequest
     public function messages()
     {
         return [
-            'msc_document.required_if'=>'The MSC document field is required when educational level is MSC.',
+            'msc_document.required_if'=>'The MSC document field is required when educational level is MSC & PHD.',
             'phd_document.required_if'=>'The PHD document field is required when educational level is PHD.',
             'non_pregnant_validation_document.required_if' => 'The Non Pregnant Validation document field is required when gender is Female.',
         ];
@@ -40,7 +40,10 @@ class StoreVolunteerRequest extends FormRequest
     public function rules()
     {
         return [
+            'agree_check' => ['required', 'accepted'],
             //first wizard validation
+            'photo' => ['required', 'image','max:4096' ,'mimes:png,jpg,jpeg,bmp,tiff'],
+            'first_name' => ['required', 'string', 'min:2', 'max:50'],
             'first_name' => ['required', 'string', 'min:2', 'max:50'],
             'father_name' => ['required', 'string', 'min:2', 'max:50'],
             'grand_father_name' => ['required', 'string', 'min:2', 'max:50'],
