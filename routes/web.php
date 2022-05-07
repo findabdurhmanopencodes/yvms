@@ -85,5 +85,7 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::resource('TrainingCenter', TraininingCenterController::class);
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
+    Route::resource('volunter', VolunteerController::class);
+
 });
 require __DIR__ . '/auth.php';
