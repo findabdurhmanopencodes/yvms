@@ -340,8 +340,8 @@
                                             <div class="mt-2">
                                                 <label class="checkbox">
                                                     <input type="checkbox"
-                                                    {{ old('checkbox') == 'on' ? 'checked' : '' }}
-                                                    name="agree_check" checked="checked" id="agree_check">I read all of this content
+                                                    {{ old('agree_check') == 'on' ? 'checked' : '' }}
+                                                    name="agree_check" id="agree_check">I read all of this content
                                                     <span></span>
                                                 </label>
                                             </div>
@@ -812,7 +812,7 @@
                                             <button class="btn btn-success font-weight-bold text-uppercase px-9 py-4"
                                                 data-wizard-type="action-submit" id="submit_apply_button"
                                                 style="min-width: 150px; background-color:rgb(249 ,92 ,57);color:white;font-weight:bold;">Apply</button>
-                                            <button class="btn btn-primary font-weight-bold text-uppercase px-9 py-4"
+                                            <button {{ old('agree_check') == 'on' ? '' : 'disabled' }} class="btn btn-primary font-weight-bold text-uppercase px-9 py-4"
                                                 data-wizard-type="action-next" id="next_step_button">Next Step</button>
                                         </div>
                                     </div>

@@ -40,6 +40,7 @@ class StoreVolunteerRequest extends FormRequest
     public function rules()
     {
         return [
+            'agree_check' => ['required', 'string', 'min:2', 'max:50'],
             //first wizard validation
             'first_name' => ['required', 'string', 'min:2', 'max:50'],
             'father_name' => ['required', 'string', 'min:2', 'max:50'],
