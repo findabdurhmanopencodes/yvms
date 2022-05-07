@@ -13,6 +13,7 @@ use App\Models\Region;
 use App\Models\TrainingSession;
 use Carbon\Carbon;
 use DateTime;
+use Faker\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -127,6 +128,23 @@ class VolunteerController extends Controller
             ]);
             throw $validationException;
         }
-        Volunteer::create()
+        $faker = Factory::create();
+        $password = $faker->password(8);
+        $userData = [
+            'first_name' => $request->get('first_name'),
+            'father_name' => $request->get('father_name'),
+            'grand_father_name' => $request->get('grand_father_name'),
+            'email' => $request->get('email'),
+            'dob' => $dob_GC,
+            'gender' => $request->get('gender'),
+            'password' => $password,
+        ];
+        $volunteerData = [
+
+        ];
+        dump($volunteerData);
+        dd($userData);
+        // User::create()
+        // Volunteer::create
     }
 }
