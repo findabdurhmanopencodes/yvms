@@ -17,12 +17,12 @@
     <script src="{{ asset('assets/js/pages/custom/profile/profile.js') }}"></script>
     <script>
         $(function() {
-            $('#agree_check').on('click',function(){
-                if($('input#agree_check')[0].checked){
+            $('#agree_check').on('click', function() {
+                if ($('input#agree_check')[0].checked) {
 
                     $('button#next_step_button').prop('disabled', false);
                     $('button#submit_apply_button').prop('disabled', false);
-                }else{
+                } else {
                     $('button#next_step_button').prop('disabled', true);
                     $('button#submit_apply_button').prop('disabled', true);
                 }
@@ -81,7 +81,8 @@
                 $.each(result.data, function(key, value) {
                 $("#zone").append('<option '+oldZone+'=='+ value.id +'
                     value="' + value
-                                                                                                                                                        .id + '">' +
+                                                                                                                                                                                                        .id + '">
+                    ' +
                     value.name + '
                 </option>');
                 });
@@ -107,7 +108,9 @@
                 var isSelected = value.id == oldWoreda ?'selected':'';
                 $("#woreda").append('<option '+ isSelected + '
                     value="' + value
-                                                                                                                                                        .id + '">' +
+                                                                                                                                                                                                        .id + '">
+                    '
+                    +
                     value.name + '
                 </option>');
                 });
@@ -338,12 +341,21 @@
                                                 </p>
                                             </div>
                                             <div class="mt-2">
-                                                <label class="checkbox">
-                                                    <input type="checkbox"
-                                                    {{ old('agree_check') == 'on' ? 'checked' : '' }}
-                                                    name="agree_check" id="agree_check">I read all of this content
-                                                    <span></span>
-                                                </label>
+                                                <div class="form-group">
+                                                    <label class="checkbox">
+                                                        <input type="checkbox"
+                                                            {{ old('agree_check') == 'on' ? 'checked' : '' }}
+                                                            name="agree_check" id="agree_check">
+                                                        I read all of this content
+                                                        <span></span>
+
+                                                    </label>
+                                                    @error('agree_check')
+                                                        <div class="invalid-feedback d-block">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -351,8 +363,8 @@
                                     <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
                                         <h4 class="mb-10 font-weight-bold text-dark">Enter your Basic Details</h4>
                                         <div class="form-group row">
-                                            <label class="col-xl-3 col-lg-3 col-form-label text-right">Photo</label>
-                                            <div class="col-lg-9 col-xl-6">
+                                            <label class="col-xl-3 col-lg-3 col-form-label text-right">My Photo</label>
+                                            <div class="col-lg-9 mx-auto col-xl-6">
                                                 <div class="image-input image-input-outline" id="kt_profile_avatar"
                                                     style="background-image: url({{ asset('user.png') }})">
                                                     <div class="image-input-wrapper"
@@ -379,6 +391,11 @@
                                                 <span class="form-text text-muted">Allowed file types: png, jpg,
                                                     jpeg.</span>
                                             </div>
+                                            @error('photo')
+                                                <div class="invalid-feedback d-block text-center">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
                                         </div>
                                         <div class="row">
                                             <!--begin::Input-->
@@ -812,7 +829,8 @@
                                             <button class="btn btn-success font-weight-bold text-uppercase px-9 py-4"
                                                 data-wizard-type="action-submit" id="submit_apply_button"
                                                 style="min-width: 150px; background-color:rgb(249 ,92 ,57);color:white;font-weight:bold;">Apply</button>
-                                            <button {{ old('agree_check') == 'on' ? '' : 'disabled' }} class="btn btn-primary font-weight-bold text-uppercase px-9 py-4"
+                                            <button {{ old('agree_check') == 'on' ? '' : '' }}
+                                                class="btn btn-primary font-weight-bold text-uppercase px-9 py-4"
                                                 data-wizard-type="action-next" id="next_step_button">Next Step</button>
                                         </div>
                                     </div>

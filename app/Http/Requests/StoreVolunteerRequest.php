@@ -40,8 +40,10 @@ class StoreVolunteerRequest extends FormRequest
     public function rules()
     {
         return [
-            'agree_check' => ['required', 'string', 'min:2', 'max:50'],
+            'agree_check' => ['required', 'accepted'],
             //first wizard validation
+            'photo' => ['required', 'image','max:4096' ,'mimes:png,jpg,jpeg,bmp,tiff'],
+            'first_name' => ['required', 'string', 'min:2', 'max:50'],
             'first_name' => ['required', 'string', 'min:2', 'max:50'],
             'father_name' => ['required', 'string', 'min:2', 'max:50'],
             'grand_father_name' => ['required', 'string', 'min:2', 'max:50'],
