@@ -5,6 +5,7 @@ use App\Http\Controllers\FeildOfStudyController;
 use App\Http\Controllers\EducationalLevelController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\QuotaController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TraininingCenterController;
@@ -77,5 +78,6 @@ Route::middleware(['guest'])->group(function () {
     Route::resource('TrainingCenter', TraininingCenterController::class);
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
+    Route::get('/{id}/quota', [QuotaController::class, 'index'])->name('quota.index');
 });
 require __DIR__ . '/auth.php';

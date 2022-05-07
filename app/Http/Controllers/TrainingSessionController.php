@@ -49,7 +49,8 @@ class TrainingSessionController extends Controller
             }
         }
         if (in_array(true, $bool_Arr)) {
-            return redirect()->route('training_session.index');
+            $is_bool = true;
+            return redirect()->route('training_session.index', compact('is_bool'));
         }else{
             return view('training_session.create');
         }
