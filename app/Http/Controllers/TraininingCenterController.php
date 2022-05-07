@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TraininingCenter;
 use App\Http\Requests\StoreTraininingCenterRequest;
 use App\Http\Requests\UpdateTraininingCenterRequest;
+use App\Models\Zone;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -24,8 +25,7 @@ class TraininingCenterController extends Controller
         // if(!$user->hasRole('super-admin') && !$user->hasPermissionTo('role.viewAll')){
         //     abort(403);
         // }
-        $roles = TraininingCenter::all();
-        return view('training_center.index', compact('roles'));
+        return view('training_center.index');
     }
 
     /**
@@ -35,7 +35,7 @@ class TraininingCenterController extends Controller
      */
     public function create()
     {
-        return view("training_center.create");
+        return view("training_center.create",['zones'=>Zone::all()]);
     }
 
     /**
@@ -53,7 +53,7 @@ class TraininingCenterController extends Controller
             'code' => 'required|string|unique:trainining_centers,code',
         ]);
         $path = $request->file('logo')->store('public/Training Centers');
-        TraininingCenter::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'logo' => $path]);
+        TraininingCenter::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'logo' => $path,'zone_id'=>$request->get('zone_id')]);
         return redirect()->route('TrainingCenter.index')->with('message', 'Training Center created successfully');
     }
 

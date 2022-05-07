@@ -29,7 +29,7 @@ class VolunteerController extends Controller
      */
     public function index()
     {
-        //
+        return view('volunter.index',['volunters'=>Volunteer::paginate(10)]);
     }
 
     /**

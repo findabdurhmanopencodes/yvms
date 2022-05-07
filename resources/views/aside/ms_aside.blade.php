@@ -23,7 +23,7 @@
                     <span class="menu-text">All Programs</span>
                 </a>
             </li>
-            <li class="menu-item {{ strpos(Route::currentRouteName(), 'training_session.index') === 0 ? 'menu-item-active' : '' }}"
+            <li class="menu-item {{ strpos(Route::currentRouteName(), 'training_session.create') === 0 ? 'menu-item-active' : '' }}"
                 aria-haspopup="true">
                 <a href="{{ route('training_session.create', []) }}" class="menu-link">
                     <i class="menu-bullet menu-bullet-dot">

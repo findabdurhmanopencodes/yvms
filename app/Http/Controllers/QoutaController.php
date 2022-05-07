@@ -15,7 +15,7 @@ class QoutaController extends Controller
      */
     public function index()
     {
-        //
+        return view('quota.index');
     }
 
     /**
