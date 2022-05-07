@@ -267,6 +267,12 @@
             toastr.success('{{ Session::get('message') }}');
             })
         @endif
+        @if (Session::has('apply_success'))
+            $(function(){
+            swal.fire("Application submited!", "You applied successfully!", "success");
+            })
+            //
+        @endif
     </script>
 
 </body>

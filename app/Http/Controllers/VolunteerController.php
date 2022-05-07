@@ -204,7 +204,6 @@ class VolunteerController extends Controller
         $user->assignRole(Role::findByName('applicant'));
         $volunteerData['user_id'] = $user->id;
         $volunteer = Volunteer::create($volunteerData);
-        dump($volunteer);
-        dd($user);
+        return redirect()->route('home')->with('apply_success','You successfully applied! Check your email');
     }
 }

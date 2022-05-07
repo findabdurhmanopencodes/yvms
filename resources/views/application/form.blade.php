@@ -9,7 +9,6 @@
         .select2-container--below {
             width: 100% !important;
         }
-
     </style>
 @endpush
 @push('js')
@@ -308,7 +307,7 @@
                                     <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
                                         <h4 class="mb-10 font-weight-bold text-dark">Agree to terms and condition</h4>
                                         <div class="row">
-                                            <div class="" style="max-height:350px !important; overflow:auto;">
+                                            <div data-scroll="true" class="scroll scroll-pull" style="max-height:350px !important; overflow:auto;">
                                                 <p>
                                                     የብሄራዊ በጎ ፈቃድ _ አገልግሎት ማህበረሰብ _ አገልግሎት ፕሮግራም ተሳታፊ ወጣቶች መመልመያ መስፈርቶች
                                                     የብሄራዊ በጎ ፈቃድ ማህበረሰብ ልማት አገልግሎት ስልጠና በአገር አቀፍ ደረጃ በ10ሩ የክልል መስተዳድሮችና በ2ቱ
