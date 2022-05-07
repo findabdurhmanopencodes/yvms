@@ -181,30 +181,50 @@
         <div class="card-body">
             <!--begin: Datatable-->
             <div class="datatable datatable-default datatable-bordered datatable-loaded">
-                <table class="table">
+                <table class="table table-responsive">
                     <thead>
                         <tr>
                             <th>No.</th>
                             <th>Name</th>
-                            <th>Code</th>
-                            <th>Description</th>
+                            <th>Gender</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Woreda</th>
+                            <th>status</th>
                             <th> Actions</th>
 
                         </tr>
                     </thead>
                     <tbody style="" class="datatable-body">
 
-                        @foreach ($volunters as $volunters)
+                        @foreach ($volunters as $volunter)
                             <tr data-row="0" class="datatable-row" style="left: 0px;">
                                 <td>
                                     {{ $volunters->perPage() * $volunters->currentPage() - ($volunters->perPage() - ($loop->index + 1)) }}
                                 </td>
+                                <td>
+                                    {{ $volunter->first_name }} {{ $volunter->father_name }}
+                                </td>
+                                <td>
+                                    {{ $volunter->gender }}
+                                </td>
+                                <td>
+                                    {{ $volunter->phone }}
+                                </td>
+                                <td>
+                                    {{ $volunter->email }}
+                                </td>
+                                <td>
+                                    {{ $volunter->woreda?->name }}
+                                </td>
+                                <td>
+                                    <span class="badge badge-warning badge-pill">Pending</span>
+                                </td>
 
                                 <td>
                                     <div class="row">
-                                        <a class="btn btn-sm btn-info"
-                                            href="{{ route('volunter.show', $volunter->id) }}">
-                                            <i class="fa fa-edit"></i> Detail</a>
+                                        <a class="btn btn-bg btn-info" href="{{ route('applicant.show', ['applicant'=>$volunter->id]) }}">
+                                            <i class="fa fa-eye"></i> Detail</a>
                                     </div>
 
                                 </td>

@@ -9,4 +9,9 @@ class Volunteer extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function woreda()
+    {
+        return $this->belongsTo(woreda::class);
+    }
 }
