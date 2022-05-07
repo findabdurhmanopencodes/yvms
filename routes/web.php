@@ -42,6 +42,7 @@ Route::post('application/document/upload', [VolunteerController::class, 'applica
 //Role & Permission
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
+<<<<<<< HEAD
 Route::middleware(['guest'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
     Route::resource('training_session', TrainingSessionController::class);
@@ -56,6 +57,9 @@ Route::middleware(['guest'])->group(function () {
     // Route::resource('region', RegionController::class);
     // Route::resource('zone', ZoneController::class);
     // Route::resource('woreda', WoredaController::class);
+=======
+Route::middleware(['auth','verified'])->group(function () {
+>>>>>>> bd297d3 (Restaretd Progect and Email Done)
 
     Route::resource('educational_level', EducationalLevelController::class);
     Route::resource('feild_of_study', FeildOfStudyController::class);
@@ -71,7 +75,6 @@ Route::middleware(['guest'])->group(function () {
     // Route::resource('woreda', WoredaController::class);
     // Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::get('role/{role}/permission', [RoleController::class, 'permissions'])->name('role.permission.index');
     Route::post('role/{role}/permission', [RoleController::class, 'givePermission'])->name('role.permission.give');
     Route::delete('role/{role}/permission/{permission}', [RoleController::class, 'revokePermission'])->name('role.permission.revoke');
