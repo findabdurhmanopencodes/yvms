@@ -16,5 +16,5 @@
 @endpush
 
 @section('action_content')
-<!--begin::Form-->
+
 @endsection

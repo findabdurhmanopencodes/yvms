@@ -47,15 +47,16 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::resource('feild_of_study', FeildOfStudyController::class);
     Route::resource('disablity', DisablityController::class);
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
-    Route::resource('applicant', VolunteerController::class);
+    Route::any('/Volunter-session/{session_id}', [VolunteerController::class, 'index'])->name('applicant.index');
+    Route::resource('applicant', VolunteerController::class)->except(['index']);
 
     Route::resource('training_session', TrainingSessionController::class);
-    // Route::resource('qouta', QoutaController::class);
-    // Route::resource('user', UserController::class);
-    // Route::resource('region', RegionController::class);
-    // Route::resource('zone', ZoneController::class);
-    // Route::resource('woreda', WoredaController::class);
-    // Route::resource('role', RoleController::class);
+    Route::resource('qouta', QoutaController::class);
+    Route::resource('user', UserController::class);
+    Route::resource('region', RegionController::class);
+    Route::resource('zone', ZoneController::class);
+    Route::resource('woreda', WoredaController::class);
+    Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
     Route::get('role/{role}/permission', [RoleController::class, 'permissions'])->name('role.permission.index');
     Route::post('role/{role}/permission', [RoleController::class, 'givePermission'])->name('role.permission.give');
@@ -67,7 +68,8 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::resource('TrainingCenter', TraininingCenterController::class);
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
-    Route::resource('volunter', VolunteerController::class);
+
+
 
 });
 require __DIR__ . '/auth.php';

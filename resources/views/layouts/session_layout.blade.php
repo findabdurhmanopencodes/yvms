@@ -27,7 +27,7 @@
                         </a>
                     </div>
                     <div class="navi-item mb-2">
-                        <a href="#" class="navi-link py-4">
+                        <a href="{{ route('applicant.index',['session_id'=>$trainingSession->id]) }}" class="navi-link py-4">
                             <span class="navi-icon mr-2">
                                 <span class="svg-icon">
                                     <i class="fa fa-user"></i>
@@ -37,7 +37,7 @@
                         </a>
                     </div>
                     <div class="navi-item mb-2">
-                        <a href="custom/apps/profile/profile-1/personal-information.html" class="navi-link py-4">
+                        <a href="" class="navi-link py-4">
                             <span class="navi-icon mr-2">
                                 <span class="svg-icon">
                                     <!--begin::Svg Icon | path:assets/media/svg/icons/General/User.svg-->
