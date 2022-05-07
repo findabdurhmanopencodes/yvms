@@ -9,13 +9,16 @@ use App\Http\Requests\UpdateVolunteerRequest;
 use App\Models\Disablity;
 use App\Models\EducationalLevel;
 use App\Models\FeildOfStudy;
+use App\Models\File;
 use App\Models\Region;
 use App\Models\TrainingSession;
+use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
 use Faker\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Spatie\Permission\Models\Role;
 
 class VolunteerController extends Controller
 {
@@ -98,7 +101,7 @@ class VolunteerController extends Controller
     public function application_form()
     {
         $availableSession = TrainingSession::availableSession();
-        if(count($availableSession)<=0){
+        if (count($availableSession) <= 0) {
             return view('application.no-open-form');
         }
         $before = Carbon::now()->subYears(18)->format('d/m/Y');
@@ -107,11 +110,15 @@ class VolunteerController extends Controller
         $regions = Region::all();
         $educationLevels = EducationalLevel::$educationalLevel;
         $fields = FeildOfStudy::all();
-        return view('application.form', compact('disabilities', 'regions', 'educationLevels','fields','after','before'));
+        return view('application.form', compact('disabilities', 'regions', 'educationLevels', 'fields', 'after', 'before'));
     }
 
     public function apply(StoreVolunteerRequest $request)
     {
+        $availableSession = TrainingSession::availableSession();
+        if (count($availableSession) <= 0) {
+            return view('application.no-open-form');
+        }
         $date =  DateTime::createFromFormat('d/m/Y', $request->get('dob'));
         $year = $date->format('Y');
         $month = $date->format('m');
@@ -139,12 +146,68 @@ class VolunteerController extends Controller
             'gender' => $request->get('gender'),
             'password' => $password,
         ];
-        $volunteerData = [
+        $volunteerData = $request->validated();
+        /*field_of_study_id
+disablity_id
+            */
+        $woreda_id = $volunteerData['woreda'];
+        $field_of_study_id = $volunteerData['field_of_study'];
+        $disablity_id = $volunteerData['disability'];
+        $volunteerData['woreda_id'] = $woreda_id;
+        $volunteerData['field_of_study_id'] = $field_of_study_id;
+        $volunteerData['disablity_id'] = $disablity_id;
+        $volunteerData['dob'] = $dob_GC;
+        unset($volunteerData['agree_check'], $volunteerData['disability'], $volunteerData['field_of_study'], $volunteerData['region'], $volunteerData['woreda'], $volunteerData['zone']);
 
-        ];
-        dump($volunteerData);
-        dd($userData);
-        // User::create()
-        // Volunteer::create
+        if (!$request->bsc_document->isValid()) {
+            return ValidationException::withMessages(['bsc_document' => 'Unable to upload BSC document please retry']);
+        } else {
+            $volunteerData['bsc_document'] = FileController::fileUpload($request->bsc_document)->file_path;
+        }
+        if (!$request->ministry_document->isValid()) {
+            return ValidationException::withMessages(['ministry_document' => 'Unable to upload Ministry document please retry']);
+        } else {
+            $volunteerData['ministry_document'] = FileController::fileUpload($request->ministry_document)->file_path;
+        }
+        if (!$request->kebele_id->isValid()) {
+            return ValidationException::withMessages(['kebele_id' => 'Unable to upload Kebele Id please retry']);
+        } else {
+            $volunteerData['kebele_id'] = FileController::fileUpload($request->kebele_id)->file_path;
+        }
+        if (!$request->ethical_license->isValid()) {
+            return ValidationException::withMessages(['ethical_license' => 'Unable to upload Ethical LIcense Id please retry']);
+        } else {
+            $volunteerData['ethical_license'] = FileController::fileUpload($request->ethical_license)->file_path;
+        }
+        if ($request->hasFile('msc_document')) {
+            if (!$request->msc_document->isValid()) {
+                return ValidationException::withMessages(['msc_document' => 'Unable to upload MSC document please retry']);
+            }
+            $volunteerData['msc_document'] = FileController::fileUpload($request->msc_document)->file_path;
+        }
+        if ($request->hasFile('phd_document')) {
+            if (!$request->phd_document->isValid()) {
+                return ValidationException::withMessages(['phd_document' => 'Unable to upload PHD document please retry']);
+            }
+            $volunteerData['phd_document'] = FileController::fileUpload($request->phd_document)->file_path;
+        }
+        if ($request->hasFile('non_pregnant_validation_document')) {
+            if (!$request->non_pregnant_validation_document->isValid()) {
+                return ValidationException::withMessages(['non_pregnant_validation_document' => 'Unable to upload Non Pregnant Validation document please retry']);
+            }
+            $volunteerData['non_pregnant_validation_document'] = FileController::fileUpload($request->non_pregnant_validation_document)->file_path;
+        }
+        if (!isset($volunteerData['disability'])) {
+            unset($volunteerData['disability']);
+        }
+        // unset((isset($volunteerData['disability'])?$volunteerData['disability']:null));
+        $volunteerData['training_session_id'] = $availableSession[0]->id;
+        // dd($volunteerData);
+        $user = User::create($userData);
+        $user->assignRole(Role::findByName('applicant'));
+        $volunteerData['user_id'] = $user->id;
+        $volunteer = Volunteer::create($volunteerData);
+        dump($volunteer);
+        dd($user);
     }
 }

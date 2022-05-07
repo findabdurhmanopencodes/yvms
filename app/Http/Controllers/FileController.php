@@ -9,21 +9,15 @@ use Illuminate\Http\Request;
 
 class FileController extends Controller
 {
-    public function fileUpload(Request $request)
+
+    public static function fileUpload($file)
     {
-        $request->validate([
-            'file' => 'required|mimes:csv,txt,xlx,xls,pdf|max:2048'
-        ]);
         $fileModel = new File;
-        if ($request->file()) {
-            $fileName = time() . '_' . $request->file->getClientOriginalName();
-            $filePath = $request->file('file')->storeAs('uploads', $fileName, 'public');
-            $fileModel->name = time() . '_' . $request->file->getClientOriginalName();
-            $fileModel->file_path = '/storage/' . $filePath;
-            $fileModel->save();
-            return back()
-                ->with('success', 'File has been uploaded.')
-                ->with('file', $fileName);
-        }
+        $fileName = time() . '_' . $file->getClientOriginalName();
+        $filePath = $file->storeAs('uploads/bsc_document', $fileName, 'public');
+        $fileModel->name = time() . '_' . $file->getClientOriginalName();
+        $fileModel->file_path = '/storage/' . $filePath;
+        $fileModel->save();
+        return $fileModel;
     }
 }
