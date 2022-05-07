@@ -159,40 +159,40 @@ class VolunteerController extends Controller
         if (!$request->bsc_document->isValid()) {
             return ValidationException::withMessages(['bsc_document' => 'Unable to upload BSC document please retry']);
         } else {
-            $volunteerData['bsc_document'] = FileController::fileUpload($request->bsc_document)->file_path;
+            $volunteerData['bsc_document'] = FileController::fileUpload($request->bsc_document)->id;
         }
         if (!$request->ministry_document->isValid()) {
             return ValidationException::withMessages(['ministry_document' => 'Unable to upload Ministry document please retry']);
         } else {
-            $volunteerData['ministry_document'] = FileController::fileUpload($request->ministry_document)->file_path;
+            $volunteerData['ministry_document'] = FileController::fileUpload($request->ministry_document)->id;
         }
         if (!$request->kebele_id->isValid()) {
             return ValidationException::withMessages(['kebele_id' => 'Unable to upload Kebele Id please retry']);
         } else {
-            $volunteerData['kebele_id'] = FileController::fileUpload($request->kebele_id)->file_path;
+            $volunteerData['kebele_id'] = FileController::fileUpload($request->kebele_id)->id;
         }
         if (!$request->ethical_license->isValid()) {
             return ValidationException::withMessages(['ethical_license' => 'Unable to upload Ethical LIcense Id please retry']);
         } else {
-            $volunteerData['ethical_license'] = FileController::fileUpload($request->ethical_license)->file_path;
+            $volunteerData['ethical_license'] = FileController::fileUpload($request->ethical_license)->id;
         }
         if ($request->hasFile('msc_document')) {
             if (!$request->msc_document->isValid()) {
                 return ValidationException::withMessages(['msc_document' => 'Unable to upload MSC document please retry']);
             }
-            $volunteerData['msc_document'] = FileController::fileUpload($request->msc_document)->file_path;
+            $volunteerData['msc_document'] = FileController::fileUpload($request->msc_document)->id;
         }
         if ($request->hasFile('phd_document')) {
             if (!$request->phd_document->isValid()) {
                 return ValidationException::withMessages(['phd_document' => 'Unable to upload PHD document please retry']);
             }
-            $volunteerData['phd_document'] = FileController::fileUpload($request->phd_document)->file_path;
+            $volunteerData['phd_document'] = FileController::fileUpload($request->phd_document)->id;
         }
         if ($request->hasFile('non_pregnant_validation_document')) {
             if (!$request->non_pregnant_validation_document->isValid()) {
                 return ValidationException::withMessages(['non_pregnant_validation_document' => 'Unable to upload Non Pregnant Validation document please retry']);
             }
-            $volunteerData['non_pregnant_validation_document'] = FileController::fileUpload($request->non_pregnant_validation_document)->file_path;
+            $volunteerData['non_pregnant_validation_document'] = FileController::fileUpload($request->non_pregnant_validation_document)->id;
         }
         if (!isset($volunteerData['disability'])) {
             unset($volunteerData['disability']);
