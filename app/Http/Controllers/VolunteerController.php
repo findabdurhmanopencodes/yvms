@@ -156,6 +156,12 @@ class VolunteerController extends Controller
         $volunteerData['dob'] = $dob_GC;
         unset($volunteerData['agree_check'], $volunteerData['disability'], $volunteerData['field_of_study'], $volunteerData['region'], $volunteerData['woreda'], $volunteerData['zone']);
 
+        if (!$request->photo->isValid()) {
+            return ValidationException::withMessages(['photo' => 'Unable to upload photo please retry']);
+        } else {
+            $volunteerData['photo'] = FileController::fileUpload($request->photo)->id;
+        }
+
         if (!$request->bsc_document->isValid()) {
             return ValidationException::withMessages(['bsc_document' => 'Unable to upload BSC document please retry']);
         } else {
