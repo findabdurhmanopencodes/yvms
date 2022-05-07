@@ -29,7 +29,7 @@
     <!--end::Layout Themes-->
     @stack('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('calendar/css/redmond.calendars.picker.css') }}">
-    <link rel="shortcut icon" href="{{ asset('ju_logo.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('mop_logo.jpg') }}" />
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -37,11 +37,30 @@
 <body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed page-loading">
     <!--begin::Main-->
     <!--begin::Header Mobile-->
-    <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
+
+   
+    <div  style="background-color:  #5dade2;" id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
         <!--begin::Logo-->
-        <a href="index.html">
-            <img alt="Logo" src="assets/media/logos/logo-dark.png" />
+        <a href="#">
+            <img  style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" /> 
         </a>
+
+        <h3 style="color;white; font-size:13px;text-align:center;"> <br><br><br>
+            Youth Volunteerism<br> Managment System(YVMS)<br>
+            <hr>
+            <a href="{{ route('aplication.form') }}" class="btn"
+            style="min-width: 150px; background-color:rgb(249 ,92 ,57);color:white;font-weight:bold;">
+            <b>
+                {{-- <i class="fal fa-plus"></i> --}}
+            </b>
+            <span class="menu-text">Apply Now</span>
+        </a>
+        
+            
+            {{-- Ministry of Peace| የሰላም ሚኒስቴር  --}}
+
+            
+        </h3>
         <!--end::Logo-->
         <!--begin::Toolbar-->
         <div class="d-flex align-items-center">
@@ -75,8 +94,8 @@
                             <a href="#">
                                 <h3 style="color:#5dade2; font-size:13px;text-align:center;"> <br><br><br>
                                     Youth Volunteerism<br> Managment System(YVMS)<br>
-                                    <hr>
-                                    Ministry of Peace
+                                    <hr><br>
+                                   
                                 
                                     
                                     {{-- Ministry of Peace| የሰላም ሚኒስቴር  --}}
@@ -179,7 +198,7 @@
                         <!--begin::Container-->
                         <div class="container">
 
-                            lgljdg
+                        
                             @yield('content')
                         </div>
                         <!--end::Container-->

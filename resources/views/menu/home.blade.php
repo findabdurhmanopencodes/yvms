@@ -42,25 +42,26 @@
         <!--begin::Logo-->
         <a href="#">
             <img  style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" /> 
+           )
         </a>
-
+       
  
-            <h3 style="color;white; font-size:13px;text-align:center;"> <br><br><br>
-
-                <hr>
-                <a href="{{ route('aplication.form') }}" class="btn"
-                style="min-width: 150px; background-color:rgb(249 ,92 ,57);color:white;font-weight:bold;">
-                <b>
-                    {{-- <i class="fal fa-plus"></i> --}}
-                </b>
-                <span class="menu-text">Apply Now</span>
-            </a>
+        <h3 style="color;white; font-size:13px;text-align:center;"> <br><br><br>
+            Youth Volunteerism<br> Managment System(YVMS)<br>
+            <hr>
+            <a href="{{ route('aplication.form') }}" class="btn"
+            style="min-width: 150px; background-color:rgb(249 ,92 ,57);color:white;font-weight:bold;">
+            <b>
+                {{-- <i class="fal fa-plus"></i> --}}
+            </b>
+            <span class="menu-text">Apply Now</span>
+        </a>
+        
             
-                
-                {{-- Ministry of Peace| የሰላም ሚኒስቴር  --}}
+            {{-- Ministry of Peace| የሰላም ሚኒስቴር  --}}
 
-                
-            </h3>
+            
+        </h3>
         
         <!--end::Logo-->
         <!--begin::Toolbar-->
@@ -111,49 +112,10 @@
 
                             <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
                                 <!--begin::Header Nav-->
-                                <ul class="menu-nav" id="item-color">
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'home') === 0 ? 'menu-item-active' : '' }}">
-                                        <a href="{{ route('home') }}" class="menu-link">
-                                            <i  style="color:#5dade2 !important;" class=" fa fa-home"></i>
-                                            <span class="menu-text">&nbsp; Home</span>
-                                            <i class="menu-arrow"></i>
-                                        </a>
-                                    </li>
-                                    <li
-                                        class="menu-item {{ strpos(Route::currentRouteName(), 'about_us') === 0 ? 'menu-item-active' : '' }}">
-                                        <a  href="{{ route('home') }}" class="menu-link">
-                                            <i  style="color:#5dade2 !important;" class=" fa fa-flag"></i>
-                                            <span  style="color:#5dade2 !important;" class="menu-text"> &nbsp; About Us</span>
-                                            <i class="menu-arrow"></i>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'contact_us') === 0 ? 'menu-item-active' : '' }}">
-                                        <a href="{{ route('home') }}" class="menu-link menu-toggle">
-                                            <i  style="color:#5dade2 !important;" class="fa fa-address-book"></i>
 
-
-                                            <span  style="color:#5dade2 !important;" class="menu-text"> &nbsp; Contact Us</span>
-                                            <i class="menu-arrow"></i>
-                                        </a>
-                                    </li>
-
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'contact_us') === 0 ? 'menu-item-active' : '' }}">
-                                        <a href="{{ route('home') }}" class="menu-link menu-toggle">
-                                            <i  style="color:#5dade2 !important;" class="fa fa-eye"></i>
-                                            <span  style="color:#5dade2 !important;" class="menu-text"> &nbsp; Vision & Mision </span>
-                                            <i class="menu-arrow"></i>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'contact_us') === 0 ? 'menu-item-active' : '' }}">
-                                        <a href="#" class="menu-link menu-toggle">
-                                            <i  style="color:#5dade2 !important;" class="fas fa-sign-in-alt"></i>
-
-
-                                            <span  style="color:#5dade2 !important;" class="menu-text"> &nbsp; Login </span>
-                                            <i class="menu-arrow"></i>
-                                        </a>
-                                    </li>
-                                </ul>
+                                @include('menu.header')
+                                
+                              
                                 <!--end::Header Nav-->
                             </div>
                             <!--end::Header Menu-->

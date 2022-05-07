@@ -220,8 +220,8 @@
                                         </span>
                                     </div>
                                     <div class="wizard-label">
-                                        <h3 class="wizard-title">Agree to condition</h3>
-                                        <div class="wizard-desc">Accept code of conduct</div>
+                                        <h3 class="wizard-title"> </h3>Application Requirements </h3>
+                                        <div class="wizard-desc">Code of conduct</div>
                                     </div>
                                 </div>
                             </div>
@@ -305,9 +305,10 @@
                                     @csrf
                                     <!--begin: Wizard Step 0-->
                                     <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
-                                        <h4 class="mb-10 font-weight-bold text-dark">Agree to terms and condition</h4>
+                                        <h4 class="mb-10 font-weight-bold text-dark">Code of Conduct</h4>
                                         <div class="row">
                                             <div data-scroll="true" class="scroll scroll-pull" style="max-height:350px !important; overflow:auto;">
+                                               
                                                 <p>
                                                     የብሄራዊ በጎ ፈቃድ _ አገልግሎት ማህበረሰብ _ አገልግሎት ፕሮግራም ተሳታፊ ወጣቶች መመልመያ መስፈርቶች
                                                     የብሄራዊ በጎ ፈቃድ ማህበረሰብ ልማት አገልግሎት ስልጠና በአገር አቀፍ ደረጃ በ10ሩ የክልል መስተዳድሮችና በ2ቱ
@@ -343,14 +344,17 @@
                                                     መላክ ይኖርባቸዋል
                                                 </p>
                                             </div>
+                                            
                                             <div class="mt-2">
                                                 <div class="form-group">
                                                     <label class="checkbox">
                                                         <input type="checkbox"
                                                             {{ old('agree_check') == 'on' ? 'checked' : '' }}
                                                             name="agree_check" id="agree_check">
-                                                        I read all of this content
-                                                        <span></span>
+                                                             I Accepted all <a href="{{ route('terms') }}" target="_blank"> terms of conditions  </a>
+                                                        <span>
+                                                            
+                                                        </span>
 
                                                     </label>
                                                     @error('agree_check')

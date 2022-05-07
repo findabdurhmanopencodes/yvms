@@ -15,7 +15,10 @@
         <div class="login-form login-signin">
             <div class="text-center mb-10 mb-lg-20">
             	<a href="#" class="flex-column-auto mt-5">
-                    <img src="assets/media/logos/mop_logo.png" class="max-h-150px" alt="" />
+                
+                    <img  style="height:150px;" src="{{ asset('assets/media/logos/mop_logo.jpg') }}" /> 
+                             
+
                 </a>
             </div>
             <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -28,7 +31,7 @@
                 <form class="form" novalidate="novalidate" method="post" action="{{ route('login') }}">
                     @csrf
                     <div class="form-group">
-                        <input class="form-control" type="text" placeholder="email" name="email" autocomplete="off" />
+                        <input class="form-control" type="text" placeholder="Email" name="email" autocomplete="off" />
                     </div>
                     <div class="form-group">
                         <input class="form-control" type="password" placeholder="Password" name="password" autocomplete="off" />
