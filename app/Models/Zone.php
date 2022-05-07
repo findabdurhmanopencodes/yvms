@@ -25,6 +25,9 @@ class Zone extends Model
     public function woredas(){
         return $this->hasMany(Woreda::class);
     }
+    public function trainingCenters(){
+        return $this->hasMany(TraininingCenter::class);
+    }
 
     public function region(){
         return $this->belongsTo(Region::class);

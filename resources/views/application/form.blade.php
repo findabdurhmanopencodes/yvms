@@ -9,12 +9,16 @@
         .select2-container--below {
             width: 100% !important;
         }
-
     </style>
 @endpush
 @push('js')
+    <script>
+        var MinDob = '{{$after}}';
+        var MaxDob = '{{$before}}';
+    </script>
     <script src="{{ asset('assets/js/pages/custom/wizard/wizard-2.js') }}"></script>
     <script src="{{ asset('assets/js/pages/custom/profile/profile.js') }}"></script>
+
     <script>
         $(function() {
             $('#agree_check').on('click', function() {
@@ -80,7 +84,7 @@
                 $.each(result.data, function(key, value) {
                 $("#zone").append('<option '+oldZone+'=='+ value.id +'
                     value="' + value
-                                                                                                                                                                                                        .id + '">
+                                                                                                                                                                                                                                .id + '">
                     ' +
                     value.name + '
                 </option>');
@@ -107,7 +111,7 @@
                 var isSelected = value.id == oldWoreda ?'selected':'';
                 $("#woreda").append('<option '+ isSelected + '
                     value="' + value
-                                                                                                                                                                                                        .id + '">
+                                                                                                                                                                                                                                .id + '">
                     '
                     +
                     value.name + '
@@ -216,8 +220,8 @@
                                         </span>
                                     </div>
                                     <div class="wizard-label">
-                                        <h3 class="wizard-title">Agree to condition</h3>
-                                        <div class="wizard-desc">Accept code of conduct</div>
+                                        <h3 class="wizard-title"> </h3>Application Requirements </h3>
+                                        <div class="wizard-desc">Code of conduct</div>
                                     </div>
                                 </div>
                             </div>
@@ -301,9 +305,10 @@
                                     @csrf
                                     <!--begin: Wizard Step 0-->
                                     <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
-                                        <h4 class="mb-10 font-weight-bold text-dark">Agree to terms and condition</h4>
+                                        <h4 class="mb-10 font-weight-bold text-dark">Code of Conduct</h4>
                                         <div class="row">
-                                            <div class="" style="max-height:350px !important; overflow:auto;">
+                                            <div data-scroll="true" class="scroll scroll-pull" style="max-height:350px !important; overflow:auto;">
+                                               
                                                 <p>
                                                     የብሄራዊ በጎ ፈቃድ _ አገልግሎት ማህበረሰብ _ አገልግሎት ፕሮግራም ተሳታፊ ወጣቶች መመልመያ መስፈርቶች
                                                     የብሄራዊ በጎ ፈቃድ ማህበረሰብ ልማት አገልግሎት ስልጠና በአገር አቀፍ ደረጃ በ10ሩ የክልል መስተዳድሮችና በ2ቱ
@@ -339,14 +344,17 @@
                                                     መላክ ይኖርባቸዋል
                                                 </p>
                                             </div>
+                                            
                                             <div class="mt-2">
                                                 <div class="form-group">
                                                     <label class="checkbox">
                                                         <input type="checkbox"
                                                             {{ old('agree_check') == 'on' ? 'checked' : '' }}
                                                             name="agree_check" id="agree_check">
-                                                        I read all of this content
-                                                        <span></span>
+                                                             I Accepted all <a href="{{ route('terms') }}" target="_blank"> terms of conditions  </a>
+                                                        <span>
+                                                            
+                                                        </span>
 
                                                     </label>
                                                     @error('agree_check')
@@ -815,6 +823,13 @@
                                                 <!--end::Input-->
                                             </div>
                                         </div>
+                                        <div class="row mt-2">
+                                            <div class="form-group">
+                                                <label class="">
+                                                    By clicking Apply, you agree to our <a href="#"><b>Terms</b></a>, and <a href="#"><b>Conditions</b></a>. You may receive <b>Email</b> Notifications from us and can opt out any time.
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                     <!--end: Wizard Step 4-->
 
@@ -825,7 +840,8 @@
                                                 data-wizard-type="action-prev">Previous</button>
                                         </div>
                                         <div>
-                                            <button class="btn btn-success font-weight-bold text-uppercase px-9 py-4"
+                                            <button onclick="event.preventDefault();"
+                                                class="btn btn-success font-weight-bold text-uppercase px-9 py-4"
                                                 data-wizard-type="action-submit" id="submit_apply_button"
                                                 style="min-width: 150px; background-color:rgb(249 ,92 ,57);color:white;font-weight:bold;">Apply</button>
                                             <button {{ old('agree_check') == 'on' ? '' : '' }}

@@ -29,7 +29,8 @@
     <!--end::Layout Themes-->
     @stack('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('calendar/css/redmond.calendars.picker.css') }}">
-    <link rel="shortcut icon" href="{{ asset('mop_logo.jpg') }}" />
+    <link rel="shortcut icon" href="{{ asset('assets/media/logos/mop_logo.jpg') }}" />
+    <img  style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" /> 
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -37,30 +38,30 @@
 <body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed page-loading">
     <!--begin::Main-->
     <!--begin::Header Mobile-->
-
-   
     <div  style="background-color:  #5dade2;" id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
         <!--begin::Logo-->
         <a href="#">
             <img  style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" /> 
         </a>
 
-        <h3 style="color;white; font-size:13px;text-align:center;"> <br><br><br>
-            Youth Volunteerism<br> Managment System(YVMS)<br>
-            <hr>
-            <a href="{{ route('aplication.form') }}" class="btn"
-            style="min-width: 150px; background-color:rgb(249 ,92 ,57);color:white;font-weight:bold;">
-            <b>
-                {{-- <i class="fal fa-plus"></i> --}}
-            </b>
-            <span class="menu-text">Apply Now</span>
-        </a>
-        
+ 
+            <h3 style="color;white; font-size:13px;text-align:center;"> <br><br><br>
+                Youth Volunteerism<br> Managment System(YVMS)<br>
+                <hr>
+                <a href="{{ route('aplication.form') }}" class="btn"
+                style="min-width: 150px; background-color:rgb(249 ,92 ,57);color:white;font-weight:bold;">
+                <b>
+                    {{-- <i class="fal fa-plus"></i> --}}
+                </b>
+                <span class="menu-text">Apply Now</span>
+            </a>
             
-            {{-- Ministry of Peace| የሰላም ሚኒስቴር  --}}
+                
+                {{-- Ministry of Peace| የሰላም ሚኒስቴር  --}}
 
-            
-        </h3>
+                
+            </h3>
+        
         <!--end::Logo-->
         <!--begin::Toolbar-->
         <div class="d-flex align-items-center">
@@ -81,9 +82,6 @@
                 <div id="kt_header" class="header header-fixed">
                     <!--begin::Container-->
                     <div class="container-fluid d-flex align-items-stretch justify-content-between">
-                       
-                       
-                        
                         <!--begin::Header Menu Wrapper-->
                         <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
                             <!--begin::Header Logo-->
@@ -94,8 +92,8 @@
                             <a href="#">
                                 <h3 style="color:#5dade2; font-size:13px;text-align:center;"> <br><br><br>
                                     Youth Volunteerism<br> Managment System(YVMS)<br>
-                                    <hr><br>
-                                   
+                                    <hr>
+                                    Ministry of Peace
                                 
                                     
                                     {{-- Ministry of Peace| የሰላም ሚኒስቴር  --}}
@@ -111,49 +109,7 @@
 
                             <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
                                 <!--begin::Header Nav-->
-                                <ul class="menu-nav" id="item-color">
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'home') === 0 ? 'menu-item-active' : '' }}">
-                                        <a href="{{ route('home') }}" class="menu-link">
-                                            <i  style="color:#5dade2 !important;" class=" fa fa-home"></i>
-                                            <span class="menu-text">&nbsp; Home</span>
-                                            <i class="menu-arrow"></i>
-                                        </a>
-                                    </li>
-                                    <li
-                                        class="menu-item {{ strpos(Route::currentRouteName(), 'about_us') === 0 ? 'menu-item-active' : '' }}">
-                                        <a  href="{{ route('home') }}" class="menu-link">
-                                            <i  style="color:#5dade2 !important;" class=" fa fa-flag"></i>
-                                            <span  style="color:#5dade2 !important;" class="menu-text"> &nbsp; About Us</span>
-                                            <i class="menu-arrow"></i>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'contact_us') === 0 ? 'menu-item-active' : '' }}">
-                                        <a href="{{ route('home') }}" class="menu-link menu-toggle">
-                                            <i  style="color:#5dade2 !important;" class="fa fa-address-book"></i>
-
-
-                                            <span  style="color:#5dade2 !important;" class="menu-text"> &nbsp; Contact Us</span>
-                                            <i class="menu-arrow"></i>
-                                        </a>
-                                    </li>
-
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'contact_us') === 0 ? 'menu-item-active' : '' }}">
-                                        <a href="{{ route('home') }}" class="menu-link menu-toggle">
-                                            <i  style="color:#5dade2 !important;" class="fa fa-eye"></i>
-                                            <span  style="color:#5dade2 !important;" class="menu-text"> &nbsp; Vision & Mision </span>
-                                            <i class="menu-arrow"></i>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'contact_us') === 0 ? 'menu-item-active' : '' }}">
-                                        <a href="#" class="menu-link menu-toggle">
-                                            <i  style="color:#5dade2 !important;" class="fas fa-sign-in-alt"></i>
-
-
-                                            <span  style="color:#5dade2 !important;" class="menu-text"> &nbsp; Login </span>
-                                            <i class="menu-arrow"></i>
-                                        </a>
-                                    </li>
-                                </ul>
+                                @include('menu.header')
                                 <!--end::Header Nav-->
                             </div>
                             <!--end::Header Menu-->
@@ -168,23 +124,7 @@
                                     </b>
                                     <span class="menu-text">Apply Now</span>
                                 </a>
-                                {{-- <div class="btn btn-icon btn-clean btn-lg mr-1" id="kt_quick_panel_toggle">
-                                    <span class="svg-icon svg-icon-xl svg-icon-primary">
-                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                            viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24"></rect>
-                                                <rect fill="#000000" x="4" y="4" width="7" height="7" rx="1.5"></rect>
-                                                <path
-                                                    d="M5.5,13 L9.5,13 C10.3284271,13 11,13.6715729 11,14.5 L11,18.5 C11,19.3284271 10.3284271,20 9.5,20 L5.5,20 C4.67157288,20 4,19.3284271 4,18.5 L4,14.5 C4,13.6715729 4.67157288,13 5.5,13 Z M14.5,4 L18.5,4 C19.3284271,4 20,4.67157288 20,5.5 L20,9.5 C20,10.3284271 19.3284271,11 18.5,11 L14.5,11 C13.6715729,11 13,10.3284271 13,9.5 L13,5.5 C13,4.67157288 13.6715729,4 14.5,4 Z M14.5,13 L18.5,13 C19.3284271,13 20,13.6715729 20,14.5 L20,18.5 C20,19.3284271 19.3284271,20 18.5,20 L14.5,20 C13.6715729,20 13,19.3284271 13,18.5 L13,14.5 C13,13.6715729 13.6715729,13 14.5,13 Z"
-                                                    fill="#000000" opacity="0.3"></path>
-                                            </g>
-                                        </svg>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                </div> --}}
+                             
                             </div>
                         </div>
                     </div>
@@ -194,11 +134,19 @@
                 <!--begin::Content-->
                 <div class="content d-flex flex-column flex-column-fluid p-0" id="kt_content">
                     <!--begin::Entry-->
+               
                     <div class="d-flex flex-column-fluid">
-                        <!--begin::Container-->
+
+                    
                         <div class="container">
 
-                        
+                           
+
+
+
+
+
+                            
                             @yield('content')
                         </div>
                         <!--end::Container-->
@@ -214,13 +162,18 @@
                         <!--begin::Copyright-->
                         <div class="text-dark order-2 order-md-1">
                             <span class="text-muted font-weight-bold mr-2">2020©</span>
-                            <a href="#" target="_blank" class="text-dark-75 text-hover-primary">Ministry Of Peace</a>
+                            <a href="#" target="_blank" class="text-dark-75 text-hover-primary"> Ministry of Peace| የሰላም ሚኒስቴር </a>
                         </div>
                         <!--end::Copyright-->
                         <!--begin::Nav-->
                         <div class="nav nav-dark">
-                            <a href="#" target="_blank" class="nav-link pl-0 pr-5">About</a>
-                            <a href="#" target="_blank" class="nav-link pl-0 pr-0">Contact</a>
+                            <a href="#" target="_blank" class="nav-link pl-0 pr-5"> Home</a> 
+                            <a href="#" target="_blank" class="nav-link pl-0 pr-0"> About Us</a> &nbsp;&nbsp;
+                            <a href="#" target="_blank" class="nav-link pl-0 pr-5"> Contact us</a>
+                            <a href="#" target="_blank" class="nav-link pl-0 pr-0"> Vision & Mission </a>&nbsp;&nbsp;
+                            <a href="#" target="_blank" class="nav-link pl-0 pr-0"> Login</a>
+                            
+
                         </div>
                         <!--end::Nav-->
                     </div>
@@ -325,15 +278,10 @@
             toastr.success('{{ Session::get('message') }}');
             })
         @endif
-        @if (Session::has('apply_success'))
-            $(function(){
-            swal.fire("Application submited!", "You applied successfully!", "success");
-            })
-            //
-        @endif
     </script>
-
+@section('title','Welcome To Ministry Of Peace')
 </body>
 <!--end::Body-->
 
 </html>
+
