@@ -17,7 +17,8 @@ class Woreda extends Model
     protected $fillable = [
         'name',
         'code',
-        'zone_id'
+        'zone_id',
+        'qoutaInpercent'
     ];
 
     public function zone(){

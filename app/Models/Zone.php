@@ -18,7 +18,8 @@ class Zone extends Model
     protected $fillable = [
         'name',
         'code',
-        'region_id'
+        'region_id',
+        'qoutaInpercent'
     ];
 
     public function woredas(){

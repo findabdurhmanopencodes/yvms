@@ -50,13 +50,14 @@ class ZoneController extends Controller
      */
     public function store(StoreZoneRequest $request)
     {
+        $zoneInquota = $request->get('zone_quota')/100;
         $zone = new Zone();
         $request->validate(['name' => 'required|string|unique:zones,name', 'code' => 'required|string|unique:zones,code']);
         // $zone->name = $request->get('name');
         // $zone->code = $request->get('code');
         // $zone->region_id = $request->get('region');
         // $zone->save();
-        Zone::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'region_id' => $request->get('region')]);
+        Zone::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'region_id' => $request->get('region'), 'qoutaInpercent'=>$zoneInquota]);
         return redirect()->route('zone.index')->with('message', 'Zone created successfully');
     }
 

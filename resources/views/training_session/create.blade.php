@@ -37,6 +37,13 @@
                         @endisset
                         <div class="form-group row">
                             <div class="col-lg-5">
+                                <label>Program Name:</label>
+                                <input type="text" class="form-control" placeholder="program name" name="name"/>
+                                @error('name')
+                                    <small class="text-danger"><b>{{ $message }}</b></small>
+                                @enderror
+                            </div>
+                            <div class="col-lg-5">
                                 <label>Start Date:</label>
                                 <input type="text" id="start_date"
                                 class="@error('start_date') is-invalid @enderror form-control " name="start_date"
@@ -47,6 +54,9 @@
                                 @enderror
                             </div>
 
+                        </div>
+
+                        <div class="form-group row">
                             <div class="col-lg-5">
                                 <label>End Date:</label>
                                 <input type="text" id="end_date"
@@ -58,9 +68,6 @@
                             @enderror
                             </div>
 
-                        </div>
-
-                        <div class="form-group row">
                             <div class="col-lg-5">
                                 <label>Registration start date:</label>
                                 <input type="text" id="registration_start_date"
@@ -72,6 +79,10 @@
                                 @enderror
                             </div>
 
+                            
+                        </div>
+
+                        <div class="form-group row">
                             <div class="col-lg-5">
                                 <label>Registration end date:</label>
                                 <input type="text" id="registration_dead_line"
@@ -82,9 +93,6 @@
                                     <small class="text-danger"><b>{{ $message }}</b></small>
                                 @enderror
                             </div>
-                        </div>
-
-                        <div class="form-group row">
                             <div class="col-lg-5">
                                 <label>number of volunteers:</label>
                                 <input type="number" class="form-control" 

@@ -178,6 +178,15 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
+                                                    <div class="col-lg-6">
+                                                        <label>Woreda Quota:</label>
+                                                        <div class="input-group">
+                                                            <input type="number" class="form-control" placeholder="Woreda quota in percent" name="woreda_quota"/>
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text">%</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

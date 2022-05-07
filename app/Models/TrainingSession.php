@@ -30,4 +30,8 @@ class TrainingSession extends Model
         $today = Carbon::today();
         return TrainingSession::where('registration_start_date', '<=', $today)->where('registration_dead_line', '>=', $today)->get();
     }
+
+    public function quotas(){
+        return $this->hasMany(Qouta::class);
+    }
 }

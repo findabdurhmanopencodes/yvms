@@ -49,13 +49,14 @@ class WoredaController extends Controller
      */
     public function store(StoreWoredaRequest $request)
     {
+        $woredaInquota = $request->get('woreda_quota')/100;
         // $woreda = new Woreda();
         $request->validate(['name' => 'required|string|unique:woredas,name', 'code' => 'required|string|unique:woredas,code']);
         // $zone->name = $request->get('name');
         // $zone->code = $request->get('code');
         // $zone->region_id = $request->get('region');
         // $zone->save();
-        Woreda::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'zone_id' => $request->get('woreda')]);
+        Woreda::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'zone_id' => $request->get('woreda'), 'qoutaInpercent'=>$woredaInquota]);
         return redirect()->route('woreda.index')->with('message', 'Woreda created successfully');
     }
 

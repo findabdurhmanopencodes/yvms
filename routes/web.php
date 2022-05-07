@@ -43,6 +43,7 @@ Route::post('application/document/upload', [VolunteerController::class, 'applica
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
 Route::middleware(['guest'])->group(function () {
+    Route::get('training_session/{training_session}/qouta',[TrainingSessionController::class,'showQuota'])->name('training_session.quota');
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
     Route::resource('training_session', TrainingSessionController::class);
     Route::resource('user', UserController::class);
