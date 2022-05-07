@@ -18,7 +18,9 @@ class ZoneController extends Controller
     public function index(Region $region, Request $request)
     {
         if ($request->ajax()) {
-            return datatables()->of(Zone::select())->make(true);
+            return datatables()->of(Zone::select())->addColumn('region', function (Zone $zone){
+                return $zone->region->name;
+            })->make(true);
         }
         // $user = Auth::user();
         // if(!$user->hasRole('super-admin') && !$user->hasPermissionTo('role.viewAll')){

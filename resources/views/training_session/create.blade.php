@@ -42,6 +42,9 @@
                                 class="@error('start_date') is-invalid @enderror form-control " name="start_date"
                                 placeholder="start date" autocomplete="off" 
                                 value="{{ old('start_date') ?? (isset($training_session) ? $training_session->start_date : '') }}" required/>
+                                @error('start_date')
+                                    <small class="text-danger"><b>{{ $message }}</b></small>
+                                @enderror
                             </div>
 
                             <div class="col-lg-5">
@@ -50,6 +53,9 @@
                                 class="@error('end_date') is-invalid @enderror form-control " name="end_date"
                                 placeholder="end date" autocomplete="off" 
                                 value="{{ old('end_date') ?? (isset($training_session) ? $training_session->end_date : '') }}" required/>
+                                @error('end_date')
+                                <small class="text-danger"><b>{{ $message }}</b></small>
+                            @enderror
                             </div>
 
                         </div>
@@ -61,6 +67,9 @@
                                 class="@error('registration_start_date') is-invalid @enderror form-control " name="registration_start_date"
                                 placeholder="registration start date" autocomplete="off" 
                                 value="{{ old('registration_start_date') ?? (isset($training_session) ? $training_session->registration_start_date : '') }}" required/>
+                                @error('registration_start_date')
+                                    <small class="text-danger"><b>{{ $message }}</b></small>
+                                @enderror
                             </div>
 
                             <div class="col-lg-5">
@@ -69,6 +78,9 @@
                                 class="@error('registration_dead_line') is-invalid @enderror form-control " name="registration_dead_line"
                                 placeholder="registration end date" autocomplete="off" 
                                 value="{{ old('registration_dead_line') ?? (isset($training_session) ? $training_session->registration_dead_line : '') }}" required/>
+                                @error('registration_dead_line')
+                                    <small class="text-danger"><b>{{ $message }}</b></small>
+                                @enderror
                             </div>
                         </div>
 

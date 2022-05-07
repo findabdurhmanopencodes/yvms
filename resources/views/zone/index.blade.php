@@ -9,7 +9,16 @@
         <a href="" class="text-muted">Zones</a>
     </li>
 @endsection
-
+@push('css')
+    <style>
+        .select2,
+        .select2-container,
+        .select2-container--default,
+        .select2-container--below {
+            width: 100% !important;
+        }
+    </style>
+@endpush
 @push('js')
     <script>
         var HOST_URL = "{{ route('zone.index') }}";
@@ -53,7 +62,10 @@
     </script>
     <script>
         $( document ).ready(function() {
-            console.log( "ready!" );
+            $('#region').select2({
+                placeholder: "Select a region"
+            });
+
         });
         var COLUMNS = [{
                 field: 'id',
@@ -78,9 +90,13 @@
                 sortable: 'asc',
             },
             {
-                field: 'region_id',
+                field: 'region',
                 title: 'Region',
                 sortable: 'asc',
+                // template: function(row) {
+                //     console.log(row);
+                //     return row.region_id;
+                // }
             },
             {
                 field: 'Actions',
@@ -105,10 +121,10 @@
                                             ';
                 },
             }
-        ]
+        ];
     </script>
     <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/crud/forms/widgets/select2.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/pages/crud/forms/widgets/select2.js') }}"></script> --}}
 @endpush
 @section('content')
     <!--begin::Card-->
@@ -158,7 +174,7 @@
                                                     <div class="col-lg-6">
                                                         <label>Region:</label>
                                                         <br>
-                                                        <select class="form-control select2" id="kt_select2_1" name="region" required>
+                                                        <select class="form-control select2" id="region" name="region" required>
                                                             <option value=""></option>
                                                             @foreach ($regions as $region)
                                                                 <option value="{{ $region->id }}">{{ $region->code }}</option>

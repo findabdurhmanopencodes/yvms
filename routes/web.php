@@ -40,7 +40,7 @@ Route::post('application/document/upload', [VolunteerController::class, 'applica
 //Role & Permission
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['guest'])->group(function () {
     Route::resource('training_session', TrainingSessionController::class);
     Route::resource('user', UserController::class);
     Route::resource('region', RegionController::class);
