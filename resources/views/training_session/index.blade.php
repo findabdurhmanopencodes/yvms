@@ -110,12 +110,16 @@
                                                 <a href="/training_session/' + training_sessionId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-pen"></i>\
                                                 </a>\
+                                                <a href="/training_session/' + training_sessionId + '" class="btn btn-sm btn-clean btn-icon">\
+                                                    <i class="flaticon-eye"></i>\
+                                                </a>\
                                                 \
                                             </div>\
                                             ';
                 },
             }
         ]
+
     </script>
     <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
 @endpush
