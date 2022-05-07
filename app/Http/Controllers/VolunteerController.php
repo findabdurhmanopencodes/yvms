@@ -147,9 +147,6 @@ class VolunteerController extends Controller
             'password' => $password,
         ];
         $volunteerData = $request->validated();
-        /*field_of_study_id
-disablity_id
-            */
         $woreda_id = $volunteerData['woreda'];
         $field_of_study_id = $volunteerData['field_of_study'];
         $disablity_id = $volunteerData['disability'];
