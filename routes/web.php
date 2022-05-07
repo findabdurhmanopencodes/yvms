@@ -43,7 +43,6 @@ Route::post('application/document/upload', [VolunteerController::class, 'applica
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
 Route::middleware(['auth','verified'])->group(function () {
-
     Route::resource('educational_level', EducationalLevelController::class);
     Route::resource('feild_of_study', FeildOfStudyController::class);
     Route::resource('disablity', DisablityController::class);
