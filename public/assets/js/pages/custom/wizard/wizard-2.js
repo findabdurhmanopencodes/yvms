@@ -13,7 +13,7 @@ var KTWizard2 = function () {
         // Initialize form wizard
         _wizard = new KTWizard(_wizardEl, {
             startStep: 5, // initial active step number
-            clickableSteps: true // to make steps clickable this set value true and add data-wizard-clickable="true" in HTML for class="wizard" element
+            clickableSteps: false // to make steps clickable this set value true and add data-wizard-clickable="true" in HTML for class="wizard" element
         });
 
         // Validation before going to next page
@@ -34,7 +34,6 @@ var KTWizard2 = function () {
                     });
                 }
             });
-
             _wizard.stop(); // Don't go to the next step
         });
 
