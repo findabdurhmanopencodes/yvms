@@ -12,7 +12,7 @@ var KTWizard2 = function () {
     var initWizard = function () {
         // Initialize form wizard
         _wizard = new KTWizard(_wizardEl, {
-            startStep: 4, // initial active step number
+            startStep: 5, // initial active step number
             clickableSteps: true // to make steps clickable this set value true and add data-wizard-clickable="true" in HTML for class="wizard" element
         });
 
@@ -201,65 +201,145 @@ var KTWizard2 = function () {
         _validations.push(FormValidation.formValidation(
             _formEl, {
                 fields: {
-                    educational_level: {
+                    // educational_level: {
+                    //     validators: {
+                    //         notEmpty: {
+                    //             message: 'Educational level is required'
+                    //         },
+                    //     }
+                    // },
+                    // field_of_study: {
+                    //     validators: {
+                    //         notEmpty: {
+                    //             message: 'Field of study is required'
+                    //         },
+                    //     }
+                    // },
+                    // gpa: {
+                    //     validators: {
+                    //         notEmpty: {
+                    //             message: 'GPA is required'
+                    //         },
+                    //         lessThan: {
+                    //             max: 4.0,
+                    //             inclusive: true,
+                    //             message: 'GPA can\'t be greater than 4.0'
+                    //         },
+                    //         greaterThan: {
+                    //             min: 2.0,
+                    //             inclusive: true,
+                    //             message: 'GPA can\'t be less than 2.0'
+                    //         },
+                    //     }
+                    // },
+                    // ministry_document: {
+                    //     validators: {
+                    //         notEmpty: {
+                    //             message: 'Ministry Document is required'
+                    //         },
+                    //         file: {
+                    //             extension: 'pdf,jpeg,jpg,png,rtf',
+                    //             type: 'image/jpeg,image/png,application/pdf,application/rtf',
+                    //             maxSize: 2048000, // 2048 * 1024
+                    //             message: 'Ministry Document file is not valid',
+                    //         }
+                    //     }
+                    // },
+                    // bsc_document: {
+                    //     validators: {
+                    //         notEmpty: {
+                    //             message: 'BSC Document is required'
+                    //         },
+                    //         file: {
+                    //             extension: 'pdf,jpeg,jpg,png,rtf',
+                    //             type: 'image/jpeg,image/png,application/pdf,application/rtf',
+                    //             maxSize: 2048000, // 2048 * 1024
+                    //             message: 'BSC Document file is not valid',
+                    //         }
+                    //     }
+                    // },
+                    // msc_document: {
+                    //     validators: {
+                    //         callback: {
+                    //             message: 'MSC Document is required',
+                    //             callback: function (input) {
+                    //                 if ($('#msc_document').val() == '') {
+                    //                     if ($('#educational_level').val() == 2) {
+                    //                         return false;
+                    //                     }
+                    //                     if ($('#educational_level').val() == 1) {
+                    //                         return false;
+                    //                     }
+                    //                 }
+                    //                 return true;
+                    //             }
+                    //         },
+                    //         file: {
+                    //             extension: 'pdf,jpeg,jpg,png,rtf',
+                    //             type: 'image/jpeg,image/png,application/pdf,application/rtf',
+                    //             maxSize: 2048000, // 2048 * 1024
+                    //             message: 'MSC Document file is not valid',
+                    //         }
+                    //     }
+                    // },
+
+                    // phd_document: {
+                    //     validators: {
+                    //         callback: {
+                    //             message: 'PHD Document is required',
+                    //             callback: function (input) {
+                    //                 if ($('#phd_document').val() == '') {
+                    //                     if ($('#educational_level').val() == 2) {
+                    //                         return false;
+                    //                     }
+                    //                 }
+                    //                 return true;
+                    //             }
+                    //         },
+                    //         file: {
+                    //             extension: 'pdf,jpeg,jpg,png,rtf',
+                    //             type: 'image/jpeg,image/png,application/pdf,application/rtf',
+                    //             maxSize: 2048000, // 2048 * 1024
+                    //             message: 'PHD Document file is not valid',
+                    //         }
+                    //     }
+                    // },
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    bootstrap: new FormValidation.plugins.Bootstrap()
+                }
+            }
+        ));
+
+
+        // Step 5
+        _validations.push(FormValidation.formValidation(
+            _formEl, {
+                fields: {
+                    contact_name: {
                         validators: {
                             notEmpty: {
-                                message: 'Educational level is required'
+                                message: 'Contact name is required'
                             },
-                        }
-                    },
-                    field_of_study: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Field of study is required'
-                            },
-                        }
-                    },
-                    gpa: {
-                        validators: {
-                            notEmpty: {
-                                message: 'GPA is required'
-                            },
-                            lessThan:{
-                                max: 4.0,
-                                inclusive: true,
-                                message: 'GPA can\'t be greater than 4.0'
-                            },
-                            greaterThan:{
-                                min: 2.0,
-                                inclusive: true,
-                                message: 'GPA can\'t be less than 2.0'
-                            },
-                        }
-                    },
-                    ministry_document: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Ministry Document is required'
-                            },
-                            file: {
-                                extension: 'pdf,jpeg,jpg,png,rtf',
-                                type: 'image/jpeg,image/png,application/pdf,application/rtf',
-                                maxSize: 2048000, // 2048 * 1024
-                                message: 'Ministry Document file is not valid',
-                            }
-                        }
-                    },
-                    bsc_document: {
-                        validators: {
-                            notEmpty: {
-                                message: 'BSC Document is required'
-                            },
-                            file: {
-                                extension: 'pdf,jpeg,jpg,png,rtf',
-                                type: 'image/jpeg,image/png,application/pdf,application/rtf',
-                                maxSize: 2048000, // 2048 * 1024
-                                message: 'BSC Document file is not valid',
+                            stringLength: {
+                                min: 2,
+                                message: 'The contact name must be greater than 2 characters',
                             }
                         }
                     },
 
-
+                    contact_phone: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Phone is required'
+                            },
+                            regexp: {
+                                regexp: /^(\+251|0)9[0-9]{8}$/i,
+                                message: 'Phone is invalid',
+                            },
+                        }
+                    },
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),

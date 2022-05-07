@@ -25,7 +25,7 @@ class StoreVolunteerRequest extends FormRequest
     public function messages()
     {
         return [
-            'msc_document.required_if'=>'The MSC document field is required when educational level is MSC.',
+            'msc_document.required_if'=>'The MSC document field is required when educational level is MSC & PHD.',
             'phd_document.required_if'=>'The PHD document field is required when educational level is PHD.',
             'non_pregnant_validation_document.required_if' => 'The Non Pregnant Validation document field is required when gender is Female.',
         ];

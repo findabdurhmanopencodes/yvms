@@ -19,7 +19,6 @@
         $(function() {
             $('#agree_check').on('click', function() {
                 if ($('input#agree_check')[0].checked) {
-
                     $('button#next_step_button').prop('disabled', false);
                     $('button#submit_apply_button').prop('disabled', false);
                 } else {
