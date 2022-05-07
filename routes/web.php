@@ -31,9 +31,30 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/profile/{user?}',[UserController::class,'profile'])->name('profile.show');
 
+
+// Route::get('/', function () {
+//     return view('welcome');
+// })->name('welcome');
+
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('menu.home');
 })->name('home');
+
+Route::get('/aboutus', function () {
+    return view('menu.aboutus');
+})->name('aboutus');
+
+Route::get('/contactus', function () {
+    return view('menu.contactus');
+})->name('contactus');
+
+Route::get('/vission-and-mission', function () {
+    return view('menu.vission-and-mission');
+})->name('vission-and-mission');
+
+
+
 
 Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
 
