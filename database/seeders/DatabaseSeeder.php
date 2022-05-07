@@ -3,10 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\EducationalLevel;
+use App\Models\TraininingCenter;
 use App\Models\Woreda;
 use DateTime;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,6 +19,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Role::create(['name'=>'applicant']);
         // \App\Models\User::factory(10)->create();
         $this->call([
             TrainingSessionSeeder::class,
@@ -25,6 +28,7 @@ class DatabaseSeeder extends Seeder
             WoredaSeeder::class,
             EducationalLevelSeeder::class,
             FeildOfStudySeeder::class,
+            TraininingCenterSeeder::class
         ]);
     }
 }
