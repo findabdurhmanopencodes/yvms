@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Andegna\DateTimeFactory;
 use App\Http\Requests\StoreTrainingSessionRequest;
 use App\Http\Requests\UpdateTrainingSessionRequest;
+use App\Models\Region;
 use App\Models\TrainingSession;
 use Carbon\Carbon;
 use DateTime;
@@ -26,7 +27,8 @@ class TrainingSessionController extends Controller
         }
 
         $training_session = TrainingSession::all();
-        return view('training_session.index', compact('training_session'));
+        $regions = Region::all();
+        return view('training_session.index', compact(['training_session', 'regions']));
     }
 
     /**
@@ -93,7 +95,7 @@ class TrainingSessionController extends Controller
      */
     public function show(TrainingSession $trainingSession)
     {
-        //
+        return view('training_session.show',compact('trainingSession'));
     }
 
     /**
