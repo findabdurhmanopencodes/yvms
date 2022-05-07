@@ -13,13 +13,14 @@
     </style>
 @endpush
 @push('js')
+    <script>
+        var MinDob = '{{$after}}';
+        var MaxDob = '{{$before}}';
+    </script>
     <script src="{{ asset('assets/js/pages/custom/wizard/wizard-2.js') }}"></script>
     <script src="{{ asset('assets/js/pages/custom/profile/profile.js') }}"></script>
 
     <script>
-        submitWizard(){
-
-        }
         $(function() {
             $('#agree_check').on('click', function() {
                 if ($('input#agree_check')[0].checked) {
@@ -84,7 +85,7 @@
                 $.each(result.data, function(key, value) {
                 $("#zone").append('<option '+oldZone+'=='+ value.id +'
                     value="' + value
-                                                                                                                                                                                                                    .id + '">
+                                                                                                                                                                                                                                .id + '">
                     ' +
                     value.name + '
                 </option>');
@@ -111,7 +112,7 @@
                 var isSelected = value.id == oldWoreda ?'selected':'';
                 $("#woreda").append('<option '+ isSelected + '
                     value="' + value
-                                                                                                                                                                                                                    .id + '">
+                                                                                                                                                                                                                                .id + '">
                     '
                     +
                     value.name + '
@@ -819,6 +820,13 @@
                                                 <!--end::Input-->
                                             </div>
                                         </div>
+                                        <div class="row mt-2">
+                                            <div class="form-group">
+                                                <label class="">
+                                                    By clicking Apply, you agree to our <a href="#"><b>Terms</b></a>, and <a href="#"><b>Conditions</b></a>. You may receive <b>Email</b> Notifications from us and can opt out any time.
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                     <!--end: Wizard Step 4-->
 
@@ -829,7 +837,7 @@
                                                 data-wizard-type="action-prev">Previous</button>
                                         </div>
                                         <div>
-                                            <button onclick="event.preventDefault();submitWizard();"
+                                            <button onclick="event.preventDefault();"
                                                 class="btn btn-success font-weight-bold text-uppercase px-9 py-4"
                                                 data-wizard-type="action-submit" id="submit_apply_button"
                                                 style="min-width: 150px; background-color:rgb(249 ,92 ,57);color:white;font-weight:bold;">Apply</button>

@@ -100,11 +100,13 @@ class VolunteerController extends Controller
         if(count($availableSession)<=0){
             return view('application.no-open-form');
         }
+        $before = Carbon::now()->subYears(18)->format('d/m/Y');
+        $after = Carbon::now()->subYears(35)->format('d/m/Y');
         $disabilities = Disablity::all();
         $regions = Region::all();
         $educationLevels = EducationalLevel::$educationalLevel;
         $fields = FeildOfStudy::all();
-        return view('application.form', compact('disabilities', 'regions', 'educationLevels','fields'));
+        return view('application.form', compact('disabilities', 'regions', 'educationLevels','fields','after','before'));
     }
 
     public function apply(StoreVolunteerRequest $request)
@@ -125,6 +127,6 @@ class VolunteerController extends Controller
             ]);
             throw $validationException;
         }
-        dd('u');
+        Volunteer::create()
     }
 }
