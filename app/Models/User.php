@@ -12,7 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;

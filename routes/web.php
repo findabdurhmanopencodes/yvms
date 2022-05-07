@@ -40,19 +40,7 @@ Route::post('application/document/upload', [VolunteerController::class, 'applica
 //Role & Permission
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
-Route::middleware(['guest'])->group(function () {
-    Route::resource('training_session', TrainingSessionController::class);
-    Route::resource('user', UserController::class);
-    Route::resource('region', RegionController::class);
-    Route::resource('zone', ZoneController::class);
-    Route::resource('woreda', WoredaController::class);
-    Route::resource('role', RoleController::class);
-    Route::resource('permission', PermissionController::class);
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
-    Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
-    Route::resource('region', RegionController::class);
-    Route::resource('zone', ZoneController::class);
-    Route::resource('woreda', WoredaController::class);
+Route::middleware(['auth','verified'])->group(function () {
 
     Route::resource('educational_level', EducationalLevelController::class);
     Route::resource('feild_of_study', FeildOfStudyController::class);
@@ -66,7 +54,6 @@ Route::middleware(['guest'])->group(function () {
     Route::resource('woreda', WoredaController::class);
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::get('role/{role}/permission', [RoleController::class, 'permissions'])->name('role.permission.index');
     Route::post('role/{role}/permission', [RoleController::class, 'givePermission'])->name('role.permission.give');
     Route::delete('role/{role}/permission/{permission}', [RoleController::class, 'revokePermission'])->name('role.permission.revoke');
