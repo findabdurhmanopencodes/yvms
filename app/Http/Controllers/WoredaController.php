@@ -98,6 +98,9 @@ class WoredaController extends Controller
         $woreda->name = $request->get('name');
         $woreda->code = $request->get('code');
         $woreda->zone_id = $request->get('zone');
+        $woreda->qoutaInpercent = $request->get('qoutaInpercent')/100;
+        
+        // dd($woreda->qoutaInpercent);
         $woreda->save();
         return redirect()->route('woreda.index')->with('message', 'Woreda edited successfully');
     }

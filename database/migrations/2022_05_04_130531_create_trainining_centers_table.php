@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('trainining_centers', function (Blueprint $table) {
             $table->id();
-            $table->string('logo');
+            $table->string('logo')->nullable();
             $table->string('name');
             $table->string('decription')->nullable();
             $table->string('code')->nullable();
