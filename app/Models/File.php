@@ -12,4 +12,5 @@ class File extends Model
         'name',
         'file_path'
     ];
+
 }

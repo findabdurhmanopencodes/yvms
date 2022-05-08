@@ -11,6 +11,7 @@ use App\Models\EducationalLevel;
 use App\Models\FeildOfStudy;
 use App\Models\File;
 use App\Models\Region;
+use App\Models\Status;
 use App\Models\TrainingSession;
 use App\Models\User;
 use App\Models\Woreda;
@@ -264,4 +265,21 @@ class VolunteerController extends Controller
         $volunteer = Volunteer::create($volunteerData);
         return redirect()->route('home')->with('apply_success', 'You successfully applied! Check your email');
     }
+    public function Screen(Request $request,$applicant_id){
+        if($request->get('type')=='accept'){
+            Status::Create(['volunteer_id'=>$applicant_id,'acceptance_status'=>1]);
+            return redirect()->back();
+        }
+        elseif($request->get('type')=='reject'){
+            Status::Create(['volunteer_id'=>$applicant_id,'acceptance_status'=>2,'rejection_reason'=>$request->get('rejection_reason')]);
+            return redirect()->back();
+        }
+    }
+    public function decide($session){
+       $applicants= Volunteer::whereRelation('status', 'acceptance_status', 1)->get();
+        dd($applicants[0]->status);
+        return  view('volunter.decide',['applicant']);
+
+    }
+
 }

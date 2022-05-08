@@ -1,12 +1,14 @@
-@extends('layouts.session_layout')
-@section('action_title', 'Training Session Detail')
+@extends('layouts.app')
 @section('title', 'Training Session Detail')
 @section('breadcrumbTitle', 'Training Session Detail')
 @section('breadcrumbList')
     <li class="breadcrumb-item">
         <a href="{{ route('training_session.index', []) }}">All Training Sessions</a>
     </li>
-    <li class="active">Detail</li>
+    <li class="breadcrumb-item">Detail</li>
+    <li class="active">
+        <a href="{{ route('training_session.show',$trainingSession->id) }}">back</a>
+    </li>
 @endsection
 @push('js')
     <!--begin::Page Scripts(used by this page)-->
@@ -47,7 +49,7 @@
 @endpush
 
 
-@section('action_content')
+@section('content')
     <div class="accordion accordion-solid accordion-toggle-plus " id="accordionExample6">
 
         <div class="card ">
@@ -88,8 +90,8 @@
                                 <br>
                                 <select class="form-control select2" id="gender" name="gender">
                                     <option value="">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                                    <option value="M">Male</option>
+                                    <option value="F">Female</option>
                                 </select>
                             </div>
                             <div class="col-sm-4">
@@ -218,12 +220,12 @@
                                     {{ $volunter->woreda?->name }}
                                 </td>
                                 <td>
-                                    <span class="badge badge-warning badge-pill">Pending</span>
+                                    <span class="badge badge-warning badge-pill">{{ $volunter->status==null?'pending':'decided' }}</span>
                                 </td>
 
                                 <td>
                                     <div class="row">
-                                        <a class="btn btn-bg btn-info" href="{{ route('applicant.show', ['applicant'=>$volunter->id]) }}">
+                                        <a class="btn btn-sm btn-info" href="{{ route('applicant.show', ['applicant'=>$volunter->id]) }}">
                                             <i class="fa fa-eye"></i> Detail</a>
                                     </div>
 

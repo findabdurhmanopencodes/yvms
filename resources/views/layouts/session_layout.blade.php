@@ -55,7 +55,7 @@
                         </a>
                     </div>
                     <div class="navi-item mb-2">
-                        <a href="custom/apps/profile/profile-1/email-settings.html" class="navi-link py-4">
+                        <a href="{{ route('applicant.decide',['session'=>$trainingSession->id]) }}" class="navi-link py-4">
                             <span class="navi-icon mr-2">
                                 <span class="svg-icon">
                                     <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-opened.svg-->
@@ -63,7 +63,7 @@
                                     <!--end::Svg Icon-->
                                 </span>
                             </span>
-                            <span class="navi-text font-size-lg">Email settings</span>
+                            <span class="navi-text font-size-lg">Decide Applicant</span>
                         </a>
                     </div>
                 </div>
