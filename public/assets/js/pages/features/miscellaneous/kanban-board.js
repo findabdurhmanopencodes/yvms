@@ -6,7 +6,7 @@ var KTKanbanBoardDemo = function() {
     // Private functions
     var _demo1 = function() {
         var kanban = new jKanban({
-            element: '#kt_kanban_1',
+            element: KANBANID,
             gutter: '0',
             widthBoard: '250px',
             boards: [{
@@ -46,56 +46,16 @@ var KTKanbanBoardDemo = function() {
 
     var _demo2 = function() {
         var kanban = new jKanban({
-            element: '#kt_kanban_2',
+            element: KANBANID,
             gutter: '0',
             widthBoard: '250px',
-            boards: [{
-                    'id': '_inprocess',
-                    'title': 'In Process',
-                    'class': 'primary',
-                    'item': [{
-                            'title': '<span class="font-weight-bold">You can drag me too</span>',
-                            'class': 'light-primary',
-                        },
-                        {
-                            'title': '<span class="font-weight-bold">Buy Milk</span>',
-                            'class': 'light-primary',
-                        }
-                    ]
-                }, {
-                    'id': '_working',
-                    'title': 'Working',
-                    'class': 'success',
-                    'item': [{
-                            'title': '<span class="font-weight-bold">Do Something!</span>',
-                            'class': 'light-success',
-                        },
-                        {
-                            'title': '<span class="font-weight-bold">Run?</span>',
-                            'class': 'light-success',
-                        }
-                    ]
-                }, {
-                    'id': '_done',
-                    'title': 'Done',
-                    'class': 'danger',
-                    'item': [{
-                            'title': '<span class="font-weight-bold">All right</span>',
-                            'class': 'light-danger',
-                        },
-                        {
-                            'title': '<span class="font-weight-bold">Ok!</span>',
-                            'class': 'light-danger',
-                        }
-                    ]
-                }
-            ]
+            boards: KANBAN_BOARDS,
         });
     }
 
     var _demo3 = function() {
         var kanban = new jKanban({
-            element: '#kt_kanban_3',
+            element: KANBANID,
             gutter: '0',
             widthBoard: '250px',
             click: function(el) {
@@ -396,10 +356,10 @@ var KTKanbanBoardDemo = function() {
     // Public functions
     return {
         init: function() {
-            _demo1();
+            // _demo1();
             _demo2();
-            _demo3();
-            _demo4();
+            // _demo3();
+            // _demo4();
         }
     };
 }();

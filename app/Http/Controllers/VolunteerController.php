@@ -11,6 +11,7 @@ use App\Models\EducationalLevel;
 use App\Models\FeildOfStudy;
 use App\Models\File;
 use App\Models\Region;
+use App\Models\Status;
 use App\Models\TrainingSession;
 use App\Models\User;
 use App\Models\Woreda;

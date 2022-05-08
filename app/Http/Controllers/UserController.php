@@ -14,7 +14,9 @@ use Andegna\Validator\DateValidator;
 use Andegna\DateTimeFactory;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use Spatie\Permission\Models\Permission;
 use Yajra\Datatables\Facades\Datatables;
 
 class UserController extends Controller
@@ -41,12 +43,19 @@ class UserController extends Controller
         return view('user.create', compact('roles'));
     }
 
+    public function show(User $user)
+    {
+        $permissions = $user->permissions()->get();
+        $freePermissions = DB::table('permissions')->whereNotIn('id', $user->permissions()->pluck('id'))->get();
+        return view('user.show', compact('user','permissions','freePermissions'));
+    }
+
     public function store(Request $request)
     {
         $userData = $request->validate([
-            'first_name' => ['required', 'string', 'max:255','min:3'],
-            'father_name' => ['required', 'string', 'max:255','min:3'],
-            'grand_father_name' => ['required', 'string', 'max:255','min:3'],
+            'first_name' => ['required', 'string', 'max:255', 'min:3'],
+            'father_name' => ['required', 'string', 'max:255', 'min:3'],
+            'grand_father_name' => ['required', 'string', 'max:255', 'min:3'],
             'dob' => ['required', 'date'],
             'gender' => ['required', 'string', 'in:M,F'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -61,7 +70,7 @@ class UserController extends Controller
         $dob_GC = DateTimeFactory::of($year, $month, $day)->toGregorian();
         $after = Carbon::now()->subYears(100);
         $before = $date->subYears(18);
-        if(!Carbon::createFromDate($dob_GC)->isBetween($after, $before)){
+        if (!Carbon::createFromDate($dob_GC)->isBetween($after, $before)) {
             $afterET = DateTimeFactory::fromDateTime($after)->format('d/m/Y');
             $beforeET = DateTimeFactory::fromDateTime($before)->format('d/m/Y');
             $validationException = ValidationException::withMessages([
@@ -69,14 +78,14 @@ class UserController extends Controller
             ]);
             throw $validationException;
         }
-        if($request->role == Role::findByName('applicant')){
+        if ($request->role == Role::findByName('applicant')) {
             return abort(404);
         }
         $userData['dob'] = $dob_GC;
         $user = User::create($userData);
         event(new Registered($user));
         $user->assignRole(Role::findById($request->role));
-        return redirect(route('user.index'))->with('message','User registered successfully');
+        return redirect(route('user.index'))->with('message', 'User registered successfully');
     }
     //
     public function profile($user = null)
@@ -85,5 +94,21 @@ class UserController extends Controller
             $user = Auth::user();
         }
         return view('profile.show', compact('user'));
+    }
+
+    public function givePermission(Request $request, User $user)
+    {
+        // if(!Auth::user()->can('role.permission.assign')){
+        //     return abort(403);
+        // }
+        foreach ($user->permissions()->get() as $permission) {
+            $user->revokePermissionTo($permission);
+        }
+        $request->validate(['permissions' => 'required']);
+        $permissions = $request->get('permissions');
+        foreach ($permissions as $permission) {
+            $user->givePermissionTo(Permission::find($permission));
+        }
+        return redirect(route('user.show', ['user' => $user->id]));
     }
 }

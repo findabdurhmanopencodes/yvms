@@ -67,7 +67,8 @@ Route::post('application/document/upload', [VolunteerController::class, 'applica
 //Role & Permission
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
-Route::middleware(['auth','verified'])->group(function () {
+Route::middleware(['guest'])->group(function () {
+    Route::post('user/{user}/permission', [UserController::class, 'givePermission'])->name('user.permission.give');
     Route::resource('educational_level', EducationalLevelController::class);
     Route::resource('feild_of_study', FeildOfStudyController::class);
     Route::resource('disablity', DisablityController::class);

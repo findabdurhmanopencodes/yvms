@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -73,5 +74,25 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getNameAttribute(): string
     {
         return $this->first_name.' '.$this->father_name.' '.$this->grand_father_name;
+    }
+
+    public function getGender()
+    {
+        return $this->gender=='M'?'Male':'Female';
+    }
+
+    /**
+     * Get the volunteer associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function volunteer(): HasOne
+    {
+        return $this->hasOne(Volunteer::class, 'user_id', 'id');
+    }
+
+    public function getProfilePhoto()
+    {
+        return $this->photo??asset('user.png');
     }
 }

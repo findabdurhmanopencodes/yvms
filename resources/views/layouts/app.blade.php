@@ -155,7 +155,7 @@
                                                 <span class="menu-text">All Users</span>
                                             </a>
                                         </li>
-                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'user.index') === 0 ? 'menu-item-active' : '' }}"
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'user.create') === 0 ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
                                             <a href="{{ route('user.create', []) }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
