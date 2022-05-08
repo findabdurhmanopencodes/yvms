@@ -27,4 +27,7 @@ class Woreda extends Model
     public function quotas(){
         return $this->morphMany(Qouta::class, 'quotable');
     }
+    public function applicants(){
+        return $this->hasMany(Volunteer::class);
+    }
 }

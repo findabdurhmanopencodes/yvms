@@ -99,8 +99,7 @@ Route::middleware(['guest'])->group(function () {
     Route::resource('TrainingCenter', TraininingCenterController::class);
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
-
-
-
+    Route::post('applicant/{applicant_id}/screen', [VolunteerController::class, 'screen'])->name('applicant.screen');
+    Route::get('applicants/{session}/decide', [VolunteerController::class, 'decide'])->name('applicant.decide');
 });
 require __DIR__ . '/auth.php';

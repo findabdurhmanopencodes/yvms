@@ -16,6 +16,10 @@ class FeildOfStudy extends Model
     protected $fillable = [
       'name'
   ];
+  public function applicant()
+  {
+      return $this->hasMany(Volunter::class);
+  }
 }
 
 
