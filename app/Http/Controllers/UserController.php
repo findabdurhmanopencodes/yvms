@@ -47,7 +47,7 @@ class UserController extends Controller
     {
         $permissions = $user->permissions()->get();
         $freePermissions = DB::table('permissions')->whereNotIn('id', $user->permissions()->pluck('id'))->get();
-        return view('user.show', compact('user','permissions','freePermissions'));
+        return view('user.show', compact('user', 'permissions', 'freePermissions'));
     }
 
     public function store(Request $request)
@@ -96,6 +96,8 @@ class UserController extends Controller
         return view('profile.show', compact('user'));
     }
 
+
+
     public function givePermission(Request $request, User $user)
     {
         // if(!Auth::user()->can('role.permission.assign')){
@@ -110,5 +112,48 @@ class UserController extends Controller
             $user->givePermissionTo(Permission::find($permission));
         }
         return redirect(route('user.show', ['user' => $user->id]));
+    }
+
+    public function revokePermission(Request $request, User $user)
+    {
+        // if(!Auth::user()->can('role.permission.assign')){
+        //     return abort(403);
+        // }
+        $permissions = $request->reset_permissions;
+        foreach ($permissions as $permissionId) {
+            $permission = Permission::findById($permissionId);
+            if ($user->hasPermissionTo($permission)) {
+                $user->revokePermissionTo($permission);
+            }
+        }
+        return redirect(route('user.show', ['user' => $user->id]))->with('message', 'Permission revoked successfully');
+    }
+
+    public function userPermissions(Request $request, User $user)
+    {
+        if ($request->ajax()) {
+            return datatables()->of($user->permissions())->make(true);
+        }
+        return $user->permissions;
+    }
+
+
+    public function giveAllPermission(User $user)
+    {
+        // if(!Auth::user()->can('user.permission.assign')){
+        //     return abort(403);
+        // }
+        $user->syncPermissions(Permission::all());
+        return redirect()->back()->with('message', 'All permission given');
+    }
+    public function removeAllPermission(User $user)
+    {
+        // if(!Auth::user()->can('user.permission.assign')){
+        //     return abort(403);
+        // }
+        foreach ($user->permissions()->get() as $permission) {
+            $user->revokePermissionTo($permission);
+        }
+        return redirect()->back()->with('message', 'All permission removed');
     }
 }

@@ -9,9 +9,46 @@
 @endpush
 @push('js')
     <script>
+        var HOST_URL = "{{ route('user.permission.index', ['user' => $user->id]) }}";
+        var COLUMNS = [{
+                field: 'id',
+                title: '#',
+                sortable: 'asc',
+                width: 30,
+                type: 'number',
+                selector: false,
+                textAlign: 'center',
+                template: function(row, index) {
+                    return '<input type="checkbox"  name="reset_permissions[]" value="' + row.id +
+                        '" id="permission_' + row.id +
+                        '" class="reset_permissions"/>';
+                }
+            },
+            {
+                field: 'name',
+                title: 'Name',
+                sortable: 'asc',
+                template: function(row) {
+                    return "<label for='permission_" + row.id + "'>" + row.name + "</label>"
+                }
+            },
+        ]
         $(function() {
             $('#select_permission').select2({
                 placeholder: "Select a permission"
+            });
+            $('#reset_permission_button').on('click', function() {
+                var checkedNum = $('input[name="reset_permissions[]"]:checked').length;
+                if (!checkedNum) {
+                    Swal.fire(
+                        "Warning!",
+                        "Select at least one permission.",
+                        "error"
+                    );
+                } else {
+                    $('#revokePermission').submit();
+
+                }
             });
         });
 
@@ -28,6 +65,7 @@
                 }
             });
         }
+
 
         function giveAllPermission() {
             swal.fire({
@@ -80,8 +118,16 @@
             });
         }
     </script>
+    <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
 @endpush
 @section('content')
+    <form action="{{ route('user.giveAllPermission', ['user' => $user->id]) }}" id="formGiveAllPermission" method="post">
+        @csrf
+    </form>
+    <form action="{{ route('user.removeAllPermission', ['user' => $user->id]) }}" id="formRevokeAllPermission"
+        method="post">
+        @csrf
+    </form>
     <!--begin::Card-->
     <div class="card card-custom gutter-b">
         <div class="card-body">
@@ -209,12 +255,17 @@
                                     Permission</button>
                             </div>
                             <div class="mt-4">
-                                <form action="route">
+                                <form id="revokePermission"
+                                    action="{{ route('user.permission.revoke', ['user' => $user->id]) }}" method="POST">
+                                    @csrf
                                     <div class="d-flex justify-between my-2">
                                         <h3 class="">Manage direct permissions</h3>
-                                        <button class="btn btn-primary ml-auto">Apply change</button>
                                     </div>
-
+                                    <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+                                    <div class="d-flex mt-8">
+                                        <button onclick="event.preventDefault()" id="reset_permission_button"
+                                            class="btn btn-danger ml-auto mt-1">Remove Selected Permissions</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
