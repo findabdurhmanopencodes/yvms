@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Zone;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,10 @@ class WoredaFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->name(),
+            'code' => $this->faker->countryCode(),
+            'qoutaInpercent' => 0.25,
+            'zone_id' => $this->faker->unique()->numberBetween(1,Zone::count()),
         ];
     }
 }

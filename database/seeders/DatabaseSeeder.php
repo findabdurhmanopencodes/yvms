@@ -19,16 +19,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Role::create(['name'=>'applicant']);
-        // \App\Models\User::factory(10)->create();
+        // Role::create(['name'=>'applicant']);
+        // \App\Models\User::factory(50)->create();
+        // \App\Models\Region::factory(4)->create();
+        // \App\Models\Zone::factory(4)->create();
+        // \App\Models\Woreda::factory(16)->create();
+        // \App\Models\File::factory(16)->create();
+        // \App\Models\FeildOfStudy::factory(4)->create();
+        // \App\Models\Volunteer::factory(50)->create();
+
         $this->call([
-            TrainingSessionSeeder::class,
-            RegionSeeder::class,
-            ZoneSeeder::class,
-            WoredaSeeder::class,
-            EducationalLevelSeeder::class,
-            FeildOfStudySeeder::class,
-            TraininingCenterSeeder::class
+            // TrainingSessionSeeder::class,
+            // VolunteerSeeder::class,
+            // RegionSeeder::class,
+            // ZoneSeeder::class,
+            // WoredaSeeder::class,
+            // EducationalLevelSeeder::class,
+            // FeildOfStudySeeder::class,
+            // TraininingCenterSeeder::class
         ]);
     }
 }
