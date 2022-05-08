@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Andegna\DateTimeFactory;
+use DateTime;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -73,12 +75,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getNameAttribute(): string
     {
-        return $this->first_name.' '.$this->father_name.' '.$this->grand_father_name;
+        return $this->first_name . ' ' . $this->father_name . ' ' . $this->grand_father_name;
     }
 
     public function getGender()
     {
-        return $this->gender=='M'?'Male':'Female';
+        return $this->gender == 'M' ? 'Male' : 'Female';
     }
 
     /**
@@ -93,6 +95,13 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getProfilePhoto()
     {
-        return $this->photo??asset('user.png');
+        return $this->photo ?? asset('user.png');
+    }
+
+    
+
+    public function dobET()
+    {
+        return DateTimeFactory::fromDateTime(new DateTime($this->dob))->format('d/m/Y');
     }
 }
