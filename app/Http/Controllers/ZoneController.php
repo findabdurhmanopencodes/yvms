@@ -99,6 +99,7 @@ class ZoneController extends Controller
         $zone->name = $request->get('name');
         $zone->code = $request->get('code');
         $zone->region_id = $request->get('region');
+        $zone->qoutaInpercent = $request->get('qoutaInpercent')/100;
         $zone->save();
         return redirect()->route('zone.index')->with('message', 'Zone edited successfully');
     }

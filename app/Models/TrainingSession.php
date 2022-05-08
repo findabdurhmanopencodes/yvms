@@ -22,7 +22,8 @@ class TrainingSession extends Model
         'registration_start_date',
         'registration_dead_line',
         'quantity',
-        'status'
+        'status',
+        'moto'
     ];
 
     static public function availableSession()
