@@ -35,13 +35,10 @@ class User extends Authenticatable
         'grand_father_name',
         'email',
         'password',
+        'dob',
+        'gender'
     ];
 
-
-    public function name()
-    {
-        return $this->first_name.' '.$this->father_name.' '.$this->grand_father_name;
-    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -72,4 +69,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function getNameAttribute(): string
+    {
+        return $this->first_name.' '.$this->father_name.' '.$this->grand_father_name;
+    }
 }
