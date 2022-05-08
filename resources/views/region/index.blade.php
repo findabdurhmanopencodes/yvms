@@ -9,7 +9,6 @@
         <a href="" class="text-muted">Regions</a>
     </li>
 @endsection
-
 @push('js')
     <script>
         var HOST_URL = "{{ route('region.index') }}";
