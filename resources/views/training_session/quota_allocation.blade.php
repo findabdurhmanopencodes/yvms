@@ -64,7 +64,7 @@
 				}, 
 				{
 					field: 'region_name',
-					title: 'Name',
+					title: 'Zone',
 					width: 100
 				},
 				{
@@ -75,13 +75,13 @@
             ];
 
      var main_column = [
-				{
-					field: 'id',
-					title: '',
-					sortable: false,
-					width: 30,
-					textAlign: 'center',
-				}, 
+				// {
+				// 	field: 'id',
+				// 	title: '',
+				// 	sortable: false,
+				// 	width: 30,
+				// 	textAlign: 'center',
+				// }, 
 				{
 					field: 'key',
 					title: '#',
@@ -97,22 +97,38 @@
                 
 			];
 
-            var aa = @json($regions);
-            // console.log(DATAS);
+            var regions = @json($regions);
+            var quota = @json($quota);
+            console.log(quota);
             // var DATAS;
             var DATAS = [];
             var a = [];
             var SUB_DATAS = [];
 
-            aa.forEach(element => {
-                element.zones.forEach(ele => {
-                    SUB_DATAS.push({"id":ele.id, "region_name":ele.name, "quantity":600});
-                });
+            quota.forEach(element => {
+                if (element.quotable_type == "App\\Models\\Region") {
+                    DATAS.push({"key": element.quotable.id, "name":element.quotable.name, "region_quantity":element.quantity, "zone":SUB_DATAS});
+                }
 
-                DATAS.push({"id":1, "key": element.id, "name":element.name, "region_quantity":3000, "zone":SUB_DATAS});
-
-                // SUB_DATAS = [];
+                // if (element.quotable_type == "App\\Models\\Zone") {
+                //     SUB_DATAS.push({"id":ele.id, "region_name":ele.name, "quantity":ele.quotas});
+                // }
             });
+
+            
+
+            // DATAS.push({"id":1, "key": element.id, "name":element.name, "region_quantity":element.quantity.quantity, "zone":[{"id":ele.id, "region_name":ele.name, "quantity":ele.quotas}]});
+
+            // regions.forEach(element => {
+            //     element.zones.forEach(ele => {
+            //         DATAS.push({"id":1, "key": element.id, "name":element.name, "region_quantity":element.quotas[0].quantity, "zone":[{"id":ele.id, "region_name":ele.name, "quantity":ele.quotas}]});
+            //         // SUB_DATAS.push();
+            //     });
+
+                
+
+            //     // SUB_DATAS = [];
+            // });
 
             
 </script>

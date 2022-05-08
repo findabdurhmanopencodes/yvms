@@ -257,7 +257,8 @@ class TrainingSessionController extends Controller
     }
     public function showQuota(TrainingSession $trainingSession)
     {
-        $regions = Region::with('zones')->get();
-        return view('training_session.quota_allocation', compact(['trainingSession', 'regions']));
+        $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->get();
+        $regions = Region::with(['zones', 'quotas'])->get();
+        return view('training_session.quota_allocation', compact(['trainingSession', 'regions', 'quota']));
     }
 }
