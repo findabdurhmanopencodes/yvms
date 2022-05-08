@@ -18,6 +18,9 @@ class RegionFactory extends Factory
     {
         return [
             //
+            'name' => $this->faker->name(),
+            'code' => $this->faker->countryCode(),
+            'qoutaInpercent' => 0.25,
         ];
     }
 }

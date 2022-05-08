@@ -58,7 +58,7 @@ class VolunteerSeeder extends Seeder
             'user_id' => $user->id,
             'training_session_id' => TrainingSession::first(),
             'field_of_study_id' => 1,
-            'woreda_id' =>
+            // 'woreda_id' =>
         ];
         /*
        $table->string('first_name');
