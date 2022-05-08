@@ -22,16 +22,16 @@
                 field: 'name',
                 title: 'Name',
                 sortable: 'asc',
-                template: function(row){
+                template: function(row) {
                     console.log(row);
-                    return row.first_name+' '+row.last_name+' '+row.grand_father_name;
+                    return row.first_name + ' ' + row.last_name + ' ' + row.grand_father_name;
                 }
             },
             {
                 field: 'email',
                 title: 'Email',
                 sortable: 'asc',
-                template: function(row){
+                template: function(row) {
                     console.log(row);
                     return row.email;
                 }
@@ -45,21 +45,23 @@
                 autoHide: false,
                 template: function(row) {
                     var userId = row.id;
+                    /*
+    <a href="javascript:;" onclick="deleteUser(' + userId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
+                                                            <i class="far fa-trash"></i>\
+                                                        </a>\
+                        */
                     return '\
-                                        <div class="d-flex">\
-                                                    <a href="javascript:;" onclick="deleteUser(' + userId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
-                                                        <i class="far fa-trash"></i>\
-                                                    </a>\
-                                                    \
-                                                    <a href="/user/' + userId + '" class="btn btn-sm btn-clean btn-icon" >\
-                                                        <i class="far fa-eye"></i>\
-                                                    </a>\
-                                                    <a href="/user/' + userId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
-                                                        <i class="far fa-pen"></i>\
-                                                    </a>\
-                                                    \
-                                                </div>\
-                                                ';
+                        <div class="d-flex justify-between">\
+                                    \
+                            <a href="/user/' + userId + '" class="btn btn-sm btn-clean btn-icon" >\
+                                <i class="far fa-eye"></i>\
+                            </a>\
+                            <a href="/user/' + userId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                                <i class="far fa-pen"></i>\
+                            </a>\
+                                    \
+                        </div>\
+                                ';
                 },
             }
         ]
