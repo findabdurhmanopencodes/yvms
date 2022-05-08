@@ -6,7 +6,27 @@
     <li class="breadcrumb-item"><a href="{{ route('TrainingCenter.index', []) }}">Training Centers</a></li>
     <li class="breadcrumb-item active"> adding Training Center</li>
 @endsection
+@push('css')
+    <style>
+        .select2,
+        .select2-container,
+        .select2-container--default,
+        .select2-container--below {
+            width: 100% !important;
+        }
 
+    </style>
+@endpush
+@push('js')
+    <script>
+        $(document).ready(function() {
+            $('#zone_id').select2({
+                placeholder: "Select a Zone"
+            });
+
+        });
+    </script>
+@endpush
 
 @section('content')
     <div class="card card-custom gutter-b example example-compact">
@@ -42,6 +62,19 @@
                             <small class="text-danger"><b>{{ $message }}</b></small>
                         @enderror
                     </div>
+                    <div class="col-lg-12">
+                        <label>Zone:</label>
+                        <br>
+                        <select class="form-control select2" id="zone_id" name="zone_id" required>
+                            <option value=""></option>
+                            @foreach ($zones as $zone)
+                                <option value="{{ $zone->id }}">{{ $zone->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('zone_id')
+                            <small class="text-danger"><b>{{ $message }}</b></small>
+                        @enderror
+                    </div>
                     <div class="form-group col-md-12">
                         <label>Logo</label>
                         <div></div>
@@ -50,9 +83,10 @@
                             <label class="custom-file-label" for="logo">Choose Image</label>
                         </div>
                         @error('logo')
-                        <small class="text-danger"><b>{{ $message }}</b></small>
-                    @enderror
+                            <small class="text-danger"><b>{{ $message }}</b></small>
+                        @enderror
                     </div>
+
                 </div>
         </div>
 

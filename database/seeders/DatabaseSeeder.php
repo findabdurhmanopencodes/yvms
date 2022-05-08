@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\EducationalLevel;
+use App\Models\TraininingCenter;
 use App\Models\Woreda;
 use DateTime;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -27,6 +28,7 @@ class DatabaseSeeder extends Seeder
             WoredaSeeder::class,
             EducationalLevelSeeder::class,
             FeildOfStudySeeder::class,
+            TraininingCenterSeeder::class
         ]);
     }
 }

@@ -224,12 +224,13 @@
                                         </li>
                                         @include('aside.ms')
                                         @include('aside.seya')
+                                        @include('aside.aj')
+
                                     </ul>
                                 </div>
 
                             </li>
                             {{-- @include('aside.ms') --}}
-                            @include('aside.aj')
                         </ul>
                     </div>
                     <!--end::Menu Container-->
