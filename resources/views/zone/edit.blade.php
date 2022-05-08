@@ -10,6 +10,17 @@
     </li>
 @endsection
 
+@push('css')
+<style>
+    .select2,
+    .select2-container,
+    .select2-container--default,
+    .select2-container--below {
+        width: 100% !important;
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -46,12 +57,22 @@
                             <div class="col-lg-6">
                                 <label>Region:</label>
                                 <br>
-                                <select class="form-control select2" id="kt_select2_1" name="region" required>
+                                <select class="form-control select2" name="region" id="region" required>
                                     <option value="{{ $zone->region->id }}">{{ $zone->region->code }}</option>
                                     @foreach ($regions as $region)
                                         <option value="{{ $region->id }}">{{ $region->code }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label>Zone Quota:</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="qoutaInpercent" value="{{ $zone->qoutaInpercent*100 }}"/>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -68,5 +89,14 @@
 @endsection
 
 @push('js')
-    <script src="{{ asset('assets/js/pages/crud/forms/widgets/select2.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/pages/crud/forms/widgets/select2.js') }}"></script> --}}
+
+    <script>
+        $( document ).ready(function() {
+            $('#region').select2({
+                placeholder: "Select a region"
+            });
+
+        });
+    </script>
 @endpush

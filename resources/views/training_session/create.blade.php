@@ -36,9 +36,20 @@
                             @method('PATCH')
                         @endisset
                         <div class="form-group row">
+                            <div class="col-lg-7">
+                                <label>Program Name:</label>
+                                <input style="height: 50px;" type="text" class="@error('name') is-invalid @enderror form-control " placeholder="program name" name="name" value="{{ old('moto') ?? (isset($training_session) ? $training_session->moto : 'Youth Volunteer Program '.$last_data_id + 1) }}" required/>
+                                @error('name')
+                                    <small class="text-danger"><b>{{ $message }}</b></small>
+                                @enderror
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
                             <div class="col-lg-5">
                                 <label>Start Date:</label>
-                                <input type="text" id="start_date"
+                                <input style="height: 50px;" type="text" id="start_date"
                                 class="@error('start_date') is-invalid @enderror form-control " name="start_date"
                                 placeholder="start date" autocomplete="off" 
                                 value="{{ old('start_date') ?? (isset($training_session) ? $training_session->start_date : '') }}" required/>
@@ -46,10 +57,9 @@
                                     <small class="text-danger"><b>{{ $message }}</b></small>
                                 @enderror
                             </div>
-
                             <div class="col-lg-5">
                                 <label>End Date:</label>
-                                <input type="text" id="end_date"
+                                <input style="height: 50px;" type="text" id="end_date"
                                 class="@error('end_date') is-invalid @enderror form-control " name="end_date"
                                 placeholder="end date" autocomplete="off" 
                                 value="{{ old('end_date') ?? (isset($training_session) ? $training_session->end_date : '') }}" required/>
@@ -57,13 +67,12 @@
                                 <small class="text-danger"><b>{{ $message }}</b></small>
                             @enderror
                             </div>
-
                         </div>
 
                         <div class="form-group row">
                             <div class="col-lg-5">
                                 <label>Registration start date:</label>
-                                <input type="text" id="registration_start_date"
+                                <input style="height: 50px;" type="text" id="registration_start_date"
                                 class="@error('registration_start_date') is-invalid @enderror form-control " name="registration_start_date"
                                 placeholder="registration start date" autocomplete="off" 
                                 value="{{ old('registration_start_date') ?? (isset($training_session) ? $training_session->registration_start_date : '') }}" required/>
@@ -71,10 +80,9 @@
                                     <small class="text-danger"><b>{{ $message }}</b></small>
                                 @enderror
                             </div>
-
                             <div class="col-lg-5">
                                 <label>Registration end date:</label>
-                                <input type="text" id="registration_dead_line"
+                                <input style="height: 50px;" type="text" id="registration_dead_line"
                                 class="@error('registration_dead_line') is-invalid @enderror form-control " name="registration_dead_line"
                                 placeholder="registration end date" autocomplete="off" 
                                 value="{{ old('registration_dead_line') ?? (isset($training_session) ? $training_session->registration_dead_line : '') }}" required/>
@@ -83,11 +91,10 @@
                                 @enderror
                             </div>
                         </div>
-
                         <div class="form-group row">
                             <div class="col-lg-5">
                                 <label>number of volunteers:</label>
-                                <input type="number" class="form-control" 
+                                <input style="height: 50px;" type="number" class="form-control" 
                                 placeholder="number of volunteers" name="quantity" 
                                 value="{{ old('quantity') ?? (isset($training_session) ? $training_session->quantity : '') }}" required/>
                             </div>

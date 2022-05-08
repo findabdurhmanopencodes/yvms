@@ -17,7 +17,8 @@ class Region extends Model
      */
     protected $fillable = [
         'name',
-        'code'
+        'code',
+        'qoutaInpercent'
     ];
 
     public function zones(){

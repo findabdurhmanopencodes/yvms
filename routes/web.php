@@ -67,7 +67,10 @@ Route::post('application/document/upload', [VolunteerController::class, 'applica
 //Role & Permission
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
-Route::middleware(['guest'])->group(function () {
+Route::middleware(['auth','verified'])->group(function () {
+    Route::get('training_session/{training_session}/qouta',[TrainingSessionController::class,'showQuota'])->name('training_session.quota');
+    // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
+// Route::middleware(['guest'])->group(function () {
 
     Route::post('user/{user}/giveAllPermission', [UserController::class, 'giveAllPermission'])->name('user.giveAllPermission');
     Route::post('user/{user}/removeAllPermission', [UserController::class, 'removeAllPermission'])->name('user.removeAllPermission');

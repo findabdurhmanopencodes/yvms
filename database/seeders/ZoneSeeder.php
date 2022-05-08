@@ -15,7 +15,7 @@ class ZoneSeeder extends Seeder
      */
     public function run()
     {
-        Zone::create(['name'=>'Jimma','code'=>'J','region_id'=>1]);
-        Zone::create(['name'=>'Metu','code'=>'M','region_id'=>1]);
+        Zone::create(['name'=>'Jimma','code'=>'J','region_id'=>1, 'qoutaInpercent'=>0.2]);
+        Zone::create(['name'=>'Metu','code'=>'M','region_id'=>1, 'qoutaInpercent'=>0.15]);
     }
 }

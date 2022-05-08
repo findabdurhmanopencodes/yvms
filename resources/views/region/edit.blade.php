@@ -42,6 +42,18 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <div class="col-lg-6">
+                                <label>Region Quota:</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="qoutaInpercent" value="{{ $regions->qoutaInpercent*100 }}"/>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group mb-3">
                             <button type="submit" class="btn btn-primary">Update</button>
                         </div>
