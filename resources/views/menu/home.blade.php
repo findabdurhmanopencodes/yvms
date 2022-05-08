@@ -30,7 +30,7 @@
     @stack('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('calendar/css/redmond.calendars.picker.css') }}">
     <link rel="shortcut icon" href="{{ asset('assets/media/logos/mop_logo.jpg') }}" />
-    <img  style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" /> 
+    <img  style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" />
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -41,11 +41,11 @@
     <div  style="background-color:  #5dade2;" id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
         <!--begin::Logo-->
         <a href="#">
-            <img  style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" /> 
+            <img  style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" />
            )
         </a>
-       
- 
+
+
         <h3 style="color;white; font-size:13px;text-align:center;"> <br><br><br>
             Youth Volunteerism<br> Managment System(YVMS)<br>
             <hr>
@@ -56,13 +56,13 @@
             </b>
             <span class="menu-text">Apply Now</span>
         </a>
-        
-            
+
+
             {{-- Ministry of Peace| የሰላም ሚኒስቴር  --}}
 
-            
+
         </h3>
-        
+
         <!--end::Logo-->
         <!--begin::Toolbar-->
         <div class="d-flex align-items-center">
@@ -83,27 +83,27 @@
                 <div id="kt_header" class="header header-fixed">
                     <!--begin::Container-->
                     <div class="container-fluid d-flex align-items-stretch justify-content-between">
-                       
-                       
+
+
                         <!--begin::Header Menu Wrapper-->
                         <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
                             <!--begin::Header Logo-->
                             <div class="header-logo">
-                            <img  style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" /> 
-                             
+                            <img  style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" />
+
 
                             <a href="#">
                                 <h3 style="color:#5dade2; font-size:13px;text-align:center;"> <br><br><br>
                                     Youth Volunteerism<br> Managment System(YVMS)<br>
                                     <hr>
                                     Ministry of Peace
-                                
-                                    
+
+
                                     {{-- Ministry of Peace| የሰላም ሚኒስቴር  --}}
-        
-                                    
+
+
                                 </h3>
-                                
+
                             </a>
                             </div>
                             <!--end::Header Logo-->
@@ -114,8 +114,8 @@
                                 <!--begin::Header Nav-->
 
                                 @include('menu.header')
-                                
-                              
+
+
                                 <!--end::Header Nav-->
                             </div>
                             <!--end::Header Menu-->
@@ -156,13 +156,13 @@
                 <!--begin::Content-->
                 <div class="content d-flex flex-column flex-column-fluid p-0" id="kt_content">
                     <!--begin::Entry-->
-               
+
                     <div class="d-flex flex-column-fluid">
 
-                    
+
                         <div class="container">
 
-                            <img  style="height:100%; width:100%;" src="{{ asset('assets/media/logos/header.jpg') }}" /> 
+                            <img  style="height:100%; width:100%;" src="{{ asset('assets/media/logos/header.jpg') }}" />
                             @yield('content')
                         </div>
                         <!--end::Container-->
@@ -183,12 +183,12 @@
                         <!--end::Copyright-->
                         <!--begin::Nav-->
                         <div class="nav nav-dark">
-                            <a href="#" target="_blank" class="nav-link pl-0 pr-5"> Home</a> 
+                            <a href="#" target="_blank" class="nav-link pl-0 pr-5"> Home</a>
                             <a href="#" target="_blank" class="nav-link pl-0 pr-0"> About Us</a> &nbsp;&nbsp;
                             <a href="#" target="_blank" class="nav-link pl-0 pr-5"> Contact us</a>
                             <a href="#" target="_blank" class="nav-link pl-0 pr-0"> Vision & Mission </a>&nbsp;&nbsp;
                             <a href="#" target="_blank" class="nav-link pl-0 pr-0"> Login</a>
-                            
+
 
                         </div>
                         <!--end::Nav-->

@@ -22,10 +22,12 @@ class TrainingSessionSeeder extends Seeder
             'start_date' => '2022-05-06',
             'end_date' => '2022-05-16',
             'moto' => 'We are in the community',
-            'registration_start_date' => '2022-05-10',
-            'registration_dead_line' => '2022-05-15',
+            'registration_start_date' => '2022-05-8',
+            'registration_dead_line' => '2022-05-25',
             'quantity' => 2000,
             'status' => 0,
         ]);
+
+        
     }
 }

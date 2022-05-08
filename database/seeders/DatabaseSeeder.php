@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         $this->call([
             TrainingSessionSeeder::class,
+            VolunteerSeeder::class,
             RegionSeeder::class,
             ZoneSeeder::class,
             WoredaSeeder::class,
