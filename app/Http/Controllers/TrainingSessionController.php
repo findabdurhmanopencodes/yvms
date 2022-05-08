@@ -44,7 +44,7 @@ class TrainingSessionController extends Controller
     {
         $bool_Arr = [];
         $date_now = Carbon::now();
-        $last_data_id = DB::table('training_sessions')->orderBy('id','desc')->first()->id;
+        $last_data_id = DB::table('training_sessions')->orderBy('id','desc')->first()?->id;
         // dd($date_now->format('Y-m-d'));
         // $date_now_et = DateTimeFactory::fromDateTime($date_now)->format('m/d/y');
         // dd(new DateTime($date_now_et));

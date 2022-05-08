@@ -91,7 +91,7 @@
 
 
                                 </div>
-                                @if ($applicant->status->acceptance_status == 0)
+                                @if ($applicant->status?->acceptance_status == 0)
                                     <form action="{{ route('applicant.screen', ['applicant_id' => $applicant->id]) }}"
                                         method="POST">
                                         @csrf

@@ -32,7 +32,7 @@ class VolunteerController extends Controller
      */
     public function index(Request $request, $session_id)
     {
-        $applicants = Volunteer::query();
+        $applicants = Volunteer::where('training_session_id', $session_id);
         // dd($applicants->paginate(5));
 
 
