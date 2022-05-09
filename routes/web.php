@@ -59,6 +59,11 @@ Route::get('/terms', function () {
     return view('menu.terms');
 })->name('terms');
 
+Route::get('/placement', function () {
+    return view('placement.index');
+})->name('placement');
+
+
 
 
 
