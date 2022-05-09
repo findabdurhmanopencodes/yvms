@@ -27,7 +27,7 @@
                         </a>
                     </div>
                     <div class="navi-item mb-2">
-                        <a href="{{ route('applicant.index',['session_id'=>$trainingSession->id]) }}" class="navi-link py-4">
+                        <a href="{{ route('applicant.verified', ['session'=>$trainingSession->id]) }}" class="navi-link py-4">
                             <span class="navi-icon mr-2">
                                 <span class="svg-icon">
                                     <i class="fa fa-user"></i>
@@ -58,18 +58,7 @@
                             {{-- <span class="navi-text font-size-lg">Personal Information</span> --}}
                         </a>
                     </div>
-                    <div class="navi-item mb-2">
-                        <a href="{{ route('applicant.decide',['session'=>$trainingSession->id]) }}" class="navi-link py-4">
-                            <span class="navi-icon mr-2">
-                                <span class="svg-icon">
-                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-opened.svg-->
-                                    <i class="fa fa-sms"></i>
-                                    <!--end::Svg Icon-->
-                                </span>
-                            </span>
-                            <span class="navi-text font-size-lg">Decide Applicant</span>
-                        </a>
-                    </div>
+
                 </div>
                 <!--end::Nav-->
             </div>

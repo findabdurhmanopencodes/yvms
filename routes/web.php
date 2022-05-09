@@ -51,13 +51,18 @@ Route::get('/contactus', function () {
     return view('menu.contactus');
 })->name('contactus');
 
-Route::get('/vission-and-mission', function () {
+Route::get('/vission_and_mission', function () {
     return view('menu.vission-and-mission');
-})->name('vission-and-mission');
+})->name('vission_and_mission');
 
 Route::get('/terms', function () {
     return view('menu.terms');
 })->name('terms');
+
+Route::get('/placement', function () {
+    return view('placement.index');
+})->name('placement');
+
 
 
 
@@ -104,6 +109,6 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
     Route::post('applicant/{applicant_id}/screen', [VolunteerController::class, 'screen'])->name('applicant.screen');
-    Route::get('applicants/{session}/decide', [VolunteerController::class, 'decide'])->name('applicant.decide');
+    Route::get('applicants/{session}/verified', [VolunteerController::class, 'verifiedApplicant'])->name('applicant.verified');
 });
 require __DIR__ . '/auth.php';

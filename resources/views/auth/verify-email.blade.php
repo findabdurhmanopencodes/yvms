@@ -3,7 +3,7 @@
 @section('content')
     <div class="d-flex justify-items-center">
 
-            <img alt="Logo" src="{{ asset('assets/media/logos/mop_logo.png') }}" class="h-40px mb-5">
+            <img alt="Logo" src="{{ asset('assets/media/logos/mop_logo.jpg') }}" class="h-40px mb-5">
 
         <div class="pt-lg-10 mb-10">
             <h1 class="fw-bolder fs-2qx text-gray-800 mb-7">Verify Your Email</h1>
