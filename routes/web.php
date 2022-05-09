@@ -51,9 +51,9 @@ Route::get('/contactus', function () {
     return view('menu.contactus');
 })->name('contactus');
 
-Route::get('/vission-and-mission', function () {
+Route::get('/vission_and_mission', function () {
     return view('menu.vission-and-mission');
-})->name('vission-and-mission');
+})->name('vission_and_mission');
 
 Route::get('/terms', function () {
     return view('menu.terms');

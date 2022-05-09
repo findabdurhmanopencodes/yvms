@@ -17,7 +17,7 @@
     </li>
     
     <li class="menu-item {{ strpos(Route::currentRouteName(), 'contactus') === 0 ? 'menu-item-active' : '' }}">
-        <a href="{{ route('contactus') }}" class="menu-link menu-toggle">
+        <a href="{{ route('contactus') }}" class="menu-link">
             <i  style="color:#5dade2 !important;" class="fa fa-address-book"></i>
 
 
@@ -26,18 +26,16 @@
         </a>
     </li>
 
-    <li class="menu-item {{ strpos(Route::currentRouteName(), 'vission-and-mission') === 0 ? 'menu-item-active' : '' }}">
-        <a href="{{ route('vission-and-mission') }}" class="menu-link menu-toggle">
+    <li class="menu-item {{ strpos(Route::currentRouteName(), 'vission_and_mission') === 0 ? 'menu-item-active' : '' }}">
+        <a href="{{ route('vission_and_mission') }}" class="menu-link">
             <i  style="color:#5dade2 !important;" class="fa fa-eye"></i>
             <span  style="color:#5dade2 !important;" class="menu-text"> &nbsp; Vision & Mision </span>
             <i class="menu-arrow"></i>
         </a>
     </li>
     <li class="menu-item {{ strpos(Route::currentRouteName(), 'login') === 0 ? 'menu-item-active' : '' }}">
-        <a href="{{ route('login') }}" class="menu-link menu-toggle">
+        <a href="{{ route('login') }}" class="menu-link">
             <i  style="color:#5dade2 !important;" class="fas fa-sign-in-alt"></i>
-
-
             <span  style="color:#5dade2 !important;" class="menu-text"> &nbsp; Login </span>
             <i class="menu-arrow"></i>
         </a>

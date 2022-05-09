@@ -30,7 +30,7 @@
     @stack('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('calendar/css/redmond.calendars.picker.css') }}">
     <link rel="shortcut icon" href="{{ asset('assets/media/logos/mop_logo.jpg') }}" />
-    <img  style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" /> 
+    <img style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" />
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -38,30 +38,31 @@
 <body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed page-loading">
     <!--begin::Main-->
     <!--begin::Header Mobile-->
-    <div  style="background-color:  #5dade2;" id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
+    <div style="background-color:  #5dade2;" id="kt_header_mobile"
+        class="header-mobile align-items-center header-mobile-fixed">
         <!--begin::Logo-->
         <a href="#">
-            <img  style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" /> 
+            <img style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" />
         </a>
 
- 
+
         <h3 style="color;white; font-size:13px;text-align:center;"> <br><br><br>
             Youth Volunteerism<br> Managment System(YVMS)<br>
             <hr>
             <a href="{{ route('aplication.form') }}" class="btn"
-            style="min-width: 150px; background-color:rgb(249 ,92 ,57);color:white;font-weight:bold;">
-            <b>
-                {{-- <i class="fal fa-plus"></i> --}}
-            </b>
-            <span class="menu-text">Apply Now</span>
-        </a>
-        
-            
-            {{-- Ministry of Peace| የሰላም ሚኒስቴር  --}}
+                style="min-width: 150px; background-color:rgb(249 ,92 ,57);color:white;font-weight:bold;">
+                <b>
+                    {{-- <i class="fal fa-plus"></i> --}}
+                </b>
+                <span class="menu-text">Apply Now</span>
+            </a>
 
-            
+
+            {{-- Ministry of Peace| የሰላም ሚኒስቴር --}}
+
+
         </h3>
-        
+
         <!--end::Logo-->
         <!--begin::Toolbar-->
         <div class="d-flex align-items-center">
@@ -86,30 +87,35 @@
                         <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
                             <!--begin::Header Logo-->
                             <div class="header-logo">
-                            <img  style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" /> 
-                             
+                                <img style="height:50px; width:110px;"
+                                    src="{{ asset('assets/media/logos/flag.gif') }}" />
 
-                            <a href="#">
-                                <h3 style="color:#5dade2; font-size:13px;text-align:center;"> <br><br><br>
-                                    Youth Volunteerism<br> Managment System(YVMS)<br>
-                                    <hr>
-                                    Ministry of Peace
-                                
-                                    
-                                    {{-- Ministry of Peace| የሰላም ሚኒስቴር  --}}
-        
-                                    
-                                </h3>
-                                
-                            </a>
+
+                                <a href="#">
+                                    <h3 style="color:#5dade2; font-size:13px;text-align:center;"> <br><br><br>
+                                        Youth Volunteerism<br> Managment System(YVMS)<br>
+                                        <hr>
+                                        Ministry of Peace
+
+
+                                        {{-- Ministry of Peace| የሰላም ሚኒስቴር --}}
+
+
+                                    </h3>
+
+                                </a>
                             </div>
                             <!--end::Header Logo-->
                             <!--begin::Header Menu-->
-                                                    <!--begin::Container-->
+                            <!--begin::Container-->
 
                             <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
                                 <!--begin::Header Nav-->
                                 @include('menu.header')
+                                <!--end::Header Nav-->
+                            </div>
+                            <!--end::Header Menu-->
+                        </div>
                         <!--end::Header Menu Wrapper-->
                         <div class="topbar">
                             <div class="topbar-item">
@@ -120,7 +126,7 @@
                                     </b>
                                     <span class="menu-text">Apply Now</span>
                                 </a>
-                                 
+                            
                             </div>
                         </div>
                     </div>
@@ -130,17 +136,122 @@
                 <!--begin::Content-->
                 <div class="content d-flex flex-column flex-column-fluid p-0" id="kt_content">
                     <!--begin::Entry-->
-               
+
                     <div class="d-flex flex-column-fluid">
-
-                    
                         <div class="container">
+                             <div class="row" data-sticky-container="">
+                                <div class="col-lg-3 col-xl-2">
+                                    <div class="card card-custom sticky" data-sticky="true" data-margin-top="140px"
+                                        data-sticky-for="1023" data-sticky-class="kt-sticky">
+                                        <div class="card-body p-0">
+                                            <ul class="navi navi-bold navi-hover my-5" role="tablist">
+                                                <li class="navi-item">
+                                                    <a class="navi-link active" data-toggle="tab"
+                                                        href="#kt_profile_tab_personal_information">
+                                                        <span class="navi-icon">
+                                                            <i class="flaticon-avatar"></i>
+                                                        </span>
+                                                        <span class="navi-text"> Vission</span>
+                                                    </a>
+                                                </li>
+                                                <li class="navi-item">
+                                                    <a class="navi-link" data-toggle="tab"
+                                                        href="#kt_profile_tab_account_information">
+                                                        <span class="navi-icon">
+                                                            <i class="fa fa-phone"></i>
+                                                        </span>
+                                                        <span class="navi-text"> Mission</span></span>
+                                                    </a>
+                                                </li>
+                                                <li class="navi-item">
+                                                    <a class="navi-link" data-toggle="tab"
+                                                        href="#kt_profile_change_password">
+                                                        <span class="navi-icon">
+                                                            <i class="fa fa-envelope"></i>
+                                                        </span>
+                                                        <span class="navi-text"> Value </span>
+                                                    </a>
+                                                </li>
 
 
 
+                                                <li class="navi__separator"></li>
 
 
-                             @yield('content')
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xl-10">
+                                    <div class="card card-custom gutter-b example example-compact">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h3 class="card-label"> <a href="#">
+                                                Vision and Mission 
+                                                    
+                                                </a>
+                                                </h3>
+                                            </div>
+                                            <div class="card-toolbar">
+                                                <div class="example-tools justify-content-center">
+                                                    <span class="example-toggle" data-toggle="tooltip"
+                                                        title="View code"></span>
+                                                    <span class="example-copy" data-toggle="tooltip"
+                                                        title="Copy code"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="example-preview">
+                                                <strong> Mission </strong>
+                                               <p style="text-align:justify;">
+                                         
+                                             <ul> <li style="text-align:justify;"> 
+                                            Write mission hete
+                                              <br>
+                                               </li> 
+                                            </ul>
+
+
+                                               <strong> </u> Vision </u> </strong> <br>
+                                               <ul style="text-align:justify;">
+                                                    <li> Write Mission here </li>
+                                                 
+                                                    
+                                         
+                                               </ul>
+
+
+                                               <strong> </u> Values </u> </strong> <br>
+                                               <ul style="text-align:justify;">
+                                                    <li> Consistency </li>
+                                                    <li> Accountability</li>
+                                                    <li> Tarnsparency </li>
+                                                    
+                                         
+                                               </ul>
+                                            </p>
+                                            </div>
+                                            <!--begin::Code example-->
+                                            <div class="example-code">
+                                                <div class="example-highlight">
+                                                    <pre>
+                            <code class="language-html">
+
+                    </code>
+</pre>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                            @yield('content')
                         </div>
                         <!--end::Container-->
                     </div>
@@ -155,17 +266,18 @@
                         <!--begin::Copyright-->
                         <div class="text-dark order-2 order-md-1">
                             <span class="text-muted font-weight-bold mr-2">2020©</span>
-                            <a href="#" target="_blank" class="text-dark-75 text-hover-primary"> Ministry of Peace| የሰላም ሚኒስቴር </a>
+                            <a href="#" target="_blank" class="text-dark-75 text-hover-primary"> Ministry of Peace| የሰላም
+                                ሚኒስቴር </a>
                         </div>
                         <!--end::Copyright-->
                         <!--begin::Nav-->
                         <div class="nav nav-dark">
-                            <a href="#" target="_blank" class="nav-link pl-0 pr-5"> Home</a> 
+                            <a href="#" target="_blank" class="nav-link pl-0 pr-5"> Home</a>
                             <a href="#" target="_blank" class="nav-link pl-0 pr-0"> About Us</a> &nbsp;&nbsp;
                             <a href="#" target="_blank" class="nav-link pl-0 pr-5"> Contact us</a>
                             <a href="#" target="_blank" class="nav-link pl-0 pr-0"> Vision & Mission </a>&nbsp;&nbsp;
                             <a href="#" target="_blank" class="nav-link pl-0 pr-0"> Login</a>
-                            
+
 
                         </div>
                         <!--end::Nav-->
@@ -272,9 +384,8 @@
             })
         @endif
     </script>
-@section('title','Welcome To Ministry Of Peace')
+    @section('title', 'Welcome To Ministry Of Peace')
 </body>
 <!--end::Body-->
 
 </html>
-
