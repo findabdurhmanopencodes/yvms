@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\EducationalLevel;
+use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\Woreda;
 use DateTime;
@@ -19,6 +20,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // TrainingSession::create([
+        //     'start_date' => '2022-05-06',
+        //     'end_date' => '2022-05-16',
+        //     'moto' => 'We are in the community',
+        //     'registration_start_date' => '2022-05-8',
+        //     'registration_dead_line' => '2022-05-25',
+        //     'quantity' => 2000,
+        //     'status' => 0,
+        // ]);
         // Role::create(['name'=>'applicant']);
         // \App\Models\User::factory(50)->create();
         // \App\Models\Region::factory(4)->create();
@@ -26,7 +36,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Woreda::factory(16)->create();
         // \App\Models\File::factory(16)->create();
         // \App\Models\FeildOfStudy::factory(4)->create();
-        // \App\Models\Volunteer::factory(50)->create();
+        \App\Models\Volunteer::factory(50)->create();
 
         $this->call([
             // TrainingSessionSeeder::class,
