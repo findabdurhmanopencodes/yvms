@@ -24,52 +24,66 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $volunteerRole = Role::create(['name' => 'volunteer']);
-        // $superAdminRole = Role::create(['name' => 'super-admin']);
-        // $userData = (new  UserFactory())->definition();
-        // $userData['email'] = "super@gmail.com";
-        // $user = User::create($userData);
-        // $user->assignRole($superAdminRole);
-        // TrainingSession::create([
-        //     'start_date' => '2022-05-06',
-        //     'end_date' => '2022-05-16',
-        //     'moto' => 'We are in the community',
-        //     'registration_start_date' => '2022-05-8',
-        //     'registration_dead_line' => '2022-05-25',
-        //     'quantity' => 2000,
-        //     'status' => 0,
-        // ]);
-        // \App\Models\Region::factory(4)->create();
-        // //Zone creation
-        // $quota = [0.4,0.3,0.3];
-        // $region = 1;
-        // for($y = 0;$y<3;$y++){
-        //     \App\Models\Zone::factory(1)->create(['region_id'=>$region,'qoutaInpercent' => $quota[$y]]);
-        // }
-        // $quota = [0.3,0.2,0.1,0.2,0.2];
-        // $region = 2;
-        // for($y = 0;$y<count($quota);$y++){
-        //     \App\Models\Zone::factory(1)->create(['region_id'=>$region,'qoutaInpercent' => $quota[$y]]);
-        // }
-        // $quota = [0.5,0.2,0.1,0.2];
-        // $region = 3;
-        // for($y = 0;$y<count($quota);$y++){
-        //     \App\Models\Zone::factory(1)->create(['region_id'=>$region,'qoutaInpercent' => $quota[$y]]);
-        // }
+        $volunteerRole = Role::create(['name' => 'volunteer']);
+        $superAdminRole = Role::create(['name' => 'super-admin']);
+        $userData = (new  UserFactory())->definition();
+        $userData['email'] = "super@gmail.com";
+        $user = User::create($userData);
+        $user->assignRole($superAdminRole);
+        TrainingSession::create([
+            'start_date' => '2022-05-06',
+            'end_date' => '2022-05-16',
+            'moto' => 'We are in the community',
+            'registration_start_date' => '2022-05-8',
+            'registration_dead_line' => '2022-05-25',
+            'quantity' => 2000,
+            'status' => 0,
+        ]);
+        \App\Models\Region::factory(4)->create();
+        //Zone creation
+        $quota = [0.4,0.3,0.3];
+        $region = 1;
+        for($y = 0;$y<3;$y++){
+            \App\Models\Zone::factory(1)->create(['region_id'=>$region,'qoutaInpercent' => $quota[$y]]);
+        }
+        $quota = [0.3,0.2,0.1,0.2,0.2];
+        $region = 2;
+        for($y = 0;$y<count($quota);$y++){
+            \App\Models\Zone::factory(1)->create(['region_id'=>$region,'qoutaInpercent' => $quota[$y]]);
+        }
+        $quota = [0.5,0.2,0.1,0.2];
+        $region = 3;
+        for($y = 0;$y<count($quota);$y++){
+            \App\Models\Zone::factory(1)->create(['region_id'=>$region,'qoutaInpercent' => $quota[$y]]);
+        }
+        $quota = [0.1,0.3,0.6];
+        $region = 4;
+        for($y = 0;$y<count($quota);$y++){
+            \App\Models\Zone::factory(1)->create(['region_id'=>$region,'qoutaInpercent' => $quota[$y]]);
+        }
+
         //Woreda creation
-        // $quota = [0.2,0.4,0.4];
-        // for($x = 0;$x<3;$x++){
-        //     for($y = 0;$y<3;$y++){
-        //         \App\Models\Woreda::factory(1)->create(['zone_id'=>$x,'qoutaInpercent' => $quota[$y]]);
-        //     }
-        // }
+        $zonesCount = Zone::count();
+        for ($x = 0; $x < $zonesCount; $x++) {
+            $quota = [0.2, 0.4, 0.4];
+            for ($y = 0; $y < count($quota); $y++) {
+                \App\Models\Woreda::factory(1)->create(['zone_id' => $x, 'qoutaInpercent' => $quota[$y]]);
+            }
+            $quota = [0.2, 0.5, 0.1, 0.2];
+            for ($y = 0; $y < count($quota); $y++) {
+                \App\Models\Woreda::factory(1)->create(['zone_id' => $x, 'qoutaInpercent' => $quota[$y]]);
+            }
+            $quota = [0.2, 0.2, 0.1, 0.3, 0.2];
+            for ($y = 0; $y < count($quota); $y++) {
+                \App\Models\Woreda::factory(1)->create(['zone_id' => $x, 'qoutaInpercent' => $quota[$y]]);
+            }
+        }
         //User Factory
         // \App\Models\User::factory(100)->create();
         // \App\Models\File::factory(16)->create();
         // \App\Models\FeildOfStudy::factory(4)->create();
         $regions = Zone::all();
-        foreach($regions as $region){
-
+        foreach ($regions as $region) {
         }
         // \App\Models\Volunteer::factory(100)->create();
 
