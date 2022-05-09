@@ -20,7 +20,7 @@ class TraininingCenterFactory extends Factory
         return [
             'name' => $this->faker->firstName(),
             'decription' => $this->faker->text(40),
-            'zone_id' => $this->faker->unique()->numberBetween(1,Zone::count()),
+            'zone_id' => 2,
         ];
     }
 }

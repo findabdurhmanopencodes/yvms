@@ -85,7 +85,11 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory(100)->create();
         \App\Models\File::factory(16)->create();
         \App\Models\FeildOfStudy::factory(4)->create();
-        \App\Models\TraininingCenter::factory(Zone::count())->create();
+        $zones = Zone::all();
+        foreach ($zones as $zone ) {
+            \App\Models\TraininingCenter::factory(1)->create(['zone_id'=> $zone->id]);
+        }
+
         $capacities = [6, 6, 5, 6, 7, 5, 6, 10, 7, 6, 4, 8, 7, 9, 8];
         $trainingcenters = TraininingCenter::all();
         foreach ($trainingcenters as $key => $center) {
