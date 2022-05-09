@@ -10,9 +10,9 @@ class Status extends Model
     use HasFactory;
     protected $fillable=['volunteer_id','acceptance_status','rejection_reason','status'];
 
-    public function applicant()
+    public function applicants()
     {
-        return $this->hasMany(Volunteer::class);
+        return $this->belongsTo(Volunteer::class);
     }
     public static $status = [
         0 => 'Pending',
