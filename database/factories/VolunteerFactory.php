@@ -23,7 +23,6 @@ class VolunteerFactory extends Factory
     {
         $faker = $this->faker;
         $woredas = Woreda::pluck('id')->toArray();
-
         return [
             'first_name' => $faker->name('male'),
             'father_name' => $faker->name('male'),
