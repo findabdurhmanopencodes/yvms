@@ -9,7 +9,6 @@
         <a href="" class="text-muted">Regions</a>
     </li>
 @endsection
-
 @push('js')
     <script>
         var HOST_URL = "{{ route('region.index') }}";
@@ -145,6 +144,17 @@
                                                     <div class="col-lg-6">
                                                         <label>Region Code:</label>
                                                         <input type="text" class="form-control" placeholder="region code" name="code"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-6">
+                                                        <label>Region Quota:</label>
+                                                        <div class="input-group">
+                                                            <input type="number" class="form-control" placeholder="Region Quota in percent" name="region_quota"/>
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text">%</span>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

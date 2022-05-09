@@ -15,7 +15,7 @@ class RegionSeeder extends Seeder
      */
     public function run()
     {
-        Region::create(['name'=>'Oromia','code'=>'or']);
-        Region::create(['name'=>'Amhara','code'=>'am']);
+        Region::create(['name'=>'Oromia','code'=>'or', 'qoutaInpercent'=> 0.25]);
+        Region::create(['name'=>'Amhara','code'=>'am', 'qoutaInpercent' => 0.2]);
     }
 }

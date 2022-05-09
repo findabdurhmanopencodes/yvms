@@ -23,4 +23,8 @@ class Qouta extends Model
     public function quotable(){
         return $this->morphTo();
     }
+
+    public function trainingSession(){
+        return $this->belongsTo(TrainingSession::class);
+    }
 }

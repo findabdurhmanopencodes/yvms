@@ -16,7 +16,7 @@ class TraininingCenterSeeder extends Seeder
     public function run()
     {
 
-        TraininingCenter::create(['name'=>'Test university','code'=>'Te','zone_id'=>1]);
+        TraininingCenter::create(['name'=>'Test university','code'=>'Te','zone_id'=>1,'logo'=>'a.png']);
 
     }
 }

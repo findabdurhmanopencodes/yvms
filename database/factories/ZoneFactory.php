@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Region;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,10 @@ class ZoneFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->name(),
+            'code' => $this->faker->countryCode(),
+            'qoutaInpercent' => 0.25,
+            'region_id' => $this->faker->unique()->numberBetween(1,Region::count()),
         ];
     }
 }

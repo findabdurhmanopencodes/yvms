@@ -18,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code');
+            $table->double('qoutaInpercent')->nullable();
             $table->foreignIdFor(Zone::class)->onDelete('cascade');
             $table->timestamps();
         });

@@ -28,7 +28,7 @@
     <link href="{{ asset('fontawesome/css/all.min.css') }}" rel="stylesheet">
     <!--end::Layout Themes-->
     @stack('css')
-    <link rel="shortcut icon" href="{{ asset('ju_logo.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('img/logo_peace.png') }}" />
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -41,7 +41,7 @@
     <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
         <!--begin::Logo-->
         <a href="/">
-            <img alt="Logo" src="{{ asset('ju_logo.png') }}" width="40" />
+            <img alt="Logo" src="{{ asset('img/logo_peace.png') }}" width="40" />
         </a>
         <!--end::Logo-->
         <!--begin::Toolbar-->
@@ -88,7 +88,7 @@
                 <div class="brand flex-column-auto" id="kt_brand">
                     <!--begin::Logo-->
                     <a href="#" class="text-center brand-logo w-100 d-block">
-                        <img alt="Logo" src="{{ asset('ju_logo.png') }}" width="40" />
+                        <img alt="Logo" src="{{ asset('img/logo_peace.png') }}" width="40" />
                     </a>
                     <!--end::Logo-->
                     <!--begin::Toggle-->
@@ -155,7 +155,7 @@
                                                 <span class="menu-text">All Users</span>
                                             </a>
                                         </li>
-                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'user.index') === 0 ? 'menu-item-active' : '' }}"
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'user.create') === 0 ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
                                             <a href="{{ route('user.create', []) }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
@@ -333,8 +333,8 @@
             <div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
                 <!--begin::Copyright-->
                 <div class="order-2 text-dark order-md-1">
-                    <span class="mr-2 text-muted font-weight-bold">2020©</span>
-                    <a href="#" target="_blank" class="text-dark-75 text-hover-primary">JU</a>
+                    <span class="mr-2 text-muted font-weight-bold">2020 &copy;</span>
+                    <a href="#" target="_blank" class="text-dark-75 text-hover-primary">Ministry of Peace</a>
                 </div>
                 <!--end::Copyright-->
                 <!--begin::Nav-->

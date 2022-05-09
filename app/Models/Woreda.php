@@ -17,7 +17,8 @@ class Woreda extends Model
     protected $fillable = [
         'name',
         'code',
-        'zone_id'
+        'zone_id',
+        'qoutaInpercent'
     ];
 
     public function zone(){
@@ -26,5 +27,8 @@ class Woreda extends Model
 
     public function quotas(){
         return $this->morphMany(Qouta::class, 'quotable');
+    }
+    public function applicants(){
+        return $this->hasMany(Volunteer::class);
     }
 }

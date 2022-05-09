@@ -5,25 +5,69 @@
 @endsection
 @push('js')
     <script>
-        $(function() {
-            var datatable = $('#kt_datatable').KTDatatable({
-                "columns": [{
-                        "width": "25px"
-                    },
-                    {
-                        "width": "25px"
-                    }
-                ],
-            });
-            // var table = $('#kt_datatable');
-
-            // begin first table
-            // table.DataTable({
-            //     responsive: true,
-            //     pageLength: 10,
-            // })
-        });
+        var HOST_URL = "{{ route('user.index') }}";
+        var COLUMNS = [{
+                field: 'id',
+                title: '#',
+                sortable: 'asc',
+                width: 30,
+                type: 'number',
+                selector: false,
+                textAlign: 'center',
+                template: function(row, index) {
+                    return index + 1;
+                }
+            },
+            {
+                field: 'name',
+                title: 'Name',
+                sortable: 'asc',
+                template: function(row) {
+                    console.log(row);
+                    return row.first_name + ' ' + row.last_name + ' ' + row.grand_father_name;
+                }
+            },
+            {
+                field: 'email',
+                title: 'Email',
+                sortable: 'asc',
+                template: function(row) {
+                    console.log(row);
+                    return row.email;
+                }
+            },
+            {
+                field: 'Actions',
+                title: 'Actions',
+                sortable: false,
+                width: 100,
+                overflow: 'visible',
+                autoHide: false,
+                template: function(row) {
+                    var userId = row.id;
+                    /*
+    <a href="javascript:;" onclick="deleteUser(' + userId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
+                                                            <i class="far fa-trash"></i>\
+                                                        </a>\
+                        */
+                    return '\
+                        <div class="d-flex justify-between">\
+                                    \
+                            <a href="/user/' + userId + '" class="btn btn-sm btn-clean btn-icon" >\
+                                <i class="far fa-eye"></i>\
+                            </a>\
+                            <a href="/user/' + userId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                                <i class="far fa-pen"></i>\
+                            </a>\
+                                    \
+                        </div>\
+                                ';
+                },
+            }
+        ]
+        $(function() {});
     </script>
+    <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
 @endpush
 @section('content')
     <div class="py-2 pr-4">
@@ -47,10 +91,14 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
+
+            <!--begin: Datatable-->
+            <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+            <!--end: Datatable-->
+            {{-- <table class="table table-separate" id="kt_datatable">
                 <thead>
                     <tr>
-                        <th>
+                        <th width="20" style="max-width: 10px !important;">
                             #
                         </th>
                         <th>
@@ -98,7 +146,7 @@
                         </tr>
                     @endempty
                 </tbody>
-            </table>
+            </table> --}}
         </div>
         <!-- /.card-body -->
     </div>
