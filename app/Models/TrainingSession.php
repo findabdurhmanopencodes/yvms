@@ -35,4 +35,10 @@ class TrainingSession extends Model
     public function quotas(){
         return $this->hasMany(Qouta::class);
     }
+
+    public function approvedApplicants(){
+        return $this->hasMany(ApprovedApplicant::class);
+    }
+    
+
 }
