@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Zone;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class TraininingCenterFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->firstName(),
+            'decription' => $this->faker->text(40),
+            'zone_id' => 2,
         ];
     }
 }

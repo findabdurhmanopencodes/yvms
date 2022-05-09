@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\TraininingCenter;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class TrainingCenterCapacityFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'trainining_center_id' => 2,
+            'training_session_id' => 1,
+            'capacity' => 2,
         ];
     }
 }
