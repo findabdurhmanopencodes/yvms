@@ -40,7 +40,7 @@ class VolunteerFactory extends Factory
             'ministry_document' => $this->faker->numberBetween(1,File::count()),
             'ethical_license' => $this->faker->numberBetween(1,File::count()),
             'educational_level' => 0,
-            'user_id' => $this->faker->unique()->numberBetween(1,User::count()),
+            'user_id' => $this->faker->unique()->numberBetween(2,User::count()),
             'training_session_id' => TrainingSession::first(),
             'field_of_study_id' => $this->faker->numberBetween(1,FeildOfStudy::count()),
         ];
