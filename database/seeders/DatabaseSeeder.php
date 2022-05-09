@@ -40,12 +40,21 @@ class DatabaseSeeder extends Seeder
         //     'status' => 0,
         // ]);
         // \App\Models\Region::factory(4)->create();
-        //Zone creation
+        // //Zone creation
         // $quota = [0.4,0.3,0.3];
-        // for($x = 0;$x<3;$x++){
-        //     for($y = 0;$y<3;$y++){
-        //         \App\Models\Zone::factory(1)->create(['region_id'=>$x,'qoutaInpercent' => $quota[$y]]);
-        //     }
+        // $region = 1;
+        // for($y = 0;$y<3;$y++){
+        //     \App\Models\Zone::factory(1)->create(['region_id'=>$region,'qoutaInpercent' => $quota[$y]]);
+        // }
+        // $quota = [0.3,0.2,0.1,0.2,0.2];
+        // $region = 2;
+        // for($y = 0;$y<count($quota);$y++){
+        //     \App\Models\Zone::factory(1)->create(['region_id'=>$region,'qoutaInpercent' => $quota[$y]]);
+        // }
+        // $quota = [0.5,0.2,0.1,0.2];
+        // $region = 3;
+        // for($y = 0;$y<count($quota);$y++){
+        //     \App\Models\Zone::factory(1)->create(['region_id'=>$region,'qoutaInpercent' => $quota[$y]]);
         // }
         //Woreda creation
         // $quota = [0.2,0.4,0.4];
