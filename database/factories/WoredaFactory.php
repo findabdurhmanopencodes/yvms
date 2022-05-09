@@ -21,7 +21,7 @@ class WoredaFactory extends Factory
             'name' => $this->faker->name(),
             'code' => $this->faker->countryCode(),
             'qoutaInpercent' => 0.25,
-            'zone_id' => $this->faker->unique()->numberBetween(1,Zone::count()),
+            'zone_id' => $this->faker->unique(true)->numberBetween(1,Zone::count()),
         ];
     }
 }

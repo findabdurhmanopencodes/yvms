@@ -34,8 +34,6 @@ class VolunteerController extends Controller
     {
         $applicants = Volunteer::where('training_session_id', $session_id);
         // dd($applicants->paginate(5));
-
-
         if ($request->has('filter')) {
             $first_name = $request->get('first_name');
             $father_name = $request->get('father_name');
@@ -82,6 +80,7 @@ class VolunteerController extends Controller
                 $applicants = $applicants->where('gpa', '=', $gpa);
             }
         }
+
         return view('volunter.index', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($session_id), 'regions' => Region::all(), 'woredas' => Woreda::all(), 'zones' => Zone::all(), 'disabilities' => Disablity::all()]);
     }
 
@@ -267,6 +266,7 @@ class VolunteerController extends Controller
     }
     public function Screen(Request $request,$applicant_id){
         if($request->get('type')=='accept'){
+            // dd('11');
             Status::Create(['volunteer_id'=>$applicant_id,'acceptance_status'=>1]);
             return redirect()->back();
         }
@@ -280,6 +280,17 @@ class VolunteerController extends Controller
         dd($applicants[0]->status);
         return  view('volunter.decide',['applicant']);
 
+    }
+        /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function verifiedApplicant(Request $request, $session_id)
+    {
+        $applicants = Volunteer::whereRelation('status', 'acceptance_status', 1);
+        // dd($applicants->get());
+        return view('volunter.verified_volunter', ['volunters' => $applicants->paginate(6),'trainingSession'=>TrainingSession::find($session_id)]);
     }
 
 }

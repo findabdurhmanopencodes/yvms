@@ -1,12 +1,12 @@
 @extends('layouts.session_layout')
-@section('action_title','Training Session Detail')
-@section('title','Training Session Detail')
-@section('breadcrumbTitle','Training Session Detail')
+@section('action_title', 'Training Session Detail')
+@section('title', 'Training Session Detail')
+@section('breadcrumbTitle', 'Training Session Detail')
 @section('breadcrumbList')
-<li class="breadcrumb-item">
-    <a  href="{{ route('training_session.index', []) }}">All Training Sessions</a>
-</li>
-<li class="active">Detail</li>
+    <li class="breadcrumb-item">
+        <a href="{{ route('training_session.index', []) }}">All Training Sessions</a>
+    </li>
+    <li class="active">Detail</li>
 @endsection
 @push('js')
     <!--begin::Page Scripts(used by this page)-->
@@ -16,5 +16,8 @@
 @endpush
 
 @section('action_content')
-    
+    <div>
+        <a href="{{ route('applicant.index', ['session_id' => $trainingSession->id]) }}" class="btn btn-primary my-4  mx-4" >
+        Verify Documents</a>
+    </div>
 @endsection
