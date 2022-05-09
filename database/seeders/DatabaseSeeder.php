@@ -3,10 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\EducationalLevel;
+use App\Models\Region;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\User;
 use App\Models\Woreda;
+use App\Models\Zone;
 use Database\Factories\UserFactory;
 use DateTime;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,9 +24,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // $volunteerRole = Role::create(['name' => 'volunteer']);
+        // $superAdminRole = Role::create(['name' => 'super-admin']);
         // $userData = (new  UserFactory())->definition();
         // $userData['email'] = "super@gmail.com";
-        // User::create($userData);
+        // $user = User::create($userData);
+        // $user->assignRole($superAdminRole);
         // TrainingSession::create([
         //     'start_date' => '2022-05-06',
         //     'end_date' => '2022-05-16',
@@ -34,14 +39,30 @@ class DatabaseSeeder extends Seeder
         //     'quantity' => 2000,
         //     'status' => 0,
         // ]);
-        // Role::create(['name'=>'applicant']);
-        // \App\Models\User::factory(100)->create();
         // \App\Models\Region::factory(4)->create();
-        // \App\Models\Zone::factory(4)->create();
-        // \App\Models\Woreda::factory(16)->create();
+        //Zone creation
+        // $quota = [0.4,0.3,0.3];
+        // for($x = 0;$x<3;$x++){
+        //     for($y = 0;$y<3;$y++){
+        //         \App\Models\Zone::factory(1)->create(['region_id'=>$x,'qoutaInpercent' => $quota[$y]]);
+        //     }
+        // }
+        //Woreda creation
+        // $quota = [0.2,0.4,0.4];
+        // for($x = 0;$x<3;$x++){
+        //     for($y = 0;$y<3;$y++){
+        //         \App\Models\Woreda::factory(1)->create(['zone_id'=>$x,'qoutaInpercent' => $quota[$y]]);
+        //     }
+        // }
+        //User Factory
+        // \App\Models\User::factory(100)->create();
         // \App\Models\File::factory(16)->create();
         // \App\Models\FeildOfStudy::factory(4)->create();
-        // \App\Models\Volunteer::factory(50)->create();
+        $regions = Zone::all();
+        foreach($regions as $region){
+
+        }
+        // \App\Models\Volunteer::factory(100)->create();
 
         $this->call([
             // TrainingSessionSeeder::class,

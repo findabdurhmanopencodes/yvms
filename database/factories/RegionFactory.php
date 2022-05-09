@@ -20,7 +20,7 @@ class RegionFactory extends Factory
             //
             'name' => $this->faker->name(),
             'code' => $this->faker->countryCode(),
-            'qoutaInpercent' => 0.25,
+            'qoutaInpercent' => $this->faker->unique()->randomElement([0.4,0.2,0.3,0.1]),
         ];
     }
 }
