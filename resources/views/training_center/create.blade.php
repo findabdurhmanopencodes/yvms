@@ -75,6 +75,16 @@
                             <small class="text-danger"><b>{{ $message }}</b></small>
                         @enderror
                     </div>
+                    <div class="col-lg-12">
+                        <label>Capacity</label>
+                        <input type="number" name="capacity" class="form-control "
+                            value="{{ old('capacity') ?? (isset($trainingCenter) ? $trainingCenter->capacity : '') }}"
+                            placeholder="Enter Capacity " />
+                        <span class="form-text text-muted">Please enter Training Capacity Number</span>
+                        @error('capacity')
+                            <small class="text-danger"><b>{{ $message }}</b></small>
+                        @enderror
+                    </div>
                     <div class="form-group col-md-12">
                         <label>Logo</label>
                         <div></div>

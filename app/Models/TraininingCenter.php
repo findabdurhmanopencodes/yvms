@@ -14,4 +14,8 @@ class TraininingCenter extends Model
     {
         return $this->belongsTo(Zone::class);
     }
+    public function capacity()
+    {
+        return $this->belongsTo(TrainingCenterCapacity::class);
+    }
 }

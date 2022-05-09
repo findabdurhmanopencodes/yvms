@@ -91,7 +91,8 @@
 
 
                                 </div>
-                                @if ($applicant->status?->acceptance_status == 0)
+                                {{-- @dd($applicant->status) --}}
+                                @if ($applicant->status?->acceptance_status == 0 || $applicant->status?->acceptance_status == 2)
                                     <form action="{{ route('applicant.screen', ['applicant_id' => $applicant->id]) }}"
                                         method="POST">
                                         @csrf
@@ -101,15 +102,11 @@
 
                                     </form>
                                 @endif
-
-
-
-                                <a class="btn btn-bg btn-danger font-weight-bolder" data-toggle="modal"
-                                    data-target="#reject_button" value="reject"><i class=""></i>Reject
-                                    Applicant</a>
-
-
-
+                                @if ($applicant->status?->acceptance_status == 0 || $applicant->status?->acceptance_status == 1)
+                                    <button class="btn btn-bg btn-danger font-weight-bolder" data-toggle="modal"
+                                        data-target="#reject_button" value="reject"><i class=""></i>Reject
+                                        Applicant</button>
+                                @endif
                             </div>
                             <!--end::Title-->
                             <!--begin::Content-->
@@ -531,7 +528,8 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold"
                             data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary font-weight-bold" value="reject" name="type">Save changes</button>
+                        <button type="submit" class="btn btn-primary font-weight-bold" value="reject" name="type">Save
+                            changes</button>
                     </div>
             </div>
             </form>
