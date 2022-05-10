@@ -135,7 +135,7 @@ var KTWizard2 = function () {
                                 message: 'Date of Birth is required'
                             },
                             date: {
-                                format:'DD/MM/YYYY',
+                                format: 'DD/MM/YYYY',
                                 min: MinDob,
                                 max: MaxDob,
                                 message: 'Date of Birth is invalid'
@@ -168,6 +168,33 @@ var KTWizard2 = function () {
                             },
                             emailAddress: {
                                 message: 'The value is not a valid email address',
+                            },
+                        }
+                    },
+
+                    password: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Password is required'
+                            },
+                            stringLength: {
+                                min: 8,
+                                message: 'The password must be 8 length',
+                            }
+                        }
+                    },
+
+                    password_confirmation: {
+                        validators: {
+
+                            notEmpty: {
+                                message: 'Password confirm is required'
+                            },
+                            identical: {
+                                compare: function () {
+                                    return form.querySelector('[name="password"]').value;
+                                },
+                                message: 'The password and its confirm are not the same',
                             },
                         }
                     },

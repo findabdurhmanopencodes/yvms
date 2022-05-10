@@ -92,7 +92,7 @@
 				},
                 {
 					field: 'region_quantity',
-					title: 'Quantity',
+					title: 'Number of volunteer allowed',
 				},
                 
 			];

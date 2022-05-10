@@ -21,7 +21,12 @@ class Volunteer extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class,'user_id','id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function name()
+    {
+        return $this->first_name . ' ' . $this->father_name . ' ' . $this->grand_father_name;
     }
 
 
@@ -72,8 +77,18 @@ class Volunteer extends Model
         return $this->hasOne(Status::class);
     }
 
-    public function approvedApplicants(){
+    public function approvedApplicants()
+    {
         return $this->hasMany(ApprovedApplicant::class);
     }
 
+    /**
+     * Get the verifyVolunteer associated with the Volunteer
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function verifyVolunteer(): HasOne
+    {
+        return $this->hasOne(VerifyVolunteer::class);
+    }
 }

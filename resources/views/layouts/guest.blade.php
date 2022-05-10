@@ -327,7 +327,6 @@
     <script src="{{ asset('calendar/js/jquery.calendars.ethiopian-am.js') }}"></script>
     <script src="{{ asset('calendar/js/jquery.calendars.picker-am.js') }}"></script>
 
-    @stack('js')
     <!--end::Page Scripts-->
     <script>
         @if (Session::has('message'))
@@ -342,6 +341,7 @@
             //
         @endif
     </script>
+    @stack('js')
 
 </body>
 <!--end::Body-->

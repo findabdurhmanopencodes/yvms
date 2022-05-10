@@ -538,6 +538,30 @@
                                                 <!--end::Input-->
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-xl-6 form-group">
+                                                <x-jet-label for="password" value="{{ __('Password') }}" />
+                                                <input id="password"
+                                                    class="form-control form-control-lg @error('password') is-invalid @enderror"
+                                                    type="password" placeholder="Password" name="password" requiredd
+                                                    autocomplete="new-password" />
+                                                @error('password')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
+                                            <div class="col-xl-6 form-group">
+                                                <x-jet-label for="password_confirmation"
+                                                    value="{{ __('Confirm Password') }}" />
+                                                <input id="password_confirmation"
+                                                    class="form-control form-control-lg @error('password_confirmation') is-invalid @enderror"
+                                                    type="password" placeholder="Confirm Password"
+                                                    name="password_confirmation" requiredd autocomplete="new-password" />
+                                                @error('password_confirmation')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
                                     </div>
                                     <!--end: Wizard Step 1-->
                                     <!--begin: Wizard Step 2-->

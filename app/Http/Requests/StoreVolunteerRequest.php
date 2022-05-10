@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class StoreVolunteerRequest extends FormRequest
 {
@@ -50,6 +51,7 @@ class StoreVolunteerRequest extends FormRequest
             'disability' => ['sometimes',],
             'dob' => ['required', 'date_format:d/m/Y'],
             'gender' => ['required'],
+            'password' => ['required', 'confirmed', Password::defaults()],
             'phone' => ['required', 'regex:/^(\+251|0)9[0-9]{8}/', 'unique:volunteers,phone'],
             'email' => ['required', 'email', 'unique:volunteers,id'],
             //second wizard validation
