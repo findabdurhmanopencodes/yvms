@@ -68,6 +68,34 @@
                 placeholder: "Select a zone"
             });
         });
+
+        $("#woreda_quota").on("input", function(){  
+            value = $('#zone').val();
+              if (value) {
+                $.ajax({
+                  type: "POST",
+                  url: "/woreda/validate",
+                //   method: 'post',
+                  data: {
+                     'zone_id': value,
+                     'qouta': $('#woreda_quota').val(),
+                     "_token": $('meta[name="csrf-token"]').attr('content'),
+                  },
+                  success: function(result){
+                      console.log(result);
+                      if (result.limit == false) {
+                          $('#message').html('you reached max qouta');
+                          $(":submit").attr("disabled", true);
+                      }else{
+                        $('#message').html('');
+                        $(":submit").removeAttr("disabled");
+                      }
+                  },
+                });
+              }
+        })
+
+
         var COLUMNS = [{
                 field: 'id',
                 title: '#',
@@ -121,7 +149,7 @@
         ]
     </script>
     <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/crud/forms/widgets/select2.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/pages/crud/forms/widgets/select2.js') }}"></script> --}}
 @endpush
 @section('content')
     <!--begin::Card-->
@@ -181,11 +209,12 @@
                                                     <div class="col-lg-6">
                                                         <label>Woreda Quota:</label>
                                                         <div class="input-group">
-                                                            <input type="number" class="form-control" placeholder="Woreda quota in percent" name="woreda_quota"/>
+                                                            <input type="number" class="form-control" placeholder="Woreda quota in percent" name="woreda_quota" id="woreda_quota"/>
                                                             <div class="input-group-append">
                                                                 <span class="input-group-text">%</span>
                                                             </div>
                                                         </div>
+                                                        <small class="text-danger"><b id="message"></b></small>
                                                     </div>
                                                 </div>
                                             </div>

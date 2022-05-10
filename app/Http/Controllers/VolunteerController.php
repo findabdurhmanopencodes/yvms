@@ -6,6 +6,7 @@ use Andegna\DateTimeFactory;
 use App\Models\Volunteer;
 use App\Http\Requests\StoreVolunteerRequest;
 use App\Http\Requests\UpdateVolunteerRequest;
+use App\Mail\VerifyMail;
 use App\Models\Disablity;
 use App\Models\EducationalLevel;
 use App\Models\FeildOfStudy;
@@ -14,12 +15,17 @@ use App\Models\Region;
 use App\Models\Status;
 use App\Models\TrainingSession;
 use App\Models\User;
+use App\Models\VerifyVolunteer;
 use App\Models\Woreda;
 use App\Models\Zone;
 use Carbon\Carbon;
 use DateTime;
 use Faker\Factory;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Models\Role;
 
@@ -187,17 +193,6 @@ class VolunteerController extends Controller
             ]);
             throw $validationException;
         }
-        $faker = Factory::create();
-        $password = $faker->password(8);
-        $userData = [
-            'first_name' => $request->get('first_name'),
-            'father_name' => $request->get('father_name'),
-            'grand_father_name' => $request->get('grand_father_name'),
-            'email' => $request->get('email'),
-            'dob' => $dob_GC,
-            'gender' => $request->get('gender'),
-            'password' => $password,
-        ];
         $volunteerData = $request->validated();
         $woreda_id = $volunteerData['woreda'];
         $field_of_study_id = $volunteerData['field_of_study'];
@@ -206,6 +201,7 @@ class VolunteerController extends Controller
         $volunteerData['field_of_study_id'] = $field_of_study_id;
         $volunteerData['disablity_id'] = $disablity_id;
         $volunteerData['dob'] = $dob_GC;
+        $volunteerData['password'] = Hash::make($volunteerData['password']);
         unset($volunteerData['agree_check'], $volunteerData['disability'], $volunteerData['field_of_study'], $volunteerData['region'], $volunteerData['woreda'], $volunteerData['zone']);
 
         if (!$request->photo->isValid()) {
@@ -257,11 +253,13 @@ class VolunteerController extends Controller
         }
         // unset((isset($volunteerData['disability'])?$volunteerData['disability']:null));
         $volunteerData['training_session_id'] = $availableSession[0]->id;
-        // dd($volunteerData);
-        $user = User::create($userData);
-        $user->assignRole(Role::findByName('applicant'));
-        $volunteerData['user_id'] = $user->id;
         $volunteer = Volunteer::create($volunteerData);
+        $verifyVolunteer = VerifyVolunteer::create([
+            'volunteer_id' => $volunteer->id,
+            'token' => sha1(time())
+        ]);
+        Mail::to($volunteer->email)->send(new VerifyMail($volunteer));
+        // event(new Registered($user));
         return redirect()->route('home')->with('apply_success', 'You successfully applied! Check your email');
     }
     public function Screen(Request $request, $applicant_id)
@@ -295,5 +293,43 @@ class VolunteerController extends Controller
     {
         $applicants=  Volunteer::whereRelation('status','acceptance_status',3)->where('training_session_id',$session_id);
         return view('volunter.selected_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($session_id)]);
+        $applicants = Volunteer::whereRelation('status', 'acceptance_status', 1);
+
+    }
+
+    protected function verifyEmail($token)
+    {
+        $verifyVolunteer = VerifyVolunteer::where('token', $token)->first();
+        if (isset($verifyVolunteer)) {
+            $volunteer = $verifyVolunteer->volunteer;
+            if (!$volunteer->verified) {
+                $status = "Your e-mail is verified. You can now login.";
+                $userData = [
+                    'first_name' => $volunteer->first_name,
+                    'father_name' => $volunteer->father_name,
+                    'grand_father_name' => $volunteer->grand_father_name,
+                    'email' => $volunteer->email,
+                    'dob' => $volunteer->dob,
+                    'gender' => $volunteer->gender,
+                    'password' => $volunteer->password,
+                ];
+                $user = User::create($userData);
+                $user->email_verified_at = now();
+                $user->update();
+                $user->save();
+                $user->assignRole(Role::findByName('volunteer'));
+                $volunteerData['user_id'] = $user->id;
+                $volunteer->user_id = $user->id;
+                $volunteer->update();
+                $volunteer->save();
+                Auth::login($user);
+                return redirect(route('home'))->with('message','Thank you, You successfully applied');
+            } else {
+                $status = "Your e-mail is already verified. You can now login.";
+            }
+        } else {
+            return redirect('/login')->with('warning', "Sorry your email cannot be identified.");
+        }
+        return redirect('/login')->with('message', $status);
     }
 }

@@ -8,6 +8,7 @@ use App\Models\TrainingSession;
 use App\Models\User;
 use App\Models\Woreda;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Volunteer>
@@ -40,6 +41,7 @@ class VolunteerFactory extends Factory
             'ministry_document' => $this->faker->numberBetween(1,File::count()),
             'ethical_license' => $this->faker->numberBetween(1,File::count()),
             'educational_level' => 0,
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'user_id' => $this->faker->unique()->numberBetween(2,User::count()),
             'training_session_id' => TrainingSession::first(),
             'field_of_study_id' => $this->faker->numberBetween(1,FeildOfStudy::count()),

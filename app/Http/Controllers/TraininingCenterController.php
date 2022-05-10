@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateTraininingCenterRequest;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingSession;
 use App\Models\Zone;
+use App\Models\Region;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -29,6 +30,12 @@ class TraininingCenterController extends Controller
         // }
         return view('training_center.index');
     }
+    public function placement(Request $request,$zone) {
+      
+        $trainining_centers = TraininingCenter::all();
+      //  $region =$zone->region;
+      return view('training_center.placement', compact('trainining_centers'));
+     }
 
     /**
      * Show the form for creating a new resource.
