@@ -6,6 +6,7 @@ use App\Models\Zone;
 use App\Http\Requests\StoreZoneRequest;
 use App\Http\Requests\UpdateZoneRequest;
 use App\Models\Region;
+use App\Models\Woreda;
 use Illuminate\Http\Request;
 
 class ZoneController extends Controller
@@ -57,7 +58,7 @@ class ZoneController extends Controller
         // $zone->code = $request->get('code');
         // $zone->region_id = $request->get('region');
         // $zone->save();
-        Zone::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'region_id' => $request->get('region'), 'qoutaInpercent'=>$zoneInquota]);
+        Zone::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'region_id' => $request->get('region'), 'qoutaInpercent'=>$zoneInquota, 'status'=>1]);
         return redirect()->route('zone.index')->with('message', 'Zone created successfully');
     }
 
@@ -100,6 +101,25 @@ class ZoneController extends Controller
         $zone->code = $request->get('code');
         $zone->region_id = $request->get('region');
         $zone->qoutaInpercent = $request->get('qoutaInpercent')/100;
+        if ($request->get('status')) {
+            if ($request->get('status') == 'on') {
+                $zone->status = 1;
+            }else{
+                $zone->status = 0;   
+                foreach ($zone->woredas as $key => $wor) {
+                    $woreda = Woreda::find($wor->id);
+                    $woreda->status = 0;
+                    $woreda->save();
+                }
+            }
+        }else{
+            $zone->status = 0;
+            foreach ($zone->woredas as $key => $wor) {
+                $woreda = Woreda::find($wor->id);
+                $woreda->status = 0;
+                $woreda->save();
+            }
+        }
         $zone->save();
         return redirect()->route('zone.index')->with('message', 'Zone edited successfully');
     }

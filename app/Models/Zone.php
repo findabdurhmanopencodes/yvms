@@ -19,7 +19,8 @@ class Zone extends Model
         'name',
         'code',
         'region_id',
-        'qoutaInpercent'
+        'qoutaInpercent',
+        'status'
     ];
 
     public function woredas(){

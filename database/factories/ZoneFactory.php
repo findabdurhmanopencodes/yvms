@@ -22,6 +22,7 @@ class ZoneFactory extends Factory
             'code' => $this->faker->countryCode(),
             'qoutaInpercent' => $this->faker->unique(true)->randomElement([0.4,0.3,0.3]),
             'region_id' => $this->faker->unique()->numberBetween(1,Region::count()),
+            'status'=>1
         ];
     }
 }

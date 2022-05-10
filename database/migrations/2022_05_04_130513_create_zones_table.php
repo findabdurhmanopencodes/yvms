@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('code');
             $table->foreignIdFor(Region::class)->onDelete('cascade');
             $table->double('qoutaInpercent')->nullable();
+            $table->smallInteger('status');
             $table->timestamps();
         });
     }
