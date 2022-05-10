@@ -86,8 +86,8 @@ class DatabaseSeeder extends Seeder
         \App\Models\File::factory(16)->create();
         \App\Models\FeildOfStudy::factory(4)->create();
         $zones = Zone::all();
-        foreach ($zones as $zone ) {
-            \App\Models\TraininingCenter::factory(1)->create(['zone_id'=> $zone->id]);
+        foreach ($zones as $zone) {
+            \App\Models\TraininingCenter::factory(1)->create(['zone_id' => $zone->id]);
         }
 
         $capacities = [6, 6, 5, 6, 7, 5, 6, 10, 7, 6, 4, 8, 7, 9, 8];

@@ -38,12 +38,8 @@ class VolunteerController extends Controller
      */
     public function index(Request $request, $session_id)
     {
-        $applicants = Volunteer::where('training_session_id', $session_id);
-        // foreach ($applicants as  $value) {
-        //     Status::create(['volunteer_id'=>$value->id, 'acceptance_status'=>1]);
-        // }
-        // dd('sdfsd');
-        // dd($applicants->paginate(5));
+        $applicants = Volunteer::doesntHave('status')->where('training_session_id',$session_id);
+        // dd($applicants->get());
         if ($request->has('filter')) {
             $first_name = $request->get('first_name');
             $father_name = $request->get('father_name');
@@ -271,17 +267,16 @@ class VolunteerController extends Controller
         if ($request->get('type') == 'accept') {
             // dd('11');
             Status::Create(['volunteer_id' => $applicant_id, 'acceptance_status' => 1]);
-            return redirect()->back();
+            return redirect()->route('applicant.index',['session_id'=>Volunteer::find($applicant_id)->training_session_id]);
         } elseif ($request->get('type') == 'reject') {
             Status::Create(['volunteer_id' => $applicant_id, 'acceptance_status' => 2, 'rejection_reason' => $request->get('rejection_reason')]);
             return redirect()->back();
         }
     }
-    public function decide($session)
+    public function emailUnverified()
     {
-        $applicants = Volunteer::whereRelation('status', 'acceptance_status', 1)->get();
-        dd($applicants[0]->status);
-        return  view('volunter.decide', ['applicant']);
+        $volunters = Volunteer::whereRelation('User', 'email_verified_at', null)->paginate(6);
+         return view('volunter.email_unverified_volunter',['volunters'=>$volunters]);
     }
     /**
      * Display a listing of the resource.
@@ -290,9 +285,16 @@ class VolunteerController extends Controller
      */
     public function verifiedApplicant(Request $request, $session_id)
     {
-        $applicants = Volunteer::whereRelation('status', 'acceptance_status', 1);
-        // dd($applicants->get());
+        $applicants=  Volunteer::whereRelation('status','acceptance_status',1)->where('training_session_id',$session_id);
+
         return view('volunter.verified_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($session_id)]);
+    }
+    public function selected(Request $request, $session_id)
+    {
+        $applicants=  Volunteer::whereRelation('status','acceptance_status',3)->where('training_session_id',$session_id);
+        return view('volunter.selected_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($session_id)]);
+        $applicants = Volunteer::whereRelation('status', 'acceptance_status', 1);
+
     }
 
     protected function verifyEmail($token)

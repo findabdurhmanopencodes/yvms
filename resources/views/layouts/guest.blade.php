@@ -123,8 +123,8 @@
                                         </a>
                                     </li>
                                     <li
-                                        class="menu-item {{ strpos(Route::currentRouteName(), 'about_us') === 0 ? 'menu-item-active' : '' }}">
-                                        <a href="{{ route('home') }}" class="menu-link">
+                                        class="menu-item {{ strpos(Route::currentRouteName(), 'aboutus') === 0 ? 'menu-item-active' : '' }}">
+                                        <a href="{{ route('aboutus') }}" class="menu-link">
                                             <i style="color:#5dade2 !important;" class=" fa fa-flag"></i>
                                             <span style="color:#5dade2 !important;" class="menu-text"> &nbsp; About
                                                 Us</span>
@@ -133,7 +133,7 @@
                                     </li>
                                     <li
                                         class="menu-item {{ strpos(Route::currentRouteName(), 'contact_us') === 0 ? 'menu-item-active' : '' }}">
-                                        <a href="{{ route('home') }}" class="menu-link menu-toggle">
+                                        <a href="{{ route('contactus') }}" class="menu-link">
                                             <i style="color:#5dade2 !important;" class="fa fa-address-book"></i>
 
 
@@ -144,8 +144,8 @@
                                     </li>
 
                                     <li
-                                        class="menu-item {{ strpos(Route::currentRouteName(), 'contact_us') === 0 ? 'menu-item-active' : '' }}">
-                                        <a href="{{ route('home') }}" class="menu-link menu-toggle">
+                                        class="menu-item {{ strpos(Route::currentRouteName(), 'vission_and_mission') === 0 ? 'menu-item-active' : '' }}">
+                                        <a href="{{ route('vission_and_mission') }}" class="menu-link">
                                             <i style="color:#5dade2 !important;" class="fa fa-eye"></i>
                                             <span style="color:#5dade2 !important;" class="menu-text"> &nbsp;
                                                 Vision & Mision </span>
@@ -153,8 +153,8 @@
                                         </a>
                                     </li>
                                     <li
-                                        class="menu-item {{ strpos(Route::currentRouteName(), 'contact_us') === 0 ? 'menu-item-active' : '' }}">
-                                        <a href="#" class="menu-link menu-toggle">
+                                        class="menu-item {{ strpos(Route::currentRouteName(), 'login') === 0 ? 'menu-item-active' : '' }}">
+                                        <a href="{{ route('login') }}" class="menu-link">
                                             <i style="color:#5dade2 !important;" class="fas fa-sign-in-alt"></i>
 
 
@@ -334,10 +334,6 @@
                 toastr.success('{{ Session::get('message') }}');
             })
         @endif
-        $(function() {
-            alert('abdi');
-            swal.fire("Application submited!", "You applied successfully!", "success");
-        })
         @if (Session::has('apply_success'))
             $(function() {
                 swal.fire("Application submited!", "You applied successfully!", "success");
