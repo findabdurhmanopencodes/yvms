@@ -16,6 +16,7 @@
                 <!--end::User-->
                 <!--begin::Nav-->
                 <div class="navi navi-bold navi-hover navi-active navi-link-rounded">
+
                     <div class="navi-item mb-2">
                         <a href="{{ route('training_session.show', ['training_session'=>$trainingSession->id]) }}" class="navi-link py-4">
                             <span class="navi-icon mr-2">
@@ -36,6 +37,17 @@
                             <span class="navi-text font-size-lg">Screening</span>
                         </a>
                     </div>
+                    <div class="navi-item mb-2">
+                        <a href="{{ route('applicant.selected', ['session'=>$trainingSession->id]) }}" class="navi-link py-4">
+                            <span class="navi-icon mr-2">
+                                <span class="svg-icon">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </span>
+                            <span class="navi-text font-size-lg">Accepted volunteer </span>
+                        </a>
+                    </div>
+
                     <div class="navi-item mb-2">
                         <a href="{{ route('training_session.quota', ['training_session'=>$trainingSession->id]) }}" class="navi-link py-4">
                             <span class="navi-icon mr-2">
@@ -58,6 +70,17 @@
                             {{-- <span class="navi-text font-size-lg">Personal Information</span> --}}
                         </a>
                     </div>
+                    <div class="navi-item mb-2">
+                        <a href="{{ route('applicant.email.unVerified') }}" class="navi-link py-4">
+                            <span class="navi-icon mr-2">
+                                <span class="svg-icon">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </span>
+                            <span class="navi-text font-size-lg">Unverified Volunteer Email</span>
+                        </a>
+                    </div>
+
 
                 </div>
                 <!--end::Nav-->

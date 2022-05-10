@@ -3,10 +3,10 @@
 @section('content')
 <div class="flex-row-fluid d-flex flex-column position-relative p-7 overflow-hidden cols-4">
     <!--begin::Content header-->
-    <div class="position-absolute top-0 right-0 text-right mt-5 mb-15 mb-lg-0 flex-column-auto justify-content-center py-5 px-10">
+    {{-- <div class="position-absolute top-0 right-0 text-right mt-5 mb-15 mb-lg-0 flex-column-auto justify-content-center py-5 px-10">
         <span class="font-weight-bold text-dark-50">Do you want to go application page?</span>
         <a href="javascript:;" class="font-weight-bold ml-2" id="kt_login_signup">Click here!</a>
-    </div>
+    </div> --}}
     <!--end::Content header-->
     <!--begin::Content body-->
     <div class="d-flex flex-column-fluid flex-center mt-30 mt-lg-0">
@@ -15,9 +15,9 @@
         <div class="login-form login-signin">
             <div class="text-center mb-10 mb-lg-20">
             	<a href="#" class="flex-column-auto mt-5">
-                
-                    <img  style="height:150px;" src="{{ asset('assets/media/logos/mop_logo.jpg') }}" /> 
-                             
+
+                    <img  style="height:150px;" src="{{ asset('assets/media/logos/mop_logo.jpg') }}" />
+
 
                 </a>
             </div>
@@ -38,7 +38,7 @@
                     </div>
                     <!--begin::Action-->
                     <div class="form-group d-flex flex-wrap justify-content-between align-items-center">
-                        <a href="javascript:;" class="text-dark-50 text-hover-primary my-3 mr-2" id="kt_login_forgot">Forgot Password ?</a>
+                        <a href="javascript:;" class="text-dark-50 text-hover-primary my-3 mr-2" id="kt_login_forgot">Reset Password ?</a>
                         <button  class="btn btn-primary font-weight-bold px-9 py-4 my-3" type="submit">Sign In</button>
                     </div>
                     <!--end::Action-->
@@ -52,7 +52,7 @@
         <!--begin::Signup-->
 
 
-        <div class="login-form login-signup">
+        {{-- <div class="login-form login-signup">
             <div class="text-center mb-10 mb-lg-20">
                 <h3 class="font-size-h1">Sign Up</h3>
                 <p class="text-muted font-weight-bold">Enter your details to create your account</p>
@@ -90,12 +90,12 @@
                 </div>
             </form>
             <!--end::Form-->
-        </div>
+        </div> --}}
         <!--end::Signup-->
         <!--begin::Forgot-->
         <div class="login-form login-forgot">
             <div class="text-center mb-10 mb-lg-20">
-                <h3 class="font-size-h1">Forgotten Password ?</h3>
+                <h3 class="font-size-h1">Do You Want Reset Password ?</h3>
                 <p class="text-muted font-weight-bold">Enter your email to reset your password</p>
             </div>
             <!--begin::Form-->

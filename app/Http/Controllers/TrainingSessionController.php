@@ -348,13 +348,13 @@ class TrainingSessionController extends Controller
             $arr_female = [];
             $arr_male = [];
 
-                foreach ($arr as $key => $value) {
-                    if ($value->gender == 'F') {
-                        array_push($arr_female, $value);
-                    }elseif ($value->gender == 'M') {
-                        array_push($arr_male, $value);
-                    }
+            foreach ($arr as $key => $value) {
+                if ($value->gender == 'F') {
+                    array_push($arr_female, $value);
+                } elseif ($value->gender == 'M') {
+                    array_push($arr_male, $value);
                 }
+            }
 
             foreach ($arr_male as $element) {
                 $grouped_array_male[$element['woreda_id']][] = $element;
@@ -373,7 +373,7 @@ class TrainingSessionController extends Controller
                     foreach ($group as $key => $vol) {
                         array_push($accepted_arr, $vol);
                     }
-                }else{
+                } else {
                     // dump('false');
                     sort($group);
                     $new_arr = array_slice($group, 0, $quota_woreda, true);
@@ -400,7 +400,7 @@ class TrainingSessionController extends Controller
             }
 
             $a = [];
-            $b =[];
+            $b = [];
 
             $train_session = TrainingSession::where('id', $id)->get()[0]->quantity;
 
@@ -410,7 +410,7 @@ class TrainingSessionController extends Controller
                 foreach ($new_slice_arr as $key => $value) {
                     array_push($a, $value);
                 }
-            }else if (sizeof($accepted_arr) < $train_session) {
+            } else if (sizeof($accepted_arr) < $train_session) {
                 $dif_arr = $train_session - sizeof($accepted_arr);
                 $merge_arr = array_diff($arr, $accepted_arr);
                 foreach ($merge_arr as $value) {
@@ -422,26 +422,26 @@ class TrainingSessionController extends Controller
                 foreach ($merged_array as $key => $value) {
                     array_push($a, $value);
                 }
-            }
-            else{
+            } else {
                 foreach ($accepted_arr as $key => $value) {
                     array_push($a, $accepted_arr);
                 }
             }
-            
-            $approved_applicants = ApprovedApplicant::where('training_session_id',$id)->get();
+            $approved_applicants = ApprovedApplicant::where('training_session_id', $id)->get();
             foreach ($approved_applicants as $key => $app_vol) {
                 $app_vol->delete();
             }
-
             foreach ($a as $key => $accepted) {
                 $approved_applicant = new ApprovedApplicant();
+                $status = Status::where('volunteer_id', $accepted->id)->get()[0];
+                $status->acceptance_status = 3;
+                $status->save();
                 $approved_applicant->training_session_id = $id;
                 $approved_applicant->volunteer_id = $accepted->id;
                 $approved_applicant->status = 1;
                 $approved_applicant->save();
             }
         }
-        return redirect()->route('training_session.index')->with('message', 'Applicant approved successfully');
+        return redirect()->route('applicant.verified', ['session' => $id])->with('message', 'Applicant approved successfully');
     }
 }

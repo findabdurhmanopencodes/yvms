@@ -1,12 +1,12 @@
 @extends('layouts.session_layout')
-@section('action_title','Screeing Applicants')
-@section('title','Screeing Applicants')
-@section('breadcrumbTitle','Screeing Applicants')
+@section('action_title', 'Selected Applicants')
+@section('title', 'Selected Applicants')
+@section('breadcrumbTitle', 'Selected Applicants')
 @section('breadcrumbList')
-<li class="breadcrumb-item">
-    <a  href="{{ route('training_session.index', []) }}">All Program</a>
-</li>
-<li class="active">Screeing Applicants</li>
+    <li class="breadcrumb-item">
+        <a href="{{ route('training_session.index', []) }}">All Program</a>
+    </li>
+    <li class="active">Selected Applicants</li>
 @endsection
 @push('js')
     <!--begin::Page Scripts(used by this page)-->
@@ -30,20 +30,14 @@
         @endif
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label">Applicants
-                    <span class="d-block text-muted pt-2 font-size-sm">All Applicants In
+                <h3 class="card-label">Selected Applicants
+                    <span class="d-block text-muted pt-2 font-size-sm">All Selected Applicants
                         {{ $trainingSession->moto }}</span>
                 </h3>
 
 
             </div>
-           @if (count($volunters)>0)
-           <div>
-            <a class="btn btn-sm btn-info float-right"
-                href="{{ route('aplication.screen_out', ['training_session' => $trainingSession->id]) }}">
-                <i class="fa fa-eye"></i> Screen</a>
-        </div>
-           @endif
+
         </div>
         <div class="card-body">
             <!--begin: Datatable-->
@@ -63,30 +57,29 @@
                     <tbody style="" class="datatable-body">
 
                         @foreach ($volunters as $volunter)
-                                <tr data-row="0" class="datatable-row" style="left: 0px;">
-                                    <td>
-                                        {{ $volunters->perPage() * $volunters->currentPage() - ($volunters->perPage() - ($loop->index + 1)) }}
-                                    </td>
-                                    <td>
-                                        {{ $volunter->first_name }} {{ $volunter->father_name }}
-                                    </td>
-                                    <td>
-                                        {{ $volunter->gender }}
-                                    </td>
-                                    <td>
-                                        {{ $volunter->phone }}
-                                    </td>
+                            <tr data-row="0" class="datatable-row" style="left: 0px;">
+                                <td>
+                                    {{ $volunters->perPage() * $volunters->currentPage() - ($volunters->perPage() - ($loop->index + 1)) }}
+                                </td>
+                                <td>
+                                    {{ $volunter->first_name }} {{ $volunter->father_name }}
+                                </td>
+                                <td>
+                                    {{ $volunter->gender }}
+                                </td>
+                                <td>
+                                    {{ $volunter->phone }}
+                                </td>
 
-                                    <td>
-                                        {{ $volunter->woreda?->name }}
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="badge badge-warning badge-pill">{{ $volunter->status?->acceptance_status == 0 ? 'pending' : 'decided' }}</span>
-                                    </td>
+                                <td>
+                                    {{ $volunter->woreda?->name }}
+                                </td>
+                                <td>
+                                    <span
+                                        class="badge badge-success badge-pill">{{ $volunter->status?->acceptance_status == 3 ? 'Accepted' : 'pendind' }}</span>
+                                </td>
 
-                                </tr>
-
+                            </tr>
                         @endforeach
                         @if (count($volunters) < 1)
                             <tr>
@@ -104,10 +97,3 @@
     </div>
 
 @endsection
-
-
-
-
-
-
-
