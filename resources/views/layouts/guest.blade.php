@@ -42,7 +42,7 @@
     <div style="background-color:  #5dade2;" id="kt_header_mobile"
         class="header-mobile align-items-center header-mobile-fixed">
         <!--begin::Logo-->
-        <a href="#">
+        <a href="{{ route('home', []) }}">
             <img style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" />
         </a>
 
@@ -93,7 +93,7 @@
                                     src="{{ asset('assets/media/logos/flag.gif') }}" />
 
 
-                                <a href="#">
+                                <a href="{{ route('home', []) }}">
                                     <h3 style="color:#5dade2; font-size:13px;text-align:center;"> <br><br><br>
                                         Youth Volunteerism<br> Managment System(YVMS)<br>
                                         <hr><br>
@@ -224,13 +224,13 @@
                         <!--begin::Copyright-->
                         <div class="text-dark order-2 order-md-1">
                             <span class="text-muted font-weight-bold mr-2">2020©</span>
-                            <a href="#" target="_blank" class="text-dark-75 text-hover-primary">Ministry Of Peace</a>
+                            <a href="{{ route('home', []) }}" target="_blank" class="text-dark-75 text-hover-primary">Ministry Of Peace</a>
                         </div>
                         <!--end::Copyright-->
                         <!--begin::Nav-->
                         <div class="nav nav-dark">
-                            <a href="#" target="_blank" class="nav-link pl-0 pr-5">About</a>
-                            <a href="#" target="_blank" class="nav-link pl-0 pr-0">Contact</a>
+                            <a href="{{ route('aboutus', []) }}" target="_blank" class="nav-link pl-0 pr-5">About</a>
+                            <a href="{{ route('contactus', ['id'=>1]) }}" target="_blank" class="nav-link pl-0 pr-0">Contact</a>
                         </div>
                         <!--end::Nav-->
                     </div>

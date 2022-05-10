@@ -105,7 +105,7 @@ class ZoneController extends Controller
             if ($request->get('status') == 'on') {
                 $zone->status = 1;
             }else{
-                $zone->status = 0;   
+                $zone->status = 0;
                 foreach ($zone->woredas as $key => $wor) {
                     $woreda = Woreda::find($wor->id);
                     $woreda->status = 0;
@@ -142,7 +142,7 @@ class ZoneController extends Controller
     }
     public function fetch(Region $region)
     {
-        return datatables()->of(Zone::select()->where('region_id','=',$region->id))->make(true);
+        return datatables()->of(Zone::select()->where('region_id','=',$region->id)->where('status','=',1))->make(true);
     }
 
     public function validateForm(Zone $zone, Request $request){

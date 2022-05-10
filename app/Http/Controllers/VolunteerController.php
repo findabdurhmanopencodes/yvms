@@ -169,7 +169,7 @@ class VolunteerController extends Controller
         $before = Carbon::now()->subYears(18)->format('d/m/Y');
         $after = Carbon::now()->subYears(35)->format('d/m/Y');
         $disabilities = Disablity::all();
-        $regions = Region::all();
+        $regions = Region::where('status', '=', 1)->get();
         $educationLevels = EducationalLevel::$educationalLevel;
         $fields = FeildOfStudy::all();
         return view('application.form', compact('disabilities', 'regions', 'educationLevels', 'fields', 'after', 'before'));
@@ -321,7 +321,8 @@ class VolunteerController extends Controller
                 $volunteer->update();
                 $volunteer->save();
                 Auth::login($user);
-                return redirect(route('home'))->with('message','Thank you, You successfully applied');
+                Mail::to($volunteer->email)->send(new VerifyMail($volunteer));
+                return redirect(route('home'))->with('message', 'Your Service Request Form will be reviewed shortly and a response made to the email address');
             } else {
                 $status = "Your e-mail is already verified. You can now login.";
             }
