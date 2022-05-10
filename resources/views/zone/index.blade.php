@@ -177,7 +177,7 @@
                                                         <select class="form-control select2" id="region" name="region" required>
                                                             <option value=""></option>
                                                             @foreach ($regions as $region)
-                                                                <option value="{{ $region->id }}">{{ $region->code }}</option>
+                                                                <option value="{{ $region->id }}">{{ $region->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
