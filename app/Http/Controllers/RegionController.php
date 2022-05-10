@@ -24,6 +24,13 @@ class RegionController extends Controller
         return view('region.index', compact('regions'));
     }
 
+    public function place(Request $request)
+    {
+      
+        $regions = Region::all();
+        return view('region.placement', compact('regions'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
