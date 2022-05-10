@@ -30,11 +30,12 @@ class TraininingCenterController extends Controller
         // }
         return view('training_center.index');
     }
-    public function placement(Request $request,$zone) {
+    public function placement(Request $request,$zone=null) {
       
         $trainining_centers = TraininingCenter::all();
-      //  $region =$zone->region;
-      return view('training_center.placement', compact('trainining_centers'));
+        $regions = Region::all();
+     //  $region = $zone->region;
+      return view('training_center.placement', compact('trainining_centers','regions'));
      }
 
     /**

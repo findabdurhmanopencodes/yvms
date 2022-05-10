@@ -41,24 +41,14 @@
                    
                 </h3>
             </div>
-            <div class="card-toolbar">
-                <!--begin::Button-->
-                <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModal">
-                    <span class="svg-icon svg-icon-md">
-                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-                        <i class="fal fa-plus"></i>
-                        <!--end::Svg Icon-->
-                    </span>Approve</a>
-
-                <!--end::Button-->
-            </div>
+      
         </div>
 
        
           <span>
           
             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-             {{    $region }}
+         Oromia->Jimma Zone
             </button>
           </span>
 
@@ -69,9 +59,9 @@
                     <thead>
                         <tr>
         
-                            <th colspan="3" width="20%"> Region information</th>
+                            <th colspan="3" width="20%"> University</th>
         
-                            <th colspan="3" width="80%">Screen out list by Regional State</th>
+                            <th colspan="13" width="80%">Placement distribution by Regional State</th>
         
         
         
@@ -81,11 +71,19 @@
                     <thead>
                         </tr>
                         <th> #</th>
-                        <th> Region</th>
-                        <th> Co-ordinator</th>
-                        <th> Quatoa</th>
-                        <th>No of University</th>
-                        <th> Zones </th>
+                        <th>Training Center </th>
+                        <th> Intake </th>
+
+                     
+
+                        @foreach ($regions as $key => $region)
+                      
+                           
+                            <th> {{ $region->name }}</th>
+                          
+                         
+                    @endforeach 
+
                         <th> Action </th>
                       </tr>
         
@@ -96,14 +94,21 @@
                         @foreach ($trainining_centers as $key => $trainining_center)
                             <tr>
                                 <td><?php echo $i++; ?></td>
-                                <td width="20%">{{ $trainining_center->name }}</td>
-                                <td width="20%"> Seid Mohammed</td>
-                                <th> {{ $trainining_center-zone }} %</th>
-                                <td> 5 </td>
-                                <td> 55 </td>                    
+                                <td>{{ $trainining_center->name }}</td>
+
+                                <td> Intake </td>
+                        @foreach ($regions as $key => $region)
+                      
+                           
+                        <td>566 </td>
+                      
+                     
+                @endforeach
+              
+                                                 
                                 <td> 
                                  <a href="#" class="btn btn-sm btn-primary btn-primary btn-round">
-                                 Details    
+                                 Approve
                                 </a>   
                                 </td> </tr>
                         @endforeach 

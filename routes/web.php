@@ -89,7 +89,7 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::resource('feild_of_study', FeildOfStudyController::class);
     Route::resource('disablity', DisablityController::class);
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
-    Route::any('/Volunter-session/{session_id}', [VolunteerController::class, 'index'])->name('applicant.index');
+    Route::any('applicant/Volunter-session/{session_id}', [VolunteerController::class, 'index'])->name('applicant.index');
     Route::resource('applicant', VolunteerController::class)->except(['index']);
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -117,7 +117,9 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
     Route::post('applicant/{applicant_id}/screen', [VolunteerController::class, 'screen'])->name('applicant.screen');
-    Route::get('applicants/{session}/verified', [VolunteerController::class, 'verifiedApplicant'])->name('applicant.verified');
+    Route::get('applicants/{session}/document-verified', [VolunteerController::class, 'verifiedApplicant'])->name('applicant.verified');
+    Route::get('applicants/{session}/selected', [VolunteerController::class, 'selected'])->name('applicant.selected');
+    Route::get('applicants/email/unverified', [VolunteerController::class, 'emailUnverified'])->name('applicant.email.unVerified');
 });
 require __DIR__ . '/auth.php';
 Route::get('volunteer/verify/{token}', [VolunteerController::class,'verifyEmail'])->name('volunteer.email.verify');
