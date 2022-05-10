@@ -19,6 +19,7 @@ use App\Models\Zone;
 use Carbon\Carbon;
 use DateTime;
 use Faker\Factory;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Models\Role;
@@ -113,7 +114,7 @@ class VolunteerController extends Controller
      */
     public function show($volunteer)
     {
-        return view('volunter.show',['applicant'=>Volunteer::find($volunteer)]);
+        return view('volunter.show', ['applicant' => Volunteer::find($volunteer)]);
     }
 
     /**
@@ -259,29 +260,30 @@ class VolunteerController extends Controller
         $volunteerData['training_session_id'] = $availableSession[0]->id;
         // dd($volunteerData);
         $user = User::create($userData);
-        $user->assignRole(Role::findByName('applicant'));
+        $user->assignRole(Role::findByName('volunteer'));
         $volunteerData['user_id'] = $user->id;
         $volunteer = Volunteer::create($volunteerData);
+        event(new Registered($user));
         return redirect()->route('home')->with('apply_success', 'You successfully applied! Check your email');
     }
-    public function Screen(Request $request,$applicant_id){
-        if($request->get('type')=='accept'){
+    public function Screen(Request $request, $applicant_id)
+    {
+        if ($request->get('type') == 'accept') {
             // dd('11');
-            Status::Create(['volunteer_id'=>$applicant_id,'acceptance_status'=>1]);
+            Status::Create(['volunteer_id' => $applicant_id, 'acceptance_status' => 1]);
             return redirect()->back();
-        }
-        elseif($request->get('type')=='reject'){
-            Status::Create(['volunteer_id'=>$applicant_id,'acceptance_status'=>2,'rejection_reason'=>$request->get('rejection_reason')]);
+        } elseif ($request->get('type') == 'reject') {
+            Status::Create(['volunteer_id' => $applicant_id, 'acceptance_status' => 2, 'rejection_reason' => $request->get('rejection_reason')]);
             return redirect()->back();
         }
     }
-    public function decide($session){
-       $applicants= Volunteer::whereRelation('status', 'acceptance_status', 1)->get();
+    public function decide($session)
+    {
+        $applicants = Volunteer::whereRelation('status', 'acceptance_status', 1)->get();
         dd($applicants[0]->status);
-        return  view('volunter.decide',['applicant']);
-
+        return  view('volunter.decide', ['applicant']);
     }
-        /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -290,7 +292,6 @@ class VolunteerController extends Controller
     {
         $applicants = Volunteer::whereRelation('status', 'acceptance_status', 1);
         // dd($applicants->get());
-        return view('volunter.verified_volunter', ['volunters' => $applicants->paginate(6),'trainingSession'=>TrainingSession::find($session_id)]);
+        return view('volunter.verified_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($session_id)]);
     }
-
 }
