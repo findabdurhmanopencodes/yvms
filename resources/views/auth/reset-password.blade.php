@@ -3,6 +3,11 @@
 @section('content')
     <div class="card-body">
         <h3 class="text-center px-4 py-4">Passowrd Reset Form</h3>
+        <x-auth-session-status class="mb-4" :status="session('status')" />
+
+        <!-- Validation Errors -->
+        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+        <!--begin::Form-->
         <form method="POST" action="{{ route('password.update') }}">
             @csrf
 
