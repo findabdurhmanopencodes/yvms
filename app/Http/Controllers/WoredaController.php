@@ -131,4 +131,19 @@ class WoredaController extends Controller
     {
         return datatables()->of(Woreda::select()->where('zone_id', '=', $zone->id))->make(true);
     }
+
+    public function validateForm(Woreda $woreda, Request $request){
+        $limit = false;
+        $wor = $woreda::where('zone_id', $request->zone_id)->get();
+        $sum = $request->qouta/100;
+        foreach ($wor as $key => $value) {
+            $sum+=$value->qoutaInpercent;
+        }
+
+        if ($sum <= 1) {
+            $limit = true;
+        }
+
+        return response()->json(['limit'=>$sum]);
+    }
 }

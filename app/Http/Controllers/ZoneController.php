@@ -144,4 +144,19 @@ class ZoneController extends Controller
     {
         return datatables()->of(Zone::select()->where('region_id','=',$region->id))->make(true);
     }
+
+    public function validateForm(Zone $zone, Request $request){
+        $limit = false;
+        $zon = $zone::where('region_id', $request->region_id)->get();
+        $sum = $request->qouta/100;
+        foreach ($zon as $key => $value) {
+            $sum+=$value->qoutaInpercent;
+        }
+
+        if ($sum <= 1) {
+            $limit = true;
+        }
+
+        return response()->json(['limit'=>$limit]);
+    }
 }
