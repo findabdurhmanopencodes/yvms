@@ -2,12 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Models\ApprovedApplicant;
 use App\Models\EducationalLevel;
 use App\Models\Region;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\User;
+use App\Models\Volunteer;
 use App\Models\Woreda;
 use App\Models\Zone;
 use Database\Factories\UserFactory;
@@ -86,8 +88,8 @@ class DatabaseSeeder extends Seeder
         \App\Models\File::factory(16)->create();
         \App\Models\FeildOfStudy::factory(4)->create();
         $zones = Zone::all();
-        foreach ($zones as $zone ) {
-            \App\Models\TraininingCenter::factory(1)->create(['zone_id'=> $zone->id]);
+        foreach ($zones as $zone) {
+            \App\Models\TraininingCenter::factory(1)->create(['zone_id' => $zone->id]);
         }
 
         $capacities = [6, 6, 5, 6, 7, 5, 6, 10, 7, 6, 4, 8, 7, 9, 8];
@@ -107,10 +109,12 @@ class DatabaseSeeder extends Seeder
                 $woredaCount = 0;
                 foreach ($woredas as  $woreda) {
                     $woredaQuota = round($woreda->qoutaInpercent * $zoneQuota);
-                    \App\Models\Volunteer::factory(1)->create(['woreda_id' => $woreda->id]);
+                    for ($x = 0; $x < $woredaQuota; $x++)
+                        \App\Models\Volunteer::factory(1)->create(['woreda_id' => $woreda->id]);
                 }
             }
         }
+
         $this->call([
             // TrainingSessionSeeder::class,
             // VolunteerSeeder::class,
@@ -121,5 +125,12 @@ class DatabaseSeeder extends Seeder
             // FeildOfStudySeeder::class,
             // TraininingCenterSeeder::class
         ]);
+
+        $this->approveAllVolunteers();
+    }
+    public function approveAllVolunteers()
+    {
+        foreach (Volunteer::all() as $v)
+            ApprovedApplicant::create(['training_session_id' => 1, 'volunteer_id' => $v->id, 'status' => 1]);
     }
 }

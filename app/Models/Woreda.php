@@ -21,14 +21,31 @@ class Woreda extends Model
         'qoutaInpercent'
     ];
 
-    public function zone(){
+    protected $append = ['quotasInNumber'];
+
+    public function zone()
+    {
         return $this->belongsTo(Zone::class);
     }
 
-    public function quotas(){
+    public function getRegionAttribute()
+    {
+        return $this->zone->region->id;
+    }
+
+    public function getQuotasInNumberAttribute()
+    {
+        $countWoredas =  Woreda::count();
+
+        return TrainingSession::availableSession()->first()->sessionQouta / $countWoredas;
+    }
+
+    public function quotas()
+    {
         return $this->morphMany(Qouta::class, 'quotable');
     }
-    public function applicants(){
+    public function applicants()
+    {
         return $this->hasMany(Volunteer::class);
     }
 }

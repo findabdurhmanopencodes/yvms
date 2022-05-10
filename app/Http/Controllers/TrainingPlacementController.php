@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\TrainingPlacement;
 use App\Http\Requests\StoreTrainingPlacementRequest;
 use App\Http\Requests\UpdateTrainingPlacementRequest;
+use App\Models\Region;
+use App\Models\TrainingSession;
+use App\Models\TraininingCenter;
+use App\Models\Woreda;
+use Illuminate\Support\Collection;
 
 class TrainingPlacementController extends Controller
 {
