@@ -321,6 +321,7 @@ class VolunteerController extends Controller
                 $volunteer->user_id = $user->id;
                 $volunteer->update();
                 $volunteer->save();
+                $verifyVolunteer->delete();
                 Auth::login($user);
                 Mail::to($volunteer->email)->send(new VolunteerAppliedMail($volunteer));
                 return redirect(route('home'))->with('message', 'Your Service Request Form will be reviewed shortly and a response made to the email address');
