@@ -38,28 +38,29 @@
     <!--begin::Main-->
     <!--begin::Header Mobile-->
 
-   
-    <div  style="background-color:  #5dade2;" id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
+
+    <div style="background-color:  #5dade2;" id="kt_header_mobile"
+        class="header-mobile align-items-center header-mobile-fixed">
         <!--begin::Logo-->
         <a href="#">
-            <img  style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" /> 
+            <img style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" />
         </a>
 
         <h3 style="color;white; font-size:13px;text-align:center;"> <br><br><br>
             Youth Volunteerism<br> Managment System(YVMS)<br>
             <hr>
             <a href="{{ route('aplication.form') }}" class="btn"
-            style="min-width: 150px; background-color:rgb(249 ,92 ,57);color:white;font-weight:bold;">
-            <b>
-                {{-- <i class="fal fa-plus"></i> --}}
-            </b>
-            <span class="menu-text">Apply Now</span>
-        </a>
-        
-            
-            {{-- Ministry of Peace| የሰላም ሚኒስቴር  --}}
+                style="min-width: 150px; background-color:rgb(249 ,92 ,57);color:white;font-weight:bold;">
+                <b>
+                    {{-- <i class="fal fa-plus"></i> --}}
+                </b>
+                <span class="menu-text">Apply Now</span>
+            </a>
 
-            
+
+            {{-- Ministry of Peace| የሰላም ሚኒስቴር --}}
+
+
         </h3>
         <!--end::Logo-->
         <!--begin::Toolbar-->
@@ -81,75 +82,84 @@
                 <div id="kt_header" class="header header-fixed">
                     <!--begin::Container-->
                     <div class="container-fluid d-flex align-items-stretch justify-content-between">
-                       
-                       
-                        
+
+
+
                         <!--begin::Header Menu Wrapper-->
                         <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
                             <!--begin::Header Logo-->
                             <div class="header-logo">
-                            <img  style="height:50px; width:110px;" src="{{ asset('assets/media/logos/flag.gif') }}" /> 
-                             
+                                <img style="height:50px; width:110px;"
+                                    src="{{ asset('assets/media/logos/flag.gif') }}" />
 
-                            <a href="#">
-                                <h3 style="color:#5dade2; font-size:13px;text-align:center;"> <br><br><br>
-                                    Youth Volunteerism<br> Managment System(YVMS)<br>
-                                    <hr><br>
-                                   
-                                
-                                    
-                                    {{-- Ministry of Peace| የሰላም ሚኒስቴር  --}}
-        
-                                    
-                                </h3>
-                                
-                            </a>
+
+                                <a href="#">
+                                    <h3 style="color:#5dade2; font-size:13px;text-align:center;"> <br><br><br>
+                                        Youth Volunteerism<br> Managment System(YVMS)<br>
+                                        <hr><br>
+
+
+
+                                        {{-- Ministry of Peace| የሰላም ሚኒስቴር --}}
+
+
+                                    </h3>
+
+                                </a>
                             </div>
                             <!--end::Header Logo-->
                             <!--begin::Header Menu-->
-                                                    <!--begin::Container-->
+                            <!--begin::Container-->
 
                             <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
                                 <!--begin::Header Nav-->
                                 <ul class="menu-nav" id="item-color">
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'home') === 0 ? 'menu-item-active' : '' }}">
+                                    <li
+                                        class="menu-item {{ strpos(Route::currentRouteName(), 'home') === 0 ? 'menu-item-active' : '' }}">
                                         <a href="{{ route('home') }}" class="menu-link">
-                                            <i  style="color:#5dade2 !important;" class=" fa fa-home"></i>
+                                            <i style="color:#5dade2 !important;" class=" fa fa-home"></i>
                                             <span class="menu-text">&nbsp; Home</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
                                     <li
                                         class="menu-item {{ strpos(Route::currentRouteName(), 'about_us') === 0 ? 'menu-item-active' : '' }}">
-                                        <a  href="{{ route('home') }}" class="menu-link">
-                                            <i  style="color:#5dade2 !important;" class=" fa fa-flag"></i>
-                                            <span  style="color:#5dade2 !important;" class="menu-text"> &nbsp; About Us</span>
+                                        <a href="{{ route('home') }}" class="menu-link">
+                                            <i style="color:#5dade2 !important;" class=" fa fa-flag"></i>
+                                            <span style="color:#5dade2 !important;" class="menu-text"> &nbsp; About
+                                                Us</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'contact_us') === 0 ? 'menu-item-active' : '' }}">
+                                    <li
+                                        class="menu-item {{ strpos(Route::currentRouteName(), 'contact_us') === 0 ? 'menu-item-active' : '' }}">
                                         <a href="{{ route('home') }}" class="menu-link menu-toggle">
-                                            <i  style="color:#5dade2 !important;" class="fa fa-address-book"></i>
+                                            <i style="color:#5dade2 !important;" class="fa fa-address-book"></i>
 
 
-                                            <span  style="color:#5dade2 !important;" class="menu-text"> &nbsp; Contact Us</span>
+                                            <span style="color:#5dade2 !important;" class="menu-text"> &nbsp;
+                                                Contact Us</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
 
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'contact_us') === 0 ? 'menu-item-active' : '' }}">
+                                    <li
+                                        class="menu-item {{ strpos(Route::currentRouteName(), 'contact_us') === 0 ? 'menu-item-active' : '' }}">
                                         <a href="{{ route('home') }}" class="menu-link menu-toggle">
-                                            <i  style="color:#5dade2 !important;" class="fa fa-eye"></i>
-                                            <span  style="color:#5dade2 !important;" class="menu-text"> &nbsp; Vision & Mision </span>
+                                            <i style="color:#5dade2 !important;" class="fa fa-eye"></i>
+                                            <span style="color:#5dade2 !important;" class="menu-text"> &nbsp;
+                                                Vision & Mision </span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'contact_us') === 0 ? 'menu-item-active' : '' }}">
+                                    <li
+                                        class="menu-item {{ strpos(Route::currentRouteName(), 'contact_us') === 0 ? 'menu-item-active' : '' }}">
                                         <a href="#" class="menu-link menu-toggle">
-                                            <i  style="color:#5dade2 !important;" class="fas fa-sign-in-alt"></i>
+                                            <i style="color:#5dade2 !important;" class="fas fa-sign-in-alt"></i>
 
 
-                                            <span  style="color:#5dade2 !important;" class="menu-text"> &nbsp; Login </span>
+                                            <span style="color:#5dade2 !important;" class="menu-text"> &nbsp; Login
+                                            </span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
@@ -198,7 +208,7 @@
                         <!--begin::Container-->
                         <div class="container">
 
-                        
+
                             @yield('content')
                         </div>
                         <!--end::Container-->
@@ -317,21 +327,25 @@
     <script src="{{ asset('calendar/js/jquery.calendars.ethiopian-am.js') }}"></script>
     <script src="{{ asset('calendar/js/jquery.calendars.picker-am.js') }}"></script>
 
-    @stack('js')
     <!--end::Page Scripts-->
     <script>
         @if (Session::has('message'))
-            $(function(){
-            toastr.success('{{ Session::get('message') }}');
+            $(function() {
+                toastr.success('{{ Session::get('message') }}');
             })
         @endif
-        @if (Session::has('apply_success'))
-            $(function(){
+        $(function() {
+            alert('abdi');
             swal.fire("Application submited!", "You applied successfully!", "success");
+        })
+        @if (Session::has('apply_success'))
+            $(function() {
+                swal.fire("Application submited!", "You applied successfully!", "success");
             })
             //
         @endif
     </script>
+    @stack('js')
 
 </body>
 <!--end::Body-->

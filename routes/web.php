@@ -112,3 +112,4 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('applicants/{session}/verified', [VolunteerController::class, 'verifiedApplicant'])->name('applicant.verified');
 });
 require __DIR__ . '/auth.php';
+Route::get('volunteer/verify/{token}', [VolunteerController::class,'verifyEmail'])->name('volunteer.email.verify');
