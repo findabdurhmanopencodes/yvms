@@ -135,4 +135,19 @@ class RegionController extends Controller
             return response()->json(array('msg' => 'deleted successfully'));
         // }
     }
+
+    public function validateForm(Region $region, Request $request){
+        $limit = false;
+        $reg = $region::all();
+        $sum = $request->qouta/100;
+        foreach ($reg as $key => $value) {
+            $sum+=$value->qoutaInpercent;
+        }
+
+        if ($sum <= 1) {
+            $limit = true;
+        }
+
+        return response()->json(['limit'=>$limit]);
+    }
 }

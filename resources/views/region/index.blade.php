@@ -52,8 +52,29 @@
     </script>
     <script>
         $( document ).ready(function() {
-            console.log( "ready!" );
+
         });
+        $("#reg_quota").on("input", function(){            
+              $.ajax({
+                  type: "POST",
+                  url: "/region/validate",
+                //   method: 'post',
+                  data: {
+                     'qouta': $('#reg_quota').val(),
+                     "_token": $('meta[name="csrf-token"]').attr('content'),
+                  },
+                  success: function(result){
+                      if (result.limit == false) {
+                          $('#message').html('you reached max qouta');
+                          $(":submit").attr("disabled", true);
+                      }else{
+                        $('#message').html('');
+                        $(":submit").removeAttr("disabled");
+                      }
+                  },
+                });
+           })
+
         var COLUMNS = [{
                 field: 'id',
                 title: '#',
@@ -150,11 +171,12 @@
                                                     <div class="col-lg-6">
                                                         <label>Region Quota:</label>
                                                         <div class="input-group">
-                                                            <input type="number" class="form-control" placeholder="Region Quota in percent" name="region_quota"/>
+                                                            <input type="number" class="form-control" placeholder="Region Quota in percent" name="region_quota" id="reg_quota"/>
                                                             <div class="input-group-append">
                                                                 <span class="input-group-text">%</span>
                                                             </div>
                                                         </div>
+                                                        <small class="text-danger"><b id="message"></b></small>
                                                     </div>
                                                 </div>
                                             </div>
