@@ -98,10 +98,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->photo ?? asset('user.png');
     }
 
-    
+
 
     public function dobET()
     {
         return DateTimeFactory::fromDateTime(new DateTime($this->dob))->format('d/m/Y');
+    }
+    public function getRole()
+    {
+        return count($this->roles)>0?$this->roles[0]:null;
     }
 }

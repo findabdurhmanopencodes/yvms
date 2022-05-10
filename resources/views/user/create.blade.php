@@ -97,8 +97,12 @@
                                 <select name="gender" id="gender"
                                     class=" @error('gender') is-invalid @enderror form-control  form-control form-control-lg select2">
                                     <option value="">Select</option>
-                                    <option {{ old('gender') != null ? (old('gender') == 'M' ? 'selected' : '') : (isset($user) ? ($user->gender == 'M' ? 'selected' : '') : '') }} value="M">Male</option>
-                                    <option {{ old('gender') != null ? (old('gender') == 'F' ? 'selected' : '') : (isset($user) ? ($user->gender == 'F' ? 'selected' : '') : '') }} value="F">Female</option>
+                                    <option
+                                        {{ old('gender') != null ? (old('gender') == 'M' ? 'selected' : '') : (isset($user) ? ($user->gender == 'M' ? 'selected' : '') : '') }}
+                                        value="M">Male</option>
+                                    <option
+                                        {{ old('gender') != null ? (old('gender') == 'F' ? 'selected' : '') : (isset($user) ? ($user->gender == 'F' ? 'selected' : '') : '') }}
+                                        value="F">Female</option>
                                 </select>
                                 @error('gender')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -125,9 +129,14 @@
                                     id="role">
                                     <option value="">Select</option>
                                     @foreach ($roles as $role)
-                                        <option value="{{ $role->id }}"
-                                            {{ old('role') != null ? (old('role') == $role->id ? 'selected' : '') : (isset($user) ? ($user->roles[0]->id == $role->id ? 'selected' : '') : '') }}>
-                                            {{ Str::upper($role->name) }}</option>
+                                        @if ($role->name != 'volunteer')
+                                            <option value="{{ $role->id }}"
+                                                {{ old('role') != null ? (old('role') == $role->id ? 'selected' : '') : (($user?->getRole()?->id == $role->id) ? 'selected' : '') }} >
+                                                {{ Str::upper($role->name) }}</option>
+                                            {{-- <option value="{{ $role->id }}"
+                                                {{ old('role') != null ? (old('role') == $role->id ? 'selected' : '') : (isset($user) ? ($user->getRole()?->id == $role->id ? 'selected' : '') : '') }}>
+                                                {{ Str::upper($role->name) }}</option> --}}
+                                        @endif
                                     @endforeach
                                 </select>
                                 @error('role')
@@ -160,7 +169,7 @@
 
                         <div class="col-md-12" style="margin-top:5px;">
                             <button class="float-right btn  btn-primary">
-                                {{ __(isset($user)?'Update User':'Register User') }}
+                                {{ __(isset($user) ? 'Update User' : 'Register User') }}
                             </button>
                         </div>
                     </form>
