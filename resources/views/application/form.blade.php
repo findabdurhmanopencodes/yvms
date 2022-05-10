@@ -9,12 +9,13 @@
         .select2-container--below {
             width: 100% !important;
         }
+
     </style>
 @endpush
 @push('js')
     <script>
-        var MinDob = '{{$after}}';
-        var MaxDob = '{{$before}}';
+        var MinDob = '{{ $after }}';
+        var MaxDob = '{{ $before }}';
     </script>
     <script src="{{ asset('assets/js/pages/custom/wizard/wizard-2.js') }}"></script>
     <script src="{{ asset('assets/js/pages/custom/profile/profile.js') }}"></script>
@@ -67,108 +68,106 @@
     </script>
     <script>
         $(document).ready(function() {
-            @if (old('region'))
-                $("#zone").html('');
-                var oldZone = {{ old('zone') }};
-                $.ajax({
-                url: "api/region/" + oldZone + "/zone",
-                type: "GET",
-                data: {
-                service_id: oldZone,
-                _token: '{{ csrf_token() }}'
-                },
-                dataType: 'json',
-                success: function(result) {
-                // $('#zone').html(
-                // '<option value="">Select Zone</option>');
-                $.each(result.data, function(key, value) {
-                $("#zone").append('<option '+oldZone+'=='+ value.id +'
-                    value="' + value
-                                                                                                                                                                                                                                .id + '">
-                    ' +
-                    value.name + '
-                </option>');
-                });
-                $('#woreda').html(
-                '<option value="">Select Woreda</option>');
-                }
-                });
-            @endif
-            @if (old('woreda'))
-                $("#woreda").html('');
-                $('#woreda').html('<option value="">Select Woreda</option>');
-                var oldZone = {{ old('zone') }};
-                var oldWoreda = {{ old('woreda') }};
-                $.ajax({
-                url: "api/zone/" + oldZone + "/woreda",
-                type: "GET",
-                data: {
-                _token: '{{ csrf_token() }}'
-                },
-                dataType: 'json',
-                success: function(result) {
-                $.each(result.data, function(key, value) {
-                var isSelected = value.id == oldWoreda ?'selected':'';
-                $("#woreda").append('<option '+ isSelected + '
-                    value="' + value
-                                                                                                                                                                                                                                .id + '">
-                    '
-                    +
-                    value.name + '
-                </option>');
-                });
-                }
-                });
-            @endif
-            $('#region').on('change', function() {
-                var itemId = this.value;
-                var regionName = $("#region option:selected").text();
-                regionName = regionName.trim();
-                // $('#payment_service_name').text(regionName);
-                $("#zone").html('');
-                $.ajax({
-                    url: "api/region/" + itemId + "/zone",
-                    type: "GET",
-                    data: {
-                        service_id: itemId,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        $('#zone').html(
-                            '<option value="">Select Zone</option>');
-                        $.each(result.data, function(key, value) {
-                            $("#zone").append('<option value="' + value
-                                .id + '">' + value.name + '</option>');
+                    @if (old('region'))
+                        $("#zone").html('');
+                        var oldZone = {{ old('zone') }};
+                        $.ajax({
+                                url: "api/region/" + oldZone + "/zone",
+                                type: "GET",
+                                data: {
+                                    service_id: oldZone,
+                                    _token: '{{ csrf_token() }}'
+                                },
+                                dataType: 'json',
+                                success: function(result) {
+                                    // $('#zone').html(
+                                    // '<option value="">Select Zone</option>');
+                                    $.each(result.data, function(key, value) {
+                                            $("#zone").append('<option ' + oldZone + '==' + value.id + '
+                                                value = "' + value
+                                                .id + '">
+                                                ' +
+                                                value.name + ' < /
+                                                option > ');
+                                            }); $('#woreda').html(
+                                            '<option value="">Select Woreda</option>');
+                                    }
+                                });
+                        @endif
+                        @if (old('woreda'))
+                            $("#woreda").html('');
+                            $('#woreda').html('<option value="">Select Woreda</option>');
+                            var oldZone = {{ old('zone') }};
+                            var oldWoreda = {{ old('woreda') }};
+                            $.ajax({
+                                    url: "api/zone/" + oldZone + "/woreda",
+                                    type: "GET",
+                                    data: {
+                                        _token: '{{ csrf_token() }}'
+                                    },
+                                    dataType: 'json',
+                                    success: function(result) {
+                                        $.each(result.data, function(key, value) {
+                                                var isSelected = value.id == oldWoreda ? 'selected' : '';
+                                                $("#woreda").append('<option ' + isSelected + '
+                                                    value = "' + value
+                                                    .id + '">
+                                                    ' +
+                                                    value.name + ' < /
+                                                    option > ');
+                                                });
+                                        }
+                                    });
+                            @endif
+                            $('#region').on('change', function() {
+                                var itemId = this.value;
+                                var regionName = $("#region option:selected").text();
+                                regionName = regionName.trim();
+                                // $('#payment_service_name').text(regionName);
+                                $("#zone").html('');
+                                $.ajax({
+                                    url: "api/region/" + itemId + "/zone",
+                                    type: "GET",
+                                    data: {
+                                        service_id: itemId,
+                                        _token: '{{ csrf_token() }}'
+                                    },
+                                    dataType: 'json',
+                                    success: function(result) {
+                                        $('#zone').html(
+                                            '<option value="">Select Zone</option>');
+                                        $.each(result.data, function(key, value) {
+                                            $("#zone").append('<option value="' + value
+                                                .id + '">' + value.name + '</option>');
+                                        });
+                                        $('#woreda').html(
+                                            '<option value="">Select Woreda</option>');
+                                    }
+                                });
+                            });
+                            $('#zone').on('change', function() {
+                                var itemId = this.value;
+                                var zoneName = $("#zone option:selected").text();
+                                zoneName = zoneName.trim();
+                                $("#woreda").html('');
+                                $.ajax({
+                                    url: "api/zone/" + itemId + "/woreda",
+                                    type: "GET",
+                                    data: {
+                                        _token: '{{ csrf_token() }}'
+                                    },
+                                    dataType: 'json',
+                                    success: function(result) {
+                                        $('#woreda').html(
+                                            '<option value="">Select Woreda</option>');
+                                        $.each(result.data, function(key, value) {
+                                            $("#woreda").append('<option value="' + value
+                                                .id + '">' + value.name + '</option>');
+                                        });
+                                    }
+                                });
+                            });
                         });
-                        $('#woreda').html(
-                            '<option value="">Select Woreda</option>');
-                    }
-                });
-            });
-            $('#zone').on('change', function() {
-                var itemId = this.value;
-                var zoneName = $("#zone option:selected").text();
-                zoneName = zoneName.trim();
-                $("#woreda").html('');
-                $.ajax({
-                    url: "api/zone/" + itemId + "/woreda",
-                    type: "GET",
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        $('#woreda').html(
-                            '<option value="">Select Woreda</option>');
-                        $.each(result.data, function(key, value) {
-                            $("#woreda").append('<option value="' + value
-                                .id + '">' + value.name + '</option>');
-                        });
-                    }
-                });
-            });
-        });
     </script>
     <script>
         $(function() {
@@ -307,8 +306,9 @@
                                     <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
                                         <h4 class="mb-10 font-weight-bold text-dark">Code of Conduct</h4>
                                         <div class="row">
-                                            <div data-scroll="true" class="scroll scroll-pull" style="max-height:350px !important; overflow:auto;">
-                                               
+                                            <div data-scroll="true" class="scroll scroll-pull"
+                                                style="max-height:350px !important; overflow:auto;">
+
                                                 <p>
                                                     የብሄራዊ በጎ ፈቃድ _ አገልግሎት ማህበረሰብ _ አገልግሎት ፕሮግራም ተሳታፊ ወጣቶች መመልመያ መስፈርቶች
                                                     የብሄራዊ በጎ ፈቃድ ማህበረሰብ ልማት አገልግሎት ስልጠና በአገር አቀፍ ደረጃ በ10ሩ የክልል መስተዳድሮችና በ2ቱ
@@ -344,16 +344,17 @@
                                                     መላክ ይኖርባቸዋል
                                                 </p>
                                             </div>
-                                            
+
                                             <div class="mt-2">
                                                 <div class="form-group">
                                                     <label class="checkbox">
                                                         <input type="checkbox"
                                                             {{ old('agree_check') == 'on' ? 'checked' : '' }}
                                                             name="agree_check" id="agree_check">
-                                                             I Accepted all <a href="{{ route('terms') }}" target="_blank"> terms of conditions  </a>
+                                                        I Accepted all <a href="{{ route('terms') }}" target="_blank">
+                                                            terms of conditions </a>
                                                         <span>
-                                                            
+
                                                         </span>
 
                                                     </label>
@@ -535,6 +536,30 @@
                                                         address.</span>
                                                 </div>
                                                 <!--end::Input-->
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6 form-group">
+                                                <x-jet-label for="password" value="{{ __('Password') }}" />
+                                                <input id="password"
+                                                    class="form-control form-control-lg @error('password') is-invalid @enderror"
+                                                    type="password" placeholder="Password" name="password" requiredd
+                                                    autocomplete="new-password" />
+                                                @error('password')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
+                                            <div class="col-xl-6 form-group">
+                                                <x-jet-label for="password_confirmation"
+                                                    value="{{ __('Confirm Password') }}" />
+                                                <input id="password_confirmation"
+                                                    class="form-control form-control-lg @error('password_confirmation') is-invalid @enderror"
+                                                    type="password" placeholder="Confirm Password"
+                                                    name="password_confirmation" requiredd autocomplete="new-password" />
+                                                @error('password_confirmation')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -826,7 +851,9 @@
                                         <div class="row mt-2">
                                             <div class="form-group">
                                                 <label class="">
-                                                    By clicking Apply, you agree to our <a href="#"><b>Terms</b></a>, and <a href="#"><b>Conditions</b></a>. You may receive <b>Email</b> Notifications from us and can opt out any time.
+                                                    By clicking Apply, you agree to our <a href="#"><b>Terms</b></a>, and <a
+                                                        href="#"><b>Conditions</b></a>. You may receive <b>Email</b>
+                                                    Notifications from us and can opt out any time.
                                                 </label>
                                             </div>
                                         </div>

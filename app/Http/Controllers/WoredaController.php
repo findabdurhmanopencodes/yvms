@@ -99,7 +99,16 @@ class WoredaController extends Controller
         $woreda->code = $request->get('code');
         $woreda->zone_id = $request->get('zone');
         $woreda->qoutaInpercent = $request->get('qoutaInpercent')/100;
-        
+        $woreda->status = 1;
+        if ($request->get('status')) {
+            if ($request->get('status') == 'on') {
+                $woreda->status = 1;
+            }else{
+                $woreda->status = 0;   
+            }
+        }else{
+            $woreda->status = 0;
+        }
         // dd($woreda->qoutaInpercent);
         $woreda->save();
         return redirect()->route('woreda.index')->with('message', 'Woreda edited successfully');
@@ -121,5 +130,20 @@ class WoredaController extends Controller
     public function fetch(Zone $zone)
     {
         return datatables()->of(Woreda::select()->where('zone_id', '=', $zone->id))->make(true);
+    }
+
+    public function validateForm(Woreda $woreda, Request $request){
+        $limit = false;
+        $wor = $woreda::where('zone_id', $request->zone_id)->get();
+        $sum = $request->qouta/100;
+        foreach ($wor as $key => $value) {
+            $sum+=$value->qoutaInpercent;
+        }
+
+        if ($sum <= 1) {
+            $limit = true;
+        }
+
+        return response()->json(['limit'=>$sum]);
     }
 }

@@ -67,6 +67,32 @@
             });
 
         });
+
+        $("#zon_quota").on("input", function(){  
+            value = $('#region').val();
+              if (value) {
+                $.ajax({
+                  type: "POST",
+                  url: "/zone/validate",
+                //   method: 'post',
+                  data: {
+                      'region_id': value,
+                     'qouta': $('#zon_quota').val(),
+                     "_token": $('meta[name="csrf-token"]').attr('content'),
+                  },
+                  success: function(result){
+                      if (result.limit == false) {
+                          $('#message').html('you reached max qouta');
+                          $(":submit").attr("disabled", true);
+                      }else{
+                        $('#message').html('');
+                        $(":submit").removeAttr("disabled");
+                      }
+                  },
+                });
+              }
+        })
+        
         var COLUMNS = [{
                 field: 'id',
                 title: '#',
@@ -177,18 +203,19 @@
                                                         <select class="form-control select2" id="region" name="region" required>
                                                             <option value=""></option>
                                                             @foreach ($regions as $region)
-                                                                <option value="{{ $region->id }}">{{ $region->code }}</option>
+                                                                <option value="{{ $region->id }}">{{ $region->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label>Zone Quota:</label>
                                                         <div class="input-group">
-                                                            <input type="number" class="form-control" placeholder="Zone quota in percent" name="zone_quota"/>
+                                                            <input type="number" class="form-control" placeholder="Zone quota in percent" name="zone_quota" id="zon_quota"/>
                                                             <div class="input-group-append">
                                                                 <span class="input-group-text">%</span>
                                                             </div>
                                                         </div>
+                                                        <small class="text-danger"><b id="message"></b></small>
                                                     </div>
                                                 </div>
                                             </div>

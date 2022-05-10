@@ -200,38 +200,36 @@
                     <tbody style="" class="datatable-body">
 
                         @foreach ($volunters as $volunter)
-                            @if ($volunter->status?->acceptance_status == 0)
-                                <tr data-row="0" class="datatable-row" style="left: 0px;">
-                                    <td>
-                                        {{ $volunters->perPage() * $volunters->currentPage() - ($volunters->perPage() - ($loop->index + 1)) }}
-                                    </td>
-                                    <td>
-                                        {{ $volunter->first_name }} {{ $volunter->father_name }}
-                                    </td>
-                                    <td>
-                                        {{ $volunter->gender }}
-                                    </td>
-                                    <td>
-                                        {{ $volunter->phone }}
-                                    </td>
+                        <tr data-row="0" class="datatable-row" style="left: 0px;">
+                            <td>
+                                {{ $volunters->perPage() * $volunters->currentPage() - ($volunters->perPage() - ($loop->index + 1)) }}
+                            </td>
+                            <td>
+                                {{ $volunter->first_name }} {{ $volunter->father_name }}
+                            </td>
+                            <td>
+                                {{ $volunter->gender }}
+                            </td>
+                            <td>
+                                {{ $volunter->phone }}
+                            </td>
 
-                                    <td>
-                                        {{ $volunter->woreda?->name }}
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="badge badge-warning badge-pill">{{ $volunter->status?->acceptance_status == 0 ? 'pending' : 'decided' }}</span>
-                                    </td>
-                                    <td>
-                                        <div class="row">
-                                            <a class="btn btn-sm btn-info"
-                                                href="{{ route('applicant.show', ['applicant' => $volunter->id]) }}">
-                                                <i class="fa fa-eye"></i> Detail</a>
-                                        </div>
+                            <td>
+                                {{ $volunter->woreda?->name }}
+                            </td>
+                            <td>
+                                <span
+                                    class="badge badge-warning badge-pill">{{ $volunter->status?->acceptance_status == 0 ? 'pending' : 'decided' }}</span>
+                            </td>
+                            <td>
+                                <div class="row">
+                                    <a class="btn btn-sm btn-info"
+                                        href="{{ route('applicant.show', ['applicant' => $volunter->id]) }}">
+                                        <i class="fa fa-sm fa-eye"></i> Detail</a>
+                                </div>
 
-                                    </td>
-                                </tr>
-                            @endif
+                            </td>
+                        </tr>
                         @endforeach
                         @if (count($volunters) < 1)
                             <tr>

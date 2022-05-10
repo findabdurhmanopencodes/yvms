@@ -1,12 +1,12 @@
 @extends('layouts.session_layout')
-@section('action_title','Quota Allocation')
-@section('title','Quota Allocation')
-@section('breadcrumbTitle','Quota Allocation')
+@section('action_title','Screeing Applicants')
+@section('title','Screeing Applicants')
+@section('breadcrumbTitle','Screeing Applicants')
 @section('breadcrumbList')
 <li class="breadcrumb-item">
     <a  href="{{ route('training_session.index', []) }}">All Program</a>
 </li>
-<li class="active">Quota Allocation</li>
+<li class="active">Screeing Applicants</li>
 @endsection
 @push('js')
     <!--begin::Page Scripts(used by this page)-->
@@ -37,11 +37,13 @@
 
 
             </div>
-            <div>
-                <a class="btn btn-sm btn-info float-right"
-                    href="{{ route('aplication.screen_out', ['training_session' => $trainingSession->id]) }}">
-                    <i class="fa fa-eye"></i> Screen</a>
-            </div>
+           @if (count($volunters)>0)
+           <div>
+            <a class="btn btn-sm btn-info float-right"
+                href="{{ route('aplication.screen_out', ['training_session' => $trainingSession->id]) }}">
+                <i class="fa fa-eye"></i> Screen</a>
+        </div>
+           @endif
         </div>
         <div class="card-body">
             <!--begin: Datatable-->

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('code');
             $table->double('qoutaInpercent')->nullable();
+            $table->smallInteger('status');
             $table->timestamps();
         });
     }

@@ -1,6 +1,6 @@
 
 
-<li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0 ? 'menu-item-open' : '' }}"
+<li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'region.place') === 0 || strpos(Route::currentRouteName(), 'region.place') === 0 ? 'menu-item-open' : '' }}"
 aria-haspopup="true" data-menu-toggle="hover">
 
 <a href="javascript:;" class="menu-link menu-toggle">
@@ -12,14 +12,16 @@ aria-haspopup="true" data-menu-toggle="hover">
     <i class="menu-arrow"></i>
     <ul class="menu-subnav">
        
-        <li class="menu-item {{ strpos(Route::currentRouteName(), 'role.index') === 0 ? 'menu-item-active' : '' }}"
+        <li class="menu-item {{ strpos(Route::currentRouteName(), 'region.place') === 0 ? 'menu-item-active' : '' }}"
         aria-haspopup="true">
-        <a href="{{ route('placement') }}" class="menu-link">
+        <a href="{{ route('region.place',[]) }}" class="menu-link">
             <i class="menu-bullet menu-bullet-dot">
                 <span></span>
             </i>
             <span class="menu-text"> View Placement</span>
         </a>
+
+       
     </li>
 
         <li class="menu-item {{ strpos(Route::currentRouteName(), 'role.index') === 0 ? 'menu-item-active' : '' }}"

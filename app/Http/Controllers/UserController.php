@@ -39,8 +39,9 @@ class UserController extends Controller
         // if(!Auth::user()->can('user.create')){
         //     return abort(403);
         // }
+        $user = null;
         $roles = Role::all();
-        return view('user.create', compact('roles'));
+        return view('user.create', compact('roles', 'user'));
     }
 
     public function edit(User $user)
@@ -62,7 +63,7 @@ class UserController extends Controller
             'first_name' => ['required', 'string', 'max:255', 'min:3'],
             'father_name' => ['required', 'string', 'max:255', 'min:3'],
             'grand_father_name' => ['required', 'string', 'max:255', 'min:3'],
-            'dob' => ['required', 'date'],
+            'dob' => ['required', 'date_format:d/m/Y'],
             'gender' => ['required', 'string', 'in:M,F'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'role' => ['required'],
@@ -73,7 +74,7 @@ class UserController extends Controller
             ])['password'];
             $userData['password'] = Hash::make($userData['password']);
         }
-        $date = new DateTime($request->get('dob'));
+        $date = DateTime::createFromFormat('d/m/Y', $request->get('dob'));
         $year = $date->format('Y');
         $month = $date->format('m');
         $day = $date->format('d');
@@ -89,11 +90,22 @@ class UserController extends Controller
             ]);
             throw $validationException;
         }
-        if ($request->role == Role::findByName('applicant')) {
+        if ($request->role == Role::findByName('volunteer')) {
             return abort(404);
         }
+        $userRoleName = $user->getRole()?->name;
+        if ($userRoleName)
+            $user->removeRole($userRoleName);
+        $user->assignRole($userData['role']);
         $userData['dob'] = $dob_GC;
+        $oldEmail = $user->email;
         $user->update($userData);
+        if ($user->email != $oldEmail) {
+            $user->email_verified_at = null;
+            $user->update();
+            $user->save();
+            event(new Registered($user));
+        }
         return redirect()->back()->with('message', 'User Updated successfully');
     }
 
@@ -103,13 +115,13 @@ class UserController extends Controller
             'first_name' => ['required', 'string', 'max:255', 'min:3'],
             'father_name' => ['required', 'string', 'max:255', 'min:3'],
             'grand_father_name' => ['required', 'string', 'max:255', 'min:3'],
-            'dob' => ['required', 'date'],
+            'dob' => ['required', 'date_format:d/m/Y'],
             'gender' => ['required', 'string', 'in:M,F'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required'],
         ]);
-        $date = new DateTime($request->get('dob'));
+        $date = DateTime::createFromFormat('d/m/Y', $request->get('dob'));
         $year = $date->format('Y');
         $month = $date->format('m');
         $day = $date->format('d');
@@ -125,10 +137,11 @@ class UserController extends Controller
             ]);
             throw $validationException;
         }
-        if ($request->role == Role::findByName('applicant')) {
+        if ($request->role == Role::findByName('volunteer')) {
             return abort(404);
         }
         $userData['dob'] = $dob_GC;
+        $userData['password'] = Hash::make($userData['password']);
         $user = User::create($userData);
         $user->assignRole(Role::findById($request->role));
         event(new Registered($user));
