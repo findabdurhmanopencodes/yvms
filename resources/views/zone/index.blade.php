@@ -97,7 +97,7 @@
                 field: 'id',
                 title: '#',
                 sortable: 'asc',
-                width: 30,
+                width: 50,
                 type: 'number',
                 selector: false,
                 textAlign: 'center',
@@ -208,7 +208,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <label>Zone Quota:</label>
+                                                        <label>Zone Quota(%):</label>
                                                         <div class="input-group">
                                                             <input type="number" class="form-control" placeholder="Zone quota in percent" name="zone_quota" id="zon_quota"/>
                                                             <div class="input-group-append">

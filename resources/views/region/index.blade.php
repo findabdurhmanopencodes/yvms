@@ -169,7 +169,7 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <div class="col-lg-6">
-                                                        <label>Region Quota:</label>
+                                                        <label>Region Quota(%):</label>
                                                         <div class="input-group">
                                                             <input type="number" class="form-control" placeholder="Region Quota in percent" name="region_quota" id="reg_quota"/>
                                                             <div class="input-group-append">

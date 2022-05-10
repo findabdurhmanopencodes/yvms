@@ -76,10 +76,10 @@ class TrainingSessionController extends Controller
         $date_now = Carbon::now();
         $date_now_et = DateTimeFactory::fromDateTime($date_now)->format('d/m/y');
         $request->validate([
-            'start_date' => ['required', 'date', 'after:' . $date_now_et],
-            'end_date' => ['required', 'date', 'after:' . $request->get('start_date')],
-            'registration_start_date' => ['required', 'date', 'after:' . $request->get('start_date'), 'before:' . $request->get('end_date')],
-            'registration_dead_line' => ['required', 'date', 'after:' . $request->get('registration_start_date'), 'before:' . $request->get('end_date')],
+            'start_date' => ['required', 'between:' . $date_now_et.','.$request->get('end_date')],
+            // 'end_date' => ["required", "after:". $request->get('start_date')],
+            'registration_start_date' => ['required', 'between:' . $request->get('start_date').','.$request->get('end_date')],
+            'registration_dead_line' => ['required', 'between:' . $request->get('registration_start_date').','.$request->get('end_date')],
             'quantity' => 'required'
         ]);
 

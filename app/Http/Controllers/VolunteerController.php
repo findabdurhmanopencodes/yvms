@@ -271,7 +271,8 @@ class VolunteerController extends Controller
             return redirect()->route('applicant.index',['session_id'=>Volunteer::find($applicant_id)->training_session_id]);
         } elseif ($request->get('type') == 'reject') {
             Status::Create(['volunteer_id' => $applicant_id, 'acceptance_status' => 2, 'rejection_reason' => $request->get('rejection_reason')]);
-            return redirect()->back();
+            return redirect()->route('applicant.index',['session_id'=>Volunteer::find($applicant_id)->training_session_id]);
+            // return redirect()->back();
         }
     }
     public function emailUnverified()

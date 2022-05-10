@@ -64,6 +64,7 @@
     </script>
     <script>
         $( document ).ready(function() {
+            $(":submit").attr("disabled", true);
             $('#zone').select2({
                 placeholder: "Select a zone"
             });
@@ -205,7 +206,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <label>Woreda Quota:</label>
+                                                        <label>Woreda Quota(%):</label>
                                                         <div class="input-group">
                                                             <input type="number" class="form-control" placeholder="Woreda quota in percent" name="woreda_quota" id="woreda_quota"/>
                                                             <div class="input-group-append">
