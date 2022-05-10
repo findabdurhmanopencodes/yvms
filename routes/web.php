@@ -41,6 +41,9 @@ Route::get('/login', function () {
 
 
 Route::get('/', function () {
+    $volunteer = Volunteer::find(6);
+    // dd($volunteer);
+    return view('volunter.applied_notification',compact('volunteer'));
     return view('menu.home');
 })->name('home');
 
@@ -95,7 +98,7 @@ Route::middleware(['auth','verified'])->group(function () {
     ////////////////////////////////////////////////////////////////////////////////
     Route::get('training_sessions',[RegionController::class,'place'])->name('region.place');
 
-    Route::get('training_center',[TraininingCenterController::class,'placement'])->name('training_center.placement'); 
+    Route::get('training_center',[TraininingCenterController::class,'placement'])->name('training_center.placement');
     //Route::get('training_',[RegionController::class,'place'])->name('region.place');
     ///////////////////////////////////////////////////////////////////////////////////
     Route::resource('training_session', TrainingSessionController::class);

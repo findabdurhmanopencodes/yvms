@@ -22,7 +22,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         VolunteerApplied::class => [
             VolunteerAppliedNotification::class,
-        ]
+        ],
     ];
 
     /**

@@ -105,7 +105,7 @@ class ZoneController extends Controller
             if ($request->get('status') == 'on') {
                 $zone->status = 1;
             }else{
-                $zone->status = 0;   
+                $zone->status = 0;
                 foreach ($zone->woredas as $key => $wor) {
                     $woreda = Woreda::find($wor->id);
                     $woreda->status = 0;
