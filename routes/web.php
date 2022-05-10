@@ -41,9 +41,6 @@ Route::get('/login', function () {
 
 
 Route::get('/', function () {
-    $volunteer = Volunteer::find(6);
-    // dd($volunteer);
-    return view('volunter.applied_notification',compact('volunteer'));
     return view('menu.home');
 })->name('home');
 
