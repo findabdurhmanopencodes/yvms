@@ -76,6 +76,18 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label">Active: </label>
+                            <div class="col-3">
+                                <span class="switch switch-icon">
+                                    <label>
+                                        <input type="checkbox" checked="checked" name="status"/>
+                                        <span></span>
+                                    </label>
+                                </span>
+                            </div>                            
+                        </div>
+
                         <div class="form-group mb-3">
                             <button type="submit" class="btn btn-primary">Update</button>
                         </div>

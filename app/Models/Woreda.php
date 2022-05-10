@@ -18,7 +18,8 @@ class Woreda extends Model
         'name',
         'code',
         'zone_id',
-        'qoutaInpercent'
+        'qoutaInpercent',
+        'status'
     ];
 
     public function zone(){

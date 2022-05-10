@@ -99,7 +99,16 @@ class WoredaController extends Controller
         $woreda->code = $request->get('code');
         $woreda->zone_id = $request->get('zone');
         $woreda->qoutaInpercent = $request->get('qoutaInpercent')/100;
-        
+        $woreda->status = 1;
+        if ($request->get('status')) {
+            if ($request->get('status') == 'on') {
+                $woreda->status = 1;
+            }else{
+                $woreda->status = 0;   
+            }
+        }else{
+            $woreda->status = 0;
+        }
         // dd($woreda->qoutaInpercent);
         $woreda->save();
         return redirect()->route('woreda.index')->with('message', 'Woreda edited successfully');

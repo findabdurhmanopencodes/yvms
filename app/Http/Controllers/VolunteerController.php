@@ -33,6 +33,10 @@ class VolunteerController extends Controller
     public function index(Request $request, $session_id)
     {
         $applicants = Volunteer::where('training_session_id', $session_id);
+        // foreach ($applicants as  $value) {
+        //     Status::create(['volunteer_id'=>$value->id, 'acceptance_status'=>1]);
+        // }
+        // dd('sdfsd');
         // dd($applicants->paginate(5));
         if ($request->has('filter')) {
             $first_name = $request->get('first_name');

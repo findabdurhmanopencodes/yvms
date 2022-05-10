@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Woreda::factory(16)->create();
         // \App\Models\File::factory(16)->create();
         // \App\Models\FeildOfStudy::factory(4)->create();
-        \App\Models\Volunteer::factory(100)->create();
+        // \App\Models\Volunteer::factory(100)->create();
 
         $this->call([
             // TrainingSessionSeeder::class,
