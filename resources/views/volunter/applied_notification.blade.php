@@ -126,17 +126,7 @@
                         <td bgcolor="#ffffff" align="center"
                             style="padding: 20px 30px 40px 30px; color: #000000; font-family:'Montserrat bold' Helvetica, Arial, sans-serif; font-size: 16px; line-height: 25px;">
                             <p style="">
-                                Your application was submited. You should receive a reply from a representative of our web site if you are accpted. Occasionally we receive a very large number of messages, and your response may take a little longer.  Thank you for taking the time to apply. Have a great day, <a href="{{ route('home', []) }}">Ministry of Peace</a>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td bgcolor="#ffffff" align="center"
-                            style="padding: 20px 30px 20px 30px; color: #666666; font-family:'Montserrat'Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 550; line-height: 25px;">
-                            <p style="margin: 0;">
-                                <a href="#" target="_blank" style="color: #29ABE2;">
-                                    route('volunteer.email.verify', ['token' => $volunteer->verifyVolunteer->token]) }}
-                                </a>
+                                Your application is submited. You should receive a reply from a representative of our web site if you are accpted. Occasionally we receive a very large number of messages, and your response may take a little longer.  Thank you for taking the time to apply. Have a great day, <a href="{{ route('home', []) }}">Ministry of Peace</a>
                             </p>
                         </td>
                     </tr>

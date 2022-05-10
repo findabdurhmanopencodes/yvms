@@ -142,7 +142,7 @@ class ZoneController extends Controller
     }
     public function fetch(Region $region)
     {
-        return datatables()->of(Zone::select()->where('region_id','=',$region->id)->where('status','=',1))->make(true);
+        return datatables()->of(Zone::select()->where('region_id','=',$region->id))->make(true);
     }
 
     public function validateForm(Zone $zone, Request $request){

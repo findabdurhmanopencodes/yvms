@@ -7,6 +7,7 @@ use App\Models\Volunteer;
 use App\Http\Requests\StoreVolunteerRequest;
 use App\Http\Requests\UpdateVolunteerRequest;
 use App\Mail\VerifyMail;
+use App\Mail\VolunteerAppliedMail;
 use App\Models\Disablity;
 use App\Models\EducationalLevel;
 use App\Models\FeildOfStudy;
@@ -321,7 +322,7 @@ class VolunteerController extends Controller
                 $volunteer->update();
                 $volunteer->save();
                 Auth::login($user);
-                Mail::to($volunteer->email)->send(new VerifyMail($volunteer));
+                Mail::to($volunteer->email)->send(new VolunteerAppliedMail($volunteer));
                 return redirect(route('home'))->with('message', 'Your Service Request Form will be reviewed shortly and a response made to the email address');
             } else {
                 $status = "Your e-mail is already verified. You can now login.";

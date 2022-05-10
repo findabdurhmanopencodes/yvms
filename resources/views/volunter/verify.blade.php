@@ -97,6 +97,7 @@
                   <tr>
                      <td bgcolor="#ffffff" align="center" valign="top"
                         style="padding: 40px 20px 20px 20px; border-radius: 2px 2px 0px 0px; color: #AADB1E; font-family: 'Londrina Solid'Helvetica, Arial, sans-serif; font-size: 45px; font-weight: 700; letter-spacing: 2px; line-height: 48px;">
+                        <img src="{{ asset('img/logo_peace.png') }}" width="120" alt="">
                         <h1 style="font-size: 40px; font-weight:700; margin: w-50;">{{ env('APP_NAME') }}</h1>
                      </td>
                   </tr>
