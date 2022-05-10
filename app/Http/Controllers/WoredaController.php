@@ -144,6 +144,6 @@ class WoredaController extends Controller
             $limit = true;
         }
 
-        return response()->json(['limit'=>$sum]);
+        return response()->json(['limit'=>$limit]);
     }
 }

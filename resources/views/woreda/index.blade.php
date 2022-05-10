@@ -82,7 +82,6 @@
                      "_token": $('meta[name="csrf-token"]').attr('content'),
                   },
                   success: function(result){
-                      console.log(result);
                       if (result.limit == false) {
                           $('#message').html('you reached max qouta');
                           $(":submit").attr("disabled", true);
@@ -94,7 +93,6 @@
                 });
               }
         })
-
 
         var COLUMNS = [{
                 field: 'id',
