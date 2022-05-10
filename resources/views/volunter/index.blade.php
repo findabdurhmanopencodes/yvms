@@ -226,7 +226,7 @@
                                         <div class="row">
                                             <a class="btn btn-sm btn-info"
                                                 href="{{ route('applicant.show', ['applicant' => $volunter->id]) }}">
-                                                <i class="fa fa-eye"></i> Detail</a>
+                                                <i class="fa fa-sm fa-eye"></i> Detail</a>
                                         </div>
 
                                     </td>

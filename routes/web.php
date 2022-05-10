@@ -17,6 +17,7 @@ use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\ZoneController;
 use App\Models\TrainingSession;
+use App\Models\TraininingCenter;
 use App\Models\Volunteer;
 use Illuminate\Support\Facades\Route;
 
@@ -64,9 +65,6 @@ Route::get('/placement', function () {
 })->name('placement');
 
 
-
-
-
 Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
 
 //Role & Permission
@@ -94,6 +92,12 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::any('/Volunter-session/{session_id}', [VolunteerController::class, 'index'])->name('applicant.index');
     Route::resource('applicant', VolunteerController::class)->except(['index']);
 
+    ////////////////////////////////////////////////////////////////////////////////
+    Route::get('training_sessions',[RegionController::class,'place'])->name('region.place');
+
+    Route::get('training_center',[TraininingCenterController::class,'placement'])->name('training_center.placement'); 
+    //Route::get('training_',[RegionController::class,'place'])->name('region.place');
+    ///////////////////////////////////////////////////////////////////////////////////
     Route::resource('training_session', TrainingSessionController::class);
     Route::resource('qouta', QoutaController::class);
     Route::resource('user', UserController::class);
