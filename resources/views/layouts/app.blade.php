@@ -88,7 +88,7 @@
                 <div class="brand flex-column-auto" id="kt_brand">
                     <!--begin::Logo-->
                     <a href="#" class="text-center brand-logo w-100 d-block">
-                        <img alt="Logo" src="{{ asset('img/logo_peace.png') }}" width="40" />
+                        <img alt="Logo" src="{{ asset('img/logo_mop.jpg') }}" width="40" />
                     </a>
                     <!--end::Logo-->
                     <!--begin::Toggle-->
@@ -264,9 +264,15 @@
                                 <div class="w-auto px-2 btn btn-icon btn-clean d-flex align-items-center btn-lg"
                                     id="kt_quick_user_toggle">
                                     <span
-                                        class="mr-1 text-muted font-weight-bold font-size-base d-none d-md-inline">Hi,</span>
-                                    {{-- <span
-                                        class="mr-3 text-dark-50 font-weight-bolder font-size-base d-none d-md-inline">{{ Auth::user()->first_name }}</span> --}}
+                                        class="mr-1 text-muted font-weight-bold font-size-base d-none d-md-inline"><img alt="Profile" src="{{ asset('user.png') }}" width="30" /> 
+                                      
+                                         
+                                        {{ Auth::user()->first_name }} {{ Auth::user()->father_name }}
+                                           
+                                          
+                                     </span>
+                                    {{-- <
+                                        class="mr-3 text-dark-50 font-weight-bolder font-size-base d-none d-md-inline">{{ Auth::user()->first_name }}</> --}}
                                     <span class="symbol symbol-35 symbol-light-success">
                                         {{-- <span
                                             class="symbol-label font-size-h5 font-weight-bold">{{ Auth::user()->first_name[0] }}</span> --}}

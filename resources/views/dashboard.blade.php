@@ -84,15 +84,19 @@
     <div class="col-md-3">
       <div class="card-counter primary">
         <i class="fa fa-users" style="color:black;"></i>
-        <span class="count-numbers">12</span>
+        <span class="count-numbers">
+         
+          {{ $users }}
+         
+        </span>
         <span class="count-name"> Total Users</span>
       </div>
     </div>
-
+    
     <div class="col-md-3">
       <div class="card-counter danger">
         <i class="fa fa-users" style="color:black;"></i>
-        <span class="count-numbers">15</span>
+        <span class="count-numbers">{{ $traininingCenters }}</span>
         <span class="count-name"> Training Centers</span>
       </div>
     </div>
@@ -100,7 +104,7 @@
     <div class="col-md-3">
       <div class="card-counter success">
         <i class="fa fa-users" style="color:black;"></i>
-        <span class="count-numbers">6875</span>
+        <span class="count-numbers">{{ $volunteers }}</span>
         <span class="count-name"> Active Application</span>
       </div>
     </div>
@@ -108,7 +112,7 @@
     <div class="col-md-3">
       <div class="card-counter info">
         <i class="fa fa-flag" style="color:black;"></i>
-        <span class="count-numbers">35</span>
+        <span class="count-numbers">{{ $regions }}</span>
         <span class="count-name"> Regions</span>
       </div>
     </div>
@@ -118,7 +122,7 @@
     <div class="col-md-3">
       <div class="card-counter primary">
         <i class="fa fa-flag" style="color:black;"></i>
-        <span class="count-numbers">12</span>
+        <span class="count-numbers">{{ $zones }}</span>
         <span class="count-name">Zones </span>
       </div>
     </div>
@@ -126,7 +130,7 @@
     <div class="col-md-3">
       <div class="card-counter danger">
         <i class="fa fa-flag" style="color:black;"></i>
-        <span class="count-numbers">599</span>
+        <span class="count-numbers">{{ $woredas }}</span>
         <span class="count-name">  Woreda</span>
       </div>
     </div>
@@ -134,7 +138,7 @@
     <div class="col-md-3">
       <div class="card-counter success">
         <i class="fa fa-users" style="color:black;"></i>
-        <span class="count-numbers">6875</span>
+        <span class="count-numbers">{{ $volunteers }}</span>
         <span class="count-name"> Volunters</span>
       </div>
     </div>
@@ -142,7 +146,7 @@
     <div class="col-md-3">
       <div class="card-counter info">
         <i class="fas fa-graduation-cap" style="color:black;"></i>
-        <span class="count-numbers">35</span>
+        <span class="count-numbers">0</span>
         <span class="count-name"> Graduations</span>
       </div>
     </div>
@@ -156,6 +160,23 @@
 
 
 @endsection
+
+
+
+Add groupBy() in Controller:
+
+$names = Vehicle::groupBy('categoryname')->select('id', 'categoryname', \DB::raw('COUNT(*) as cnt'))->get()->groupBy('categoryname');
+
+In Blade:
+
+{{-- @foreach($names as $key => $name)
+    <div class="col-md-3 text-center">
+        <img src="{{ URL::asset('/images/'.$name->images) }}" alt="{{ $key }}" height="50" width="50" class="center-block">
+        <div>{{ $key }} ({{ $name->count() }})</div>
+        <div>text text text text</div>
+    </div>
+@endforeach --}}
+
 
 
 
