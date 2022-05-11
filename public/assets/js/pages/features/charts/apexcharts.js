@@ -55,7 +55,7 @@ var KTApexChartsDemo = (function () {
                 },
             ],
             chart: {
-                height: 350,
+                height: 360,
                 type: "line",
                 zoom: {
                     enabled: false,
@@ -1118,7 +1118,7 @@ var KTApexChartsDemo = (function () {
         var options = {
             series: [44, 55, 41, 17, 15],
             chart: {
-                width: 460,
+                width: 480,
                 type: "donut",
             },
             responsive: [
