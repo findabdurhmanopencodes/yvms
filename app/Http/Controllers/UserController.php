@@ -43,17 +43,19 @@ class UserController extends Controller
         //     return abort(403);
         // }
         $user = null;
+        $userRegion= null;
         $roles = Role::all();
         $after = Carbon::now()->subYears(100);
         $regions = Region::all();
         $before = Carbon::now()->subYears(18);
         $after = DateTimeFactory::fromDateTime($after)->format('d/m/Y');
         $before = DateTimeFactory::fromDateTime($before)->format('d/m/Y');
-        return view('user.create', compact('roles', 'user', 'after', 'before', 'regions'));
+        return view('user.create', compact('roles', 'user', 'after', 'before', 'regions','userRegion'));
     }
 
     public function edit(User $user)
     {
+        $userRegion = UserRegion::where('user_id', $user->id)->first();
         $roles = Role::all();
         $regions = Region::all();
         $after = Carbon::now()->subYears(100);
@@ -61,7 +63,7 @@ class UserController extends Controller
 
         $after = DateTimeFactory::fromDateTime($after)->format('d/m/Y');
         $before = DateTimeFactory::fromDateTime($before)->format('d/m/Y');
-        return view('user.create', compact('user', 'roles', 'after', 'before', 'regions'));
+        return view('user.create', compact('user', 'roles', 'after', 'before', 'regions','userRegion'));
     }
 
     public function show(User $user)

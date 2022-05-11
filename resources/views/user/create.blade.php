@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'All Users')
+@section('title', ($user ? 'Edit' : 'Add') . ' user')
 @section('breadcrumbTitle', 'Register User')
 @section('breadcrumbList')
     <li class="breadcrumb-item"><a href="{{ route('user.index', []) }}">Users</a></li>
@@ -43,6 +43,27 @@
             $('#dob').calendarsPicker({
                 calendar: calendar
             });
+            @if (old('zone') || $user?->isZoneCordinator())
+                var region = {{ old('region') ?? ($user?->getCordinatingRegion()?->id)?? 'null' }};
+                var zone = {{ $user?->getCordinatingZone()->id }};
+                $.ajax({
+                    url: "/api/region/" + region + "/zone",
+                    type: "GET",    
+                    data: {
+                        service_id: region,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        $.each(result.data, function(key, value) {
+
+                            var status = zone == value.id ? 'selected' : '';
+                            $("#zone").append('<option ' + status + ' value = "' + value.id +
+                                '"> ' + value.name + ' </option >');
+                        });
+                    }
+                });
+            @endif
         })
 
         $(function() {
@@ -340,7 +361,7 @@
                                 <label class="d-block">Date Of Birth</label>
                                 <input type="text" id="dob" class="@error('dob') is-invalid @enderror form-control"
                                     name="dob" placeholder="Date of Birth" autocomplete="off"
-                                    value="{{ old('dob') ?? $user ? $user->dobET() : '' }}" />
+                                    value="{{ old('dob') ?? ($user ? $user->dobET() : '') }}" />
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -387,14 +408,15 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4 form-group {{ old('region') ? '' : 'd-none' }} col-md-4"
+                            <div class="col-md-4 form-group {{ old('region') ? '' : ($user?->isCordinator() ? '' : 'dd-none') }} col-md-4"
                                 id="region_form_group">
                                 <label class="d-block">Region</label>
                                 <select name="region" id='region'
                                     class="w-100 @error('region') is-invalid @enderror select2 form-control form-control-solid">
                                     <option value="">Select</option>
                                     @foreach ($regions as $region)
-                                        <option {{ old('region') == $region->id ? 'selected' : '' }}
+                                        <option
+                                            {{ old('region') == $region->id ? 'selected' : ($user?->getCordinatingRegion()?->id == $region->id ? 'selected' : '') }}
                                             value="{{ $region->id }}">{{ $region->name }}
                                         </option>
                                     @endforeach
@@ -403,7 +425,8 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="col-md-4 {{ old('zone') ? '' : 'd-none' }} form-group" id="zone_form_group">
+                            <div class="col-md-4 {{ old('zone') ? '' : ($user?->isZoneCordinator() ? '' : 'd-none') }} form-group"
+                                id="zone_form_group">
                                 <label class="d-block">Zone</label>
                                 <select name="zone" id="zone"
                                     class="d-block select2 @error('zone') is-invalid @enderror form-control ">

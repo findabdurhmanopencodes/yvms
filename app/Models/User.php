@@ -106,4 +106,31 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return count($this->roles) > 0 ? $this->roles[0] : null;
     }
+
+    public function isCordinator()
+    {
+        return $this->isRegionalCordinator()!=null || $this->isZoneCordinator() != null;
+    }
+
+    public function isRegionalCordinator()
+    {
+        return $this->getCordinatingRegion() != null ? true : false;
+    }
+
+    public function isZoneCordinator()
+    {
+        return $this->getCordinatingZone() != null ? true : false;
+    }
+
+    public function getCordinatingRegion()
+    {
+        if($this->isZoneCordinator()){
+            return $this->getCordinatingZone()->region;
+        }
+        return UserRegion::where('user_id', $this->id)->where('levelable_type', Region::class)->first()?->levelable;
+    }
+    public function getCordinatingZone()
+    {
+        return UserRegion::where('user_id', $this->id)->where('levelable_type', Zone::class)->first()?->levelable;
+    }
 }
