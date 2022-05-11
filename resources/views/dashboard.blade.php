@@ -118,38 +118,10 @@
     </div>
   </div>
   <br>
-  <div class="row">
-    <div class="col-md-3">
-      <div class="card-counter primary">
-        <i class="fa fa-flag" style="color:black;"></i>
-        <span class="count-numbers">{{ $zones }}</span>
-        <span class="count-name">Zones </span>
-      </div>
-    </div>
+  
 
-    <div class="col-md-3">
-      <div class="card-counter danger">
-        <i class="fa fa-flag" style="color:black;"></i>
-        <span class="count-numbers">{{ $woredas }}</span>
-        <span class="count-name">  Woreda</span>
-      </div>
-    </div>
 
-    <div class="col-md-3">
-      <div class="card-counter success">
-        <i class="fa fa-users" style="color:black;"></i>
-        <span class="count-numbers">{{ $volunteers }}</span>
-        <span class="count-name"> Volunters</span>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card-counter info">
-        <i class="fas fa-graduation-cap" style="color:black;"></i>
-        <span class="count-numbers">0</span>
-        <span class="count-name"> Graduations</span>
-      </div>
-    </div>
+  
   </div>
 </div>
 
