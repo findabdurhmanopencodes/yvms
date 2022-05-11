@@ -92,7 +92,7 @@
     <div class="col-md-3">
       <div class="card-counter danger">
         <i class="fa fa-users" style="color:black;"></i>
-        <span class="count-numbers">599</span>
+        <span class="count-numbers">15</span>
         <span class="count-name"> Training Centers</span>
       </div>
     </div>
@@ -107,9 +107,9 @@
 
     <div class="col-md-3">
       <div class="card-counter info">
-        <i class="fa fa-users" style="color:black;"></i>
+        <i class="fa fa-flag" style="color:black;"></i>
         <span class="count-numbers">35</span>
-        <span class="count-name"> Placement Rounds</span>
+        <span class="count-name"> Regions</span>
       </div>
     </div>
   </div>
@@ -117,17 +117,17 @@
   <div class="row">
     <div class="col-md-3">
       <div class="card-counter primary">
-        <i class="fa fa-users" style="color:black;"></i>
+        <i class="fa fa-flag" style="color:black;"></i>
         <span class="count-numbers">12</span>
-        <span class="count-name"> Total Users</span>
+        <span class="count-name">Zones </span>
       </div>
     </div>
 
     <div class="col-md-3">
       <div class="card-counter danger">
-        <i class="fa fa-users" style="color:black;"></i>
+        <i class="fa fa-flag" style="color:black;"></i>
         <span class="count-numbers">599</span>
-        <span class="count-name"> Training Centers</span>
+        <span class="count-name">  Woreda</span>
       </div>
     </div>
 
@@ -135,15 +135,15 @@
       <div class="card-counter success">
         <i class="fa fa-users" style="color:black;"></i>
         <span class="count-numbers">6875</span>
-        <span class="count-name"> Active Application</span>
+        <span class="count-name"> Volunters</span>
       </div>
     </div>
 
     <div class="col-md-3">
       <div class="card-counter info">
-        <i class="fa fa-users" style="color:black;"></i>
+        <i class="fas fa-graduation-cap" style="color:black;"></i>
         <span class="count-numbers">35</span>
-        <span class="count-name"> Placement Rounds</span>
+        <span class="count-name"> Graduations</span>
       </div>
     </div>
   </div>

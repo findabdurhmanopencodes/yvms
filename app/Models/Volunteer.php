@@ -62,7 +62,7 @@ class Volunteer extends Model
 
     public function woreda()
     {
-        return $this->belongsTo(woreda::class);
+        return $this->belongsTo(Woreda::class);
     }
     public function fieldOfStudy()
     {
