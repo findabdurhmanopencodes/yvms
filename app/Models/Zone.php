@@ -23,6 +23,7 @@ class Zone extends Model
         'status'
     ];
 
+
     public function woredas(){
         return $this->hasMany(Woreda::class);
     }
@@ -36,6 +37,10 @@ class Zone extends Model
 
     public function quotas(){
         return $this->morphMany(Qouta::class, 'quotable');
+    }
+
+    public function level(){
+        return $this->morphOne(UserRegion::class, 'levelable');
     }
 
 }

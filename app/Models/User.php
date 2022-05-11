@@ -104,6 +104,6 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function getRole()
     {
-        return count($this->roles)>0?$this->roles[0]:null;
+        return count($this->roles) > 0 ? $this->roles[0] : null;
     }
 }

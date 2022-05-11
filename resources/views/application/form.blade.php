@@ -72,7 +72,7 @@
                         $("#zone").html('');
                         var oldZone = {{ old('zone') }};
                         $.ajax({
-                                url: "api/region/" + oldZone + "/zone",
+                                url: "/api/region/" + oldZone + "/zone",
                                 type: "GET",
                                 data: {
                                     service_id: oldZone,
@@ -100,7 +100,7 @@
                             var oldZone = {{ old('zone') }};
                             var oldWoreda = {{ old('woreda') }};
                             $.ajax({
-                                    url: "api/zone/" + oldZone + "/woreda",
+                                    url: "/api/zone/" + oldZone + "/woreda",
                                     type: "GET",
                                     data: {
                                         _token: '{{ csrf_token() }}'
@@ -126,7 +126,7 @@
                                 // $('#payment_service_name').text(regionName);
                                 $("#zone").html('');
                                 $.ajax({
-                                    url: "api/region/" + itemId + "/zone",
+                                    url: "/api/region/" + itemId + "/zone",
                                     type: "GET",
                                     data: {
                                         service_id: itemId,
@@ -151,7 +151,7 @@
                                 zoneName = zoneName.trim();
                                 $("#woreda").html('');
                                 $.ajax({
-                                    url: "api/zone/" + itemId + "/woreda",
+                                    url: "/api/zone/" + itemId + "/woreda",
                                     type: "GET",
                                     data: {
                                         _token: '{{ csrf_token() }}'

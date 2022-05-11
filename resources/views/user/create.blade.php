@@ -6,15 +6,15 @@
     <li class="breadcrumb-item active">Add User</li>
 @endsection
 @push('css')
-<style>
-    .select2,
-    .select2-container,
-    .select2-container--default,
-    .select2-container--below {
-        width: 100% !important;
-    }
+    <style>
+        .select2,
+        .select2-container,
+        .select2-container--default,
+        .select2-container--below {
+            width: 100% !important;
+        }
 
-</style>
+    </style>
     {{-- <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-multiselect.min.css') }}" /> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/css/select2.min.css') }}" /> --}}
     <link rel="stylesheet" type="text/css" href="{{ asset('calendar/css/redmond.calendars.picker.css') }}">
@@ -47,6 +47,7 @@
 
         $(function() {
             _form = $('#registration_form');
+            form = $('#registration_form');
             FormValidation.formValidation(document.getElementById('registration_form'), {
                 fields: {
                     first_name: {
@@ -119,42 +120,42 @@
                             },
                         }
                     },
-                    region: {
-                        validators: {
-                            callback: {
-                                message: 'Region is required',
-                                callback: function(input) {
-                                    if ($('#region').val() == '') {
-                                        if ($('#role option:selected').text().trim() ==
-                                            regionalCoordinator.toUpperCase()) {
-                                            return false;
-                                        }
-                                        if ($('#role option:selected').text().trim() == zoneCoordinator
-                                            .toUpperCase()) {
-                                            return false;
-                                        }
-                                    }
-                                    return true;
-                                }
-                            },
-                        }
-                    },
-                    zone: {
-                        validators: {
-                            callback: {
-                                message: 'Zone is required',
-                                callback: function(input) {
-                                    if ($('#zone').val() == '') {
-                                        if ($('#role option:selected').text().trim() == zoneCoordinator
-                                            .toUpperCase()) {
-                                            return false;
-                                        }
-                                    }
-                                    return true;
-                                }
-                            },
-                        }
-                    },
+                    // region: {
+                    //     validators: {
+                    //         callback: {
+                    //             message: 'Region is required',
+                    //             callback: function(input) {
+                    //                 if ($('#region').val() == '') {
+                    //                     if ($('#role option:selected').text().trim() ==
+                    //                         regionalCoordinator.toUpperCase()) {
+                    //                         return false;
+                    //                     }
+                    //                     if ($('#role option:selected').text().trim() == zoneCoordinator
+                    //                         .toUpperCase()) {
+                    //                         return false;
+                    //                     }
+                    //                 }
+                    //                 return true;
+                    //             }
+                    //         },
+                    //     }
+                    // },
+                    // zone: {
+                    //     validators: {
+                    //         callback: {
+                    //             message: 'Zone is required',
+                    //             callback: function(input) {
+                    //                 if ($('#zone').val() == '') {
+                    //                     if ($('#role option:selected').text().trim() == zoneCoordinator
+                    //                         .toUpperCase()) {
+                    //                         return false;
+                    //                     }
+                    //                 }
+                    //                 return true;
+                    //             }
+                    //         },
+                    //     }
+                    // },
                     @if (isset($user))
                         password: {
                             validators: {
@@ -168,7 +169,7 @@
                             validators: {
                                 identical: {
                                     compare: function() {
-                                        return $('[name="password"]').value;
+                                        return form.querySelector('[name="password"]').value;
                                     },
                                     message: 'The confirmation password and its confirm are not the same',
                                 },
@@ -239,7 +240,7 @@
                 // $('#payment_service_name').text(regionName);
                 $("#zone").html('');
                 $.ajax({
-                    url: "api/region/" + itemId + "/zone",
+                    url: "/api/region/" + itemId + "/zone",
                     type: "GET",
                     data: {
                         service_id: itemId,
@@ -247,14 +248,11 @@
                     },
                     dataType: 'json',
                     success: function(result) {
-                        $('#zone').html(
-                            '<option value="">Select Zone</option>');
+                        $('#zone').html('<option value="">Select Zone</option>');
                         $.each(result.data, function(key, value) {
-                            $("#zone").append('<option value="' + value
-                                .id + '">' + value.name + '</option>');
+                            $("#zone").append('<option value="' + value.id + '">' +
+                                value.name + '</option>');
                         });
-                        $('#woreda').html(
-                            '<option value="">Select Woreda</option>');
                     }
                 });
             });
@@ -276,8 +274,7 @@
                             <!--begin::Input-->
                             <div class="form-group col-md-4">
                                 <label class="d-block">First Name</label>
-                                <input type="text"
-                                    class="@error('first_name') is-invalid @enderror form-control"
+                                <input type="text" class="@error('first_name') is-invalid @enderror form-control"
                                     name="first_name" placeholder="First Name"
                                     value="{{ old('first_name') ?? (isset($user) ? $user->first_name : '') }}" />
                                 @error('first_name')
@@ -288,8 +285,7 @@
                             <!--end::Input-->
                             <div class="form-group col-md-4">
                                 <x-jet-label for="father_name" class="d-block" value="{{ __('Father Name') }}" />
-                                <input id="father_name"
-                                    class="@error('father_name') is-invalid @enderror  form-control "
+                                <input id="father_name" class="@error('father_name') is-invalid @enderror  form-control "
                                     type="text" name="father_name"
                                     value="{{ old('father_name') ?? (isset($user) ? $user->father_name : '') }}"
                                     placeholder="Father Name" requiredd autocomplete="father_name" />
@@ -302,8 +298,8 @@
                                 <x-jet-label for="grand_father_name" class="d-block"
                                     value="{{ __('Grand Father Name') }}" />
                                 <input id="grand_father_name"
-                                    class="@error('grand_father_name') is-invalid @enderror form-control  "
-                                    type="text" name="grand_father_name" placeholder="Grand Father Name"
+                                    class="@error('grand_father_name') is-invalid @enderror form-control  " type="text"
+                                    name="grand_father_name" placeholder="Grand Father Name"
                                     value="{{ old('grand_father_name') ?? (isset($user) ? $user->grand_father_name : '') }}"
                                     requiredd autocomplete="grand_father_name" />
                                 @error('grand_father_name')
@@ -315,8 +311,8 @@
                         <div class="row">
                             <div class="form-group col-md-4">
                                 <x-jet-label for="email" value="{{ __('Email') }}" />
-                                <input id="email" class=" form-control @error('email') is-invalid @enderror"
-                                    type="email" placeholder="Email" name="email"
+                                <input id="email" class=" form-control @error('email') is-invalid @enderror" type="email"
+                                    placeholder="Email" name="email"
                                     value="{{ old('email') ?? (isset($user) ? $user->email : '') }}" requiredd />
                                 @error('email')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -340,23 +336,22 @@
                                 @enderror
                                 <span class="form-text text-muted">Please select gender.</span>
                             </div>
-
-                            <div class="form-group col-md-4">
-                                <x-jet-label for="dob" value="{{ __('Date of Birth') }}" />
-                                <input id="dob" class="@error('dob') is-invalid @enderror form-control "
-                                    type="text" placeholder="Date Of Birth" autocomplete="off" name="dob"
-                                    value="{{ old('dob') ?? (isset($user) ? $user->dobET() : '') }}" requiredd />
+                            <div class="form-group">
+                                <label class="d-block">Date Of Birth</label>
+                                <input type="text" id="dob" class="@error('dob') is-invalid @enderror form-control"
+                                    name="dob" placeholder="Date of Birth" autocomplete="off"
+                                    value="{{ old('dob') ?? $user ? $user->dobET() : '' }}" />
                                 @error('dob')
-                                    <div class="help-block col-xs-12 col-sm-reset inline"> Invalid Date of Birth </div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                                <span class="form-text text-muted">Please enter date of birth.</span>
+                                <span class="form-text text-muted">Please enter your date of
+                                    birth.</span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4 form-group">
                                 <x-jet-label for="role" value="{{ __('Role') }}" />
-                                <select name="role"
-                                    class="form-control @error('role') is-invalid @enderror select2"
+                                <select name="role" class="form-control @error('role') is-invalid @enderror select2"
                                     id="role">
                                     <option value="">Select</option>
                                     @foreach ($roles as $role)
@@ -373,8 +368,7 @@
                             </div>
                             <div class="col-md-4 form-group">
                                 <x-jet-label for="password" value="{{ __('Password') }}" />
-                                <input id="password"
-                                    class="form-control @error('password') is-invalid @enderror"
+                                <input id="password" class="form-control @error('password') is-invalid @enderror"
                                     type="password" placeholder="Password" name="password" requiredd
                                     autocomplete="new-password" />
                                 @error('password')
@@ -393,7 +387,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4 form-group d-none col-md-4" id="region_form_group">
+                            <div class="col-md-4 form-group {{ old('region') ? '' : 'd-none' }} col-md-4"
+                                id="region_form_group">
                                 <label class="d-block">Region</label>
                                 <select name="region" id='region'
                                     class="w-100 @error('region') is-invalid @enderror select2 form-control form-control-solid">
@@ -408,7 +403,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="col-md-4 d-none form-group" id="zone_form_group">
+                            <div class="col-md-4 {{ old('zone') ? '' : 'd-none' }} form-group" id="zone_form_group">
                                 <label class="d-block">Zone</label>
                                 <select name="zone" id="zone"
                                     class="d-block select2 @error('zone') is-invalid @enderror form-control ">

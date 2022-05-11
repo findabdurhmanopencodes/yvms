@@ -13,6 +13,8 @@ use Illuminate\Validation\Rules;
 use Andegna\Validator\DateValidator;
 use Andegna\DateTimeFactory;
 use App\Models\Region;
+use App\Models\UserRegion;
+use App\Models\Zone;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\DB;
@@ -45,7 +47,9 @@ class UserController extends Controller
         $after = Carbon::now()->subYears(100);
         $regions = Region::all();
         $before = Carbon::now()->subYears(18);
-        return view('user.create', compact('roles', 'user','after','before','regions'));
+        $after = DateTimeFactory::fromDateTime($after)->format('d/m/Y');
+        $before = DateTimeFactory::fromDateTime($before)->format('d/m/Y');
+        return view('user.create', compact('roles', 'user', 'after', 'before', 'regions'));
     }
 
     public function edit(User $user)
@@ -54,7 +58,10 @@ class UserController extends Controller
         $regions = Region::all();
         $after = Carbon::now()->subYears(100);
         $before = Carbon::now()->subYears(18);
-        return view('user.create', compact('user', 'roles','after','before','regions'));
+
+        $after = DateTimeFactory::fromDateTime($after)->format('d/m/Y');
+        $before = DateTimeFactory::fromDateTime($before)->format('d/m/Y');
+        return view('user.create', compact('user', 'roles', 'after', 'before', 'regions'));
     }
 
     public function show(User $user)
@@ -66,6 +73,13 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        $userRegion = UserRegion::where('user_id', $user->id)->first();
+        $userRegionLevel = UserRegion::where('user_id', $user->id)->first()?->levelable;
+        $regionalCordinator = Role::findByName('regional-coordinator');
+        $zoneCordinator = Role::findByName('zone-coordinator');
+        if ($regionalCordinator == null || $zoneCordinator == null) {
+            return abort(403, "Please make sure regional cordinator and zonecoredinator role created");
+        }
         $userData = $request->validate([
             'first_name' => ['required', 'string', 'max:255', 'min:3'],
             'father_name' => ['required', 'string', 'max:255', 'min:3'],
@@ -74,12 +88,59 @@ class UserController extends Controller
             'gender' => ['required', 'string', 'in:M,F'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'role' => ['required'],
+            'region' => ['required_if:role,==,' . $regionalCordinator->id],
+            'zone' => ['required_if:role,==,' . $zoneCordinator->id],
+        ], [
+            'zone.required_if' => 'The Zone field is required when user has zone cordinator role.',
+            'region.required_if' => 'The Region field is required when user has regional or zone cordinator role.',
         ]);
         if (isset($request->password)) {
             $userData['password'] = $request->validate([
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             ])['password'];
             $userData['password'] = Hash::make($userData['password']);
+        }
+
+        if ($userData['role'] == $regionalCordinator->id) {
+            if ($user->hasRole($regionalCordinator->id)) {
+                $userRegion->update(['levelable_id' => $userData['region']]);
+                $userRegion->save();
+            } else if ($user->hasRole($zoneCordinator->id)) {
+                $userRegion->delete();
+                UserRegion::create([
+                    'user_id' => $user->id,
+                    'levelable_type' => Region::class,
+                    'levelable_id' => $userData['region'],
+                ]);
+            } else {
+                UserRegion::create([
+                    'user_id' => $user->id,
+                    'levelable_type' => Region::class,
+                    'levelable_id' => $userData['region'],
+                ]);
+            }
+        } else if ($userData['role'] == $zoneCordinator->id) {
+            if ($user->hasRole($zoneCordinator->id)) {
+                $userRegion->update(['levelable_id' => $userData['region']]);
+                $userRegion->save();
+            } else if ($user->hasRole($regionalCordinator->id)) {
+                $userRegion->delete();
+                UserRegion::create([
+                    'user_id' => $user->id,
+                    'levelable_type' => Zone::class,
+                    'levelable_id' => $userData['zone'],
+                ]);
+            } else {
+                UserRegion::create([
+                    'user_id' => $user->id,
+                    'levelable_type' => Zone::class,
+                    'levelable_id' => $userData['zone'],
+                ]);
+            }
+        } else {
+            if ($user->hasRole($regionalCordinator->id) || $user->hasRole($zoneCordinator->id)) {
+                $userRegion->delete();
+            }
         }
         $date = DateTime::createFromFormat('d/m/Y', $request->get('dob'));
         $year = $date->format('Y');
@@ -118,6 +179,8 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $regionalCordinator = Role::findByName('regional-coordinator');
+        $zoneCordinator = Role::findByName('zone-coordinator');
         $userData = $request->validate([
             'first_name' => ['required', 'string', 'max:255', 'min:3'],
             'father_name' => ['required', 'string', 'max:255', 'min:3'],
@@ -127,6 +190,8 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required'],
+            'region' => ['required_if:role,==,' . $regionalCordinator->id . ''],
+            'zone' => ['required_if:role,==,' . $zoneCordinator->id . ''],
         ]);
         $date = DateTime::createFromFormat('d/m/Y', $request->get('dob'));
         $year = $date->format('Y');
@@ -151,6 +216,20 @@ class UserController extends Controller
         $userData['password'] = Hash::make($userData['password']);
         $user = User::create($userData);
         $user->assignRole(Role::findById($request->role));
+        if ($userData['role'] == $regionalCordinator->id) {
+            UserRegion::create([
+                'user_id' => $user->id,
+                'levelable_type' => Region::class,
+                'levelable_id' => $regionalCordinator->id,
+            ]);
+        } else if ($userData['role'] == $zoneCordinator->id) {
+            UserRegion::create([
+                'user_id' => $user->id,
+                'levelable_type' => Zone::class,
+                'levelable_id' => $zoneCordinator->id,
+            ]);
+        }
+
         event(new Registered($user));
         return redirect(route('user.index'))->with('message', 'User registered successfully');
     }
