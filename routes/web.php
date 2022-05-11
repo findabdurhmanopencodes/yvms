@@ -95,7 +95,7 @@ Route::middleware(['auth','verified'])->group(function () {
     ////////////////////////////////////////////////////////////////////////////////
     Route::get('training_sessions',[RegionController::class,'place'])->name('region.place');
 
-    Route::get('training_center',[TraininingCenterController::class,'placement'])->name('training_center.placement'); 
+    Route::get('training_center',[TraininingCenterController::class,'placement'])->name('training_center.placement');
     //Route::get('training_',[RegionController::class,'place'])->name('region.place');
     ///////////////////////////////////////////////////////////////////////////////////
     Route::resource('training_session', TrainingSessionController::class);

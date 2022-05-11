@@ -87,8 +87,8 @@
                                                 value = "' + value
                                                 .id + '">
                                                 ' +
-                                                value.name + ' <
-                                                /option>');
+                                                value.name + ' < /
+                                                option > ');
                                             }); $('#woreda').html(
                                             '<option value="">Select Woreda</option>');
                                     }
@@ -113,8 +113,8 @@
                                                     value = "' + value
                                                     .id + '">
                                                     ' +
-                                                    value.name + ' <
-                                                    /option>');
+                                                    value.name + ' < /
+                                                    option > ');
                                                 });
                                         }
                                     });

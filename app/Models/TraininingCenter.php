@@ -8,14 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class TraininingCenter extends Model
 {
     use HasFactory;
-    protected $fillable=['name','code','logo','zone_id'];
+    protected $fillable = ['name', 'code', 'logo', 'zone_id'];
 
-    public function zones()
+    protected $append = ['region'];
+    public function zone()
     {
         return $this->belongsTo(Zone::class);
     }
-    public function capacity()
+
+    public function getRegionAttribute()
     {
-        return $this->belongsTo(TrainingCenterCapacity::class);
+        return $this->zone->region;
+    }
+
+    public function capacities()
+    {
+        return $this->hasMany(TrainingCenterCapacity::class);
     }
 }
