@@ -84,7 +84,7 @@ class DatabaseSeeder extends Seeder
                 $iterate = 0;
             }
         }
-        \App\Models\User::factory(100)->create();
+        \App\Models\User::factory(200)->create();
         \App\Models\File::factory(16)->create();
         \App\Models\FeildOfStudy::factory(4)->create();
         $zones = Zone::all();

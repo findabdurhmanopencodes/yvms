@@ -23,8 +23,8 @@
     <!--begin::Layout Themes(used by all pages)-->
     <link href="{{ asset('assets/css/themes/layout/header/base/light.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/themes/layout/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/themes/layout/brand/dark.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/themes/layout/brand/light.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/themes/layout/aside/light.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('fontawesome/css/all.min.css') }}" rel="stylesheet">
     <!--end::Layout Themes-->
     @stack('css')
@@ -85,10 +85,10 @@
             <!--begin::Aside-->
             <div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
                 <!--begin::Brand-->
-                <div class="brand flex-column-auto" id="kt_brand">
+                <div class="brand flex-column-auto mt-4" id="kt_brand">
                     <!--begin::Logo-->
                     <a href="#" class="text-center brand-logo w-100 d-block">
-                        <img alt="Logo" src="{{ asset('img/logo_peace.png') }}" width="40" />
+                        <img alt="Logo" src="{{ asset('img/logo_peace.png') }}" width="70" />
                     </a>
                     <!--end::Logo-->
                     <!--begin::Toggle-->
@@ -241,77 +241,11 @@
             <!--begin::Wrapper-->
             <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
                 <!--begin::Header-->
-                <div id="kt_header" class="header header-fixed">
-                    <!--begin::Container-->
-                    <div class="container-fluid d-flex align-items-stretch justify-content-between">
-                        <!--begin::Header Menu Wrapper-->
-                        <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
-                            <!--begin::Header Menu-->
-                            <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
-                                <!--begin::Header Nav-->
-                                <ul class="menu-nav">
-
-                                </ul>
-                                <!--end::Header Nav-->
-                            </div>
-                            <!--end::Header Menu-->
-                        </div>
-                        <!--end::Header Menu Wrapper-->
-                        <!--begin::Topbar-->
-                        <div class="topbar">
-                            <!--begin::User-->
-                            <div class="topbar-item">
-                                <div class="w-auto px-2 btn btn-icon btn-clean d-flex align-items-center btn-lg"
-                                    id="kt_quick_user_toggle">
-                                    <span
-                                        class="mr-1 text-muted font-weight-bold font-size-base d-none d-md-inline">Hi,</span>
-                                    {{-- <span
-                                        class="mr-3 text-dark-50 font-weight-bolder font-size-base d-none d-md-inline">{{ Auth::user()->first_name }}</span> --}}
-                                    <span class="symbol symbol-35 symbol-light-success">
-                                        {{-- <span
-                                            class="symbol-label font-size-h5 font-weight-bold">{{ Auth::user()->first_name[0] }}</span> --}}
-                                    </span>
-                                </div>
-                            </div>
-                            <!--end::User-->
-                        </div>
-                        <!--end::Topbar-->
-                    </div>
-                    <!--end::Container-->
-                </div>
+@include('layouts.header')
                 <!--end::Header-->
                 <!--begin::Content-->
                 <!--begin::Subheader-->
-                <div class="py-2 subheader py-lg-4 subheader-solid" id="kt_subheader">
-                    <div class="flex-wrap container-fluid  align-items-center justify-content-between flex-sm-nowrap">
-                        <!--begin::Info-->
-                        <div class="flex-wrap mr-1  align-items-center">
-                            <!--begin::Page Heading-->
-                            <div class="mr-5 d-flex align-items-baseline justify-between">
-                                <!--begin::Page Title-->
-                                <h5 class="my-2 mr-5 text-dark font-weight-bold">@yield('breadcrumbTitle')</h5>
-                                <!--end::Page Title-->
-                                <!--begin::Breadcrumb-->
-                                <ul
-                                    class="p-0 my-2 ml-auto breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold font-size-sm">
-                                    <li class="breadcrumb-item">
-                                        <a href="/" class="text-muted">Home</a>
-                                    </li>
-                                    @yield('breadcrumbList')
-                                    {{-- <li class="breadcrumb-item">
-                                                <a href="" class="text-muted">General</a>
-                                            </li>
-                                            <li class="breadcrumb-item">
-                                                <a href="" class="text-muted">Empty Page</a>
-                                            </li> --}}
-                                </ul>
-                                <!--end::Breadcrumb-->
-                            </div>
-                            <!--end::Page Heading-->
-                        </div>
-                        <!--end::Info-->
-                    </div>
-                </div>
+
                 <!--end::Subheader-->
                 <!--begin::Entry-->
                 <div class=" flex-column-fluid">
