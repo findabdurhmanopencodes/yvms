@@ -28,8 +28,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             // PermissionSeeder::class,
             RoleSeeder::class,
-            // FakeDataSeeder::class,
             BaseSeeder::class,
+            // FakeDataSeeder::class,
         ]);
         $this->call([
             // TrainingSessionSeeder::class,
