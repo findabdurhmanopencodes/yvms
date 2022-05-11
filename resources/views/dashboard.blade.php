@@ -120,12 +120,37 @@
   </div>
   <br>
 
-
-
-
   </div>
 </div>
 
+<div class="row">
+        <!--end::Card-->
+        <div class="col-lg-12">
+            <!--begin::Card-->
+            <div class="card card-custom gutter-b" style="min-height: 500px;">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">Intake Capacity of Training Centers</h3>
+                    </div>
+                </div>
+                <div class="card-body" style="position: relative;">
+                    <!--begin::Chart-->
+                    <div id="chart_5" style="min-height: 400px;">
+
+                    </div>
+                </div>
+                <!--end::Chart-->
+                <div class="resize-triggers">
+                    <div class="expand-trigger">
+                        <div style="width: 444px; height: 414px;"></div>
+                    </div>
+                    <div class="contract-trigger"></div>
+                </div>
+            </div>
+        </div>
+        <!--end::Card-->
+
+</div>
 
 
     <div class="row">
