@@ -8,6 +8,7 @@ use App\Http\Requests\StoreVolunteerRequest;
 use App\Http\Requests\UpdateVolunteerRequest;
 use App\Mail\VerifyMail;
 use App\Mail\VolunteerAppliedMail;
+use App\Models\ApprovedApplicant;
 use App\Models\Disablity;
 use App\Models\EducationalLevel;
 use App\Models\FeildOfStudy;

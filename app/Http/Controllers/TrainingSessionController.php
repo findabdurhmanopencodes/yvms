@@ -549,6 +549,14 @@ class TrainingSessionController extends Controller
                 }
             }
             $approved_applicants = ApprovedApplicant::where('training_session_id', $id)->get();
+            // dd($a);
+            // if ($approved_applicants->count() < $train_session) {
+            //     dump('yes');
+            // }
+            // else{
+            //     dump('no');
+            // }
+            // dd('sdfsd');
             foreach ($approved_applicants as $key => $app_vol) {
                 $app_vol->delete();
             }

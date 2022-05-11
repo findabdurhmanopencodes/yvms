@@ -22,34 +22,40 @@
         <div id="headingThree6" class="card-header text-white" style="background-color: rgba(15, 69, 105, 0.6);">
             <div class="card-title collapsed text-white" data-toggle="collapse" data-target="#collapseThree6"
                 style="background-color: rgba(15, 69, 105, 0.6);">
-                <i class="flaticon2-search fa-2x text-white"></i> Filter Applicants
+                <i class="flaticon2-search fa-2x text-white"></i> Screen requirments
             </div>
         </div>
         <div id="collapseThree6" class="collapse" data-parent="#accordionExample6">
             <div class="card-body">
                 @csrf
                 {{-- <div class="row"> --}}
-                    <form class="form">
-                        <div class="form-group row">
-                            <label class="col-3 col-form-label">Age</label>
-                            <div class="col-9">
-                                <div class="checkbox-inline">
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="a"/> 18 -24
-                                        <span></span>
-                                    </label>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="a"/> 25 - 30
-                                        <span></span>
-                                    </label>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="a"/> 31 -35
-                                        <span></span>
-                                    </label>
+                    {{-- <form class="form">
+                        <div class="form-group row"> --}}
+                            {{-- <div class="col-lg-6">
+                                <label>Age</label>
+                                <div class="radio-list">
+                                    <label class="radio">
+                                    <input type="radio" name="less_age"/>18 - 25
+                                    <span></span></label>
+                                    <label class="radio">
+                                    <input type="radio" name="middle_age"/>26 - 35
+                                    <span></span></label>
                                 </div>
-                            </div>
-                        </div>
-                    </form>
+                            </div> --}}
+
+                            {{-- <div class="col-lg-6">
+                                <label>Graduation Year</label>
+                                <div class="radio-list">
+                                    <label class="radio">
+                                    <input type="radio" name="less_age"/>last year
+                                    <span></span></label>
+                                    <label class="radio">
+                                    <input type="radio" name="middle_age"/>last two year
+                                    <span></span></label>
+                                </div>
+                            </div> --}}
+                        {{-- </div>
+                    </form> --}}
                 {{-- </div> --}}
             </div>
 
