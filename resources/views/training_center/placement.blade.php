@@ -19,18 +19,15 @@
         border-collapse: collapse;
         font-size: 12px;
     }
-
     table,
     th,
     td {
         border: 1px solid black;
     }
-
     th,
     td {
         padding: 10px;
     }
-
 </style>
 @section('content')
     <!--begin::Card-->
@@ -41,16 +38,16 @@
                    
                 </h3>
             </div>
-      
+            <span>
+          
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+             Oromia->Jimma Zone
+                </button>
+              </span>
         </div>
 
        
-          <span>
-          
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-         Oromia->Jimma Zone
-            </button>
-          </span>
+         
 
           <div class="collapse" id="collapseExample">
             <div class="card card-body">
@@ -77,12 +74,8 @@
                      
 
                         @foreach ($regions as $key => $region)
-                      
-                           
-                            <th> {{ $region->name }}</th>
-                          
-                         
-                    @endforeach 
+                      <th> {{ $region->name }}</th>
+                           @endforeach 
 
                         <th> Action </th>
                       </tr>
@@ -94,7 +87,7 @@
                         @foreach ($trainining_centers as $key => $trainining_center)
                             <tr>
                                 <td><?php echo $i++; ?></td>
-                                <td>{{ $trainining_center->name }}</td>
+                                <td  title="{{  $trainining_center->name  }}">{{ $trainining_center->code }}</td>
 
                                 <td> Intake </td>
                         @foreach ($regions as $key => $region)

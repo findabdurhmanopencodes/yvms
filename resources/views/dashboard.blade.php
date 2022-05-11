@@ -1,67 +1,68 @@
 @extends('layouts.app')
-@section('title','Dashboard')
+@section('title', 'Dashboard')
 @section('breadcrumbList')
-<li class="active">Dashboard</li>
+    <li class="active">Dashboard</li>
 @endsection
 
 
 <style>
-.card-counter{
-    box-shadow: 2px 2px 10px #DADADA;
-    margin: 5px;
-    padding: 20px 10px;
-    background-color: #fff;
-    height: 100px;
-    border-radius: 5px;
-    transition: .3s linear all;
-  }
+    .card-counter {
+        box-shadow: 2px 2px 10px #DADADA;
+        margin: 5px;
+        padding: 20px 10px;
+        background-color: #fff;
+        height: 100px;
+        border-radius: 5px;
+        transition: .3s linear all;
+    }
 
-  .card-counter:hover{
-    box-shadow: 4px 4px 20px #DADADA;
-    transition: .3s linear all;
-  }
+    .card-counter:hover {
+        box-shadow: 4px 4px 20px #DADADA;
+        transition: .3s linear all;
+    }
 
-  .card-counter.primary{
-    background-color: #007bff;
-    color: #FFF;
-  }
+    .card-counter.primary {
+        background-color: #007bff;
+        color: #FFF;
+    }
 
-  .card-counter.danger{
-    background-color: #ef5350;
-    color: #FFF;
-  }  
+    .card-counter.danger {
+        background-color: #ef5350;
+        color: #FFF;
+    }
 
-  .card-counter.success{
-    background-color: #66bb6a;
-    color: #FFF;
-  }  
+    .card-counter.success {
+        background-color: #66bb6a;
+        color: #FFF;
+    }
 
-  .card-counter.info{
-    background-color: #26c6da;
-    color: #FFF;
-  }  
+    .card-counter.info {
+        background-color: #26c6da;
+        color: #FFF;
+    }
 
-  .card-counter i{
-    font-size: 5em;
-    opacity: 0.2;
-  }
+    .card-counter i {
+        font-size: 5em;
+        opacity: 0.2;
+    }
 
-  .card-counter .count-numbers{
-    position: absolute;
-    right: 35px;
-    top: 20px;
-    font-size: 32px;
-    display: block;
-  }
+    .card-counter .count-numbers {
+        position: absolute;
+        right: 35px;
+        top: 20px;
+        font-size: 32px;
+        display: block;
+    }
 
-  .card-counter .count-name{
-    position: absolute;
-    right: 35px;
-    top: 65px;
-    font-style: italic;
-    text-transform: capitalize;
-    opacity: 0.5;
-  }
+    .card-counter .count-name {
+        position: absolute;
+        right: 35px;
+        top: 65px;
+        font-style: italic;
+        text-transform: capitalize;
+        opacity: 0.5;
+    }
+
 </style>
 <style>
 
@@ -84,7 +85,11 @@
     <div class="col-md-3">
       <div class="card-counter primary">
         <i class="fa fa-users" style="color:black;"></i>
-        <span class="count-numbers">12</span>
+        <span class="count-numbers">
+
+          {{ $users }}
+
+        </span>
         <span class="count-name"> Total Users</span>
       </div>
     </div>
@@ -92,7 +97,7 @@
     <div class="col-md-3">
       <div class="card-counter danger">
         <i class="fa fa-users" style="color:black;"></i>
-        <span class="count-numbers">15</span>
+        <span class="count-numbers">{{ $traininingCenters }}</span>
         <span class="count-name"> Training Centers</span>
       </div>
     </div>
@@ -100,7 +105,7 @@
     <div class="col-md-3">
       <div class="card-counter success">
         <i class="fa fa-users" style="color:black;"></i>
-        <span class="count-numbers">6875</span>
+        <span class="count-numbers">{{ $volunteers }}</span>
         <span class="count-name"> Active Application</span>
       </div>
     </div>
@@ -108,57 +113,221 @@
     <div class="col-md-3">
       <div class="card-counter info">
         <i class="fa fa-flag" style="color:black;"></i>
-        <span class="count-numbers">35</span>
+        <span class="count-numbers">{{ $regions }}</span>
         <span class="count-name"> Regions</span>
       </div>
     </div>
   </div>
   <br>
-  <div class="row">
-    <div class="col-md-3">
-      <div class="card-counter primary">
-        <i class="fa fa-flag" style="color:black;"></i>
-        <span class="count-numbers">12</span>
-        <span class="count-name">Zones </span>
-      </div>
-    </div>
 
-    <div class="col-md-3">
-      <div class="card-counter danger">
-        <i class="fa fa-flag" style="color:black;"></i>
-        <span class="count-numbers">599</span>
-        <span class="count-name">  Woreda</span>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card-counter success">
-        <i class="fa fa-users" style="color:black;"></i>
-        <span class="count-numbers">6875</span>
-        <span class="count-name"> Volunters</span>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card-counter info">
-        <i class="fas fa-graduation-cap" style="color:black;"></i>
-        <span class="count-numbers">35</span>
-        <span class="count-name"> Graduations</span>
-      </div>
-    </div>
   </div>
 </div>
 
+<div class="row">
+        <!--end::Card-->
+        <div class="col-lg-12">
+            <!--begin::Card-->
+            <div class="card card-custom gutter-b" style="min-height: 500px;">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">Intake Capacity of Training Centers</h3>
+                    </div>
+                </div>
+                <div class="card-body" style="position: relative;">
+                    <!--begin::Chart-->
+                    <div id="chart_5" style="min-height: 400px;">
+
+                    </div>
+                </div>
+                <!--end::Chart-->
+                <div class="resize-triggers">
+                    <div class="expand-trigger">
+                        <div style="width: 444px; height: 414px;"></div>
+                    </div>
+                    <div class="contract-trigger"></div>
+                </div>
+            </div>
+        </div>
+        <!--end::Card-->
+
+</div>
 
 
-  <hr>
+    <div class="row">
 
+
+        <!--end::Card-->
+        <div class="col-lg-6">
+            <!--begin::Card-->
+            <div class="card card-custom gutter-b" style="min-height: 500px;">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">Regional Quotas</h3>
+                    </div>
+                </div>
+                <div class="card-body" style="position: relative;">
+                    <!--begin::Chart-->
+                    <div id="chart_12" style="min-height: 400px;">
+
+                    </div>
+                </div>
+                <!--end::Chart-->
+                <div class="resize-triggers">
+                    <div class="expand-trigger">
+                        <div style="width: 444px; height: 414px;"></div>
+                    </div>
+                    <div class="contract-trigger"></div>
+                </div>
+            </div>
+        </div>
+        <!--end::Card-->
+
+        <div class="col-lg-6">
+            <!--begin::Card-->
+            <div class="card card-custom gutter-b">
+                <!--begin::Header-->
+                <div class="card-header h-auto">
+                    <div class="card-title py-5">
+                        <h3 class="card-label">National Intake Trend</h3>
+                    </div>
+                </div>
+                <!--end::Header-->
+                <div class="card-body" style="position: relative;">
+                    <!--begin::Chart-->
+                    <div id="chart_1" style="min-height: 365px;">
+
+                    </div>
+                </div>
+                <!--end::Chart-->
+                <div class="resize-triggers">
+                    <div class="expand-trigger">
+                        <div style="width: 444px; height: 414px;"></div>
+                    </div>
+                    <div class="contract-trigger"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        {{-- <div class="col-lg-6">
+            <!--begin::Card-->
+
+            <!--begin::Card-->
+            <div class="card card-custom gutter-b">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">Stock and Asset Requests Trend</h3>
+                    </div>
+                </div>
+                <div class="card-body" style="position: relative;">
+                    <!--begin::Chart-->
+                    <div id="chart_2" style="min-height: 365px;">
+
+                    </div>
+                </div>
+                <!--end::Chart-->
+                <div class="resize-triggers">
+                    <div class="expand-trigger">
+                        <div style="width: 444px; height: 414px;"></div>
+                    </div>
+                    <div class="contract-trigger"></div>
+                </div>
+            </div>
+        </div> --}}
+        <!--end::Card-->
+
+
+        {{-- <div class="col-lg-6">
+            <!--begin::Card-->
+            <div class="card card-custom gutter-b">
+                <!--begin::Header-->
+                <div class="card-header h-auto">
+                    <div class="card-title py-5">
+                        <h3 class="card-label">Requests Approval Trend</h3>
+                    </div>
+                </div>
+                <!--end::Header-->
+                <div class="card-body" style="position: relative;">
+                    <!--begin::Chart-->
+                    <div id="chart_1" style="min-height: 365px;">
+
+                    </div>
+                </div>
+                <!--end::Chart-->
+                <div class="resize-triggers">
+                    <div class="expand-trigger">
+                        <div style="width: 444px; height: 414px;"></div>
+                    </div>
+                    <div class="contract-trigger"></div>
+                </div>
+            </div>
+        </div> --}}
+
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <!--begin::Card-->
+            <div class="card card-custom gutter-b">
+                <!--begin::Header-->
+                <div class="card-header h-auto">
+                    <div class="card-title py-5">
+                        <h3 class="card-label">Line Chart</h3>
+                    </div>
+                </div>
+                <!--end::Header-->
+                <div class="card-body" style="position: relative;">
+                    <!--begin::Chart-->
+                    <div id="chart_11" style="min-height: 365px;">
+
+                    </div>
+                </div>
+                <!--end::Chart-->
+                <div class="resize-triggers">
+                    <div class="expand-trigger">
+                        <div style="width: 444px; height: 414px;"></div>
+                    </div>
+                    <div class="contract-trigger"></div>
+                </div>
+            </div>
+        </div>
+        <!--end::Card-->
+
+                <div class="col-lg-6">
+            <!--begin::Card-->
+            <div class="card card-custom gutter-b">
+                <!--begin::Header-->
+                <div class="card-header h-auto">
+                    <div class="card-title py-5">
+                        <h3 class="card-label">Regional Contribution of Training Center</h3>
+                    </div>
+                </div>
+                <!--end::Header-->
+                <div class="card-body" style="position: relative;">
+                    <!--begin::Chart-->
+                    <div id="chart_3" style="min-height: 365px;">
+
+                    </div>
+                </div>
+                <!--end::Chart-->
+                <div class="resize-triggers">
+                    <div class="expand-trigger">
+                        <div style="width: 444px; height: 414px;"></div>
+                    </div>
+                    <div class="contract-trigger"></div>
+                </div>
+            </div>
+        </div>
+        <!--end::Card-->
+
+        <!--end::Card-->
+    </div>
 
 
 @endsection
 
-
-
-
-
-
+@push('js')
+    <script type="text/javascript" src="{{ asset('assets/js/pages/features/charts/apexcharts.js') }}"></script>
+@endpush

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::table('training_placements', function (Blueprint $table) {
             $table->foreignId('training_center_capacity_id')->contstrained('training_center_capacities', 'id');
             $table->foreignId('approved_applicant_id')->contstrained('approved_applicants', 'id');
+            $table->foreignId('training_session_id')->contstrained('training_sessions', 'id');
         });
     }
 
