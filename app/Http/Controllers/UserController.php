@@ -12,6 +12,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Validation\Rules;
 use Andegna\Validator\DateValidator;
 use Andegna\DateTimeFactory;
+use App\Models\Region;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\DB;
@@ -41,13 +42,19 @@ class UserController extends Controller
         // }
         $user = null;
         $roles = Role::all();
-        return view('user.create', compact('roles', 'user'));
+        $after = Carbon::now()->subYears(100);
+        $regions = Region::all();
+        $before = Carbon::now()->subYears(18);
+        return view('user.create', compact('roles', 'user','after','before','regions'));
     }
 
     public function edit(User $user)
     {
         $roles = Role::all();
-        return view('user.create', compact('user', 'roles'));
+        $regions = Region::all();
+        $after = Carbon::now()->subYears(100);
+        $before = Carbon::now()->subYears(18);
+        return view('user.create', compact('user', 'roles','after','before','regions'));
     }
 
     public function show(User $user)

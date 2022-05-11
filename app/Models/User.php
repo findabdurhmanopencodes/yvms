@@ -98,8 +98,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->photo ?? asset('user.png');
     }
 
-
-
     public function dobET()
     {
         return DateTimeFactory::fromDateTime(new DateTime($this->dob))->format('d/m/Y');
