@@ -88,7 +88,11 @@
                 <div class="brand flex-column-auto mt-4" id="kt_brand">
                     <!--begin::Logo-->
                     <a href="#" class="text-center brand-logo w-100 d-block">
+<<<<<<< HEAD
                         <img alt="Logo" src="{{ asset('img/logo_peace.png') }}" width="70" />
+=======
+                        <img alt="Logo" src="{{ asset('img/logo_mop.jpg') }}" width="40" />
+>>>>>>> 79dfe3e69bef510c6229fb5c42d9fe39188fcde2
                     </a>
                     <!--end::Logo-->
                     <!--begin::Toggle-->

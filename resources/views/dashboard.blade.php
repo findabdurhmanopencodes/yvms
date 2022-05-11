@@ -80,107 +80,51 @@
 
 @section('content')
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card-counter primary">
-                    <i class="fa fa-users" style="color:black;"></i>
-                    <span class="count-numbers">12</span>
-                    <span class="count-name"> Total Users</span>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card-counter danger">
-                    <i class="fa fa-users" style="color:black;"></i>
-                    <span class="count-numbers">15</span>
-                    <span class="count-name"> Training Centers</span>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card-counter success">
-                    <i class="fa fa-users" style="color:black;"></i>
-                    <span class="count-numbers">6875</span>
-                    <span class="count-name"> Active Application</span>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card-counter info">
-                    <i class="fa fa-flag" style="color:black;"></i>
-                    <span class="count-numbers">35</span>
-                    <span class="count-name"> Regions</span>
-                </div>
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card-counter primary">
-                    <i class="fa fa-flag" style="color:black;"></i>
-                    <span class="count-numbers">12</span>
-                    <span class="count-name">Zones </span>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card-counter danger">
-                    <i class="fa fa-flag" style="color:black;"></i>
-                    <span class="count-numbers">599</span>
-                    <span class="count-name"> Woreda</span>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card-counter success">
-                    <i class="fa fa-users" style="color:black;"></i>
-                    <span class="count-numbers">6875</span>
-                    <span class="count-name"> Volunters</span>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card-counter info">
-                    <i class="fas fa-graduation-cap" style="color:black;"></i>
-                    <span class="count-numbers">35</span>
-                    <span class="count-name"> Graduations</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <hr>
-
+<div class="container">
     <div class="row">
-        <div class="col-lg-12">
-            <div class="card card-custom gutter-b">
-                <!--begin::Header-->
-                <div class="card-header h-auto">
-                    <div class="card-title py-5">
-                        <h3 class="card-label">Training Center Intake Capacities </h3>
-                    </div>
-                </div>
-                <!--end::Header-->
-                <div class="card-body" style="position: relative;">
-                    <!--begin::Chart-->
-                    <div id="chart_5" style="min-height: 365px;">
+    <div class="col-md-3">
+      <div class="card-counter primary">
+        <i class="fa fa-users" style="color:black;"></i>
+        <span class="count-numbers">
 
-                    </div>
-                </div>
-                <!--end::Chart-->
-                <div class="resize-triggers">
-                    <div class="expand-trigger">
-                        <div style="width: 444px; height: 414px;"></div>
-                    </div>
-                    <div class="contract-trigger"></div>
-                </div>
-            </div>
+          {{ $users }}
 
-        </div>
+        </span>
+        <span class="count-name"> Total Users</span>
+      </div>
     </div>
+
+    <div class="col-md-3">
+      <div class="card-counter danger">
+        <i class="fa fa-users" style="color:black;"></i>
+        <span class="count-numbers">{{ $traininingCenters }}</span>
+        <span class="count-name"> Training Centers</span>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card-counter success">
+        <i class="fa fa-users" style="color:black;"></i>
+        <span class="count-numbers">{{ $volunteers }}</span>
+        <span class="count-name"> Active Application</span>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card-counter info">
+        <i class="fa fa-flag" style="color:black;"></i>
+        <span class="count-numbers">{{ $regions }}</span>
+        <span class="count-name"> Regions</span>
+      </div>
+    </div>
+  </div>
+  <br>
+
+
+
+
+  </div>
+</div>
 
 
 
