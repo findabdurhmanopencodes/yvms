@@ -25,6 +25,7 @@ class TrainingSession extends Model
         'status',
         'moto'
     ];
+    protected $append = ['sessionQouta'];
 
     static public function availableSession()
     {
@@ -32,11 +33,18 @@ class TrainingSession extends Model
         return TrainingSession::where('registration_start_date', '<=', $today)->where('registration_dead_line', '>=', $today)->get();
     }
 
-    public function quotas(){
+    public function getSessionQuotaAttribute()
+    {
+        return TrainingCenterCapacity::selectRaw('SUM(capacity) as totalQouta')->where(['training_session_id' => $this->id])->groupBy(['training_session_id'])->first()->totalQouta;
+    }
+
+    public function quotas()
+    {
         return $this->hasMany(Qouta::class);
     }
 
-    public function approvedApplicants(){
+    public function approvedApplicants()
+    {
         return $this->hasMany(ApprovedApplicant::class);
     }
     public function capacity()
@@ -44,4 +52,7 @@ class TrainingSession extends Model
         return $this->belongsTo(TrainingCenterCapacity::class);
     }
 
+    public function trainingPlacements(){
+        return $this->hasMany(TrainingPlacement::class,'training_session_id','id');
+    }
 }

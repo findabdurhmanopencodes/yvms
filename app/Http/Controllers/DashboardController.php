@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TrainingPlacement;
-use App\Http\Requests\StoreTrainingPlacementRequest;
-use App\Http\Requests\UpdateTrainingPlacementRequest;
-use App\Models\Region;
-use App\Models\TrainingSession;
+use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\TraininingCenter;
+use App\Models\Region;
+use App\Models\Zone;
 use App\Models\Woreda;
-use Illuminate\Support\Collection;
+use App\Models\Volunteers;
+use Illuminate\Support\Facades\DB;
 
-class TrainingPlacementController extends Controller
+
+
+
+class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,8 +23,17 @@ class TrainingPlacementController extends Controller
      */
     public function index()
     {
-        //
-    }
+       $users = DB::table('users')->count();
+       $regions = DB::table('regions')->count();
+       $zones = DB::table('zones')->count();
+       $woredas= DB::table('woredas')->count();
+       $volunteers = DB::table('volunteers')->count();
+       $traininingCenters = DB::table('trainining_centers')->count();
+
+        return view('dashboard', compact('users','regions','zones','woredas','volunteers','traininingCenters'));
+      }
+         
+    
 
     /**
      * Show the form for creating a new resource.
@@ -36,10 +48,10 @@ class TrainingPlacementController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTrainingPlacementRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTrainingPlacementRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -47,10 +59,10 @@ class TrainingPlacementController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TrainingPlacement  $trainingPlacement
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(TrainingPlacement $trainingPlacement)
+    public function show($id)
     {
         //
     }
@@ -58,10 +70,10 @@ class TrainingPlacementController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TrainingPlacement  $trainingPlacement
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(TrainingPlacement $trainingPlacement)
+    public function edit($id)
     {
         //
     }
@@ -69,11 +81,11 @@ class TrainingPlacementController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateTrainingPlacementRequest  $request
-     * @param  \App\Models\TrainingPlacement  $trainingPlacement
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTrainingPlacementRequest $request, TrainingPlacement $trainingPlacement)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -81,10 +93,10 @@ class TrainingPlacementController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TrainingPlacement  $trainingPlacement
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TrainingPlacement $trainingPlacement)
+    public function destroy($id)
     {
         //
     }

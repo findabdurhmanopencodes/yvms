@@ -22,11 +22,25 @@ class ApprovedApplicant extends Model
         'status',
     ];
 
-    public function trainingSessionId(){
+    protected $append = ['region'];
+
+    public function trainingPlacements()
+    {
+        return $this->hasMany(TrainingPlacement::class, 'approved_applicant_id', 'id');
+    }
+
+    public function getRegionAttribute()
+    {
+        return $this->volunteer->woreda->zone->region;
+    }
+
+    public function trainingSessionId()
+    {
         return $this->belongsTo(TrainingSession::class);
     }
 
-    public function volunteer(){
+    public function volunteer()
+    {
         return $this->belongsTo(Volunteer::class);
     }
 }
