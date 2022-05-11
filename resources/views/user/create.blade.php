@@ -48,7 +48,7 @@
                 var zone = {{ $user?->getCordinatingZone()->id }};
                 $.ajax({
                     url: "/api/region/" + region + "/zone",
-                    type: "GET",    
+                    type: "GET",
                     data: {
                         service_id: region,
                         _token: '{{ csrf_token() }}'
@@ -141,42 +141,42 @@
                             },
                         }
                     },
-                    // region: {
-                    //     validators: {
-                    //         callback: {
-                    //             message: 'Region is required',
-                    //             callback: function(input) {
-                    //                 if ($('#region').val() == '') {
-                    //                     if ($('#role option:selected').text().trim() ==
-                    //                         regionalCoordinator.toUpperCase()) {
-                    //                         return false;
-                    //                     }
-                    //                     if ($('#role option:selected').text().trim() == zoneCoordinator
-                    //                         .toUpperCase()) {
-                    //                         return false;
-                    //                     }
-                    //                 }
-                    //                 return true;
-                    //             }
-                    //         },
-                    //     }
-                    // },
-                    // zone: {
-                    //     validators: {
-                    //         callback: {
-                    //             message: 'Zone is required',
-                    //             callback: function(input) {
-                    //                 if ($('#zone').val() == '') {
-                    //                     if ($('#role option:selected').text().trim() == zoneCoordinator
-                    //                         .toUpperCase()) {
-                    //                         return false;
-                    //                     }
-                    //                 }
-                    //                 return true;
-                    //             }
-                    //         },
-                    //     }
-                    // },
+                    region: {
+                        validators: {
+                            callback: {
+                                message: 'Region is required',
+                                callback: function(input) {
+                                    if ($('#region').val() == '') {
+                                        if ($('#role option:selected').text().trim() ==
+                                            regionalCoordinator.toUpperCase()) {
+                                            return false;
+                                        }
+                                        if ($('#role option:selected').text().trim() == zoneCoordinator
+                                            .toUpperCase()) {
+                                            return false;
+                                        }
+                                    }
+                                    return true;
+                                }
+                            },
+                        }
+                    },
+                    zone: {
+                        validators: {
+                            callback: {
+                                message: 'Zone is required',
+                                callback: function(input) {
+                                    if ($('#zone').val() == '') {
+                                        if ($('#role option:selected').text().trim() == zoneCoordinator
+                                            .toUpperCase()) {
+                                            return false;
+                                        }
+                                    }
+                                    return true;
+                                }
+                            },
+                        }
+                    },
                     @if (isset($user))
                         password: {
                             validators: {
@@ -408,7 +408,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4 form-group {{ old('region') ? '' : ($user?->isCordinator() ? '' : 'dd-none') }} col-md-4"
+                            <div class="col-md-4 form-group {{ old('region') ? '' : ($user?->isCordinator() ? '' : 'd-none') }} col-md-4"
                                 id="region_form_group">
                                 <label class="d-block">Region</label>
                                 <select name="region" id='region'
