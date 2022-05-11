@@ -181,7 +181,7 @@
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <span class="font-weight-bold mr-2">Role:</span>
-                                    <span class="text-muted">{{ Str::ucfirst($user->roles[0]->name) }}</span>
+                                    <span class="text-muted">{{ Str::ucfirst($user->getRole()?->name??'No Role') }}</span>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <span class="font-weight-bold mr-2">Gender:</span>

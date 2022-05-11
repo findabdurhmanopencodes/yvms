@@ -22,7 +22,7 @@
                 @csrf
                 <div class="fs-5">
                     <span class="fw-bold text-gray-700">Did’t receive an email?</span>
-                    <button type="submit" class="link-primary fw-bolder">Resend</button>
+                    <button type="submit" class="btn btn-primary fw-bolder">Resend</button>
                 </div>
             </form>
 
