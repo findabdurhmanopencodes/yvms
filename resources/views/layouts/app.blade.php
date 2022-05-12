@@ -239,7 +239,7 @@
                 <!--end::Aside Menu-->
             </div>
             <!--begin::Wrapper-->
-            <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+            <div class="d-flex flex-column flex-row-fluid wrapper" style="padding-top: 50px;" id="kt_wrapper">
                 <!--begin::Header-->
                 @include('layouts.header')
                 <!--end::Header-->

@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class UserRegion extends Model
 {
     use HasFactory;
+
+    public $guarded = [];
+
+    public function levelable(){
+        return $this->morphTo();
+    }
+
 }
