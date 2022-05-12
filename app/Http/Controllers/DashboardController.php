@@ -21,8 +21,7 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(){
        $users = DB::table('users')->count();
        $regions = DB::table('regions')->count();
        $zones = DB::table('zones')->count();
