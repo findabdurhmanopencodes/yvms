@@ -35,19 +35,19 @@
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
                 <h3 class="card-label"> Last Applicantion placmenet
-                   
+
                 </h3>
             </div>
             <span>
-          
+
                 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
              Oromia->Jimma Zone
                 </button>
               </span>
         </div>
 
-       
-         
+
+
 
           <div class="collapse" id="collapseExample">
             <div class="card card-body">
@@ -55,14 +55,14 @@
 
                     <thead>
                         <tr>
-        
+
                             <th colspan="3" width="20%"> University</th>
-        
+
                             <th colspan="13" width="80%">Placement distribution by Regional State</th>
-        
-        
-        
-        
+
+
+
+
                         </tr>
                     </thead>
                     <thead>
@@ -71,17 +71,17 @@
                         <th>Training Center </th>
                         <th> Intake </th>
 
-                     
+
 
                         @foreach ($regions as $key => $region)
                       <th> {{ $region->name }}</th>
-                           @endforeach 
+                           @endforeach
 
                         <th> Action </th>
                       </tr>
-        
+
                     </thead>
-        
+
                     <tbody>
                         <?php $i = 1; ?>
                         @foreach ($trainining_centers as $key => $trainining_center)
@@ -91,33 +91,33 @@
 
                                 <td> Intake </td>
                         @foreach ($regions as $key => $region)
-                      
-                           
+
+
                         <td>566 </td>
-                      
-                     
+
+
                 @endforeach
-              
-                                                 
-                                <td> 
+
+
+                                <td>
                                  <a href="#" class="btn btn-sm btn-primary btn-primary btn-round">
                                  Approve
-                                </a>   
+                                </a>
                                 </td> </tr>
-                        @endforeach 
+                        @endforeach
                     </tbody>
                 </table>
             </div>
           </div>
-       
-        
+
+
         <br>
-        <br>  
-       
-       
-            
-            
-       
+        <br>
+
+
+
+
+
       </div>
     </div>
 

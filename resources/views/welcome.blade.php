@@ -1,2 +1,2 @@
 @extends('layouts.guest')
-@section('title','Welcome To Ministry Of Peace')
+@section('title', 'Welcome To Ministry Of Peace')

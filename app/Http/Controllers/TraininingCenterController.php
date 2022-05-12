@@ -30,13 +30,14 @@ class TraininingCenterController extends Controller
         // }
         return view('training_center.index');
     }
-    public function placement(Request $request,$zone=null) {
-      
+    public function placement(Request $request, $zone = null)
+    {
+
         $trainining_centers = TraininingCenter::all();
         $regions = Region::all();
-     //  $region = $zone->region;
-      return view('training_center.placement', compact('trainining_centers','regions'));
-     }
+        //  $region = $zone->region;
+        return view('training_center.placement', compact('trainining_centers', 'regions'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -46,7 +47,7 @@ class TraininingCenterController extends Controller
     public function create()
     {
 
-        return view("training_center.create",['zones'=>Zone::all()]);
+        return view("training_center.create", ['zones' => Zone::all()]);
     }
 
     /**
@@ -57,8 +58,7 @@ class TraininingCenterController extends Controller
      */
     public function store(StoreTraininingCenterRequest $request)
     {
-        $trainingSession=new TrainingSession();
-        $trainingSessionId=$trainingSession->availableSession()[0]->id;
+
 
         $request->validate([
             'logo' => 'image|mimes:jpg,png,jpeg,svg|max:2048|',
@@ -66,8 +66,8 @@ class TraininingCenterController extends Controller
             'code' => 'required|string|unique:trainining_centers,code',
         ]);
         $path = $request->file('logo')->store('public/Training Centers');
-        $TrainingCenter=TraininingCenter::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'logo' => $path,'zone_id'=>$request->get('zone_id')]);
-        TrainingCenterCapacity::create(['capacity'=>$request->get('capacity'),'training_session_id'=>$trainingSessionId,'trainining_center_id'=>$TrainingCenter->id]);
+        $TrainingCenter = TraininingCenter::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'logo' => $path, 'zone_id' => $request->get('zone_id')]);
+
         return redirect()->route('TrainingCenter.index')->with('message', 'Training Center created successfully');
     }
 
@@ -77,9 +77,16 @@ class TraininingCenterController extends Controller
      * @param  \App\Models\TraininingCenter  $traininingCenter
      * @return \Illuminate\Http\Response
      */
-    public function show(TraininingCenter $traininingCenter)
+    public function show($traininingCenter)
     {
-        //
+        $traininingCenter = TraininingCenter::with('capacities.trainningSession')->find($traininingCenter);
+        $trainingSession = new TrainingSession();
+        $trainingSessionId = $trainingSession->availableSession()->first()->id;
+
+        $capaityAddedInCenter = TrainingCenterCapacity::where('training_session_id', $trainingSessionId)->where('trainining_center_id', $traininingCenter->id)->get();
+        // dd($capaityAddedInCenter);
+
+        return view('training_center.show', ['trainingCenter' => $traininingCenter,'capaityAddedInCenter'=>$capaityAddedInCenter]);
     }
 
     /**
@@ -92,7 +99,7 @@ class TraininingCenterController extends Controller
 
     {
 
-        return view('training_center.create', ['trainingCenter' => TraininingCenter::findOrFail($TrainingCenter),'zones'=>Zone::all()]);
+        return view('training_center.create', ['trainingCenter' => TraininingCenter::findOrFail($TrainingCenter), 'zones' => Zone::all()]);
     }
 
     /**
@@ -104,16 +111,16 @@ class TraininingCenterController extends Controller
      */
     public function update(UpdateTraininingCenterRequest $request,  $traininingCenter)
     {
-        $TrainingCenter=TraininingCenter::findOrFail($traininingCenter);
-        $trainingSession=new TrainingSession();
-        $trainingSessionId=$trainingSession->availableSession()[0]->id;
-        TrainingCenterCapacity::create(['capacity'=>$request->get('capacity'),'training_session_id'=>$trainingSessionId,'trainining_center_id'=>$TrainingCenter->id]);
+        $TrainingCenter = TraininingCenter::findOrFail($traininingCenter);
+        $trainingSession = new TrainingSession();
+        $trainingSessionId = $trainingSession->availableSession()[0]->id;
+        TrainingCenterCapacity::create(['capacity' => $request->get('capacity'), 'training_session_id' => $trainingSessionId, 'trainining_center_id' => $TrainingCenter->id]);
 
         $data = $request->validate([
-        'logo' => 'image|mimes:jpg,png,jpeg,svg|max:2048|',
-        'name' => 'min:2|required|string|unique:trainining_centers,name,'.$traininingCenter,
-        'capacity' => 'required',
-        'code' => 'required|string|unique:trainining_centers,code,'.$traininingCenter]);
+            'logo' => 'image|mimes:jpg,png,jpeg,svg|max:2048|',
+            'name' => 'min:2|required|string|unique:trainining_centers,name,' . $traininingCenter,
+            'code' => 'required|string|unique:trainining_centers,code,' . $traininingCenter
+        ]);
         $TrainingCenter->update($data);
         return redirect()->route('TrainingCenter.index')->with('message', 'Training Center updated successfully');
     }

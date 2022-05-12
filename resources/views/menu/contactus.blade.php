@@ -16,11 +16,12 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <strong> Contact Information </strong>
+                    <strong> Address </strong>
                     <p style="text-align:justify;">
                     <ul class="">
                         <li style="text-align:justify;">
-                          Addis Abeba, Ethiopia, Bole Wolo Sefer
+                            Ethio-Chinese Friendship Road, Addis Ababa, Ethiopia
+
                         </li>
                     </ul>
                    
@@ -28,9 +29,9 @@
                     <p style="text-align:justify;">
                    <strong> </u> Contact Information  </u> </strong> <br>
                     <ul style="text-align:justify;">
-                         <li> Email : example@mop.gov.et </li>
-                         <li> Tel:  +25195565656</li>
-                         <li> PO.BOX :545</li>
+                         <li> Email : communication.mop@gmail.com </li>
+                         <li> Tel:  ###########</li>
+                         <li> PO.BOX :####</li>
                     </ul>
                   <br>   <br>   <br>   <br>   <br>   <br>   <br>   <br>   <br>   <br>
                  </p>

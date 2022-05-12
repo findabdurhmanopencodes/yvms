@@ -28,7 +28,7 @@
     <link href="{{ asset('fontawesome/css/all.min.css') }}" rel="stylesheet">
     <!--end::Layout Themes-->
     @stack('css')
-    <link rel="shortcut icon" href="{{ asset('img/logo_peace.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('img/logo_peace_min.png') }}" />
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -41,7 +41,7 @@
     <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
         <!--begin::Logo-->
         <a href="/">
-            <img alt="Logo" src="{{ asset('img/logo_peace.png') }}" width="40" />
+            <img alt="Logo" src="{{ asset('img/logo_peace_min.png') }}" width="40" />
         </a>
         <!--end::Logo-->
         <!--begin::Toolbar-->
@@ -88,7 +88,7 @@
                 <div class="brand flex-column-auto mt-4" id="kt_brand">
                     <!--begin::Logo-->
                     <a href="#" class="text-center brand-logo w-100 d-block">
-                        <img alt="Logo" src="{{ asset('img/logo_peace.png') }}" width="70" />
+                        <img alt="Logo" src="{{ asset('img/peace_logo_max.png') }}" width="70" />
                     </a>
                     <!--end::Logo-->
                     <!--begin::Toggle-->

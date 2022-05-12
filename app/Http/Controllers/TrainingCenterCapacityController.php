@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\TrainingCenterCapacity;
 use App\Http\Requests\StoreTrainingCenterCapacityRequest;
 use App\Http\Requests\UpdateTrainingCenterCapacityRequest;
+use App\Models\TrainingSession;
+use Illuminate\Http\Request;
 
 class TrainingCenterCapacityController extends Controller
 {
@@ -34,9 +36,17 @@ class TrainingCenterCapacityController extends Controller
      * @param  \App\Http\Requests\StoreTrainingCenterCapacityRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTrainingCenterCapacityRequest $request)
+    public function store(Request $request)
     {
-        //
+
+        $trainingSession = new TrainingSession();
+
+        $trainingSessionId = $trainingSession->availableSession()->first()->id;
+        TrainingCenterCapacity::create(['capacity' => $request->get('capacity'), 'training_session_id' => $trainingSessionId, 'trainining_center_id' => $request->get('trainingCenterId')]);
+        return redirect()->back();
+
+
+
     }
 
     /**
@@ -82,5 +92,16 @@ class TrainingCenterCapacityController extends Controller
     public function destroy(TrainingCenterCapacity $trainingCenterCapacity)
     {
         //
+    }
+
+    public function capacityChange(Request $request)
+    {
+        $trainingCenterId=$request->get('trainining_center_id');
+        $trainingSessionId=$request->get('training_session_id');
+        $trainingCenterCapacity=TrainingCenterCapacity::where('trainining_center_id',$trainingCenterId)->where('training_session_id',$trainingSessionId)->get()->first();
+        $trainingCenterCapacity->update(['capacity'=>$request->get('capacity')]);
+        $trainingCenterCapacity->save();
+
+        return redirect()->back();
     }
 }

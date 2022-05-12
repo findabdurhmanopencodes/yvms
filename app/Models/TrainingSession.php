@@ -47,9 +47,9 @@ class TrainingSession extends Model
     {
         return $this->hasMany(ApprovedApplicant::class);
     }
-    public function capacity()
+    public function capacities()
     {
-        return $this->belongsTo(TrainingCenterCapacity::class);
+        return $this->hasMany(TrainingCenterCapacity::class);
     }
 
     public function trainingPlacements(){

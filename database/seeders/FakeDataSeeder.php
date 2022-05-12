@@ -2,10 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\ApprovedApplicant;
 use App\Models\Region;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\User;
+use App\Models\Volunteer;
 use App\Models\Zone;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -14,6 +16,12 @@ use Spatie\Permission\Models\Role;
 
 class FakeDataSeeder extends Seeder
 {
+    public function approveAllVolunteers()
+    {
+        foreach (Volunteer::all() as $v)
+            ApprovedApplicant::create(['training_session_id' => 1, 'volunteer_id' => $v->id, 'status' => 1]);
+    }
+
     /**
      * Run the database seeds.
      *
@@ -106,5 +114,6 @@ class FakeDataSeeder extends Seeder
                 }
             }
         }
+        $this->approveAllVolunteers();
     }
 }
