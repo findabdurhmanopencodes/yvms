@@ -87,7 +87,6 @@
         <i class="fa fa-users" style="color:black;"></i>
         <span class="count-numbers">
 
-          {{ $users }}
 
         </span>
         <span class="count-name"> Total Rejected Documents</span>
@@ -102,26 +101,16 @@
       </div>
     </div>
 
-    <div class="col-md-3">
-      <div class="card-counter success">
-        <i class="fa fa-users" style="color:black;"></i>
-        <span class="count-numbers">{{ $volunteers }}</span>
-        <span class="count-name"> Active Application</span>
-      </div>
-    </div>
 
-    <div class="col-md-3">
-      <div class="card-counter info">
-        <i class="fa fa-flag" style="color:black;"></i>
-        <span class="count-numbers">{{ $regions }}</span>
-        <span class="count-name"> Regions</span>
-      </div>
-    </div>
-  </div>
-  <br>
 
-  </div>
-</div>
+
+
+            </div>
+            <!--end::Chart-->
+
+        </div>
+    </div>
+    <!--end::Card-->
 
 <div class="row">
         <!--end::Card-->
@@ -162,7 +151,7 @@
             <div class="card card-custom gutter-b" style="min-height: 500px;">
                 <div class="card-header">
                     <div class="card-title">
-                        <h3 class="card-label">Regional Quotas</h3>
+                        <h3 class="card-label"> Regional Quotas</h3>
                     </div>
                 </div>
                 <div class="card-body" style="position: relative;">
