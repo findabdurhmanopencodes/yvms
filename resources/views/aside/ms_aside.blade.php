@@ -2,7 +2,7 @@
     aria-haspopup="true" data-menu-toggle="hover">
 
     <a href="javascript:;" class="menu-link menu-toggle">
-        <i class="menu-icon flaticon-users"></i>
+        <i class="menu-icon flaticon-calendar-1"></i>
         <span class="menu-text">Volunteer Program</span>
         <i class="menu-arrow"></i>
     </a>

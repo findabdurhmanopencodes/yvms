@@ -8,6 +8,7 @@ use App\Http\Requests\StoreVolunteerRequest;
 use App\Http\Requests\UpdateVolunteerRequest;
 use App\Mail\VerifyMail;
 use App\Mail\VolunteerAppliedMail;
+use App\Models\ApprovedApplicant;
 use App\Models\Disablity;
 use App\Models\EducationalLevel;
 use App\Models\FeildOfStudy;
@@ -39,6 +40,14 @@ class VolunteerController extends Controller
      */
     public function index(Request $request, $session_id)
     {
+        // $status = new Status();
+        // foreach (Volunteer::all() as $key => $value) {
+        //     $status = new Status();
+        //     $status->volunteer_id = $value->id;
+        //     $status->acceptance_status = 1;
+        //     $status->save();
+        // }
+        // dd('dsf');
         $applicants = Volunteer::doesntHave('status')->where('training_session_id',$session_id);
         // dd($applicants->get());
         if ($request->has('filter')) {
@@ -271,7 +280,8 @@ class VolunteerController extends Controller
             return redirect()->route('applicant.index',['session_id'=>Volunteer::find($applicant_id)->training_session_id]);
         } elseif ($request->get('type') == 'reject') {
             Status::Create(['volunteer_id' => $applicant_id, 'acceptance_status' => 2, 'rejection_reason' => $request->get('rejection_reason')]);
-            return redirect()->back();
+            return redirect()->route('applicant.index',['session_id'=>Volunteer::find($applicant_id)->training_session_id]);
+            // return redirect()->back();
         }
     }
     public function emailUnverified()
