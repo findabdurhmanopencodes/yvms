@@ -157,7 +157,7 @@
             <div class="card card-custom gutter-b" style="min-height: 500px;">
                 <div class="card-header">
                     <div class="card-title">
-                        <h3 class="card-label">Regional Quotas</h3>
+                        <h3 class="card-label"> Regional Quotas</h3>
                     </div>
                 </div>
                 <div class="card-body" style="position: relative;">

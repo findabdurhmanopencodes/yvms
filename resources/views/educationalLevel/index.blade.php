@@ -16,18 +16,10 @@
         <table class="table table-striped table-striped table-bordered table-hover dataTable no-footer">
             <thead>
                 <tr>
-                    <th style="width: 1%">
-                        #
-                    </th>
-                    <th style="width: 20%">
-                        Name
-                    </th>
-                    <th style="width: 20%">
-                        Created At
-                    </th>
-                    <th style="width: 10%">
-                        Action
-                    </th>
+                    <th style="width: 1%">#</th>
+                    <th style="width: 20%">Name</th>
+                    <th style="width: 20%">Created At </th>
+                    <th style="width: 10%">Action </th>
                 </tr>
             </thead>
             <tbody>
