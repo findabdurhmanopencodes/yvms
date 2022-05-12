@@ -42,21 +42,16 @@ function generateData(count, yrange) {
     }
     return series;
 }
-
+var chart_1;
 var KTApexChartsDemo = (function () {
     // Private functions
     var _demo1 = function () {
         const apexChart = "#chart_1";
         var options = {
-            series: [
-                {
-                    name: "Desktops",
-                    data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
-                },
-            ],
+            series: [],
             chart: {
                 height: 360,
-                type: "line",
+                type: "bar",
                 zoom: {
                     enabled: false,
                 },
@@ -73,23 +68,27 @@ var KTApexChartsDemo = (function () {
                     opacity: 0.5,
                 },
             },
-            xaxis: {
-                categories: [
-                    "Jan",
-                    "Feb",
-                    "Mar",
-                    "Apr",
-                    "May",
-                    "Jun",
-                    "Jul",
-                    "Aug",
-                    "Sep",
-                ],
-            },
+            noData: {
+                text: 'Loading...'
+              },
+            // xaxis: {
+            //     categories: [
+            //         "Jan",
+            //         "Feb",
+            //         "Mar",
+            //         "Apr",
+            //         "May",
+            //         "Jun",
+            //         "Jul",
+            //         "Aug",
+            //         "Sep",
+            //     ],
+            // },
             colors: [primary],
         };
 
         var chart = new ApexCharts(document.querySelector(apexChart), options);
+        chart_1 = chart;
         chart.render();
     };
 
@@ -293,7 +292,7 @@ var KTApexChartsDemo = (function () {
         var options = {
             series: [
                 {
-                    name: "Intake",
+                    name: "Intake Capacity",
                     type: "column",
                     data: trainingCenter.capacities,
                 },
@@ -1104,11 +1103,12 @@ var KTApexChartsDemo = (function () {
     var _demo11 = function () {
         const apexChart = "#chart_11";
         var options = {
-            series: [44, 55, 41, 17, 15],
+            series: regionalContribution.contribution,
             chart: {
                 width: 480,
                 type: "donut",
             },
+            labels:regionalContribution.code,
             responsive: [
                 {
                     breakpoint: 480,
@@ -1132,25 +1132,12 @@ var KTApexChartsDemo = (function () {
     var _demo12 = function () {
         const apexChart = "#chart_12";
         var options = {
-            series: [44, 40, 65, 70, 43, 22, 57, 30, 20, 35, 58, 40],
+            series: regionalQuota.quota,
             chart: {
                 width: 450,
                 type: "pie",
             },
-            labels: [
-                "Tigray",
-                "Afar",
-                "Amhara",
-                "Oromia",
-                "Somali",
-                "Benishangul-Gumuz",
-                "SNNPR",
-                "Gambella",
-                "Harari",
-                "Sidama",
-                "Addis Ababa",
-                "Dire Dawa",
-            ],
+            labels: regionalQuota.code,
             responsive: [
                 {
                     breakpoint: 480,
