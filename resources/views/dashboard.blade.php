@@ -83,19 +83,19 @@
 <div class="container">
     <div class="row">
     <div class="col-md-3">
-      <div class="card-counter primary">
+      <div class="card-counter danger">
         <i class="fa fa-users" style="color:black;"></i>
         <span class="count-numbers">
 
           {{ $users }}
 
         </span>
-        <span class="count-name"> Total Users</span>
+        <span class="count-name"> Total Rejected Documents</span>
       </div>
     </div>
 
     <div class="col-md-3">
-      <div class="card-counter danger">
+      <div class="card-counter info">
         <i class="fa fa-users" style="color:black;"></i>
         <span class="count-numbers">{{ $traininingCenters }}</span>
         <span class="count-name"> Training Centers</span>

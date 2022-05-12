@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\TraininingCenter;
 use App\Models\Region;
+use App\Models\Volunteer;
 use App\Models\Zone;
 use App\Models\Woreda;
 use App\Models\Volunteers;
@@ -23,7 +24,8 @@ class DashboardController extends Controller
      */
     public function index()
     {
-       $users = DB::table('users')->count();
+       $users = Volunteer::whereRelation('status','acceptance_status',2)->get()->count();
+
        $regions = DB::table('regions')->count();
        $zones = DB::table('zones')->count();
        $woredas= DB::table('woredas')->count();
@@ -32,8 +34,8 @@ class DashboardController extends Controller
 
         return view('dashboard', compact('users','regions','zones','woredas','volunteers','traininingCenters'));
       }
-         
-    
+
+
 
     /**
      * Show the form for creating a new resource.
