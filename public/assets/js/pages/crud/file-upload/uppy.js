@@ -316,7 +316,6 @@ var KTUppy = function () {
 					"confirmButtonClass": "btn btn-primary",
 					"confirmButtonText": "Ok, I understand",
 					"onClose": function(e) {
-						console.log('on close event fired!');
 					}
 				});
 			}, 2000);

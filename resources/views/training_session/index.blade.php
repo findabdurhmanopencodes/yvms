@@ -52,9 +52,6 @@
         }
     </script>
     <script>
-        $( document ).ready(function() {
-            console.log( "ready!" );
-        });
         var COLUMNS = [{
                 field: 'id',
                 title: '#',
