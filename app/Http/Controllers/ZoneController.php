@@ -132,9 +132,9 @@ class ZoneController extends Controller
      */
     public function destroy(Zone $zone, Request $request)
     {
-        foreach ($zone->woredas as $woreda) {
-            $woreda->delete();
-        }
+        // foreach ($zone->woredas as $woreda) {
+        //     $woreda->delete();
+        // }
         $zone->delete();
         if ($request->ajax()) {
             return response()->json(array('msg' => 'deleted successfully'), 200);

@@ -6,6 +6,7 @@ use App\Models\Region;
 use App\Models\Zone;
 use App\Http\Requests\StoreRegionRequest;
 use App\Http\Requests\UpdateRegionRequest;
+use App\Models\Qouta;
 use App\Models\Woreda;
 use Illuminate\Http\Request;
 
@@ -134,9 +135,9 @@ class RegionController extends Controller
      */
     public function destroy(Request $request, Region $region)
     {
-        foreach ($region->zones as $zone) {
-            $zone->delete();
-        }
+        // foreach ($region->zones as $zone) {
+        //     $zone->delete();
+        // }
         $region->delete();
         // if ($request->ajax()) {
             return response()->json(array('msg' => 'deleted successfully'));

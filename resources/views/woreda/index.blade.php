@@ -48,13 +48,13 @@
                             $(parent).closest('tr')[0].remove();
                             Swal.fire(
                                 "Deleted!",
-                                "Role has been deleted.",
+                                "Woreda has been deleted.",
                                 "success"
                             )
                         },
                         error: function(data) {
                             if (data.status) {
-                                Swal.fire("Forbidden!", "You can't delete this role!", "error");
+                                Swal.fire("Forbidden!", "You can't delete this woreda!", "error");
                             }
                         }
                     });

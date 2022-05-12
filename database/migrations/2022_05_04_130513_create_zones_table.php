@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code');
-            $table->foreignIdFor(Region::class)->onDelete('cascade');
+            $table->foreignIdFor(Region::class)->constrained();
             $table->double('qoutaInpercent')->nullable();
             $table->smallInteger('status');
             $table->timestamps();
