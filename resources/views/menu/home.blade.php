@@ -11,9 +11,9 @@
                             <img src="{{ asset('img/peace_logo_max.png') }}" class="mx-auto" width="300" alt="">
                         </div>
                         <div class="col-md-6 d-flex">
-                            <h1 style='font-family:serif !important;padding: 0;margin: 0; line-height: 1; color: #01afee;font-family: "Mercury", Sans-serif; font-size: 44px;font-weight: 100; align-self:center;'>
-                                State Minister for Peacebuilding and National Reconciliation
-                            </h1>
+                            <h4 style='font-family:serif !important;padding: 0;margin: 0; line-height: 1; color: #01afee;font-family: "Mercury", Sans-serif; font-size: 44px;font-weight: 100; align-self:center;'>
+                                National Volunteer Community Development Service Program
+                            </h4>
                         </div>
                     </div>
                     <!--begin::Heading-->
@@ -33,7 +33,8 @@
                             <a href="{{ route('aplication.form', []) }}"
                                 class="h4 text-dark text-hover-primary mb-5">Apply
                                 to be volunteer</a>
-                            <p class="text-dark-50">Windows 10 automatically installs updates <br />to make for sure</p>
+                            <p class="text-dark-50"> Take part for Community 
+                                 <br />Service Engagement</p>
                         </div>
                         <!--end::Content-->
                         <!--begin::Button-->
@@ -56,8 +57,7 @@
                         <!--begin::Content-->
                         <div class="d-flex flex-column mr-5">
                             <a href="#" class="h4 text-dark text-hover-primary mb-5">Reach Us by Social Media</a>
-                            <p class="text-dark-50">Windows 10 automatically installs updates
-                                <br />to make for sure
+                            <p class="text-dark-50"> Put your social media link here
                             </p>
                         </div>
                         <!--end::Content-->
