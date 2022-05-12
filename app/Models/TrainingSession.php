@@ -49,6 +49,6 @@ class TrainingSession extends Model
     }
     public function capacity()
     {
-        return $this->belongsTo(TrainingCenterCapacity::class);
+        return $this->hasOne(TrainingCenterCapacity::class);
     }
 }

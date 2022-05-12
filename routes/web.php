@@ -11,6 +11,7 @@ use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TraininingCenterController;
 use App\Http\Controllers\TotalQuotaController;
+use App\Http\Controllers\TrainingCenterCapacityController;
 use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
@@ -120,6 +121,9 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('applicants/{session}/document-verified', [VolunteerController::class, 'verifiedApplicant'])->name('applicant.verified');
     Route::get('applicants/{session}/selected', [VolunteerController::class, 'selected'])->name('applicant.selected');
     Route::get('applicants/email/unverified', [VolunteerController::class, 'emailUnverified'])->name('applicant.email.unVerified');
+    Route::resource('TrainingCenterCapacity', TrainingCenterCapacityController::class);
+    Route::post('TrainingCenter/Capacity', [TrainingCenterCapacityController::class, 'capacityChange'])->name('TrainingCenterCapacity.capacityChange');
+
 });
 require __DIR__ . '/auth.php';
 Route::get('volunteer/verify/{token}', [VolunteerController::class,'verifyEmail'])->name('volunteer.email.verify');
