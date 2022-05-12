@@ -29,33 +29,33 @@
             <div class="card-body">
                 @csrf
                 {{-- <div class="row"> --}}
-                    {{-- <form class="form">
-                        <div class="form-group row"> --}}
-                            {{-- <div class="col-lg-6">
+                    <form class="form">
+                        <div class="form-group row">
+                            <div class="col-lg-6">
                                 <label>Age</label>
                                 <div class="radio-list">
                                     <label class="radio">
-                                    <input type="radio" name="less_age"/>18 - 25
+                                    <input type="radio" name="age"/>18 - 25
                                     <span></span></label>
                                     <label class="radio">
-                                    <input type="radio" name="middle_age"/>26 - 35
+                                    <input type="radio" name="age"/>26 - 35
                                     <span></span></label>
                                 </div>
-                            </div> --}}
+                            </div>
 
-                            {{-- <div class="col-lg-6">
+                            <div class="col-lg-6">
                                 <label>Graduation Year</label>
                                 <div class="radio-list">
                                     <label class="radio">
-                                    <input type="radio" name="less_age"/>last year
+                                    <input type="radio" name="year"/>last year
                                     <span></span></label>
                                     <label class="radio">
-                                    <input type="radio" name="middle_age"/>last two year
+                                    <input type="radio" name="year"/>last two year
                                     <span></span></label>
                                 </div>
-                            </div> --}}
-                        {{-- </div>
-                    </form> --}}
+                            </div>
+                        </div>
+                    </form>
                 {{-- </div> --}}
             </div>
 
