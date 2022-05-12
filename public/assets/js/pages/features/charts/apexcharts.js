@@ -293,9 +293,9 @@ var KTApexChartsDemo = (function () {
         var options = {
             series: [
                 {
-                    name: "Income",
+                    name: "Intake",
                     type: "column",
-                    data: [1.4, 2, 2.5, 1.5, 2.5, 2.8, 3.8, 4.6, 3.2, 4.1, 3.3],
+                    data: trainingCenter.capacities,
                 },
                 //     {
                 // 	name: 'Cashflow',
@@ -324,19 +324,7 @@ var KTApexChartsDemo = (function () {
             // 	offsetX: 110
             // },
             xaxis: {
-                categories: [
-                    "JU",
-                    "AAU",
-                    "ASTU",
-                    "WU",
-                    "MU",
-                    "HU",
-                    "BDU",
-                    "AMU",
-                    "GU",
-                    'DTU',
-                    'DBU'
-                ],
+                categories: trainingCenter.centers,
             },
             yaxis: [
                 {

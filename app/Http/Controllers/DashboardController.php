@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\TraininingCenter;
 use App\Models\Region;
+use App\Models\TrainingSession;
 use App\Models\Zone;
 use App\Models\Woreda;
 use App\Models\Volunteers;
@@ -23,17 +24,21 @@ class DashboardController extends Controller
      */
     public function index()
     {
-       $users = DB::table('users')->count();
-       $regions = DB::table('regions')->count();
-       $zones = DB::table('zones')->count();
-       $woredas= DB::table('woredas')->count();
-       $volunteers = DB::table('volunteers')->count();
-       $traininingCenters = DB::table('trainining_centers')->count();
+        $users = DB::table('users')->count();
+        $regions = DB::table('regions')->count();
+        $zones = DB::table('zones')->count();
+        $woredas = DB::table('woredas')->count();
+        $volunteers = DB::table('volunteers')->count();
+        $traininingCenters = DB::table('trainining_centers')->count();
 
-        return view('dashboard', compact('users','regions','zones','woredas','volunteers','traininingCenters'));
-      }
-         
-    
+        $trainingCentersCapacity['centers'] = collect(DB::select("SELECT tc.code as code FROM training_center_capacities tcc LEFT JOIN trainining_centers tc ON tcc.trainining_center_id = tc.id WHERE tcc.training_session_id = 1 ORDER BY tcc.id ASC"))->pluck('code')->toArray();
+        $trainingCentersCapacity['capacities'] = collect(DB::select('SELECT capacity FROM `training_center_capacities` WHERE training_session_id = 1'))->pluck('capacity')->toArray();
+
+
+        return view('dashboard', compact('users', 'regions', 'zones', 'woredas', 'volunteers', 'traininingCenters','trainingCentersCapacity'));
+    }
+
+
 
     /**
      * Show the form for creating a new resource.

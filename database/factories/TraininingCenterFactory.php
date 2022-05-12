@@ -21,6 +21,7 @@ class TraininingCenterFactory extends Factory
             'name' => $this->faker->firstName(),
             'decription' => $this->faker->text(40),
             'zone_id' => 2,
+            'code' => $this->faker->regexify('[A-Z]{2,4}')
         ];
     }
 }
