@@ -9,7 +9,7 @@ class Region extends Model
 {
     use HasFactory;
     protected $table = "regions";
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -29,4 +29,10 @@ class Region extends Model
     public function quotas(){
         return $this->morphMany(Qouta::class, 'quotable');
     }
+
+
+    public function level(){
+        return $this->morphOne(UserRegion::class, 'levelable');
+    }
+
 }

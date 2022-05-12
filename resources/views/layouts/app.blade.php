@@ -23,8 +23,8 @@
     <!--begin::Layout Themes(used by all pages)-->
     <link href="{{ asset('assets/css/themes/layout/header/base/light.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/themes/layout/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/themes/layout/brand/dark.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/themes/layout/brand/light.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/themes/layout/aside/light.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('fontawesome/css/all.min.css') }}" rel="stylesheet">
     <!--end::Layout Themes-->
     @stack('css')
@@ -85,10 +85,10 @@
             <!--begin::Aside-->
             <div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
                 <!--begin::Brand-->
-                <div class="brand flex-column-auto" id="kt_brand">
+                <div class="brand flex-column-auto mt-4" id="kt_brand">
                     <!--begin::Logo-->
                     <a href="#" class="text-center brand-logo w-100 d-block">
-                        <img alt="Logo" src="{{ asset('img/logo_peace.png') }}" width="40" />
+                        <img alt="Logo" src="{{ asset('img/logo_peace.png') }}" width="70" />
                     </a>
                     <!--end::Logo-->
                     <!--begin::Toggle-->
@@ -116,7 +116,7 @@
                 </div>
                 <!--end::Brand-->
                 <!--begin::Aside Menu-->
-                <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
+                <div class="aside-menu-wrapper flex-column-fluid " style="padding: 5px;" id="kt_aside_menu_wrapper">
                     <!--begin::Menu Container-->
                     <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1"
                         data-menu-dropdown-timeout="500">
@@ -239,82 +239,16 @@
                 <!--end::Aside Menu-->
             </div>
             <!--begin::Wrapper-->
-            <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+            <div class="d-flex flex-column flex-row-fluid wrapper" style="padding-top: 50px;" id="kt_wrapper">
                 <!--begin::Header-->
-                <div id="kt_header" class="header header-fixed">
-                    <!--begin::Container-->
-                    <div class="container-fluid d-flex align-items-stretch justify-content-between">
-                        <!--begin::Header Menu Wrapper-->
-                        <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
-                            <!--begin::Header Menu-->
-                            <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
-                                <!--begin::Header Nav-->
-                                <ul class="menu-nav">
-
-                                </ul>
-                                <!--end::Header Nav-->
-                            </div>
-                            <!--end::Header Menu-->
-                        </div>
-                        <!--end::Header Menu Wrapper-->
-                        <!--begin::Topbar-->
-                        <div class="topbar">
-                            <!--begin::User-->
-                            <div class="topbar-item">
-                                <div class="w-auto px-2 btn btn-icon btn-clean d-flex align-items-center btn-lg"
-                                    id="kt_quick_user_toggle">
-                                    <span
-                                        class="mr-1 text-muted font-weight-bold font-size-base d-none d-md-inline">Hi,</span>
-                                    {{-- <span
-                                        class="mr-3 text-dark-50 font-weight-bolder font-size-base d-none d-md-inline">{{ Auth::user()->first_name }}</span> --}}
-                                    <span class="symbol symbol-35 symbol-light-success">
-                                        {{-- <span
-                                            class="symbol-label font-size-h5 font-weight-bold">{{ Auth::user()->first_name[0] }}</span> --}}
-                                    </span>
-                                </div>
-                            </div>
-                            <!--end::User-->
-                        </div>
-                        <!--end::Topbar-->
-                    </div>
-                    <!--end::Container-->
-                </div>
+                @include('layouts.header')
                 <!--end::Header-->
                 <!--begin::Content-->
                 <!--begin::Subheader-->
-                <div class="py-2 subheader py-lg-4 subheader-solid" id="kt_subheader">
-                    <div class="flex-wrap container-fluid  align-items-center justify-content-between flex-sm-nowrap">
-                        <!--begin::Info-->
-                        <div class="flex-wrap mr-1  align-items-center">
-                            <!--begin::Page Heading-->
-                            <div class="mr-5 d-flex align-items-baseline justify-between">
-                                <!--begin::Page Title-->
-                                <h5 class="my-2 mr-5 text-dark font-weight-bold">@yield('breadcrumbTitle')</h5>
-                                <!--end::Page Title-->
-                                <!--begin::Breadcrumb-->
-                                <ul
-                                    class="p-0 my-2 ml-auto breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold font-size-sm">
-                                    <li class="breadcrumb-item">
-                                        <a href="/" class="text-muted">Home</a>
-                                    </li>
-                                    @yield('breadcrumbList')
-                                    {{-- <li class="breadcrumb-item">
-                                                <a href="" class="text-muted">General</a>
-                                            </li>
-                                            <li class="breadcrumb-item">
-                                                <a href="" class="text-muted">Empty Page</a>
-                                            </li> --}}
-                                </ul>
-                                <!--end::Breadcrumb-->
-                            </div>
-                            <!--end::Page Heading-->
-                        </div>
-                        <!--end::Info-->
-                    </div>
-                </div>
+
                 <!--end::Subheader-->
                 <!--begin::Entry-->
-                <div class=" flex-column-fluid">
+                <div class=" flex-column-fluid p-5">
                     <!--begin::Container-->
                     <div class="container mt-6">
 
@@ -385,9 +319,9 @@
                                     <span class="svg-icon svg-icon-lg svg-icon-primary">
                                         <i class="fal fa-id-card-alt"></i>
                                     </span>
-                                {{-- </span>
+                                    {{-- </span>
                                 <span class="navi-text text-muted text-hover-primary">{{ Auth::user()->uid }}</span> --}}
-                            </span>
+                                </span>
                         </a>
                     </div>
                 </div>
@@ -452,63 +386,63 @@
     <!--begin::Global Config(global config for global JS scripts)-->
     <script>
         var KTAppSettings = {
-                "breakpoints": {
-                    "sm": 576,
-                    "md": 768,
-                    "lg": 992,
-                    "xl": 1200,
-                    "xxl": 1200
-                },
-                "colors": {
-                    "theme": {
-                        "base": {
-                            "white": "#ffffff",
-                            "primary": "#6993FF",
-                            "secondary": "#E5EAEE",
-                            "success": "#1BC5BD",
-                            "info": "#8950FC",
-                            "warning": "#FFA800",
-                            "danger": "#F64E60",
-                                "light": "#F3F6F9",
-                                "dark": "#212121"
-                            },
-                            "light": {
-                                "white": "#ffffff",
-                                "primary": "#E1E9FF",
-                                "secondary": "#ECF0F3",
-                                "success": "#C9F7F5",
-                                "info": "#EEE5FF",
-                                "warning": "#FFF4DE",
-                                "danger": "#FFE2E5",
-                                "light": "#F3F6F9",
-                                "dark": "#D6D6E0"
-                            },
-                            "inverse": {
-                                "white": "#ffffff",
-                                "primary": "#ffffff",
-                                "secondary": "#212121",
-                                "success": "#ffffff",
-                                "info": "#ffffff",
-                                "warning": "#ffffff",
-                                "danger": "#ffffff",
-                                "light": "#464E5F",
-                                "dark": "#ffffff"
-                            }
-                        },
-                        "gray": {
-                            "gray-100": "#F3F6F9",
-                            "gray-200": "#ECF0F3",
-                            "gray-300": "#E5EAEE",
-                            "gray-400": "#D6D6E0",
-                            "gray-500": "#B5B5C3",
-                            "gray-600": "#80808F",
-                            "gray-700": "#464E5F",
-                            "gray-800": "#1B283F",
-                            "gray-900": "#212121"
-                        }
+            "breakpoints": {
+                "sm": 576,
+                "md": 768,
+                "lg": 992,
+                "xl": 1200,
+                "xxl": 1200
+            },
+            "colors": {
+                "theme": {
+                    "base": {
+                        "white": "#ffffff",
+                        "primary": "#6993FF",
+                        "secondary": "#E5EAEE",
+                        "success": "#1BC5BD",
+                        "info": "#8950FC",
+                        "warning": "#FFA800",
+                        "danger": "#F64E60",
+                        "light": "#F3F6F9",
+                        "dark": "#212121"
                     },
-                    "font-family": "Poppins"
-                };
+                    "light": {
+                        "white": "#ffffff",
+                        "primary": "#E1E9FF",
+                        "secondary": "#ECF0F3",
+                        "success": "#C9F7F5",
+                        "info": "#EEE5FF",
+                        "warning": "#FFF4DE",
+                        "danger": "#FFE2E5",
+                        "light": "#F3F6F9",
+                        "dark": "#D6D6E0"
+                    },
+                    "inverse": {
+                        "white": "#ffffff",
+                        "primary": "#ffffff",
+                        "secondary": "#212121",
+                        "success": "#ffffff",
+                        "info": "#ffffff",
+                        "warning": "#ffffff",
+                        "danger": "#ffffff",
+                        "light": "#464E5F",
+                        "dark": "#ffffff"
+                    }
+                },
+                "gray": {
+                    "gray-100": "#F3F6F9",
+                    "gray-200": "#ECF0F3",
+                    "gray-300": "#E5EAEE",
+                    "gray-400": "#D6D6E0",
+                    "gray-500": "#B5B5C3",
+                    "gray-600": "#80808F",
+                    "gray-700": "#464E5F",
+                    "gray-800": "#1B283F",
+                    "gray-900": "#212121"
+                }
+            },
+            "font-family": "Poppins"
+        };
     </script>
     <!--end::Global Config-->
     <!--begin::Global Theme Bundle(used by all pages)-->
@@ -527,8 +461,8 @@
     <!--end::Page Scripts-->
     <script>
         @if (Session::has('message'))
-            $(function(){
-            toastr.success('{{ Session::get('message') }}');
+            $(function() {
+                toastr.success('{{ Session::get('message') }}');
             })
         @endif
     </script>

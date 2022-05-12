@@ -110,7 +110,7 @@ var KTWizard2 = function () {
                     father_name: {
                         validators: {
                             notEmpty: {
-                                message: 'Grand father name is required'
+                                message: 'Father name is required'
                             },
                             stringLength: {
                                 min: 2,

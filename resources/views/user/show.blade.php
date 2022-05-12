@@ -181,7 +181,8 @@
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <span class="font-weight-bold mr-2">Role:</span>
-                                    <span class="text-muted">{{ Str::ucfirst($user->getRole()?->name??'No Role') }}</span>
+                                    <span
+                                        class="text-muted">{{ Str::ucfirst($user->getRole()?->name ?? 'No Role') }}</span>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <span class="font-weight-bold mr-2">Gender:</span>
@@ -191,6 +192,19 @@
                                     <div class="d-flex align-items-center justify-content-between">
                                         <span class="font-weight-bold mr-2">Woreda:</span>
                                         <span class="text-muted">{{ $user->volunteer->woreda->name }}</span>
+                                    </div>
+                                @endif
+
+                                @if ($user->isRegionalCordinator() && !$user->isZoneCordinator())
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <span class="font-weight-bold mr-2">Cordinating Regional:</span>
+                                        <span class="text-muted">{{ $user->getCordinatingRegion()->name }}</span>
+                                    </div>
+                                @endif
+                                @if ($user->isZoneCordinator())
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <span class="font-weight-bold mr-2">Cordinating Zone:</span>
+                                        <span class="text-muted">{{ $user->getCordinatingZone()->name }}</span>
                                     </div>
                                 @endif
                             </div>

@@ -9,7 +9,8 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Yajra\Datatables\Facades\Datatables;
 
-class RoleController extends Controller {
+class RoleController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
@@ -64,10 +65,10 @@ class RoleController extends Controller {
     {
         //
         $permissions = $role->permissions()->get();
-        $freePermissions = DB::table('permissions')->whereNotIn('id',$role->permissions()->pluck('id'))->get();
+        $freePermissions = DB::table('permissions')->whereNotIn('id', $role->permissions()->pluck('id'))->get();
         // dd($freePermissions);
         // dd($permissions);
-        return view('role.show',compact('role','permissions','freePermissions'));
+        return view('role.show', compact('role', 'permissions', 'freePermissions'));
     }
 
     /**
@@ -78,7 +79,7 @@ class RoleController extends Controller {
      */
     public function edit(Role $role)
     {
-        return view('role.create',compact('role'));
+        return view('role.create', compact('role'));
     }
 
     /**
@@ -90,7 +91,7 @@ class RoleController extends Controller {
      */
     public function update(Request $request, Role $role)
     {
-        $data = $request->validate(['name' => 'required|string|unique:roles,name,'.$role->id]);
+        $data = $request->validate(['name' => 'required|string|unique:roles,name,' . $role->id]);
         $role->update($data);
         return redirect()->route('role.index')->with('message', 'Role updated successfully');
     }
@@ -101,24 +102,24 @@ class RoleController extends Controller {
      * @param  Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,Role $role)
+    public function destroy(Request $request, Role $role)
     {
         $role->delete();
-        if($request->ajax()){
-            return response()->json(array('msg'=> 'deleted successfully'), 200);
+        if ($request->ajax()) {
+            return response()->json(array('msg' => 'deleted successfully'), 200);
         }
     }
 
-    public function permissions(Request $request,Role $role)
+    public function permissions(Request $request, Role $role)
     {
         $permissions = $role->permissions()->get();
-        if($request->ajax()){
+        if ($request->ajax()) {
             return datatables()->of($permissions)->make(true);
         }
         // return redirect(route('roles.permissions.index',['role'=>$role->role]));
     }
 
-    public function givePermission(Request $request,Role $role)
+    public function givePermission(Request $request, Role $role)
     {
         // if(!Auth::user()->can('role.permission.assign')){
         //     return abort(403);
@@ -126,26 +127,26 @@ class RoleController extends Controller {
         foreach ($role->permissions()->get() as $permission) {
             $role->revokePermissionTo($permission);
         }
-        $request->validate(['permissions'=>'required']);
+        $request->validate(['permissions' => 'required']);
         $permissions = $request->get('permissions');
-        foreach($permissions as $permission){
+        foreach ($permissions as $permission) {
             $role->givePermissionTo(Permission::find($permission));
         }
-        return redirect(route('role.show',['role'=>$role->id]));
+        return redirect(route('role.show', ['role' => $role->id]));
     }
 
-    public function revokePermission(Request $request,Role $role,Permission $permission)
+    public function revokePermission(Request $request, Role $role, Permission $permission)
     {
         // if(!Auth::user()->can('role.permission.assign')){
         //     return abort(403);
         // }
-        if($role->hasPermissionTo($permission->name)){
+        if ($role->hasPermissionTo($permission->name)) {
             $role->revokePermissionTo($permission->name);
         }
-        if($request->ajax()){
-            return response()->json(array('msg'=> 'revoked successfully'), 200);
+        if ($request->ajax()) {
+            return response()->json(array('msg' => 'revoked successfully'), 200);
         }
-        return redirect(route('roles.show',['role'=>$role->id]));
+        return redirect(route('roles.show', ['role' => $role->id]));
     }
 
     public function giveAllPermission(Role $role)
@@ -154,7 +155,7 @@ class RoleController extends Controller {
         //     return abort(403);
         // }
         $role->syncPermissions(Permission::all());
-        return redirect()->back()->with('msg','all permission given');
+        return redirect()->back()->with('msg', 'all permission given');
     }
     public function removeAllPermission(Role $role)
     {
@@ -164,6 +165,6 @@ class RoleController extends Controller {
         foreach ($role->permissions()->get() as $permission) {
             $role->revokePermissionTo($permission);
         }
-        return redirect()->back()->with('msg','all permission removed');
+        return redirect()->back()->with('msg', 'all permission removed');
     }
 }

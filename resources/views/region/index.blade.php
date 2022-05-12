@@ -141,9 +141,9 @@
                         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                         <i class="fal fa-plus"></i>
                         <!--end::Svg Icon-->
-                    </span>Add New Region</a>
-
-                    <form method="POST" action="{{ route('region.store', []) }}">
+                 </span>
+                 Add New Region</a>
+                <form method="POST" action="{{ route('region.store', []) }}">
                         @csrf
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg"  role="document">

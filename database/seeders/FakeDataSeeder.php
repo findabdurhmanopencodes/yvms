@@ -2,37 +2,39 @@
 
 namespace Database\Seeders;
 
-use App\Models\ApprovedApplicant;
-use App\Models\EducationalLevel;
 use App\Models\Region;
-use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\User;
-use App\Models\Volunteer;
-use App\Models\Woreda;
 use App\Models\Zone;
 use Database\Factories\UserFactory;
-use DateTime;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
-class DatabaseSeeder extends Seeder
+class FakeDataSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      *
      * @return void
      */
     public function run()
     {
-        // $this->call([
-        //     // PermissionSeeder::class,
-        //     RoleSeeder::class,
-        //     BaseSeeder::class,
-        //     // FakeDataSeeder::class,
-        // ]);
+        $test = Role::findByName('test');
+        $userData = (new  UserFactory())->definition();
+        $userData['email'] = "user@gmail.com";
+        $user = User::create($userData);
+        $user->assignRole($test);
+        TrainingSession::create([
+            'start_date' => '2022-05-06',
+            'end_date' => '2022-05-16',
+            'moto' => 'We are in the community',
+            'registration_start_date' => '2022-05-8',
+            'registration_dead_line' => '2022-05-25',
+            'quantity' => 2000,
+            'status' => 0,
+        ]);
         \App\Models\Region::factory(4)->create();
         //Zone creation
         $quota = [0.4, 0.3, 0.3];
@@ -75,7 +77,7 @@ class DatabaseSeeder extends Seeder
                 $iterate = 0;
             }
         }
-        \App\Models\User::factory(200)->create();
+        \App\Models\User::factory(100)->create();
         \App\Models\File::factory(16)->create();
         \App\Models\FeildOfStudy::factory(4)->create();
         $zones = Zone::all();
@@ -100,28 +102,9 @@ class DatabaseSeeder extends Seeder
                 $woredaCount = 0;
                 foreach ($woredas as  $woreda) {
                     $woredaQuota = round($woreda->qoutaInpercent * $zoneQuota);
-                    for ($x = 0; $x < $woredaQuota; $x++)
-                        \App\Models\Volunteer::factory(1)->create(['woreda_id' => $woreda->id]);
+                    \App\Models\Volunteer::factory(1)->create(['woreda_id' => $woreda->id]);
                 }
             }
         }
-
-        $this->call([
-            // TrainingSessionSeeder::class,
-            // VolunteerSeeder::class,
-            // RegionSeeder::class,
-            // ZoneSeeder::class,
-            // WoredaSeeder::class,
-            // EducationalLevelSeeder::class,
-            // FeildOfStudySeeder::class,
-            // TraininingCenterSeeder::class
-        ]);
-
-        $this->approveAllVolunteers();
-    }
-    public function approveAllVolunteers()
-    {
-        foreach (Volunteer::all() as $v)
-            ApprovedApplicant::create(['training_session_id' => 1, 'volunteer_id' => $v->id, 'status' => 1]);
     }
 }

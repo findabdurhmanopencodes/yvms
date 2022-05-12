@@ -51,4 +51,8 @@ class TrainingSession extends Model
     {
         return $this->hasOne(TrainingCenterCapacity::class);
     }
+
+    public function trainingPlacements(){
+        return $this->hasMany(TrainingPlacement::class,'training_session_id','id');
+    }
 }

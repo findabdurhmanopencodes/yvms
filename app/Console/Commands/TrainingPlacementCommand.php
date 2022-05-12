@@ -5,12 +5,13 @@ namespace App\Console\Commands;
 use App\Models\ApprovedApplicant;
 use App\Models\Region;
 use App\Models\TrainingCenterCapacity;
+use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
-class TrainingPlacement extends Command
+class TrainingPlacementCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -84,13 +85,15 @@ class TrainingPlacement extends Command
 
         $regions = Region::all();
 
+        // if($appl)
+
         while (!$regions->isEmpty() && (!$applicants->isEmpty())) {
             if ($regions->count() == 1 && $this->regionsExceptThis(Region::all(), $regions->first()->id, $trainingCenters)->isEmpty()) {
                 foreach ($applicants as $applicant) {
 
                     $selectedCenter = $this->getRandomTrainingCenterFromRegion($trainingCenters, $regions->first()->id);
 
-                   \App\Models\TrainingPlacement::create(['approved_applicant_id' => $applicant->id, 'training_center_capacity_id' => $selectedCenter->id]);
+                    TrainingPlacement::create(['training_session_id' => $activeSession->id, 'approved_applicant_id' => $applicant->id, 'training_center_capacity_id' => $selectedCenter->id]);
                     $selectedCenter->capacity =  $selectedCenter->capacity - 1;
                     $trainingCenters = $trainingCenters->filter(function ($trainingCenter) {
                         return $trainingCenter->capacity > 0;
@@ -110,7 +113,7 @@ class TrainingPlacement extends Command
                     }
                     $selectedCenter = $this->getRandomTrainingCenterFromRegion($trainingCenters, $exRegion->id);
 
-                    $tp = \App\Models\TrainingPlacement::create(['approved_applicant_id' => $selectedApplicant->id, 'training_center_capacity_id' => $selectedCenter->id]);
+                    $tp = TrainingPlacement::create(['training_session_id' => $activeSession->id, 'approved_applicant_id' => $selectedApplicant->id, 'training_center_capacity_id' => $selectedCenter->id]);
 
                     $selectedCenter->capacity = $selectedCenter->capacity - 1;
 
