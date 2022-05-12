@@ -6,11 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\TraininingCenter;
 use App\Models\Region;
-<<<<<<< HEAD
 use App\Models\TrainingSession;
-=======
 use App\Models\Volunteer;
->>>>>>> 23e70e8cbbdb35e50114e112f0bbebf9e4a47d70
 use App\Models\Zone;
 use App\Models\Woreda;
 use App\Models\Volunteers;
