@@ -47,16 +47,17 @@
         </a>
 
         <h3 style="color;white; font-size:13px;text-align:center;"> <br><br><br>
-            Youth Volunteerism<br> Managment System(YVMS)<br>
+            Youth Volunteerism<br> Managment System<br>
             <hr>
-            <a href="{{ route('aplication.form') }}" class="btn"
-                style="min-width: 150px; background-color:rgb(249 ,92 ,57);color:white;font-weight:bold;">
-                <b>
-                    {{-- <i class="fal fa-plus"></i> --}}
-                </b>
-                <span class="menu-text">Apply Now</span>
-            </a>
-
+            @if (true)
+                <a href="{{ route('aplication.form') }}"
+                    class="btn font-weight-bolder text-uppercase font-size-lg btn-success py-3 px-6">
+                    <b>
+                        {{-- <i class="fal fa-plus"></i> --}}
+                    </b>
+                    <span class="menu-text">Apply Now</span>
+                </a>
+            @endif
 
             {{-- Ministry of Peace| የሰላም ሚኒስቴር --}}
 
@@ -95,7 +96,7 @@
 
                                 <a href="{{ route('home', []) }}">
                                     <h3 style="color:#5dade2; font-size:13px;text-align:center;"> <br><br><br>
-                                        Youth Volunteerism<br> Managment System(YVMS)<br>
+                                        Youth Volunteerism<br> Managment System<br>
                                         <hr><br>
 
 
@@ -117,7 +118,7 @@
                                     <li
                                         class="menu-item {{ strpos(Route::currentRouteName(), 'home') === 0 ? 'menu-item-active' : '' }}">
                                         <a href="{{ route('home') }}" class="menu-link">
-                                            <i style="color:#5dade2 !important;" class=" fa fa-home"></i>
+                                            <i style="color:#5dade2 !important;" class=" fal fa-home"></i>
                                             <span class="menu-text">&nbsp; Home</span>
                                             <i class="menu-arrow"></i>
                                         </a>
@@ -125,7 +126,7 @@
                                     <li
                                         class="menu-item {{ strpos(Route::currentRouteName(), 'aboutus') === 0 ? 'menu-item-active' : '' }}">
                                         <a href="{{ route('aboutus') }}" class="menu-link">
-                                            <i style="color:#5dade2 !important;" class=" fa fa-flag"></i>
+                                            <i style="color:#5dade2 !important;" class=" fal fa-flag"></i>
                                             <span style="color:#5dade2 !important;" class="menu-text"> &nbsp; About
                                                 Us</span>
                                             <i class="menu-arrow"></i>
@@ -134,7 +135,7 @@
                                     <li
                                         class="menu-item {{ strpos(Route::currentRouteName(), 'contact_us') === 0 ? 'menu-item-active' : '' }}">
                                         <a href="{{ route('contactus') }}" class="menu-link">
-                                            <i style="color:#5dade2 !important;" class="fa fa-address-book"></i>
+                                            <i style="color:#5dade2 !important;" class="fal fa-address-book"></i>
 
 
                                             <span style="color:#5dade2 !important;" class="menu-text"> &nbsp;
@@ -146,7 +147,7 @@
                                     <li
                                         class="menu-item {{ strpos(Route::currentRouteName(), 'vission_and_mission') === 0 ? 'menu-item-active' : '' }}">
                                         <a href="{{ route('vission_and_mission') }}" class="menu-link">
-                                            <i style="color:#5dade2 !important;" class="fa fa-eye"></i>
+                                            <i style="color:#5dade2 !important;" class="fal fa-eye"></i>
                                             <span style="color:#5dade2 !important;" class="menu-text"> &nbsp;
                                                 Vision & Mision </span>
                                             <i class="menu-arrow"></i>
@@ -155,7 +156,7 @@
                                     <li
                                         class="menu-item {{ strpos(Route::currentRouteName(), 'login') === 0 ? 'menu-item-active' : '' }}">
                                         <a href="{{ route('login') }}" class="menu-link">
-                                            <i style="color:#5dade2 !important;" class="fas fa-sign-in-alt"></i>
+                                            <i style="color:#5dade2 !important;" class="fal fa-sign-in-alt"></i>
 
 
                                             <span style="color:#5dade2 !important;" class="menu-text"> &nbsp; Login
@@ -171,13 +172,15 @@
                         <!--end::Header Menu Wrapper-->
                         <div class="topbar">
                             <div class="topbar-item">
-                                <a href="{{ route('aplication.form') }}" class="btn"
-                                    style="min-width: 150px; background-color:rgb(249 ,92 ,57);color:white;font-weight:bold;">
-                                    <b>
-                                        {{-- <i class="fal fa-plus"></i> --}}
-                                    </b>
-                                    <span class="menu-text">Apply Now</span>
-                                </a>
+                                @if (strpos(Route::currentRouteName(), 'home') !== 0)
+                                    <a href="{{ route('aplication.form') }}"
+                                        class="btn font-weight-bolder text-uppercase font-size-lg btn-success py-3 px-6">
+                                        <b>
+                                            {{-- <i class="fal fa-plus"></i> --}}
+                                        </b>
+                                        <span class="menu-text">Apply Now</span>
+                                    </a>
+                                @endif
                                 {{-- <div class="btn btn-icon btn-clean btn-lg mr-1" id="kt_quick_panel_toggle">
                                     <span class="svg-icon svg-icon-xl svg-icon-primary">
                                         <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
@@ -224,13 +227,15 @@
                         <!--begin::Copyright-->
                         <div class="text-dark order-2 order-md-1">
                             <span class="text-muted font-weight-bold mr-2">2020©</span>
-                            <a href="{{ route('home', []) }}" target="_blank" class="text-dark-75 text-hover-primary">Ministry Of Peace</a>
+                            <a href="{{ route('home', []) }}" target="_blank"
+                                class="text-dark-75 text-hover-primary">Ministry Of Peace</a>
                         </div>
                         <!--end::Copyright-->
                         <!--begin::Nav-->
                         <div class="nav nav-dark">
                             <a href="{{ route('aboutus', []) }}" target="_blank" class="nav-link pl-0 pr-5">About</a>
-                            <a href="{{ route('contactus', ['id'=>1]) }}" target="_blank" class="nav-link pl-0 pr-0">Contact</a>
+                            <a href="{{ route('contactus', ['id' => 1]) }}" target="_blank"
+                                class="nav-link pl-0 pr-0">Contact</a>
                         </div>
                         <!--end::Nav-->
                     </div>

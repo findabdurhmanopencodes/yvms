@@ -106,7 +106,7 @@
                         <span class="count-name"> Total Users</span>
                       </div>
                     </div>
-                
+
                     <div class="col-md-3">
                       <div class="card-counter danger">
                         <i class="fa fa-users" style="color:black;"></i>
@@ -114,7 +114,7 @@
                         <span class="count-name"> Training Centers</span>
                       </div>
                     </div>
-                
+
                     <div class="col-md-3">
                       <div class="card-counter success">
                         <i class="fa fa-users" style="color:black;"></i>
@@ -122,7 +122,7 @@
                         <span class="count-name"> Active Application</span>
                       </div>
                     </div>
-                
+
                     <div class="col-md-3">
                       <div class="card-counter info">
                         <i class="fa fa-flag" style="color:black;"></i>
@@ -132,7 +132,7 @@
                     </div>
                   </div>
                   <br>
-                
+
                   </div>
                 </div>
 
@@ -142,7 +142,7 @@
 
             </div>
             <!--end::Chart-->
-           
+
         </div>
     </div>
     <!--end::Card-->

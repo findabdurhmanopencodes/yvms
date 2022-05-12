@@ -35,11 +35,11 @@
                         <tr>
                             <td> {{ $capacityHistory->capacity }} Volunter</td>
 
-                            <td>{{ $capacityHistory->trainningSession->start_date }} <span
+                            <td>{{ $capacityHistory->trainningSession?->start_date }} <span
                                     class="text text-success font-weight-bolder"> to</span>
-                                {{ $capacityHistory->trainningSession->end_date }}</td>
+                                {{ $capacityHistory->trainningSession?->end_date }}</td>
                             <td>
-                                @if (Carbon\Carbon::now()->between(Carbon\Carbon::parse($capacityHistory->trainningSession->start_date), Carbon\Carbon::parse($capacityHistory->trainningSession->end_date)))
+                                @if (Carbon\Carbon::now()->between(Carbon\Carbon::parse($capacityHistory->trainningSession?->start_date), Carbon\Carbon::parse($capacityHistory->trainningSession?->end_date)))
                                     <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCapacity"
                                         onclick="capacityChange({{ $capacityHistory->trainining_center_id}},{{   $capacityHistory->training_session_id }});"><i
                                             class="fa fa-edit"></i>change Capacity</a>

@@ -21,6 +21,6 @@ class TrainingCenterCapacity extends Model
     }
     public function trainningSession()
     {
-        return $this->belongsTo(TrainingSession::class,'trainining_center_id', 'id');
+        return $this->belongsTo(TrainingSession::class,'training_session_id', 'id');
     }
 }
