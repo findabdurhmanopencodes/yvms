@@ -11,9 +11,12 @@
                             <img src="{{ asset('img/peace_logo_max.png') }}" class="mx-auto" width="300" alt="">
                         </div>
                         <div class="col-md-6 d-flex">
-                            <h1 style='font-family:serif !important;padding: 0;margin: 0; line-height: 1; color: #01afee;font-family: "Mercury", Sans-serif; font-size: 44px;font-weight: 100; align-self:center;'>
-                                State Minister for Peacebuilding and National Reconciliation
-                            </h1>
+                            <div style='font-family:serif !important;padding: 0;margin: 0; line-height: 1.5; color: #01afee; font-size: 30px; align-self:center;'>
+                                <p style="font-weight: 100;">State Minister for Peacebuilding and National Reconciliation</p>
+                                <p style="font-weight: 100;">ብሔራዊ የበጎ ፈቃድ ማህበረሰብ <br> አገልገሎት</p>
+                                <h6 style="font-family:serif !important;padding: 0;font-size:25px;margin: 0; line-height: 1; color: #01afee;align-self:center;">በጎነት ለአብሮነት</h6>
+                            </div>
+
                         </div>
                     </div>
                     <!--begin::Heading-->
@@ -76,4 +79,4 @@
     </div>
     <!--end::Row-->
 
-@endsection
+    @endsection

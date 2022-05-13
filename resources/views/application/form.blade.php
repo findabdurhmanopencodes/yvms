@@ -220,7 +220,7 @@
                                     </div>
                                     <div class="wizard-label">
                                         <h3 class="wizard-title"> </h3>Application Requirements </h3>
-                                        <div class="wizard-desc">Code of conduct</div>
+                                        <div class="wizard-desc">Application Requirements</div>
                                     </div>
                                 </div>
                             </div>
@@ -304,7 +304,7 @@
                                     @csrf
                                     <!--begin: Wizard Step 0-->
                                     <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
-                                        <h4 class="mb-10 font-weight-bold text-dark">Code of Conduct</h4>
+                                        <h4 class="mb-10 font-weight-bold text-dark">Application Criteria</h4>
                                         <div class="row">
                                             <div data-scroll="true" class="scroll scroll-pull"
                                                 style="max-height:350px !important; overflow:auto;">
@@ -433,7 +433,7 @@
                                             </div>
                                             <!--end::Input-->
                                             <!--begin::Input-->
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group col-md-12">
                                                 <label class="d-block">Grand Father Name</label>
                                                 <input type="text"
                                                     class="@error('grand_father_name') is-invalid @enderror form-control form-control-lg"
@@ -446,8 +446,8 @@
                                                     name.</span>
                                             </div>
                                             <!--end::Input-->
+                                            @if(false)
                                             <div class="col-xl-6">
-                                                <!--begin::Input-->
                                                 <div class="form-group">
                                                     <label class="d-block">Disablity</label>
                                                     <select name="disability" id="disability"
@@ -461,11 +461,10 @@
                                                     @error('disability')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
-                                                    <span class="form-text text-muted">Please select if any
-                                                        disability</span>
+                                                    <span class="form-text text-muted">Please select if any disability</span>
                                                 </div>
-                                                <!--end::Input-->
                                             </div>
+                                            @endif
                                         </div>
                                         <div class="row">
                                             <div class="col-xl-6">
