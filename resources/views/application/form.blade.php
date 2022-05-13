@@ -22,6 +22,16 @@
 
     <script>
         $(function() {
+            $("#graduation_date").datepicker({
+                format: "yyyy",
+                orientation: "bottom right",
+                todayHighlight: true,
+                viewMode: "years",
+                minViewMode: "years",
+                startDate: '{{ Carbon\Carbon::now()->subYears(35)->format("Y") }}',
+                endDate: '{{ Carbon\Carbon::now()->subYears(1)->format("Y") }}',
+                autoclose: true //to close picker once year is selected
+            });
             $('#agree_check').on('click', function() {
                 if ($('input#agree_check')[0].checked) {
                     $('button#next_step_button').prop('disabled', false);
@@ -43,6 +53,82 @@
         })
     </script>
     <script>
+        $(function() {
+            $('[name="first_name"]').on('change', function() {
+                var firstName = $('[name="first_name"]').val();
+                var fatherName = $('[name="father_name"]').val();
+                var grandFatherName = $('[name="grand_father_name"]').val();
+                $('#reviewFullName').text(firstName + ' ' + fatherName + ' ' + grandFatherName);
+            });
+            $('[name="father_name"]').on('change', function() {
+                var firstName = $('[name="first_name"]').val();
+                var fatherName = $('[name="father_name"]').val();
+                var grandFatherName = $('[name="grand_father_name"]').val();
+                $('#reviewFullName').text(firstName + ' ' + fatherName + ' ' + grandFatherName);
+            });
+            $('[name="grand_father_name"]').on('change', function() {
+                var firstName = $('[name="first_name"]').val();
+                var fatherName = $('[name="father_name"]').val();
+                var grandFatherName = $('[name="grand_father_name"]').val();
+                $('#reviewFullName').text(firstName + ' ' + fatherName + ' ' + grandFatherName);
+            });
+            $('[name="phone"]').on('change', function() {
+                var phone = $('[name="phone"]').val();
+                $('#reviewPhone').text(phone);
+            });
+            $('[name="email"]').on('change', function() {
+                var email = $('[name="email"]').val();
+                $('#reviewEmail').text(email);
+            });
+            $('[name="dob"]').on('change', function() {
+                var dob = $('[name="dob"]').val();
+                $('#reviewDOB').text(dob);
+            });
+            $('[name="gender"]').on('change', function() {
+                var gender = $('[name="gender"]').val() == 'M' ? 'Male' : 'Female';
+                $('#reviewGender').text(gender);
+            });
+
+            $('[name="region"]').on('change', function() {
+                var value = $("#region option:selected").text();
+                $('#reviewRegion').text(value);
+            });
+
+            $('[name="zone"]').on('change', function() {
+                var value = $("#zone option:selected").text();
+                $('#reviewZone').text(value);
+            });
+
+            $('[name="woreda"]').on('change', function() {
+                var value = $("#woreda option:selected").text();
+                $('#reviewWoreda').text(value);
+            });
+
+            $('[name="educational_level"]').on('change', function() {
+                var value = $("#educational_level option:selected").text();
+                $('#reviewEducationLevel').text(value);
+            });
+
+            $('[name="field_of_study"]').on('change', function() {
+                var value = $("#field_of_study option:selected").text();
+                $('#reviewFieldOfStudy').text(value);
+            });
+
+            $('[name="contact_name"]').on('change', function() {
+                var value = $("#contact_name").val();
+                $('#reviewContactName').text(value);
+            });
+
+            $('[name="contact_phone"]').on('change', function() {
+                var value = $("#contact_phone").val();
+                $('#reviewContactPhone').text(value);
+            });
+
+            $('[name="gpa"]').on('change', function() {
+                var value = $("#gpa").val();
+                $('#reviewGPA').text(value);
+            });
+        });
         $(function() {
             $('#region').select2({
                 placeholder: "Select a region"
@@ -314,6 +400,21 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="wizard-step" data-wizard-type="step">
+                                <div class="wizard-wrapper">
+                                    <div class="wizard-icon">
+                                        <span class="svg-icon svg-icon-2x">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Map/Compass.svg-->
+                                            <i class="fas fa-thumbs-up"></i>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </div>
+                                    <div class="wizard-label">
+                                        <h3 class="wizard-title">Completed</h3>
+                                        <div class="wizard-desc">Review and Submit</div>
+                                    </div>
+                                </div>
+                            </div>
                             <!--end::Wizard Step 3 Nav-->
                         </div>
                     </div>
@@ -476,13 +577,16 @@
                                                             role="button" aria-haspopup="true"
                                                             aria-expanded="false">Language</a>
                                                         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_en_app">
+                                                            <a class="dropdown-item" data-toggle="tab"
+                                                                href="#lang_en_app">
                                                                 English
                                                             </a>
-                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_am_app">
+                                                            <a class="dropdown-item" data-toggle="tab"
+                                                                href="#lang_am_app">
                                                                 Amharic
                                                             </a>
-                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_or_app">
+                                                            <a class="dropdown-item" data-toggle="tab"
+                                                                href="#lang_or_app">
                                                                 Afaan Oromoo
                                                             </a>
                                                             <a class="dropdown-item" data-toggle="tab"
@@ -844,7 +948,7 @@
                                     <div class="pb-5" data-wizard-type="step-content">
                                         <h4 class="mb-10 font-weight-bold text-dark">Educational Document</h4>
                                         <div class="row">
-                                            <div class="col-xl-5">
+                                            <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label class="d-block">Educational Level</label>
@@ -863,7 +967,7 @@
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
-                                            <div class="col-xl-5">
+                                            <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label class="d-block">Field of Study</label>
@@ -882,7 +986,10 @@
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
-                                            <div class="col-xl-2">
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label class="d-block">GPA</label>
@@ -891,6 +998,22 @@
                                                         type="number" value="{{ old('gpa') }}" max="4" min="1" />
 
                                                     @error('gpa')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+
+                                            <div class="col-xl-6">
+                                                <!--begin::Select-->
+                                                <div class="form-group">
+                                                    <label class="d-block">Year Of Gruduation</label>
+                                                    <input name="graduation_date" id="graduation_date"
+                                                        class="@error('graduation_date') is-invalid @enderror form-control"
+                                                        type="text" value="{{ old('graduation_date') }}" max="4"
+                                                        min="1" />
+
+                                                    @error('graduation_date')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
@@ -912,8 +1035,6 @@
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
                                                     </div>
-
-
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
@@ -1076,6 +1197,62 @@
                                                 </label>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="pb-5" data-wizard-type="step-content">
+                                        <h5 class="mb-10 font-weight-bold text-dark">Review your Details and Submit</h5>
+                                        <!--begin::Item-->
+                                        <div class="border-bottom mb-5 pb-5">
+                                            <div class="font-weight-bolder mb-3">Your Account Details:</div>
+                                            <div class="line-height-xl">
+                                                Full Name:
+                                                <span id="reviewFullName"></span>
+                                                <br />
+                                                Phone:
+                                                <span id="reviewPhone"></span>
+                                                <br />
+                                                Email: <span id="reviewEmail"></span>
+                                                <br />
+                                                Date Of Birth: <span id="reviewDOB"></span>
+                                                <br />
+                                                Gender: <span id="reviewGender"></span>
+                                                <br />
+                                            </div>
+                                        </div>
+
+                                        <div class="border-bottom mb-5 pb-5">
+                                            <div class="font-weight-bolder mb-3">Location:</div>
+                                            <div class="line-height-xl">
+                                                Region: <span id="reviewRegion"></span>
+                                                <br />
+                                                Zone:
+                                                <span id="reviewZone"></span>
+                                                <br />
+                                                Woreda: <span id="reviewWoreda"></span>
+                                            </div>
+                                        </div>
+                                        <div class="border-bottom mb-5 pb-5">
+                                            <div class="font-weight-bolder mb-3">Education Background:</div>
+                                            <div class="line-height-xl">
+                                                Education Level: <span id="reviewEducationLevel"></span>
+                                                <br />
+                                                Feild Of Study:
+                                                <span id="reviewFieldOfStudy"></span>
+                                                <br />
+                                                GPA: <span id="reviewGPA"></span>
+                                                <br />
+                                                Year of Graduation: <span id="reviewGraduationYear"></span>
+                                            </div>
+                                        </div>
+                                        <div class="border-bottom mb-5 pb-5">
+                                            <div class="font-weight-bolder mb-3">Other Documents:</div>
+                                            <div class="line-height-xl">
+                                                Contact Name: <span id="reviewContactName"></span>
+                                                <br />
+                                                Contact Phone:
+                                                <span id="reviewContactPhone"></span>
+                                            </div>
+                                        </div>
+                                        <!--end::Item-->
                                     </div>
                                     <!--end: Wizard Step 4-->
 
