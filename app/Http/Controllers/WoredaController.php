@@ -56,7 +56,7 @@ class WoredaController extends Controller
         // $zone->code = $request->get('code');
         // $zone->region_id = $request->get('region');
         // $zone->save();
-        Woreda::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'zone_id' => $request->get('woreda'), 'qoutaInpercent'=>$woredaInquota]);
+        Woreda::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'zone_id' => $request->get('woreda'), 'qoutaInpercent'=>$woredaInquota, 'status'=>1]);
         return redirect()->route('woreda.index')->with('message', 'Woreda created successfully');
     }
 
@@ -123,9 +123,9 @@ class WoredaController extends Controller
     public function destroy(Woreda $woreda, Request $request)
     {
         $woreda->delete();
-        if ($request->ajax()) {
-            return response()->json(array('msg' => 'deleted successfully'), 200);
-        }
+        // if ($request->ajax()) {
+        //     return response()->json(array('msg' => 'deleted successfully'), 200);
+        // }
     }
     public function fetch(Zone $zone)
     {
@@ -144,6 +144,6 @@ class WoredaController extends Controller
             $limit = true;
         }
 
-        return response()->json(['limit'=>$sum]);
+        return response()->json(['limit'=>$limit]);
     }
 }

@@ -21,7 +21,7 @@
                         <a href="{{ route('training_session.show', ['training_session'=>$trainingSession->id]) }}" class="navi-link py-4">
                             <span class="navi-icon mr-2">
                                 <span class="svg-icon">
-                                    <i class="fa fa-user"></i>
+                                    <i class="fa fa-calendar"></i>
                                 </span>
                             </span>
                             <span class="navi-text font-size-lg">Training Session Detail</span>
@@ -31,7 +31,7 @@
                         <a href="{{ route('applicant.verified', ['session'=>$trainingSession->id]) }}" class="navi-link py-4">
                             <span class="navi-icon mr-2">
                                 <span class="svg-icon">
-                                    <i class="fa fa-user"></i>
+                                    <i class="far fa-caret-square-up"></i>
                                 </span>
                             </span>
                             <span class="navi-text font-size-lg">Screening</span>
@@ -52,7 +52,7 @@
                         <a href="{{ route('training_session.quota', ['training_session'=>$trainingSession->id]) }}" class="navi-link py-4">
                             <span class="navi-icon mr-2">
                                 <span class="svg-icon">
-                                    <i class="fa fa-user"></i>
+                                    <i class="fas fa-bezier-curve"></i>
                                 </span>
                             </span>
                             <span class="navi-text font-size-lg">Quota Allocation</span>
@@ -74,7 +74,7 @@
                         <a href="{{ route('applicant.email.unVerified') }}" class="navi-link py-4">
                             <span class="navi-icon mr-2">
                                 <span class="svg-icon">
-                                    <i class="fa fa-user"></i>
+                                    <i class="fa fa-envelope-open-text"></i>
                                 </span>
                             </span>
                             <span class="navi-text font-size-lg">Unverified Volunteer Email</span>

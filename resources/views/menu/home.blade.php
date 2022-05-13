@@ -1,6 +1,5 @@
 @extends('layouts.guest')
 @section('title', 'Home')
-
 @section('content')
     <div class="mb-2">
         <div class="d-flex bg-white flex-row-fluid bgi-size-cover bgi-position-center" style="background-image: url('')">

@@ -14,12 +14,14 @@ class DisablityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-         // $feild_of_studies = FeildOfStudy::all();
-         $disablities = Disablity::paginate(10);
+        if ($request->ajax()) {
+            return datatables()->of(Disablity::select())->make(true);
+        }
 
-         return view('disablity.index', compact('disablities'));
+        $disablities = Disablity::all();
+        return view('disablity.index', compact('disablities'));
     }
 
     /**

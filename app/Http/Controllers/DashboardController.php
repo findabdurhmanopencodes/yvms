@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\TraininingCenter;
 use App\Models\Region;
 use App\Models\TrainingSession;
+use App\Models\Volunteer;
 use App\Models\Zone;
 use App\Models\Woreda;
 use App\Models\Volunteers;
@@ -31,14 +32,42 @@ class DashboardController extends Controller
         $volunteers = DB::table('volunteers')->count();
         $traininingCenters = DB::table('trainining_centers')->count();
 
-        $trainingCentersCapacity['centers'] = collect(DB::select("SELECT tc.code as code FROM training_center_capacities tcc LEFT JOIN trainining_centers tc ON tcc.trainining_center_id = tc.id WHERE tcc.training_session_id = 1 ORDER BY tcc.id ASC"))->pluck('code')->toArray();
-        $trainingCentersCapacity['capacities'] = collect(DB::select('SELECT capacity FROM `training_center_capacities` WHERE training_session_id = 1'))->pluck('capacity')->toArray();
+        $trCenters = TraininingCenter::all();
 
+        $ts = TrainingSession::availableSession()->first();
 
-        return view('dashboard', compact('users', 'regions', 'zones', 'woredas', 'volunteers', 'traininingCenters','trainingCentersCapacity'));
+        $trainingCentersCapacity['centers'] = collect(DB::select("SELECT tc.code as code FROM training_center_capacities tcc LEFT JOIN trainining_centers tc ON tcc.trainining_center_id = tc.id WHERE tcc.training_session_id = $ts->id ORDER BY tcc.id ASC"))->pluck('code')->toArray();
+        $trainingCentersCapacity['capacities'] = collect(DB::select("SELECT capacity FROM `training_center_capacities` WHERE training_session_id = $ts->id"))->pluck('capacity')->toArray();
+
+        $regionalContribution['code'] = collect(DB::select("SELECT r.code, COUNT(tp.approved_applicant_id) as contribution FROM `training_placements` tp LEFT JOIN training_center_capacities tcc ON tp.training_center_capacity_id = tcc.id LEFT JOIN trainining_centers tc ON tcc.trainining_center_id = tc.id LEFT JOIN zones z ON tc.zone_id = z.id LEFT JOIN regions r ON z.region_id = r.id WHERE tp.training_session_id = $ts->id GROUP BY r.id"))->pluck('code')->toArray();
+        $regionalContribution['contribution'] = collect(DB::select("SELECT r.code, COUNT(tp.approved_applicant_id) as contribution FROM `training_placements` tp LEFT JOIN training_center_capacities tcc ON tp.training_center_capacity_id = tcc.id LEFT JOIN trainining_centers tc ON tcc.trainining_center_id = tc.id LEFT JOIN zones z ON tc.zone_id = z.id LEFT JOIN regions r ON z.region_id = r.id WHERE tp.training_session_id = $ts->id GROUP BY r.id"))->pluck('contribution')->toArray();
+
+        $regionalQuotas['code'] = collect(DB::select("SELECT q.quantity , r.name FROM `qoutas` q LEFT JOIN regions r ON q.quotable_id = r.id WHERE q.training_session_id = $ts->id AND q.quotable_type = 'App\Models\Region'"))->pluck('name')->toArray();
+        $regionalQuotas['quota'] = collect(DB::select("SELECT q.quantity, r.code FROM `qoutas` q LEFT JOIN regions r ON q.quotable_id = r.id WHERE q.training_session_id = $ts->id AND q.quotable_type = 'App\Models\Region'"))->pluck('quantity')->toArray();
+        // dd($regionalQuotas);
+        return view('dashboard', compact(
+            'users',
+            'regions',
+            'zones',
+            'woredas',
+            'volunteers',
+            'traininingCenters',
+            'trCenters',
+            'regionalQuotas',
+            'regionalContribution',
+            'trainingCentersCapacity'
+        ));
     }
 
+    public function trainginCenersVolenteerRegionalDistribution($trainingCenterId)
+    {
+        $ts = TrainingSession::availableSession()->first();
+        $contr = collect(DB::select("SELECT r.name as x, COUNT(tp.approved_applicant_id) as y FROM `training_placements` tp LEFT JOIN approved_applicants app ON tp.approved_applicant_id = app.id LEFT JOIN volunteers vl ON app.volunteer_id = vl.id LEFT JOIN woredas w ON vl.woreda_id = w.id LEFT JOIN zones z ON w.zone_id = z.id LEFT JOIN regions r ON z.region_id = r.id LEFT JOIN training_center_capacities tcc ON tp.training_center_capacity_id = tcc.id LEFT JOIN trainining_centers tc ON tcc.trainining_center_id = tc.id WHERE tp.training_session_id = $ts->id AND tc.id = $trainingCenterId GROUP BY r.id"));
+        $contribution['code'] = $contr->pluck('name')->toArray();
+        $contribution['contribution'] = $contr->pluck('contribution')->toArray();
 
+        return $contr;
+    }
 
     /**
      * Show the form for creating a new resource.

@@ -68,6 +68,7 @@ Route::get('/placement', function () {
 
 
 Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
+Route::get('training-center/regional-volunteer-contribution/{id}', [DashboardController::class, 'trainginCenersVolenteerRegionalDistribution'])->name('placed-contribution');
 
 //Role & Permission
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
@@ -116,10 +117,10 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::post('users/{user}/role', [UserController::class, 'assignRole'])->name('users.assignRole');
     Route::post('users/{user}/role/remove', [UserController::class, 'removeRole'])->name('users.removeRole');
     Route::resource('TrainingCenter', TraininingCenterController::class);
-    
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // Route::view('/dashboard', [DashboardController::class, 'index']);
-    
+
     Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
     Route::post('applicant/{applicant_id}/screen', [VolunteerController::class, 'screen'])->name('applicant.screen');
     Route::get('applicants/{session}/document-verified', [VolunteerController::class, 'verifiedApplicant'])->name('applicant.verified');

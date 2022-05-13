@@ -183,7 +183,14 @@
                 <!--begin::Header-->
                 <div class="card-header h-auto">
                     <div class="card-title py-5">
-                        <h3 class="card-label">National Intake Trend</h3>
+                        <h3 class="card-label">Regional Contribution to Training Center </h3>
+                        <form action="">
+                            <select id="centers" onchange="onTrainingCenterChange()" class="form-control">
+                                @foreach ($trCenters as $trCenter)
+                                <option value="{{ $trCenter->id }}"> {{ $trCenter->name }} </option>
+                                @endforeach
+                            </select>
+                        </form>
                     </div>
                 </div>
                 <!--end::Header-->
@@ -269,7 +276,7 @@
                 <!--begin::Header-->
                 <div class="card-header h-auto">
                     <div class="card-title py-5">
-                        <h3 class="card-label">Line Chart</h3>
+                        <h3 class="card-label">Regional Contribution of Placed Students</h3>
                     </div>
                 </div>
                 <!--end::Header-->
@@ -326,7 +333,29 @@
 @push('js')
     <script type="text/javascript">
         var trainingCenter = {{ Js::from($trainingCentersCapacity) }}
-
+        var regionalContribution = {{ Js::from($regionalContribution) }}
+        var regionalQuota = {{ Js::from($regionalQuotas) }}
     </script>
     <script type="text/javascript" src="{{ asset('assets/js/pages/features/charts/apexcharts.js') }}"></script>
+
+    <script>
+        function getContribution(centerId) {
+            fetch(`training-center/regional-volunteer-contribution/${centerId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // console.log(data);
+                    chart_1.updateSeries([{
+                        name: "Contribution",
+                        data: data
+                    }]);
+                });
+        }
+        getContribution(1);
+    </script>
+<script>
+    function onTrainingCenterChange(){
+        getContribution(document.getElementById("centers").value);
+    }
+</script>
+
 @endpush
