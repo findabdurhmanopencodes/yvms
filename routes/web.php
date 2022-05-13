@@ -13,15 +13,20 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TraininingCenterController;
 use App\Http\Controllers\TotalQuotaController;
 use App\Http\Controllers\TrainingCenterCapacityController;
+use App\Http\Controllers\TrainingPlacementController;
 use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\ZoneController;
+use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\Volunteer;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
+use Symfony\Component\Console\Input\Input;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,10 +79,10 @@ Route::get('training-center/regional-volunteer-contribution/{id}', [DashboardCon
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
 Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
-Route::middleware(['auth','verified'])->group(function () {
-    Route::get('training_session/{training_session}/qouta',[TrainingSessionController::class,'showQuota'])->name('training_session.quota');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('training_session/{training_session}/qouta', [TrainingSessionController::class, 'showQuota'])->name('training_session.quota');
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
-// Route::middleware(['guest'])->group(function () {
+    // Route::middleware(['guest'])->group(function () {
 
     Route::post('region/validate', [RegionController::class, 'validateForm'])->name('validate.region');
     Route::post('zone/validate', [ZoneController::class, 'validateForm'])->name('validate.zone');
@@ -85,7 +90,7 @@ Route::middleware(['auth','verified'])->group(function () {
 
     Route::post('user/{user}/giveAllPermission', [UserController::class, 'giveAllPermission'])->name('user.giveAllPermission');
     Route::post('user/{user}/removeAllPermission', [UserController::class, 'removeAllPermission'])->name('user.removeAllPermission');
-    Route::get('user/{user}/permission',[UserController::class,'userPermissions'])->name('user.permission.index');
+    Route::get('user/{user}/permission', [UserController::class, 'userPermissions'])->name('user.permission.index');
     Route::post('user/{user}/permission/give', [UserController::class, 'givePermission'])->name('user.permission.give');
     Route::post('user/{user}/permission/revoke', [UserController::class, 'revokePermission'])->name('user.permission.revoke');
     Route::resource('educational_level', EducationalLevelController::class);
@@ -96,9 +101,9 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::resource('applicant', VolunteerController::class)->except(['index']);
 
     ////////////////////////////////////////////////////////////////////////////////
-    Route::get('training_sessions',[RegionController::class,'place'])->name('region.place');
+    Route::get('training_sessions', [RegionController::class, 'place'])->name('region.place');
 
-    Route::get('training_center',[TraininingCenterController::class,'placement'])->name('training_center.placement');
+    Route::get('placement', [TrainingPlacementController::class, 'index'])->name('training.placement');
     //Route::get('training_',[RegionController::class,'place'])->name('region.place');
     ///////////////////////////////////////////////////////////////////////////////////
     Route::resource('training_session', TrainingSessionController::class);
@@ -128,7 +133,6 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('applicants/email/unverified', [VolunteerController::class, 'emailUnverified'])->name('applicant.email.unVerified');
     Route::resource('TrainingCenterCapacity', TrainingCenterCapacityController::class);
     Route::post('TrainingCenter/Capacity', [TrainingCenterCapacityController::class, 'capacityChange'])->name('TrainingCenterCapacity.capacityChange');
-
 });
 require __DIR__ . '/auth.php';
-Route::get('volunteer/verify/{token}', [VolunteerController::class,'verifyEmail'])->name('volunteer.email.verify');
+Route::get('volunteer/verify/{token}', [VolunteerController::class, 'verifyEmail'])->name('volunteer.email.verify');
