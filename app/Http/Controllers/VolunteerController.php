@@ -49,6 +49,12 @@ class VolunteerController extends Controller
         // }
         // dd('dsf');
         $applicants = Volunteer::doesntHave('status')->where('training_session_id',$session_id);
+
+
+        // foreach(Volunteer::all() as $applicant){
+        //             Status::create(['volunteer_id'=>$applicant->id,'acceptance_status'=>1]);
+        // }
+        // dd('done');
         // dd($applicants->get());
         if ($request->has('filter')) {
             $first_name = $request->get('first_name');
@@ -302,12 +308,10 @@ class VolunteerController extends Controller
     }
     public function selected(Request $request, $session_id)
     {
-        $applicants=  Volunteer::whereRelation('status','acceptance_status',3)->where('training_session_id',$session_id);
+        $applicants=  Volunteer::has('approvedApplicants')->where('training_session_id',$session_id);
         return view('volunter.selected_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($session_id)]);
         $applicants = Volunteer::whereRelation('status', 'acceptance_status', 1);
-
     }
-
     protected function verifyEmail($token)
     {
         $verifyVolunteer = VerifyVolunteer::where('token', $token)->first();

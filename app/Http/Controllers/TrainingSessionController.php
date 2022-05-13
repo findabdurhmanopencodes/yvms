@@ -316,7 +316,7 @@ class TrainingSessionController extends Controller
             $reg_sum = 0;
             foreach ($regions as $key => $region) {
                 $qouta = new Qouta();
-                $region_validate = $qouta->where('training_session', $trainingSession->id)->where('qoutable_id', $region->id)->where('qoutable_type', 'App\Models\Region');
+                $region_validate = $qouta->where('training_session_id', $trainingSession->id)->where('quotable_id', $region->id)->where('quotable_type', 'App\Models\Region');
 
                 $sum_zon = 0;
                 $arr_zon = [];
@@ -353,7 +353,7 @@ class TrainingSessionController extends Controller
                         foreach ($zons as $keyzone => $zone) {
                             if ($zone) {
                                 $qouta = new Qouta();
-                                $zone_validate = $qouta->where('training_session', $trainingSession->id)->where('qoutable_id', $zone->id)->where('qoutable_type', 'App\Models\Region');
+                                $zone_validate = $qouta->where('training_session_id', $trainingSession->id)->where('quotable_id', $zone->id)->where('quotable_type', 'App\Models\Zone');
 
                                 $sum_wor = 0;
                                 $arr_wor = [];
@@ -395,7 +395,7 @@ class TrainingSessionController extends Controller
                                         foreach ($wors as $keyworeda => $woreda) {
                                             if ($woreda) {
                                                 $qouta = new Qouta();
-                                                $woreda_validate = $qouta->where('training_session', $trainingSession->id)->where('qoutable_id', $woreda->id)->where('qoutable_type', 'App\Models\Region');
+                                                $woreda_validate = $qouta->where('training_session_id', $trainingSession->id)->where('quotable_id', $woreda->id)->where('quotable_type', 'App\Models\Woreda');
                                                 if ($woreda_validate) {
                                                     $woreda_quantity = $qouta::where('quotable_id', $zone->id)->where('quotable_type', 'App\Models\Zone')->pluck('quantity')[0];
                                                     $woreda_qouta = $woreda->qoutaInpercent;
