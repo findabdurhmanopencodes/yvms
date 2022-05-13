@@ -127,7 +127,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            class="badge badge-warning badge-pill">{{ $volunter->status?->acceptance_status == 0 ? 'pending' : 'decided' }}</span>
+                                            class="badge badge-warning badge-pill">{{ $volunter->status?->acceptance_status == 0 ? 'pending' : 'Document Verified' }}</span>
                                     </td>
 
                                 </tr>
