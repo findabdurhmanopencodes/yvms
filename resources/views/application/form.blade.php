@@ -31,6 +31,15 @@
                     $('button#submit_apply_button').prop('disabled', true);
                 }
             })
+            $('#agree_check_first').on('click', function() {
+                if ($('input#agree_check_first')[0].checked) {
+                    $('button#next_step_button').prop('disabled', false);
+                    $('button#submit_apply_button').prop('disabled', false);
+                } else {
+                    $('button#next_step_button').prop('disabled', true);
+                    $('button#submit_apply_button').prop('disabled', true);
+                }
+            })
         })
     </script>
     <script>
@@ -214,6 +223,21 @@
                                     <div class="wizard-icon">
                                         <span class="svg-icon svg-icon-2x">
                                             <!--begin::Svg Icon | path:assets/media/svg/icons/General/User.svg-->
+                                            <i class="fas fa-user-tag"></i>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </div>
+                                    <div class="wizard-label">
+                                        <h3 class="wizard-title"> </h3>Objective &amp; Responsibility </h3>
+                                        <div class="wizard-desc">Role &amp; Responsibility</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wizard-step" data-wizard-type="step">
+                                <div class="wizard-wrapper">
+                                    <div class="wizard-icon">
+                                        <span class="svg-icon svg-icon-2x">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/General/User.svg-->
                                             <i class="fa fa-check-circle"></i>
                                             <!--end::Svg Icon-->
                                         </span>
@@ -229,7 +253,7 @@
                                     <div class="wizard-icon">
                                         <span class="svg-icon svg-icon-2x">
                                             <!--begin::Svg Icon | path:assets/media/svg/icons/General/User.svg-->
-                                            <i class="fa fa-user"></i>
+                                            <i class="fa fa-file-user"></i>
                                             <!--end::Svg Icon-->
                                         </span>
                                     </div>
@@ -303,72 +327,266 @@
                                     enctype="multipart/form-data" method="POST" id="kt_form">
                                     @csrf
                                     <!--begin: Wizard Step 0-->
-                                    <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
-                                        <h4 class="mb-10 font-weight-bold text-dark">Application Criteria</h4>
-                                        <div class="row">
+                                    <div class="card card-custom" data-wizard-type="step-content"
+                                        data-wizard-state="current">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h4 class="card-label font-weight-bold text-dark">Objectives &amp;
+                                                    Responsibility</h4>
+                                            </div>
+                                            <div class="card-toolbar">
+                                                <ul class="nav nav-tabs nav-bold nav-tabs-line">
+                                                    <li class="nav-item dropdown">
+                                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                                                            role="button" aria-haspopup="true"
+                                                            aria-expanded="false">Language</a>
+                                                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_en">
+                                                                English
+                                                            </a>
+                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_am">
+                                                                Amharic
+                                                            </a>
+                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_or">
+                                                                Afaan Oromoo
+                                                            </a>
+                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_afar">
+                                                                Afar
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div data-scroll="true" class="scroll scroll-pull"
+                                                    style="max-height:350px !important; overflow:auto;">
+                                                    <div class="tab-content mt-5" id="myTabContent">
+                                                        <div class="tab-pane fade show active" id="lang_en" role="tabpanel"
+                                                            aria-labelledby="lang_en">
+                                                            <h3>Objectives</h3>
+                                                            <p>
+                                                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                                                Laboriosam
+                                                                voluptates, obcaecati tempore asperiores nostrum ipsa eum
+                                                                recusandae
+                                                                dolorum eos. Itaque voluptatum iure est fugit sapiente quis
+                                                                quam
+                                                                odio
+                                                                officia mollitia vel quo cumque ipsa, maxime blanditiis
+                                                                minus,
+                                                                accusantium quas enim reprehenderit. Commodi placeat
+                                                                dignissimos
+                                                                sunt
+                                                                animi voluptates quidem quasi! Laborum, temporibus a!
+                                                                Excepturi
+                                                                ipsa,
+                                                                minus veniam numquam suscipit eligendi adipisci possimus
+                                                                quae
+                                                                dolore,
+                                                                voluptas facere, non odio velit molestias at quisquam?
+                                                                Cupiditate
+                                                                natus
+                                                                error laborum enim ea numquam laudantium dolores suscipit
+                                                                placeat
+                                                                illo.
+                                                                Consequatur officiis repellat, quam ex cupiditate excepturi
+                                                                deleniti
+                                                                distinctio sint architecto sequi, repellendus autem velit
+                                                                praesentium
+                                                                saepe?
+                                                            </p>
+                                                            <h3>Responsibilities</h3>
+                                                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                                                                Odit quam
+                                                                voluptatum porro est obcaecati! Nostrum labore inventore,
+                                                                quia
+                                                                recusandae dolor laboriosam aperiam aut molestiae facilis
+                                                                excepturi
+                                                                aliquam, fuga ipsam iste soluta quos consectetur
+                                                                reprehenderit
+                                                                mollitia
+                                                                est suscipit, dolores quasi? Deleniti provident nemo numquam
+                                                                vel ea
+                                                                sint
+                                                                totam, eveniet, beatae commodi odit sequi. Neque natus, enim
+                                                                nesciunt
+                                                                fugit aspernatur hic vero tempora quod earum harum
+                                                                reprehenderit
+                                                                dolores
+                                                                consequuntur magni provident rerum? Officiis exercitationem
+                                                                eius
+                                                                corrupti dolores voluptatum? Officiis nesciunt praesentium
+                                                                ipsa
+                                                                iusto
+                                                                amet ratione facilis. Soluta, dolorem! Quaerat atque neque
+                                                                repellat
+                                                                a
+                                                                earum molestias debitis, exercitationem ex hic eius.
+                                                                Repellat,
+                                                                tenetur.
+                                                            </p>
+                                                        </div>
+                                                        <div class="tab-pane fade" id="lang_am" role="tabpanel"
+                                                            aria-labelledby="lang_am">
+                                                            Tab content 2
+                                                        </div>
+                                                        <div class="tab-pane fade" id="lang_or" role="tabpanel"
+                                                            aria-labelledby="lang_or">
+                                                            Tab content 4
+                                                        </div>
+                                                        <div class="tab-pane fade" id="lang_afar" role="tabpanel"
+                                                            aria-labelledby="lang_afar">
+                                                            Tab content 5
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class=" card-footer p-0 pt-4 pl-4 pb-0">
+                                            <div class="form-group mb-0">
+                                                <label class="checkbox" id="agree_check_first_label">
+                                                    <input type="checkbox"
+                                                        {{ old('agree_check_first') == 'on' ? 'checked' : '' }}
+                                                        name="agree_check_first" id="agree_check_first"> I Accepted to above
+                                                    objectives and responsibilities
+                                                    <span>
+                                                    </span>
+                                                </label>
+                                                @error('agree_check_first')
+                                                    <div class="invalid-feedback d-block">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pb-5 card card-custom" data-wizard-type="step-content"
+                                        data-wizard-state="current">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h4 class="mb-10 font-weight-bold text-dark card-label">Application Criteria
+                                                </h4>
+                                            </div>
+                                            <div class="card-toolbar">
+                                                <ul class="nav nav-tabs nav-bold nav-tabs-line">
+                                                    <li class="nav-item dropdown">
+                                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                                                            role="button" aria-haspopup="true"
+                                                            aria-expanded="false">Language</a>
+                                                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_en_app">
+                                                                English
+                                                            </a>
+                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_am_app">
+                                                                Amharic
+                                                            </a>
+                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_or_app">
+                                                                Afaan Oromoo
+                                                            </a>
+                                                            <a class="dropdown-item" data-toggle="tab"
+                                                                href="#lang_afar_app">
+                                                                Afar
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
                                             <div data-scroll="true" class="scroll scroll-pull"
                                                 style="max-height:350px !important; overflow:auto;">
+                                                <div class="tab-content mt-5" id="myTabContent">
 
-                                                <p>
-                                                    የብሄራዊ በጎ ፈቃድ _ አገልግሎት ማህበረሰብ _ አገልግሎት ፕሮግራም ተሳታፊ ወጣቶች መመልመያ መስፈርቶች
-                                                    የብሄራዊ በጎ ፈቃድ ማህበረሰብ ልማት አገልግሎት ስልጠና በአገር አቀፍ ደረጃ በ10ሩ የክልል መስተዳድሮችና በ2ቱ
-                                                    የከተማ
-                                                    መስተዳድሮች የሚገኙ ወጣት የበጎ ፈቃደኞችን የሚያካትት ሲሆን ለዚህ የበጎ ፈቃድ ማህበረሰብ አገልግሎት ለመመዝገብ
-                                                    የሚያስፈልጉ መስፈርቶች የተመዝጋቢወችን ሙሉ ማንነት የሚያሳይ መጠይቅ እንዲኖረዉ ይፈለጋል
-                                                </p>
-                                                <div class="separator separator-solid"></div>
-                                                <div>
-                                                    <ol type="1" class='list'>
-                                                        <li> በአገር አቀፍ ደረጃ ከሚገኙ ህጋዊ የከፍተኛ የትምህርት ተቋማት የመጀመሪያ ድግሪና ከዚያ በላይ፤
-                                                        </li>
-                                                        <li> የ8ኛ ክፍል ብሄራዊ ፈተና ያጠናቀቁበትን ሰርተፍኬት ያለዉ/ያላት </li>
-                                                        <li> ዕድሜዉ ከ35 ዓመት ያልበለጠዉ/ያልበለጣት፤ </li>
-                                                        <li> ከሚኖርበት/ከምትኖርበት ቦታ ትክክለኛ እና ተመዝጋቢዉን የሚገልፅ የታደሰ መታወቂያ ያለዉ/ያላት
-                                                        </li>
-                                                        <li> ካለበት ማህበረሰብ ጥሩ ስነ-ምግባር ያለዉ/ያላት የስነ-ምግባር የህይወት ምስክርነት ማቅረብ
-                                                            የሚችል/የምትችል፤</li>
-                                                        <li> ከማንዉም አይነት ደባል ሱስ ነጻ የሆነ/ች </li>
-                                                        <li> ለድንበር የለሽ የበጎ ፈቃድ ማህበረሰብ አገልግሎት ራሱን ያዘጋጀና ቁርጠኛ የሆነ/ሆነች </li>
-                                                        <li> የበጎ ፈቃድ ማህበረሰብ አገልግሎ ፕሮግራም ላይ እምነት ያለዉ/ያላት! </li>
-                                                        <li> ከአገራችን እሴቶች መካከል የመስጠት የማካፈል እና ሰብዓዊነት የተላበስ ማንነት ያለዉ/ያላት፧
-                                                        </li>
-                                                        <li> የጤንነት ችግር የሌለበትና በየኛዉም አየር ንብረት ክፍል አካባቢ መሰልጠንና መስራት የሚችል/የምትችል
-                                                        </li>
-                                                        <li> ለሴት በጎ ፈቃድ ማህበረሰብ አገልግሎ ተመዝጋቢ ነፍሰ ጡር ያልሆነች ማሳሰቢያ </li>
-                                                    </ol>
-                                                </div>
-                                                <p>
-                                                    ከዚህ ቀደም በ3 ዙር ተመልምለዉ ለስልጠና የተመረጡ ግን ያልተሳተፉ በዚህ ዙር ተሳታፊ አይሆኑም!
-                                                    መረጃዎች ሲሞሉ ሙሉ በሙሉ fእንግሊዘኛ ቋንቋ ሆኖ የጠራ መሆን አለበት የበጎ ፈቃደኞች ማስረጃዎች በሶፍት ኮፒ
-                                                    ተዘጋጅተዉ
-                                                    መላክ ይኖርባቸዋል
-                                                </p>
-                                            </div>
-
-                                            <div class="mt-2">
-                                                <div class="form-group">
-                                                    <label class="checkbox">
-                                                        <input type="checkbox"
-                                                            {{ old('agree_check') == 'on' ? 'checked' : '' }}
-                                                            name="agree_check" id="agree_check">
-                                                        I Accepted all <a href="{{ route('terms') }}" target="_blank">
-                                                            terms of conditions </a>
-                                                        <span>
-
-                                                        </span>
-
-                                                    </label>
-                                                    @error('agree_check')
-                                                        <div class="invalid-feedback d-block">
-                                                            {{ $message }}
+                                                    <div class="tab-pane fade show active" id="lang_en_app" role="tabpanel"
+                                                        aria-labelledby="lang_en_app">
+                                                        Tab content 1
+                                                    </div>
+                                                    <div class="tab-pane fade" id="lang_am_app" role="tabpanel"
+                                                        aria-labelledby="lang_am_app">
+                                                        <p>
+                                                            የብሄራዊ በጎ ፈቃድ _ አገልግሎት ማህበረሰብ _ አገልግሎት ፕሮግራም ተሳታፊ ወጣቶች መመልመያ
+                                                            መስፈርቶች
+                                                            የብሄራዊ በጎ ፈቃድ ማህበረሰብ ልማት አገልግሎት ስልጠና በአገር አቀፍ ደረጃ በ10ሩ የክልል
+                                                            መስተዳድሮችና
+                                                            በ2ቱ
+                                                            የከተማ
+                                                            መስተዳድሮች የሚገኙ ወጣት የበጎ ፈቃደኞችን የሚያካትት ሲሆን ለዚህ የበጎ ፈቃድ ማህበረሰብ አገልግሎት
+                                                            ለመመዝገብ
+                                                            የሚያስፈልጉ መስፈርቶች የተመዝጋቢወችን ሙሉ ማንነት የሚያሳይ መጠይቅ እንዲኖረዉ ይፈለጋል
+                                                        </p>
+                                                        <div class="separator separator-solid"></div>
+                                                        <div>
+                                                            <ol type="1" class='list'>
+                                                                <li> በአገር አቀፍ ደረጃ ከሚገኙ ህጋዊ የከፍተኛ የትምህርት ተቋማት የመጀመሪያ ድግሪና ከዚያ
+                                                                    በላይ፤
+                                                                </li>
+                                                                <li> የ8ኛ ክፍል ብሄራዊ ፈተና ያጠናቀቁበትን ሰርተፍኬት ያለዉ/ያላት </li>
+                                                                <li> ዕድሜዉ ከ35 ዓመት ያልበለጠዉ/ያልበለጣት፤ </li>
+                                                                <li> ከሚኖርበት/ከምትኖርበት ቦታ ትክክለኛ እና ተመዝጋቢዉን የሚገልፅ የታደሰ መታወቂያ
+                                                                    ያለዉ/ያላት
+                                                                </li>
+                                                                <li> ካለበት ማህበረሰብ ጥሩ ስነ-ምግባር ያለዉ/ያላት የስነ-ምግባር የህይወት ምስክርነት
+                                                                    ማቅረብ
+                                                                    የሚችል/የምትችል፤</li>
+                                                                <li> ከማንዉም አይነት ደባል ሱስ ነጻ የሆነ/ች </li>
+                                                                <li> ለድንበር የለሽ የበጎ ፈቃድ ማህበረሰብ አገልግሎት ራሱን ያዘጋጀና ቁርጠኛ የሆነ/ሆነች
+                                                                </li>
+                                                                <li> የበጎ ፈቃድ ማህበረሰብ አገልግሎ ፕሮግራም ላይ እምነት ያለዉ/ያላት! </li>
+                                                                <li> ከአገራችን እሴቶች መካከል የመስጠት የማካፈል እና ሰብዓዊነት የተላበስ ማንነት
+                                                                    ያለዉ/ያላት፧
+                                                                </li>
+                                                                <li> የጤንነት ችግር የሌለበትና በየኛዉም አየር ንብረት ክፍል አካባቢ መሰልጠንና መስራት
+                                                                    የሚችል/የምትችል
+                                                                </li>
+                                                                <li> ለሴት በጎ ፈቃድ ማህበረሰብ አገልግሎ ተመዝጋቢ ነፍሰ ጡር ያልሆነች ማሳሰቢያ </li>
+                                                            </ol>
                                                         </div>
-                                                    @enderror
+                                                        <p>
+                                                            ከዚህ ቀደም በ3 ዙር ተመልምለዉ ለስልጠና የተመረጡ ግን ያልተሳተፉ በዚህ ዙር ተሳታፊ አይሆኑም!
+                                                            መረጃዎች ሲሞሉ ሙሉ በሙሉ fእንግሊዘኛ ቋንቋ ሆኖ የጠራ መሆን አለበት የበጎ ፈቃደኞች ማስረጃዎች
+                                                            በሶፍት
+                                                            ኮፒ
+                                                            ተዘጋጅተዉ
+                                                            መላክ ይኖርባቸዋል
+                                                        </p>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="lang_or_app" role="tabpanel"
+                                                        aria-labelledby="lang_or_app">
+                                                        Tab content 4
+                                                    </div>
+                                                    <div class="tab-pane fade" id="lang_afar_app" role="tabpanel"
+                                                        aria-labelledby="lang_afar_app">
+                                                        Tab content 5
+                                                    </div>
                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        <div class=" card-footer p-0 pt-4 pl-4 pb-0">
+                                            <div class="form-group mb-0">
+                                                <label class="checkbox" id="agree_check_label">
+                                                    <input type="checkbox"
+                                                        {{ old('agree_check') == 'on' ? 'checked' : '' }}
+                                                        name="agree_check" id="agree_check"> I Accepted </a>
+                                                    <a href="{{ route('terms') }}" target="_blank">
+                                                        terms and conditions
+                                                    </a>
+                                                    <span>
+                                                    </span>
+                                                </label>
+                                                @error('agree_check')
+                                                    <div class="invalid-feedback d-block">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
                                     <!--end: Wizard Step 0-->
-                                    <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
+                                    <div class="pb-5" data-wizard-type="step-content"
+                                        data-wizard-state="current">
                                         <h4 class="mb-10 font-weight-bold text-dark">Enter your Basic Details</h4>
                                         <div class="form-group row">
                                             <label class="col-xl-3 col-lg-3 col-form-label text-right">My Photo</label>
@@ -446,24 +664,26 @@
                                                     name.</span>
                                             </div>
                                             <!--end::Input-->
-                                            @if(false)
-                                            <div class="col-xl-6">
-                                                <div class="form-group">
-                                                    <label class="d-block">Disablity</label>
-                                                    <select name="disability" id="disability"
-                                                        class="@error('disability') is-invalid @enderror form-control form-control-lg">
-                                                        <option value="">Select</option>
-                                                        @foreach ($disabilities as $disable)
-                                                            <option value="{{ $disable->id }}">{{ $disable->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('disability')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
-                                                    <span class="form-text text-muted">Please select if any disability</span>
+                                            @if (false)
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label class="d-block">Disablity</label>
+                                                        <select name="disability" id="disability"
+                                                            class="@error('disability') is-invalid @enderror form-control form-control-lg">
+                                                            <option value="">Select</option>
+                                                            @foreach ($disabilities as $disable)
+                                                                <option value="{{ $disable->id }}">
+                                                                    {{ $disable->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('disability')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                        <span class="form-text text-muted">Please select if any
+                                                            disability</span>
+                                                    </div>
                                                 </div>
-                                            </div>
                                             @endif
                                         </div>
                                         <div class="row">

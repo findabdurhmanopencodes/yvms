@@ -61,6 +61,24 @@ var KTWizard2 = function () {
     }
 
     var initValidation = function () {
+        // Step 0
+        _validations.push(FormValidation.formValidation(
+            _formEl, {
+                fields: {
+                    agree_check_first: {
+                        validators: {
+                            notEmpty: {
+                                message: 'You must agree to above objective and responsibilites'
+                            }
+                        }
+                    },
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    bootstrap: new FormValidation.plugins.Bootstrap()
+                }
+            }
+        ));
         // Step 1
         _validations.push(FormValidation.formValidation(
             _formEl, {
