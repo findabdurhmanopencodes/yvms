@@ -77,9 +77,9 @@ class Volunteer extends Model
         return $this->hasOne(Status::class);
     }
 
-    public function approvedApplicants()
+    public function approvedApplicant()
     {
-        return $this->hasMany(ApprovedApplicant::class);
+        return $this->hasOne(ApprovedApplicant::class);
     }
 
     /**
@@ -91,4 +91,5 @@ class Volunteer extends Model
     {
         return $this->hasOne(VerifyVolunteer::class);
     }
+
 }
