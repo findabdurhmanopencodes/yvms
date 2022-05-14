@@ -6,14 +6,25 @@
             <div class="container">
                 <div class="d-flex align-items-stretch text-center flex-column py-2">
                     <div class="row">
-                        <div class="col-md-6">
+                       
+                        <div class="col-md-4">
                             <img src="{{ asset('img/peace_logo_max.png') }}" class="mx-auto" width="300" alt="">
                         </div>
-                        <div class="col-md-6 d-flex">
-                            <h4 style='font-family:serif !important;padding: 0;margin: 0; line-height: 1; color: #01afee;font-family: "Mercury", Sans-serif; font-size: 44px;font-weight: 100; align-self:center;'>
-                                National Volunteer Community Development Service Program
+
+                        <div class="col-md-4 d-flex">
+                            <h4 style='font-family:serif !important;padding: 0;margin: 0; line-height: 1; color: #01afee;font-family: "Mercury", Sans-serif; font-size: 25px;font-weight: 100; align-self:center;'>
+                                National Volunteer Community  Service Program<br>
+                                   ብሄራዊ የበጎ ፍቃድ የማህበረሰብ አገልግሎት ፕሮግራም
                             </h4>
                         </div>
+
+
+                        <div class="col-md-4 d-flex">
+                            <img src="{{ asset('img/peace_logo_max.png') }}" class="mx-auto" width="300" alt="">
+                        </div>
+
+
+
                     </div>
                     <!--begin::Heading-->
                 </div>
@@ -21,6 +32,7 @@
         </div>
         {{-- <img src="{{ asset('assets/media/logos/header.jpg') }}" class="col-md-10"/> --}}
     </div>
+
     <div class="row bg-blend-lighten">
         <div class="col-lg-6">
             <!--begin::Callout-->
