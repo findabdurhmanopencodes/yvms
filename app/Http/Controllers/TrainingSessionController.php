@@ -110,15 +110,15 @@ class TrainingSessionController extends Controller
         $arr = [];
         foreach ($regions as $reg) {
             if ($reg->status == 0) {
-                $sum+=$reg->qoutaInpercent;
-            }else{
+                $sum += $reg->qoutaInpercent;
+            } else {
                 array_push($arr, $reg);
             }
         }
 
         if ($arr) {
             $regs = [];
-            $division = $sum/sizeof($arr);
+            $division = $sum / sizeof($arr);
 
             foreach ($arr as $reg_new) {
                 $reg_new->qoutaInpercent = $reg_new->qoutaInpercent + $division;
@@ -134,15 +134,15 @@ class TrainingSessionController extends Controller
                 $arr_zon = [];
                 foreach ($region->zones as $zon) {
                     if ($zon->status == 0) {
-                        $sum_zon+=$zon->qoutaInpercent;
-                    }else{
+                        $sum_zon += $zon->qoutaInpercent;
+                    } else {
                         array_push($arr_zon, $zon);
                     }
                 }
 
                 if ($arr_zon) {
                     $zons = [];
-                    $division_zon = $sum_zon/sizeof($arr_zon);
+                    $division_zon = $sum_zon / sizeof($arr_zon);
 
                     foreach ($arr_zon as $zon_new) {
                         $zon_new->qoutaInpercent = $zon_new->qoutaInpercent + $division_zon;
@@ -168,14 +168,14 @@ class TrainingSessionController extends Controller
                                 $arr_wor = [];
                                 foreach ($zone->woredas as $wor) {
                                     if ($wor->status == 0) {
-                                        $sum_wor+=$wor->qoutaInpercent;
-                                    }else{
+                                        $sum_wor += $wor->qoutaInpercent;
+                                    } else {
                                         array_push($arr_wor, $wor);
                                     }
                                 }
                                 if ($arr_wor) {
                                     $wors = [];
-                                    $division_wor = $sum_wor/sizeof($arr_wor);
+                                    $division_wor = $sum_wor / sizeof($arr_wor);
 
                                     foreach ($arr_wor as $wor_new) {
                                         $wor_new->qoutaInpercent = $wor_new->qoutaInpercent + $division_wor;
@@ -291,15 +291,15 @@ class TrainingSessionController extends Controller
         $arr = [];
         foreach ($regions as $reg) {
             if ($reg->status == 0) {
-                $sum+=$reg->qoutaInpercent;
-            }else{
+                $sum += $reg->qoutaInpercent;
+            } else {
                 array_push($arr, $reg);
             }
         }
 
-        if($arr){
+        if ($arr) {
             $regs = [];
-            $division = $sum/sizeof($arr);
+            $division = $sum / sizeof($arr);
 
             foreach ($arr as $reg_new) {
                 $reg_new->qoutaInpercent = $reg_new->qoutaInpercent + $division;
@@ -322,15 +322,15 @@ class TrainingSessionController extends Controller
                 $arr_zon = [];
                 foreach ($region->zones as $zon) {
                     if ($zon->status == 0) {
-                        $sum_zon+=$zon->qoutaInpercent;
-                    }else{
+                        $sum_zon += $zon->qoutaInpercent;
+                    } else {
                         array_push($arr_zon, $zon);
                     }
                 }
 
                 if ($arr_zon) {
                     $zons = [];
-                    $division_zon = $sum_zon/sizeof($arr_zon);
+                    $division_zon = $sum_zon / sizeof($arr_zon);
 
                     foreach ($arr_zon as $zon_new) {
                         $zon_new->qoutaInpercent = $zon_new->qoutaInpercent + $division_zon;
@@ -359,15 +359,15 @@ class TrainingSessionController extends Controller
                                 $arr_wor = [];
                                 foreach ($zone->woredas as $wor) {
                                     if ($wor->status == 0) {
-                                        $sum_wor+=$wor->qoutaInpercent;
-                                    }else{
+                                        $sum_wor += $wor->qoutaInpercent;
+                                    } else {
                                         array_push($arr_wor, $wor);
                                     }
                                 }
 
                                 if ($arr_wor) {
                                     $wors = [];
-                                    $division_wor = $sum_wor/sizeof($arr_wor);
+                                    $division_wor = $sum_wor / sizeof($arr_wor);
 
                                     foreach ($arr_wor as $wor_new) {
                                         $wor_new->qoutaInpercent = $wor_new->qoutaInpercent + $division_wor;
@@ -430,7 +430,7 @@ class TrainingSessionController extends Controller
                     }
                 }
             }
-            }
+        }
         return redirect()->route('training_session.index')->with('message', 'Program updated successfully');
     }
 
@@ -572,5 +572,21 @@ class TrainingSessionController extends Controller
             }
         }
         return redirect()->route('applicant.verified', ['session' => $id])->with('message', 'Applicant approved successfully');
+    }
+    public function resetScreen($training_session_id)
+    {
+        foreach (Volunteer::where('training_session_id', $training_session_id)->get() as $volunteer) {
+
+            foreach (Status::all() as $status)
+
+                if ($volunteer->id == $status->volunteer_id) {
+
+                    Status::find($status->id)->update(['acceptance_status'=>1]);
+                }
+        }
+        ApprovedApplicant::truncate();
+
+       return redirect()->back();
+
     }
 }

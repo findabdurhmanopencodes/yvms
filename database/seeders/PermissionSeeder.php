@@ -116,8 +116,6 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'TrainingSession.edit']);
         Permission::create(['name'=>'TrainingSession.update']);
         Permission::create(['name'=>'TrainingSession.destroy']);
-        Permission::create(['name'=>'TrainingSession.update']);
-        Permission::create(['name'=>'TrainingSession.destroy']);  
         Permission::create(['name'=>'TrainingSession.show.quota']);
         Permission::create(['name'=>'TrainingSession.screen']);
 
@@ -137,7 +135,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'UserRegion.edit']);
         Permission::create(['name'=>'UserRegion.update']);
         Permission::create(['name'=>'UserRegion.destroy']);
-        
+
 
         Permission::create(['name'=>'Volunteer.index']);
         Permission::create(['name'=>'Volunteer.create']);
@@ -153,8 +151,8 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'Volunteer.verified.applicant']);
         Permission::create(['name'=>'Volunteer.selected']);
         Permission::create(['name'=>'Volunteer.verify.email']);
-        
-        
+
+
         Permission::create(['name'=>'User.index']);
         Permission::create(['name'=>'User.create']);
         Permission::create(['name'=>'User.store']);
