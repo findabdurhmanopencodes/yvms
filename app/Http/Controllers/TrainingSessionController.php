@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use League\CommonMark\Extension\SmartPunct\Quote;
 
 class TrainingSessionController extends Controller
 {
@@ -314,9 +315,12 @@ class TrainingSessionController extends Controller
             }
             $regions = $regs;
             $reg_sum = 0;
+            $check_sum_reg = 0;
+            $check_sum_zon = 0;
+            $check_sum_wor = 0;
             foreach ($regions as $key => $region) {
                 $qouta = new Qouta();
-                $region_validate = $qouta->where('training_session', $trainingSession->id)->where('qoutable_id', $region->id)->where('qoutable_type', 'App\Models\Region');
+                $region_validate = $qouta->where('training_session_id', $trainingSession->id)->where('quotable_id', $region->id)->where('quotable_type', 'App\Models\Region');
 
                 $sum_zon = 0;
                 $arr_zon = [];
@@ -342,8 +346,12 @@ class TrainingSessionController extends Controller
                         $qouta->training_session_id = $trainingSession->id;
                         $reg_sum = intval($request->get('quantity') * $reg_qouta) * sizeof($regions);
                         $check_reg_qua = ($request->get('quantity') - $reg_sum) - $key;
-                        if ($check_reg_qua > 0) {
+                        $check_decimal = ($request->get('quantity')*$reg_qouta) - floor($request->get('quantity')*$reg_qouta);
+                        $check_sum_reg+=$check_decimal;
+                        // dump($check_sum_ch);
+                        if ($check_sum_reg >= 1) {
                             $qouta->quantity = intval($request->get('quantity') * $reg_qouta) + 1;
+                            $check_sum_reg = $check_sum_reg - 1;
                             $region->quotas()->save($qouta);
                         } else {
                             $qouta->quantity = intval($request->get('quantity') * $reg_qouta);
@@ -381,12 +389,19 @@ class TrainingSessionController extends Controller
                                         $zone_sum = intval($zone_quantity * $zone_qouta) * sizeof($zons);
                                         // dump($zone_quantity*$zone_qouta);
                                         $check_zone_qua = $zone_quantity - $zone_sum;
+                                        // dump($zone_quantity*$zone_qouta);
+
+                                        $check_decimal_zon = ($zone_quantity*$zone_qouta) - floor($zone_quantity*$zone_qouta);
+                                        // dump($check_decimal_zon);
+
+                                        $check_sum_zon+=$check_decimal_zon;
         
                                         $check_zone_check = $check_zone_qua - $keyzone;
         
                                         // dump($zone_quantity - $zone_sum);
-                                        if ($check_zone_check > 0) {
+                                        if ($check_sum_zon >= 1) {
                                             $qouta->quantity = intval($zone_quantity * $zone_qouta) + 1;
+                                            $check_sum_zon = $check_sum_zon - 1;
                                             $zone->quotas()->save($qouta);
                                         } else {
                                             $qouta->quantity = intval($zone_quantity * $zone_qouta);
@@ -406,9 +421,16 @@ class TrainingSessionController extends Controller
                                                     $check_woreda_qua = $woreda_quantity - $woreda_sum;
         
                                                     $check_woreda_check = $check_woreda_qua - $keyworeda;
+
+                                                    $check_decimal_wor = ($woreda_quantity*$woreda_qouta) - floor($woreda_quantity*$woreda_qouta);
+                                                    
+
+
+                                                    $check_sum_wor+=$check_decimal_wor;
         
-                                                    if ($check_woreda_check > 0) {
+                                                    if ($check_sum_wor >= 1) {
                                                         $qouta->quantity = intval($woreda_quantity * $woreda_qouta) + 1;
+                                                        $check_sum_wor = $check_sum_wor - 1;
                                                         $woreda->quotas()->save($qouta);
                                                     } else {
                                                         $qouta->quantity = intval($woreda_quantity * $woreda_qouta);
@@ -430,6 +452,33 @@ class TrainingSessionController extends Controller
                     }
                 }
             }
+            // dd('dfgfd');
+            }
+            $qouta_reg = Qouta::where('training_session_id',$trainingSession->id)->where('quotable_type',Region::class)->get();
+            $qouta_zon = Qouta::where('training_session_id',$trainingSession->id)->where('quotable_type',Zone::class)->get();
+            $qouta_wor = Qouta::where('training_session_id',$trainingSession->id)->where('quotable_type',Woreda::class)->get();
+            // dd($qouta_reg);
+            $regional_qouta = 0;
+            $zonal_qouta = 0;
+            $woredal_qoutal = 0;
+            foreach ($qouta_reg as $key => $reg_qou) {
+                $regional_qouta+=$reg_qou->quantity;
+            }
+            // dd($qouta_reg);
+            if ($regional_qouta < $request->get('quantity')) {
+                $qouta_reg[0]->update(['quantity', $qouta_reg[0]->quantity+=($request->get('quantity') - $regional_qouta)]);
+                foreach ($qouta_zon as $key => $zon_qou) {
+                    $zonal_qouta+=$zon_qou->quantity;
+                }
+                if ($zonal_qouta < $request->get('quantity')) {
+                    $qouta_zon[0]->update(['quantity', $qouta_zon[0]->quantity+=($request->get('quantity') - $zonal_qouta)]);
+                    foreach ($qouta_wor as $key => $wor_qou) {
+                        $woredal_qoutal+=$wor_qou->quantity;
+                    }
+                    if ($woredal_qoutal < $request->get('quantity')) {
+                        $qouta_wor[0]->update(['quantity', $qouta_wor[0]->quantity+=($request->get('quantity') - $woredal_qoutal)]);
+                    }
+                }
             }
         return redirect()->route('training_session.index')->with('message', 'Program updated successfully');
     }
@@ -497,7 +546,7 @@ class TrainingSessionController extends Controller
                 } else {
                     // dump('false');
                     sort($group);
-                    $new_arr = array_slice($group, 0, $quota_woreda, true);
+                    $new_arr = array_slice($group, 0, $quota_woreda);
                     foreach ($new_arr as $key => $value) {
                         array_push($accepted_arr, $value);
                     }
@@ -506,14 +555,13 @@ class TrainingSessionController extends Controller
 
             foreach ($grouped_array_female as $key => $group) {
                 $quota_woreda = Qouta::where('training_session_id', $id)->where('quotable_id', $key)->where('quotable_type', 'App\Models\Woreda')->get()[0]->quantity;
-
                 if ($quota_woreda >= sizeof($group)) {
                     foreach ($group as $key => $vol) {
                         array_push($accepted_arr, $vol);
                     }
                 } else {
                     sort($group);
-                    $new_arr = array_slice($group, 0, $quota_woreda, true);
+                    $new_arr = array_slice($group, 0, $quota_woreda);
                     foreach ($new_arr as $key => $value) {
                         array_push($accepted_arr, $value);
                     }
@@ -522,6 +570,9 @@ class TrainingSessionController extends Controller
 
             $a = [];
             $b = [];
+            $left_arr = [];
+            $group_reg = [];
+            $group_zon = [];
 
             $train_session = TrainingSession::where('id', $id)->get()[0]->quantity;
 
@@ -532,15 +583,88 @@ class TrainingSessionController extends Controller
                     array_push($a, $value);
                 }
             } else if (sizeof($accepted_arr) < $train_session) {
-                $dif_arr = $train_session - sizeof($accepted_arr);
-                $merge_arr = array_diff($arr, $accepted_arr);
-                foreach ($merge_arr as $value) {
-                    array_push($b, $value);
+                sort($accepted_arr);
+                foreach ($accepted_arr as $key => $value) {
+                    $group_reg[$value['woreda_id']][] = $value;
                 }
-                sort($b);
-                $new_slice_merge_arr = array_slice($b, 0, $dif_arr, true);
-                $merged_array = array_merge($accepted_arr, $new_slice_merge_arr);
-                foreach ($merged_array as $key => $value) {
+
+                foreach ($group_reg as $key => $val) {
+                    $wore_quantity = Qouta::where('training_session_id', $id)->where('quotable_type',Woreda::class)->where('quotable_id',$key)->get()[0]->quantity;
+
+                    if (sizeof($val) < $wore_quantity) {
+                        foreach (Woreda::where('id',$key)->get()[0]->zone->woredas as $key => $zone) {
+                            foreach ($zone->applicants as $key => $zon_app) {
+                                
+                                if (!in_array($zon_app, $accepted_arr)) {
+                                    array_push($accepted_arr, $zon_app);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                foreach ($accepted_arr as $key => $value) {
+                    $group_zon[$value['woreda_id']][] = $value;
+                }
+
+                foreach ($group_zon as $key => $val) {
+                    $wore_quantity = Qouta::where('training_session_id', $id)->where('quotable_type',Woreda::class)->where('quotable_id',$key)->get()[0]->quantity;
+
+                    if (sizeof($val) < $wore_quantity) {
+                        foreach (Woreda::where('id',$key)->get()[0]->zone->region->zones as $key => $zone) {
+                            foreach ($zone->woredas as $key => $wore) {
+                                foreach ($wore->applicants as $key => $wor_app) {
+
+                                    if (!in_array($wor_app, $accepted_arr)) {
+                                        array_push($accepted_arr, $wor_app);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                if (sizeof($accepted_arr) < $train_session) {
+                    $no_volunteer = Volunteer::all();
+                    if ($train_session <= count($no_volunteer)) {
+                        $dif_arr = $train_session - sizeof($accepted_arr);
+                        $merge_arr = array_diff($arr, $accepted_arr);
+
+                        foreach ($merge_arr as $value) {
+                            array_push($b, $value);
+                        }
+                        sort($b);
+                        $new_slice_merge_arr = array_slice($b, 0, $dif_arr);
+                        $merged_array = array_merge($accepted_arr, $new_slice_merge_arr);
+
+                        foreach ($merged_array as $key => $value) {
+                            array_push($a, $value);
+                        }
+                    }else{
+                        foreach ($accepted_arr as $key => $value) {
+                            array_push($a, $value);
+                        }
+                    }
+                }
+
+                elseif(sizeof($accepted_arr) == $train_session){
+                    foreach ($accepted_arr as $key => $value) {
+                        array_push($a, $value);
+                    }
+                }else{
+                    sort($accepted_arr);
+                    $new_slice_arr = array_slice($accepted_arr, 0, $train_session);
+                    foreach ($new_slice_arr as $key => $value) {
+                        array_push($a, $value);
+                    }
+                }
+
+                // foreach ($variable as $key => $value) {
+                //     # code...
+                // }
+
+                foreach ($accepted_arr as $key => $value) {
                     array_push($a, $value);
                 }
             } else {
@@ -549,17 +673,11 @@ class TrainingSessionController extends Controller
                 }
             }
             $approved_applicants = ApprovedApplicant::where('training_session_id', $id)->get();
-            // dd($a);
-            // if ($approved_applicants->count() < $train_session) {
-            //     dump('yes');
-            // }
-            // else{
-            //     dump('no');
-            // }
-            // dd('sdfsd');
+
             foreach ($approved_applicants as $key => $app_vol) {
                 $app_vol->delete();
             }
+
             foreach ($a as $key => $accepted) {
                 $approved_applicant = new ApprovedApplicant();
                 $status = Status::where('volunteer_id', $accepted->id)->get()[0];
