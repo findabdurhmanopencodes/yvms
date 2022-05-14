@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Andegna\DateTimeFactory;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
@@ -41,10 +42,10 @@ class StoreVolunteerRequest extends FormRequest
      */
     public function rules()
     {
-        $maxGraduationYear = Carbon::now()->subYear(1)->year;
-        $minGraduationYear = Carbon::now()->subYear(35)->year;
-        // dd($minGraduationYear);
-        // dd($maxGraduationYear);
+        $maxGraduationYear = Carbon::now()->subYear(0);
+        $minGraduationYear = Carbon::now()->subYear(35);
+        $maxGraduationYear = DateTimeFactory::fromDateTime($maxGraduationYear)->format('Y');
+        $minGraduationYear = DateTimeFactory::fromDateTime($minGraduationYear)->format('Y');
         return [
             'agree_check' => ['required', 'accepted'],
             //first wizard validation
@@ -53,7 +54,7 @@ class StoreVolunteerRequest extends FormRequest
             'first_name' => ['required', 'string', 'min:2', 'max:50'],
             'father_name' => ['required', 'string', 'min:2', 'max:50'],
             'grand_father_name' => ['required', 'string', 'min:2', 'max:50'],
-            'disability' => ['sometimes',],
+            // 'disability' => ['sometimes',],
             'dob' => ['required', 'date_format:d/m/Y'],
             'gender' => ['required'],
             'password' => ['required', 'confirmed', Password::defaults()],

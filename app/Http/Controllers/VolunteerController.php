@@ -197,13 +197,13 @@ class VolunteerController extends Controller
         $volunteerData = $request->validated();
         $woreda_id = $volunteerData['woreda'];
         $field_of_study_id = $volunteerData['field_of_study'];
-        $disablity_id = $volunteerData['disability'];
+        // $disablity_id = $volunteerData['disability'];
         $volunteerData['woreda_id'] = $woreda_id;
         $volunteerData['field_of_study_id'] = $field_of_study_id;
-        $volunteerData['disablity_id'] = $disablity_id;
+        // $volunteerData['disablity_id'] = $disablity_id;
         $volunteerData['dob'] = $dob_GC;
         $volunteerData['password'] = Hash::make($volunteerData['password']);
-        unset($volunteerData['agree_check'], $volunteerData['disability'], $volunteerData['field_of_study'], $volunteerData['region'], $volunteerData['woreda'], $volunteerData['zone']);
+        unset($volunteerData['agree_check'], $volunteerData['field_of_study'], $volunteerData['region'], $volunteerData['woreda'], $volunteerData['zone']);
 
         if (!$request->photo->isValid()) {
             return ValidationException::withMessages(['photo' => 'Unable to upload photo please retry']);
@@ -249,9 +249,9 @@ class VolunteerController extends Controller
             }
             $volunteerData['non_pregnant_validation_document'] = FileController::fileUpload($request->non_pregnant_validation_document)->id;
         }
-        if (!isset($volunteerData['disability'])) {
-            unset($volunteerData['disability']);
-        }
+        // if (!isset($volunteerData['disability'])) {
+        //     unset($volunteerData['disability']);
+        // }
         // unset((isset($volunteerData['disability'])?$volunteerData['disability']:null));
         $volunteerData['training_session_id'] = $availableSession[0]->id;
         $volunteer = Volunteer::create($volunteerData);

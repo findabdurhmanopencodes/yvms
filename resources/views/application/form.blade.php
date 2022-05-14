@@ -28,8 +28,8 @@
                 todayHighlight: true,
                 viewMode: "years",
                 minViewMode: "years",
-                startDate: '{{ Carbon\Carbon::now()->subYears(35)->format("Y") }}',
-                endDate: '{{ Carbon\Carbon::now()->subYears(1)->format("Y") }}',
+                startDate: '{{ Andegna\DateTimeFactory::fromDateTime(Carbon\Carbon::now()->subYear(35))->format('Y') }}',
+                endDate: '{{ Andegna\DateTimeFactory::fromDateTime(Carbon\Carbon::now()->subYear(0))->format('Y') }}',
                 autoclose: true //to close picker once year is selected
             });
             $('#agree_check').on('click', function() {
@@ -165,7 +165,7 @@
         $(document).ready(function() {
                     @if (old('region'))
                         $("#zone").html('');
-                        var oldZone = {{ old('zone') }};
+                        var oldZone = '{{ old('zone') }}';
                         $.ajax({
                                 url: "/api/region/" + oldZone + "/zone",
                                 type: "GET",
@@ -178,91 +178,96 @@
                                     // $('#zone').html(
                                     // '<option value="">Select Zone</option>');
                                     $.each(result.data, function(key, value) {
-                                            $("#zone").append('<option ' + oldZone + '==' + value.id + '
-                                                value = "' + value
-                                                .id + '">
-                                                ' +
-                                                value.name + ' < /
-                                                option > ');
-                                            }); $('#woreda').html(
-                                            '<option value="">Select Woreda</option>');
-                                    }
-                                });
-                        @endif
-                        @if (old('woreda'))
-                            $("#woreda").html('');
-                            $('#woreda').html('<option value="">Select Woreda</option>');
-                            var oldZone = {{ old('zone') }};
-                            var oldWoreda = {{ old('woreda') }};
-                            $.ajax({
-                                    url: "/api/zone/" + oldZone + "/woreda",
-                                    type: "GET",
-                                    data: {
-                                        _token: '{{ csrf_token() }}'
-                                    },
-                                    dataType: 'json',
-                                    success: function(result) {
-                                        $.each(result.data, function(key, value) {
-                                                var isSelected = value.id == oldWoreda ? 'selected' : '';
-                                                $("#woreda").append('<option ' + isSelected + '
-                                                    value = "' + value
-                                                    .id + '">
-                                                    ' +
-                                                    value.name + ' < /
-                                                    option > ');
-                                                });
+                                            // $("#zone").append('<option '+(oldZone==value.id ?'selected':' ') + '
+                                            //     value = "' + value
+                                            //     .id + '">
+                                            //     ' +
+                                            //     value.name + ' < /
+                                            //     option > ');
+                                            // });
+                                            $('#woreda').html(
+                                                '<option value="">Select Woreda</option>');
                                         }
                                     });
                             @endif
-                            $('#region').on('change', function() {
-                                var itemId = this.value;
-                                var regionName = $("#region option:selected").text();
-                                regionName = regionName.trim();
-                                // $('#payment_service_name').text(regionName);
-                                $("#zone").html('');
-                                $.ajax({
-                                    url: "/api/region/" + itemId + "/zone",
-                                    type: "GET",
-                                    data: {
-                                        service_id: itemId,
-                                        _token: '{{ csrf_token() }}'
-                                    },
-                                    dataType: 'json',
-                                    success: function(result) {
-                                        $('#zone').html(
-                                            '<option value="">Select Zone</option>');
-                                        $.each(result.data, function(key, value) {
-                                            $("#zone").append('<option value="' + value
-                                                .id + '">' + value.name + '</option>');
-                                        });
-                                        $('#woreda').html(
-                                            '<option value="">Select Woreda</option>');
-                                    }
-                                });
-                            });
-                            $('#zone').on('change', function() {
-                                var itemId = this.value;
-                                var zoneName = $("#zone option:selected").text();
-                                zoneName = zoneName.trim();
+                            @if (old('woreda'))
                                 $("#woreda").html('');
+                                $('#woreda').html('<option value="">Select Woreda</option>');
+                                var oldZone = {{ old('zone') }};
+                                var oldWoreda = {{ old('woreda') }};
                                 $.ajax({
-                                    url: "/api/zone/" + itemId + "/woreda",
-                                    type: "GET",
-                                    data: {
-                                        _token: '{{ csrf_token() }}'
-                                    },
-                                    dataType: 'json',
-                                    success: function(result) {
-                                        $('#woreda').html(
-                                            '<option value="">Select Woreda</option>');
-                                        $.each(result.data, function(key, value) {
-                                            $("#woreda").append('<option value="' + value
-                                                .id + '">' + value.name + '</option>');
+                                        url: "/api/zone/" + oldZone + "/woreda",
+                                        type: "GET",
+                                        data: {
+                                            _token: '{{ csrf_token() }}'
+                                        },
+                                        dataType: 'json',
+                                        success: function(result) {
+                                            $.each(result.data, function(key, value) {
+                                                    var isSelected = value.id == oldWoreda ? 'selected' :
+                                                    '';
+                                                    $("#woreda").append('<option ' + isSelected + '
+                                                        value = "' + value
+                                                        .id + '">
+                                                        ' +
+                                                        value.name + ' < /
+                                                        option > ');
+                                                    });
+                                            }
                                         });
-                                    }
+                                @endif
+                                $('#region').on('change', function() {
+                                    var itemId = this.value;
+                                    var regionName = $("#region option:selected").text();
+                                    regionName = regionName.trim();
+                                    // $('#payment_service_name').text(regionName);
+                                    $("#zone").html('');
+                                    $.ajax({
+                                        url: "/api/region/" + itemId + "/zone",
+                                        type: "GET",
+                                        data: {
+                                            service_id: itemId,
+                                            _token: '{{ csrf_token() }}'
+                                        },
+                                        dataType: 'json',
+                                        success: function(result) {
+                                            $('#zone').html(
+                                                '<option value="">Select Zone</option>');
+                                            $.each(result.data, function(key, value) {
+                                                $("#zone").append('<option value="' + value
+                                                    .id + '">' + value.name +
+                                                    '</option>');
+                                            });
+                                            $('#woreda').html(
+                                                '<option value="">Select Woreda</option>');
+                                        }
+                                    });
+                                });
+                                $('#zone').on('change', function() {
+                                    var itemId = this.value;
+                                    var zoneName = $("#zone option:selected").text();
+                                    zoneName = zoneName.trim();
+                                    $("#woreda").html('');
+                                    $.ajax({
+                                        url: "/api/zone/" + itemId + "/woreda",
+                                        type: "GET",
+                                        data: {
+                                            _token: '{{ csrf_token() }}'
+                                        },
+                                        dataType: 'json',
+                                        success: function(result) {
+                                            $('#woreda').html(
+                                                '<option value="">Select Woreda</option>');
+                                            $.each(result.data, function(key, value) {
+                                                $("#woreda").append('<option value="' +
+                                                    value
+                                                    .id + '">' + value.name +
+                                                    '</option>');
+                                            });
+                                        }
+                                    });
                                 });
                             });
-                        });
     </script>
     <script>
         $(function() {
