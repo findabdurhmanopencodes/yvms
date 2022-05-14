@@ -23,6 +23,6 @@ class TraininingCenter extends Model
 
     public function capacities()
     {
-        return $this->hasMany(TrainingCenterCapacity::class);
+        return $this->hasMany(TrainingCenterCapacity::class,'trainining_center_id', 'id');
     }
 }

@@ -45,6 +45,15 @@ class DashboardController extends Controller
         $regionalQuotas['code'] = collect(DB::select("SELECT q.quantity , r.name FROM `qoutas` q LEFT JOIN regions r ON q.quotable_id = r.id WHERE q.training_session_id = $ts->id AND q.quotable_type = 'App\Models\Region'"))->pluck('name')->toArray();
         $regionalQuotas['quota'] = collect(DB::select("SELECT q.quantity, r.code FROM `qoutas` q LEFT JOIN regions r ON q.quotable_id = r.id WHERE q.training_session_id = $ts->id AND q.quotable_type = 'App\Models\Region'"))->pluck('quantity')->toArray();
         // dd($regionalQuotas);
+
+        // $regionalAllowedQuota['quota'] = collect(DB::select("SELECT q.quantity, r.name FROM `qoutas` q LEFT JOIN regions r ON q.quotable_id = r.id WHERE q.training_session_id = $ts->id AND q.quotable_type = 'App\Models\Region'"))->pluck('quantity')->toArray();
+        $regionalAllowedQuota = DB::select("SELECT r.name as x, q.quantity as y FROM `qoutas` q LEFT JOIN `regions` r ON q.quotable_id = r.id WHERE  q.training_session_id = $ts->id AND q.quotable_type = 'App\Models\Region'");
+        $regionalApplied = DB::select("SELECT r.name as x, COUNT(v.id) as y FROM volunteers v LEFT JOIN woredas w ON v.woreda_id = w.id LEFT JOIN zones z ON w.zone_id = z.id LEFT JOIN regions r ON z.region_id = r.id WHERE v.training_session_id = $ts->id GROUP BY r.id");
+        $placementRegionalContribution = DB::select("SELECT r.code as x, COUNT(tp.approved_applicant_id) as y FROM `training_placements` tp LEFT JOIN training_center_capacities tcc ON tp.training_center_capacity_id = tcc.id LEFT JOIN trainining_centers tc ON tcc.trainining_center_id = tc.id LEFT JOIN zones z ON tc.zone_id = z.id LEFT JOIN regions r ON z.region_id = r.id WHERE tp.training_session_id = $ts->id GROUP BY r.id");
+
+        $regionalQoutaAppliedPlaced =  ['applied' => $regionalApplied, 'quota' => $regionalAllowedQuota, 'placed' => $placementRegionalContribution];
+        // dd($regionalApplied);
+
         return view('dashboard', compact(
             'users',
             'regions',
@@ -55,7 +64,8 @@ class DashboardController extends Controller
             'trCenters',
             'regionalQuotas',
             'regionalContribution',
-            'trainingCentersCapacity'
+            'trainingCentersCapacity',
+            'regionalQoutaAppliedPlaced'
         ));
     }
 
@@ -63,8 +73,6 @@ class DashboardController extends Controller
     {
         $ts = TrainingSession::availableSession()->first();
         $contr = collect(DB::select("SELECT r.name as x, COUNT(tp.approved_applicant_id) as y FROM `training_placements` tp LEFT JOIN approved_applicants app ON tp.approved_applicant_id = app.id LEFT JOIN volunteers vl ON app.volunteer_id = vl.id LEFT JOIN woredas w ON vl.woreda_id = w.id LEFT JOIN zones z ON w.zone_id = z.id LEFT JOIN regions r ON z.region_id = r.id LEFT JOIN training_center_capacities tcc ON tp.training_center_capacity_id = tcc.id LEFT JOIN trainining_centers tc ON tcc.trainining_center_id = tc.id WHERE tp.training_session_id = $ts->id AND tc.id = $trainingCenterId GROUP BY r.id"));
-        $contribution['code'] = $contr->pluck('name')->toArray();
-        $contribution['contribution'] = $contr->pluck('contribution')->toArray();
 
         return $contr;
     }

@@ -13,7 +13,7 @@ var KTWizard2 = function () {
         // Initialize form wizard
         _wizard = new KTWizard(_wizardEl, {
             startStep: 1, // initial active step number
-            clickableSteps: false // to make steps clickable this set value true and add data-wizard-clickable="true" in HTML for class="wizard" element
+            clickableSteps: true // to make steps clickable this set value true and add data-wizard-clickable="true" in HTML for class="wizard" element
         });
         $('#submit_apply_button').on('click', function () {
             _validations[4].validate().then(function (status) {
@@ -61,6 +61,24 @@ var KTWizard2 = function () {
     }
 
     var initValidation = function () {
+        // Step 0
+        _validations.push(FormValidation.formValidation(
+            _formEl, {
+                fields: {
+                    agree_check_first: {
+                        validators: {
+                            notEmpty: {
+                                message: 'You must agree to above objective and responsibilites'
+                            }
+                        }
+                    },
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    bootstrap: new FormValidation.plugins.Bootstrap()
+                }
+            }
+        ));
         // Step 1
         _validations.push(FormValidation.formValidation(
             _formEl, {

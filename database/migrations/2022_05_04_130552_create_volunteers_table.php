@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('contact_phone');
             $table->float('gpa');
             $table->string('password');
+            $table->integer('graduation_date')->nullable();
             $table->foreignIdFor(File::class,'photo')->nullable();
             $table->foreignIdFor(File::class,'bsc_document')->nullable();
             $table->foreignIdFor(File::class,'msc_document')->nullable();

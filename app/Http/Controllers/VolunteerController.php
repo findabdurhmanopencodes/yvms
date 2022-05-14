@@ -13,6 +13,7 @@ use App\Models\Disablity;
 use App\Models\EducationalLevel;
 use App\Models\FeildOfStudy;
 use App\Models\File;
+use App\Models\Qouta;
 use App\Models\Region;
 use App\Models\Status;
 use App\Models\TrainingSession;
@@ -49,6 +50,12 @@ class VolunteerController extends Controller
         // }
         // dd('dsf');
         $applicants = Volunteer::doesntHave('status')->where('training_session_id',$session_id);
+
+
+        // foreach(Volunteer::all() as $applicant){
+        //             Status::create(['volunteer_id'=>$applicant->id,'acceptance_status'=>1]);
+        // }
+        // dd('done');
         // dd($applicants->get());
         if ($request->has('filter')) {
             $first_name = $request->get('first_name');
@@ -206,13 +213,13 @@ class VolunteerController extends Controller
         $volunteerData = $request->validated();
         $woreda_id = $volunteerData['woreda'];
         $field_of_study_id = $volunteerData['field_of_study'];
-        $disablity_id = $volunteerData['disability'];
+        // $disablity_id = $volunteerData['disability'];
         $volunteerData['woreda_id'] = $woreda_id;
         $volunteerData['field_of_study_id'] = $field_of_study_id;
-        $volunteerData['disablity_id'] = $disablity_id;
+        // $volunteerData['disablity_id'] = $disablity_id;
         $volunteerData['dob'] = $dob_GC;
         $volunteerData['password'] = Hash::make($volunteerData['password']);
-        unset($volunteerData['agree_check'], $volunteerData['disability'], $volunteerData['field_of_study'], $volunteerData['region'], $volunteerData['woreda'], $volunteerData['zone']);
+        unset($volunteerData['agree_check'], $volunteerData['field_of_study'], $volunteerData['region'], $volunteerData['woreda'], $volunteerData['zone']);
 
         if (!$request->photo->isValid()) {
             return ValidationException::withMessages(['photo' => 'Unable to upload photo please retry']);
@@ -258,9 +265,9 @@ class VolunteerController extends Controller
             }
             $volunteerData['non_pregnant_validation_document'] = FileController::fileUpload($request->non_pregnant_validation_document)->id;
         }
-        if (!isset($volunteerData['disability'])) {
-            unset($volunteerData['disability']);
-        }
+        // if (!isset($volunteerData['disability'])) {
+        //     unset($volunteerData['disability']);
+        // }
         // unset((isset($volunteerData['disability'])?$volunteerData['disability']:null));
         $volunteerData['training_session_id'] = $availableSession[0]->id;
         $volunteer = Volunteer::create($volunteerData);
@@ -302,12 +309,10 @@ class VolunteerController extends Controller
     }
     public function selected(Request $request, $session_id)
     {
-        $applicants=  Volunteer::whereRelation('status','acceptance_status',3)->where('training_session_id',$session_id);
+        $applicants=  Volunteer::has('approvedApplicants')->where('training_session_id',$session_id);
         return view('volunter.selected_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($session_id)]);
         $applicants = Volunteer::whereRelation('status', 'acceptance_status', 1);
-
     }
-
     protected function verifyEmail($token)
     {
         $verifyVolunteer = VerifyVolunteer::where('token', $token)->first();
