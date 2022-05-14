@@ -28,12 +28,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call([
-        //     // PermissionSeeder::class,
-        //     RoleSeeder::class,
-        //     BaseSeeder::class,
+        $this->call([
+            PermissionSeeder::class,
+            RoleSeeder::class,
+            // BaseSeeder::class,
         //     // FakeDataSeeder::class,
-        // ]);
+        ]);
 
         User::create(
             [

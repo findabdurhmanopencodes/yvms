@@ -16,7 +16,8 @@ class Status extends Model
     }
     public static $status = [
         0 => 'Pending',
-        1 => 'Accepted',
+        1 => 'Verified',
         2 => 'Rejected',
+        2 => 'Selected',
     ];
 }

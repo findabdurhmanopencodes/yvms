@@ -9,7 +9,10 @@ use App\Models\Region;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\Woreda;
+use App\Models\Zone;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Symfony\Component\Console\Input\Input;
 
 class TrainingPlacementController extends Controller
 {
@@ -18,9 +21,36 @@ class TrainingPlacementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $q = TrainingPlacement::query()->where('training_placements.training_session_id', TrainingSession::availableSession()->first()->id);
+
+
+        if ($request->get('training_center') != null) {
+            $q->whereHas('trainingCenterCapacity.trainingCenter', function ($query) use ($request) {
+                $query->where('id', $request->get('training_center'));
+            });
+        }
+        if ($request->get('region') != null) {
+            $q->whereHas('approvedApplicant.volunteer.woreda.zone.region', function ($query) use ($request) {
+                $query->where('id', $request->get('region'));
+            });
+        }
+        if ($request->get('zone') != null) {
+            $q->whereHas('approvedApplicant.volunteer.woreda.zone', function ($query) use ($request) {
+                $query->where('id', $request->get('zone'));
+            });
+        }
+        if ($request->get('woreda') != null) {
+            $q->whereHas('approvedApplicant.volunteer.woreda', function ($query) use ($request) {
+                $query->where('id', $request->get('woreda'));
+            });
+        }
+
+
+
+        $placedVolunteers = $q->paginate(10);
+        return view('placement.index', ['placedVolunteers' => $placedVolunteers, 'zones' => Zone::all(), 'woredas' => Woreda::all(), 'regions' => Region::all(), 'training_centers' => TraininingCenter::all()]);
     }
 
     /**

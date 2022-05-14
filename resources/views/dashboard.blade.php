@@ -154,7 +154,7 @@
         <!--end::Card-->
         <div class="col-lg-6">
             <!--begin::Card-->
-            <div class="card card-custom gutter-b" style="min-height: 500px;">
+            <div class="card card-custom gutter-b" style="min-height: 550px;">
                 <div class="card-header">
                     <div class="card-title">
                         <h3 class="card-label"> Regional Quotas</h3>
@@ -162,7 +162,7 @@
                 </div>
                 <div class="card-body" style="position: relative;">
                     <!--begin::Chart-->
-                    <div id="chart_12" style="min-height: 400px;">
+                    <div id="chart_12" style="min-height: 450px;">
 
                     </div>
                 </div>
@@ -183,7 +183,14 @@
                 <!--begin::Header-->
                 <div class="card-header h-auto">
                     <div class="card-title py-5">
-                        <h3 class="card-label">National Intake Trend</h3>
+                        <h3 class="card-label">Regional Contribution to Training Center </h3>
+                        <form action="" style="width: 100%;" >
+                            <select id="centers" onchange="onTrainingCenterChange()" class="form-control" >
+                                @foreach ($trCenters as $trCenter)
+                                <option value="{{ $trCenter->id }}"> {{ $trCenter->name }} </option>
+                                @endforeach
+                            </select>
+                        </form>
                     </div>
                 </div>
                 <!--end::Header-->
@@ -269,7 +276,7 @@
                 <!--begin::Header-->
                 <div class="card-header h-auto">
                     <div class="card-title py-5">
-                        <h3 class="card-label">Line Chart</h3>
+                        <h3 class="card-label">Regional Contribution of Placed Students</h3>
                     </div>
                 </div>
                 <!--end::Header-->
@@ -296,7 +303,7 @@
                 <!--begin::Header-->
                 <div class="card-header h-auto">
                     <div class="card-title py-5">
-                        <h3 class="card-label">Regional Contribution of Training Center</h3>
+                        <h3 class="card-label">Regional Contributions</h3>
                     </div>
                 </div>
                 <!--end::Header-->
@@ -326,7 +333,30 @@
 @push('js')
     <script type="text/javascript">
         var trainingCenter = {{ Js::from($trainingCentersCapacity) }}
-
+        var regionalContribution = {{ Js::from($regionalContribution) }}
+        var regionalQuota = {{ Js::from($regionalQuotas) }}
+        var regionalQoutaAppliedPlaced = {{ Js::from($regionalQoutaAppliedPlaced) }}
     </script>
     <script type="text/javascript" src="{{ asset('assets/js/pages/features/charts/apexcharts.js') }}"></script>
+
+    <script>
+        function getContribution(centerId) {
+            fetch(`training-center/regional-volunteer-contribution/${centerId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // console.log(data);
+                    chart_1.updateSeries([{
+                        name: "Contribution",
+                        data: data
+                    }]);
+                });
+        }
+        getContribution(1);
+    </script>
+<script>
+    function onTrainingCenterChange(){
+        getContribution(document.getElementById("centers").value);
+    }
+</script>
+
 @endpush

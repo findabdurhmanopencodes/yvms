@@ -22,8 +22,27 @@
 
     <script>
         $(function() {
+            $("#graduation_date").datepicker({
+                format: "yyyy",
+                orientation: "bottom right",
+                todayHighlight: true,
+                viewMode: "years",
+                minViewMode: "years",
+                startDate: '{{ Andegna\DateTimeFactory::fromDateTime(Carbon\Carbon::now()->subYear(35))->format('Y') }}',
+                endDate: '{{ Andegna\DateTimeFactory::fromDateTime(Carbon\Carbon::now()->subYear(0))->format('Y') }}',
+                autoclose: true //to close picker once year is selected
+            });
             $('#agree_check').on('click', function() {
                 if ($('input#agree_check')[0].checked) {
+                    $('button#next_step_button').prop('disabled', false);
+                    $('button#submit_apply_button').prop('disabled', false);
+                } else {
+                    $('button#next_step_button').prop('disabled', true);
+                    $('button#submit_apply_button').prop('disabled', true);
+                }
+            })
+            $('#agree_check_first').on('click', function() {
+                if ($('input#agree_check_first')[0].checked) {
                     $('button#next_step_button').prop('disabled', false);
                     $('button#submit_apply_button').prop('disabled', false);
                 } else {
@@ -34,6 +53,82 @@
         })
     </script>
     <script>
+        $(function() {
+            $('[name="first_name"]').on('change', function() {
+                var firstName = $('[name="first_name"]').val();
+                var fatherName = $('[name="father_name"]').val();
+                var grandFatherName = $('[name="grand_father_name"]').val();
+                $('#reviewFullName').text(firstName + ' ' + fatherName + ' ' + grandFatherName);
+            });
+            $('[name="father_name"]').on('change', function() {
+                var firstName = $('[name="first_name"]').val();
+                var fatherName = $('[name="father_name"]').val();
+                var grandFatherName = $('[name="grand_father_name"]').val();
+                $('#reviewFullName').text(firstName + ' ' + fatherName + ' ' + grandFatherName);
+            });
+            $('[name="grand_father_name"]').on('change', function() {
+                var firstName = $('[name="first_name"]').val();
+                var fatherName = $('[name="father_name"]').val();
+                var grandFatherName = $('[name="grand_father_name"]').val();
+                $('#reviewFullName').text(firstName + ' ' + fatherName + ' ' + grandFatherName);
+            });
+            $('[name="phone"]').on('change', function() {
+                var phone = $('[name="phone"]').val();
+                $('#reviewPhone').text(phone);
+            });
+            $('[name="email"]').on('change', function() {
+                var email = $('[name="email"]').val();
+                $('#reviewEmail').text(email);
+            });
+            $('[name="dob"]').on('change', function() {
+                var dob = $('[name="dob"]').val();
+                $('#reviewDOB').text(dob);
+            });
+            $('[name="gender"]').on('change', function() {
+                var gender = $('[name="gender"]').val() == 'M' ? 'Male' : 'Female';
+                $('#reviewGender').text(gender);
+            });
+
+            $('[name="region"]').on('change', function() {
+                var value = $("#region option:selected").text();
+                $('#reviewRegion').text(value);
+            });
+
+            $('[name="zone"]').on('change', function() {
+                var value = $("#zone option:selected").text();
+                $('#reviewZone').text(value);
+            });
+
+            $('[name="woreda"]').on('change', function() {
+                var value = $("#woreda option:selected").text();
+                $('#reviewWoreda').text(value);
+            });
+
+            $('[name="educational_level"]').on('change', function() {
+                var value = $("#educational_level option:selected").text();
+                $('#reviewEducationLevel').text(value);
+            });
+
+            $('[name="field_of_study"]').on('change', function() {
+                var value = $("#field_of_study option:selected").text();
+                $('#reviewFieldOfStudy').text(value);
+            });
+
+            $('[name="contact_name"]').on('change', function() {
+                var value = $("#contact_name").val();
+                $('#reviewContactName').text(value);
+            });
+
+            $('[name="contact_phone"]').on('change', function() {
+                var value = $("#contact_phone").val();
+                $('#reviewContactPhone').text(value);
+            });
+
+            $('[name="gpa"]').on('change', function() {
+                var value = $("#gpa").val();
+                $('#reviewGPA').text(value);
+            });
+        });
         $(function() {
             $('#region').select2({
                 placeholder: "Select a region"
@@ -70,7 +165,7 @@
         $(document).ready(function() {
                     @if (old('region'))
                         $("#zone").html('');
-                        var oldZone = {{ old('zone') }};
+                        var oldZone = '{{ old('zone') }}';
                         $.ajax({
                                 url: "/api/region/" + oldZone + "/zone",
                                 type: "GET",
@@ -83,91 +178,96 @@
                                     // $('#zone').html(
                                     // '<option value="">Select Zone</option>');
                                     $.each(result.data, function(key, value) {
-                                            $("#zone").append('<option ' + oldZone + '==' + value.id + '
-                                                value = "' + value
-                                                .id + '">
-                                                ' +
-                                                value.name + ' < /
-                                                option > ');
-                                            }); $('#woreda').html(
-                                            '<option value="">Select Woreda</option>');
-                                    }
-                                });
-                        @endif
-                        @if (old('woreda'))
-                            $("#woreda").html('');
-                            $('#woreda').html('<option value="">Select Woreda</option>');
-                            var oldZone = {{ old('zone') }};
-                            var oldWoreda = {{ old('woreda') }};
-                            $.ajax({
-                                    url: "/api/zone/" + oldZone + "/woreda",
-                                    type: "GET",
-                                    data: {
-                                        _token: '{{ csrf_token() }}'
-                                    },
-                                    dataType: 'json',
-                                    success: function(result) {
-                                        $.each(result.data, function(key, value) {
-                                                var isSelected = value.id == oldWoreda ? 'selected' : '';
-                                                $("#woreda").append('<option ' + isSelected + '
-                                                    value = "' + value
-                                                    .id + '">
-                                                    ' +
-                                                    value.name + ' < /
-                                                    option > ');
-                                                });
+                                            // $("#zone").append('<option '+(oldZone==value.id ?'selected':' ') + '
+                                            //     value = "' + value
+                                            //     .id + '">
+                                            //     ' +
+                                            //     value.name + ' < /
+                                            //     option > ');
+                                            // });
+                                            $('#woreda').html(
+                                                '<option value="">Select Woreda</option>');
                                         }
                                     });
                             @endif
-                            $('#region').on('change', function() {
-                                var itemId = this.value;
-                                var regionName = $("#region option:selected").text();
-                                regionName = regionName.trim();
-                                // $('#payment_service_name').text(regionName);
-                                $("#zone").html('');
-                                $.ajax({
-                                    url: "/api/region/" + itemId + "/zone",
-                                    type: "GET",
-                                    data: {
-                                        service_id: itemId,
-                                        _token: '{{ csrf_token() }}'
-                                    },
-                                    dataType: 'json',
-                                    success: function(result) {
-                                        $('#zone').html(
-                                            '<option value="">Select Zone</option>');
-                                        $.each(result.data, function(key, value) {
-                                            $("#zone").append('<option value="' + value
-                                                .id + '">' + value.name + '</option>');
-                                        });
-                                        $('#woreda').html(
-                                            '<option value="">Select Woreda</option>');
-                                    }
-                                });
-                            });
-                            $('#zone').on('change', function() {
-                                var itemId = this.value;
-                                var zoneName = $("#zone option:selected").text();
-                                zoneName = zoneName.trim();
+                            @if (old('woreda'))
                                 $("#woreda").html('');
+                                $('#woreda').html('<option value="">Select Woreda</option>');
+                                var oldZone = {{ old('zone') }};
+                                var oldWoreda = {{ old('woreda') }};
                                 $.ajax({
-                                    url: "/api/zone/" + itemId + "/woreda",
-                                    type: "GET",
-                                    data: {
-                                        _token: '{{ csrf_token() }}'
-                                    },
-                                    dataType: 'json',
-                                    success: function(result) {
-                                        $('#woreda').html(
-                                            '<option value="">Select Woreda</option>');
-                                        $.each(result.data, function(key, value) {
-                                            $("#woreda").append('<option value="' + value
-                                                .id + '">' + value.name + '</option>');
+                                        url: "/api/zone/" + oldZone + "/woreda",
+                                        type: "GET",
+                                        data: {
+                                            _token: '{{ csrf_token() }}'
+                                        },
+                                        dataType: 'json',
+                                        success: function(result) {
+                                            $.each(result.data, function(key, value) {
+                                                    var isSelected = value.id == oldWoreda ? 'selected' :
+                                                    '';
+                                                    $("#woreda").append('<option ' + isSelected + '
+                                                        value = "' + value
+                                                        .id + '">
+                                                        ' +
+                                                        value.name + ' < /
+                                                        option > ');
+                                                    });
+                                            }
                                         });
-                                    }
+                                @endif
+                                $('#region').on('change', function() {
+                                    var itemId = this.value;
+                                    var regionName = $("#region option:selected").text();
+                                    regionName = regionName.trim();
+                                    // $('#payment_service_name').text(regionName);
+                                    $("#zone").html('');
+                                    $.ajax({
+                                        url: "/api/region/" + itemId + "/zone",
+                                        type: "GET",
+                                        data: {
+                                            service_id: itemId,
+                                            _token: '{{ csrf_token() }}'
+                                        },
+                                        dataType: 'json',
+                                        success: function(result) {
+                                            $('#zone').html(
+                                                '<option value="">Select Zone</option>');
+                                            $.each(result.data, function(key, value) {
+                                                $("#zone").append('<option value="' + value
+                                                    .id + '">' + value.name +
+                                                    '</option>');
+                                            });
+                                            $('#woreda').html(
+                                                '<option value="">Select Woreda</option>');
+                                        }
+                                    });
+                                });
+                                $('#zone').on('change', function() {
+                                    var itemId = this.value;
+                                    var zoneName = $("#zone option:selected").text();
+                                    zoneName = zoneName.trim();
+                                    $("#woreda").html('');
+                                    $.ajax({
+                                        url: "/api/zone/" + itemId + "/woreda",
+                                        type: "GET",
+                                        data: {
+                                            _token: '{{ csrf_token() }}'
+                                        },
+                                        dataType: 'json',
+                                        success: function(result) {
+                                            $('#woreda').html(
+                                                '<option value="">Select Woreda</option>');
+                                            $.each(result.data, function(key, value) {
+                                                $("#woreda").append('<option value="' +
+                                                    value
+                                                    .id + '">' + value.name +
+                                                    '</option>');
+                                            });
+                                        }
+                                    });
                                 });
                             });
-                        });
     </script>
     <script>
         $(function() {
@@ -214,13 +314,13 @@
                                     <div class="wizard-icon">
                                         <span class="svg-icon svg-icon-2x">
                                             <!--begin::Svg Icon | path:assets/media/svg/icons/General/User.svg-->
-                                            <i class="fa fa-check-circle"></i>
+                                            <i class="fas fa-user-tag"></i>
                                             <!--end::Svg Icon-->
                                         </span>
                                     </div>
                                     <div class="wizard-label">
-                                        <h3 class="wizard-title"> </h3>Application Requirements </h3>
-                                        <div class="wizard-desc">Code of conduct</div>
+                                        <h3 class="wizard-title"> </h3>Objective &amp; Responsibility </h3>
+                                        <div class="wizard-desc">Role &amp; Responsibility</div>
                                     </div>
                                 </div>
                             </div>
@@ -229,7 +329,22 @@
                                     <div class="wizard-icon">
                                         <span class="svg-icon svg-icon-2x">
                                             <!--begin::Svg Icon | path:assets/media/svg/icons/General/User.svg-->
-                                            <i class="fa fa-user"></i>
+                                            <i class="fa fa-check-circle"></i>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </div>
+                                    <div class="wizard-label">
+                                        <h3 class="wizard-title"> </h3>Application Requirements </h3>
+                                        <div class="wizard-desc">Application Requirements</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wizard-step" data-wizard-type="step">
+                                <div class="wizard-wrapper">
+                                    <div class="wizard-icon">
+                                        <span class="svg-icon svg-icon-2x">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/General/User.svg-->
+                                            <i class="fa fa-file-user"></i>
                                             <!--end::Svg Icon-->
                                         </span>
                                     </div>
@@ -290,6 +405,21 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="wizard-step" data-wizard-type="step">
+                                <div class="wizard-wrapper">
+                                    <div class="wizard-icon">
+                                        <span class="svg-icon svg-icon-2x">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Map/Compass.svg-->
+                                            <i class="fas fa-thumbs-up"></i>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </div>
+                                    <div class="wizard-label">
+                                        <h3 class="wizard-title">Completed</h3>
+                                        <div class="wizard-desc">Review and Submit</div>
+                                    </div>
+                                </div>
+                            </div>
                             <!--end::Wizard Step 3 Nav-->
                         </div>
                     </div>
@@ -303,72 +433,269 @@
                                     enctype="multipart/form-data" method="POST" id="kt_form">
                                     @csrf
                                     <!--begin: Wizard Step 0-->
-                                    <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
-                                        <h4 class="mb-10 font-weight-bold text-dark">Code of Conduct</h4>
-                                        <div class="row">
+                                    <div class="card card-custom" data-wizard-type="step-content"
+                                        data-wizard-state="current">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h4 class="card-label font-weight-bold text-dark">Objectives &amp;
+                                                    Responsibility</h4>
+                                            </div>
+                                            <div class="card-toolbar">
+                                                <ul class="nav nav-tabs nav-bold nav-tabs-line">
+                                                    <li class="nav-item dropdown">
+                                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                                                            role="button" aria-haspopup="true"
+                                                            aria-expanded="false">Language</a>
+                                                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_en">
+                                                                English
+                                                            </a>
+                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_am">
+                                                                Amharic
+                                                            </a>
+                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_or">
+                                                                Afaan Oromoo
+                                                            </a>
+                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_afar">
+                                                                Afar
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div data-scroll="true" class="scroll scroll-pull"
+                                                    style="max-height:350px !important; overflow:auto;">
+                                                    <div class="tab-content mt-5" id="myTabContent">
+                                                        <div class="tab-pane fade show active" id="lang_en" role="tabpanel"
+                                                            aria-labelledby="lang_en">
+                                                            <h3>Objectives</h3>
+                                                            <p>
+                                                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                                                Laboriosam
+                                                                voluptates, obcaecati tempore asperiores nostrum ipsa eum
+                                                                recusandae
+                                                                dolorum eos. Itaque voluptatum iure est fugit sapiente quis
+                                                                quam
+                                                                odio
+                                                                officia mollitia vel quo cumque ipsa, maxime blanditiis
+                                                                minus,
+                                                                accusantium quas enim reprehenderit. Commodi placeat
+                                                                dignissimos
+                                                                sunt
+                                                                animi voluptates quidem quasi! Laborum, temporibus a!
+                                                                Excepturi
+                                                                ipsa,
+                                                                minus veniam numquam suscipit eligendi adipisci possimus
+                                                                quae
+                                                                dolore,
+                                                                voluptas facere, non odio velit molestias at quisquam?
+                                                                Cupiditate
+                                                                natus
+                                                                error laborum enim ea numquam laudantium dolores suscipit
+                                                                placeat
+                                                                illo.
+                                                                Consequatur officiis repellat, quam ex cupiditate excepturi
+                                                                deleniti
+                                                                distinctio sint architecto sequi, repellendus autem velit
+                                                                praesentium
+                                                                saepe?
+                                                            </p>
+                                                            <h3>Responsibilities</h3>
+                                                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                                                                Odit quam
+                                                                voluptatum porro est obcaecati! Nostrum labore inventore,
+                                                                quia
+                                                                recusandae dolor laboriosam aperiam aut molestiae facilis
+                                                                excepturi
+                                                                aliquam, fuga ipsam iste soluta quos consectetur
+                                                                reprehenderit
+                                                                mollitia
+                                                                est suscipit, dolores quasi? Deleniti provident nemo numquam
+                                                                vel ea
+                                                                sint
+                                                                totam, eveniet, beatae commodi odit sequi. Neque natus, enim
+                                                                nesciunt
+                                                                fugit aspernatur hic vero tempora quod earum harum
+                                                                reprehenderit
+                                                                dolores
+                                                                consequuntur magni provident rerum? Officiis exercitationem
+                                                                eius
+                                                                corrupti dolores voluptatum? Officiis nesciunt praesentium
+                                                                ipsa
+                                                                iusto
+                                                                amet ratione facilis. Soluta, dolorem! Quaerat atque neque
+                                                                repellat
+                                                                a
+                                                                earum molestias debitis, exercitationem ex hic eius.
+                                                                Repellat,
+                                                                tenetur.
+                                                            </p>
+                                                        </div>
+                                                        <div class="tab-pane fade" id="lang_am" role="tabpanel"
+                                                            aria-labelledby="lang_am">
+                                                            Tab content 2
+                                                        </div>
+                                                        <div class="tab-pane fade" id="lang_or" role="tabpanel"
+                                                            aria-labelledby="lang_or">
+                                                            Tab content 4
+                                                        </div>
+                                                        <div class="tab-pane fade" id="lang_afar" role="tabpanel"
+                                                            aria-labelledby="lang_afar">
+                                                            Tab content 5
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class=" card-footer p-0 pt-4 pl-4 pb-0">
+                                            <div class="form-group mb-0">
+                                                <label class="checkbox" id="agree_check_first_label">
+                                                    <input type="checkbox"
+                                                        {{ old('agree_check_first') == 'on' ? 'checked' : '' }}
+                                                        name="agree_check_first" id="agree_check_first"> I Accepted to above
+                                                    objectives and responsibilities
+                                                    <span>
+                                                    </span>
+                                                </label>
+                                                @error('agree_check_first')
+                                                    <div class="invalid-feedback d-block">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pb-5 card card-custom" data-wizard-type="step-content"
+                                        data-wizard-state="current">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h4 class="mb-10 font-weight-bold text-dark card-label">Application Criteria
+                                                </h4>
+                                            </div>
+                                            <div class="card-toolbar">
+                                                <ul class="nav nav-tabs nav-bold nav-tabs-line">
+                                                    <li class="nav-item dropdown">
+                                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                                                            role="button" aria-haspopup="true"
+                                                            aria-expanded="false">Language</a>
+                                                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                                            <a class="dropdown-item" data-toggle="tab"
+                                                                href="#lang_en_app">
+                                                                English
+                                                            </a>
+                                                            <a class="dropdown-item" data-toggle="tab"
+                                                                href="#lang_am_app">
+                                                                Amharic
+                                                            </a>
+                                                            <a class="dropdown-item" data-toggle="tab"
+                                                                href="#lang_or_app">
+                                                                Afaan Oromoo
+                                                            </a>
+                                                            <a class="dropdown-item" data-toggle="tab"
+                                                                href="#lang_afar_app">
+                                                                Afar
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
                                             <div data-scroll="true" class="scroll scroll-pull"
                                                 style="max-height:350px !important; overflow:auto;">
+                                                <div class="tab-content mt-5" id="myTabContent">
 
-                                                <p>
-                                                    የብሄራዊ በጎ ፈቃድ _ አገልግሎት ማህበረሰብ _ አገልግሎት ፕሮግራም ተሳታፊ ወጣቶች መመልመያ መስፈርቶች
-                                                    የብሄራዊ በጎ ፈቃድ ማህበረሰብ ልማት አገልግሎት ስልጠና በአገር አቀፍ ደረጃ በ10ሩ የክልል መስተዳድሮችና በ2ቱ
-                                                    የከተማ
-                                                    መስተዳድሮች የሚገኙ ወጣት የበጎ ፈቃደኞችን የሚያካትት ሲሆን ለዚህ የበጎ ፈቃድ ማህበረሰብ አገልግሎት ለመመዝገብ
-                                                    የሚያስፈልጉ መስፈርቶች የተመዝጋቢወችን ሙሉ ማንነት የሚያሳይ መጠይቅ እንዲኖረዉ ይፈለጋል
-                                                </p>
-                                                <div class="separator separator-solid"></div>
-                                                <div>
-                                                    <ol type="1" class='list'>
-                                                        <li> በአገር አቀፍ ደረጃ ከሚገኙ ህጋዊ የከፍተኛ የትምህርት ተቋማት የመጀመሪያ ድግሪና ከዚያ በላይ፤
-                                                        </li>
-                                                        <li> የ8ኛ ክፍል ብሄራዊ ፈተና ያጠናቀቁበትን ሰርተፍኬት ያለዉ/ያላት </li>
-                                                        <li> ዕድሜዉ ከ35 ዓመት ያልበለጠዉ/ያልበለጣት፤ </li>
-                                                        <li> ከሚኖርበት/ከምትኖርበት ቦታ ትክክለኛ እና ተመዝጋቢዉን የሚገልፅ የታደሰ መታወቂያ ያለዉ/ያላት
-                                                        </li>
-                                                        <li> ካለበት ማህበረሰብ ጥሩ ስነ-ምግባር ያለዉ/ያላት የስነ-ምግባር የህይወት ምስክርነት ማቅረብ
-                                                            የሚችል/የምትችል፤</li>
-                                                        <li> ከማንዉም አይነት ደባል ሱስ ነጻ የሆነ/ች </li>
-                                                        <li> ለድንበር የለሽ የበጎ ፈቃድ ማህበረሰብ አገልግሎት ራሱን ያዘጋጀና ቁርጠኛ የሆነ/ሆነች </li>
-                                                        <li> የበጎ ፈቃድ ማህበረሰብ አገልግሎ ፕሮግራም ላይ እምነት ያለዉ/ያላት! </li>
-                                                        <li> ከአገራችን እሴቶች መካከል የመስጠት የማካፈል እና ሰብዓዊነት የተላበስ ማንነት ያለዉ/ያላት፧
-                                                        </li>
-                                                        <li> የጤንነት ችግር የሌለበትና በየኛዉም አየር ንብረት ክፍል አካባቢ መሰልጠንና መስራት የሚችል/የምትችል
-                                                        </li>
-                                                        <li> ለሴት በጎ ፈቃድ ማህበረሰብ አገልግሎ ተመዝጋቢ ነፍሰ ጡር ያልሆነች ማሳሰቢያ </li>
-                                                    </ol>
-                                                </div>
-                                                <p>
-                                                    ከዚህ ቀደም በ3 ዙር ተመልምለዉ ለስልጠና የተመረጡ ግን ያልተሳተፉ በዚህ ዙር ተሳታፊ አይሆኑም!
-                                                    መረጃዎች ሲሞሉ ሙሉ በሙሉ fእንግሊዘኛ ቋንቋ ሆኖ የጠራ መሆን አለበት የበጎ ፈቃደኞች ማስረጃዎች በሶፍት ኮፒ
-                                                    ተዘጋጅተዉ
-                                                    መላክ ይኖርባቸዋል
-                                                </p>
-                                            </div>
-
-                                            <div class="mt-2">
-                                                <div class="form-group">
-                                                    <label class="checkbox">
-                                                        <input type="checkbox"
-                                                            {{ old('agree_check') == 'on' ? 'checked' : '' }}
-                                                            name="agree_check" id="agree_check">
-                                                        I Accepted all <a href="{{ route('terms') }}" target="_blank">
-                                                            terms of conditions </a>
-                                                        <span>
-
-                                                        </span>
-
-                                                    </label>
-                                                    @error('agree_check')
-                                                        <div class="invalid-feedback d-block">
-                                                            {{ $message }}
+                                                    <div class="tab-pane fade show active" id="lang_en_app" role="tabpanel"
+                                                        aria-labelledby="lang_en_app">
+                                                        Tab content 1
+                                                    </div>
+                                                    <div class="tab-pane fade" id="lang_am_app" role="tabpanel"
+                                                        aria-labelledby="lang_am_app">
+                                                        <p>
+                                                            የብሄራዊ በጎ ፈቃድ _ አገልግሎት ማህበረሰብ _ አገልግሎት ፕሮግራም ተሳታፊ ወጣቶች መመልመያ
+                                                            መስፈርቶች
+                                                            የብሄራዊ በጎ ፈቃድ ማህበረሰብ ልማት አገልግሎት ስልጠና በአገር አቀፍ ደረጃ በ10ሩ የክልል
+                                                            መስተዳድሮችና
+                                                            በ2ቱ
+                                                            የከተማ
+                                                            መስተዳድሮች የሚገኙ ወጣት የበጎ ፈቃደኞችን የሚያካትት ሲሆን ለዚህ የበጎ ፈቃድ ማህበረሰብ አገልግሎት
+                                                            ለመመዝገብ
+                                                            የሚያስፈልጉ መስፈርቶች የተመዝጋቢወችን ሙሉ ማንነት የሚያሳይ መጠይቅ እንዲኖረዉ ይፈለጋል
+                                                        </p>
+                                                        <div class="separator separator-solid"></div>
+                                                        <div>
+                                                            <ol type="1" class='list'>
+                                                                <li> በአገር አቀፍ ደረጃ ከሚገኙ ህጋዊ የከፍተኛ የትምህርት ተቋማት የመጀመሪያ ድግሪና ከዚያ
+                                                                    በላይ፤
+                                                                </li>
+                                                                <li> የ8ኛ ክፍል ብሄራዊ ፈተና ያጠናቀቁበትን ሰርተፍኬት ያለዉ/ያላት </li>
+                                                                <li> ዕድሜዉ ከ35 ዓመት ያልበለጠዉ/ያልበለጣት፤ </li>
+                                                                <li> ከሚኖርበት/ከምትኖርበት ቦታ ትክክለኛ እና ተመዝጋቢዉን የሚገልፅ የታደሰ መታወቂያ
+                                                                    ያለዉ/ያላት
+                                                                </li>
+                                                                <li> ካለበት ማህበረሰብ ጥሩ ስነ-ምግባር ያለዉ/ያላት የስነ-ምግባር የህይወት ምስክርነት
+                                                                    ማቅረብ
+                                                                    የሚችል/የምትችል፤</li>
+                                                                <li> ከማንዉም አይነት ደባል ሱስ ነጻ የሆነ/ች </li>
+                                                                <li> ለድንበር የለሽ የበጎ ፈቃድ ማህበረሰብ አገልግሎት ራሱን ያዘጋጀና ቁርጠኛ የሆነ/ሆነች
+                                                                </li>
+                                                                <li> የበጎ ፈቃድ ማህበረሰብ አገልግሎ ፕሮግራም ላይ እምነት ያለዉ/ያላት! </li>
+                                                                <li> ከአገራችን እሴቶች መካከል የመስጠት የማካፈል እና ሰብዓዊነት የተላበስ ማንነት
+                                                                    ያለዉ/ያላት፧
+                                                                </li>
+                                                                <li> የጤንነት ችግር የሌለበትና በየኛዉም አየር ንብረት ክፍል አካባቢ መሰልጠንና መስራት
+                                                                    የሚችል/የምትችል
+                                                                </li>
+                                                                <li> ለሴት በጎ ፈቃድ ማህበረሰብ አገልግሎ ተመዝጋቢ ነፍሰ ጡር ያልሆነች ማሳሰቢያ </li>
+                                                            </ol>
                                                         </div>
-                                                    @enderror
+                                                        <p>
+                                                            ከዚህ ቀደም በ3 ዙር ተመልምለዉ ለስልጠና የተመረጡ ግን ያልተሳተፉ በዚህ ዙር ተሳታፊ አይሆኑም!
+                                                            መረጃዎች ሲሞሉ ሙሉ በሙሉ fእንግሊዘኛ ቋንቋ ሆኖ የጠራ መሆን አለበት የበጎ ፈቃደኞች ማስረጃዎች
+                                                            በሶፍት
+                                                            ኮፒ
+                                                            ተዘጋጅተዉ
+                                                            መላክ ይኖርባቸዋል
+                                                        </p>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="lang_or_app" role="tabpanel"
+                                                        aria-labelledby="lang_or_app">
+                                                        Tab content 4
+                                                    </div>
+                                                    <div class="tab-pane fade" id="lang_afar_app" role="tabpanel"
+                                                        aria-labelledby="lang_afar_app">
+                                                        Tab content 5
+                                                    </div>
                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        <div class=" card-footer p-0 pt-4 pl-4 pb-0">
+                                            <div class="form-group mb-0">
+                                                <label class="checkbox" id="agree_check_label">
+                                                    <input type="checkbox"
+                                                        {{ old('agree_check') == 'on' ? 'checked' : '' }}
+                                                        name="agree_check" id="agree_check"> I Accepted </a>
+                                                    <a href="{{ route('terms') }}" target="_blank">
+                                                        terms and conditions
+                                                    </a>
+                                                    <span>
+                                                    </span>
+                                                </label>
+                                                @error('agree_check')
+                                                    <div class="invalid-feedback d-block">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
                                     <!--end: Wizard Step 0-->
-                                    <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
+                                    <div class="pb-5" data-wizard-type="step-content"
+                                        data-wizard-state="current">
                                         <h4 class="mb-10 font-weight-bold text-dark">Enter your Basic Details</h4>
                                         <div class="form-group row">
                                             <label class="col-xl-3 col-lg-3 col-form-label text-right">My Photo</label>
@@ -433,7 +760,7 @@
                                             </div>
                                             <!--end::Input-->
                                             <!--begin::Input-->
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group col-md-12">
                                                 <label class="d-block">Grand Father Name</label>
                                                 <input type="text"
                                                     class="@error('grand_father_name') is-invalid @enderror form-control form-control-lg"
@@ -446,26 +773,27 @@
                                                     name.</span>
                                             </div>
                                             <!--end::Input-->
-                                            <div class="col-xl-6">
-                                                <!--begin::Input-->
-                                                <div class="form-group">
-                                                    <label class="d-block">Disablity</label>
-                                                    <select name="disability" id="disability"
-                                                        class="@error('disability') is-invalid @enderror form-control form-control-lg">
-                                                        <option value="">Select</option>
-                                                        @foreach ($disabilities as $disable)
-                                                            <option value="{{ $disable->id }}">{{ $disable->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('disability')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
-                                                    <span class="form-text text-muted">Please select if any
-                                                        disability</span>
+                                            @if (false)
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label class="d-block">Disablity</label>
+                                                        <select name="disability" id="disability"
+                                                            class="@error('disability') is-invalid @enderror form-control form-control-lg">
+                                                            <option value="">Select</option>
+                                                            @foreach ($disabilities as $disable)
+                                                                <option value="{{ $disable->id }}">
+                                                                    {{ $disable->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('disability')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                        <span class="form-text text-muted">Please select if any
+                                                            disability</span>
+                                                    </div>
                                                 </div>
-                                                <!--end::Input-->
-                                            </div>
+                                            @endif
                                         </div>
                                         <div class="row">
                                             <div class="col-xl-6">
@@ -625,7 +953,7 @@
                                     <div class="pb-5" data-wizard-type="step-content">
                                         <h4 class="mb-10 font-weight-bold text-dark">Educational Document</h4>
                                         <div class="row">
-                                            <div class="col-xl-5">
+                                            <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label class="d-block">Educational Level</label>
@@ -644,7 +972,7 @@
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
-                                            <div class="col-xl-5">
+                                            <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label class="d-block">Field of Study</label>
@@ -663,7 +991,10 @@
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
-                                            <div class="col-xl-2">
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
                                                     <label class="d-block">GPA</label>
@@ -672,6 +1003,22 @@
                                                         type="number" value="{{ old('gpa') }}" max="4" min="1" />
 
                                                     @error('gpa')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                                <!--end::Input-->
+                                            </div>
+
+                                            <div class="col-xl-6">
+                                                <!--begin::Select-->
+                                                <div class="form-group">
+                                                    <label class="d-block">Year Of Gruduation</label>
+                                                    <input name="graduation_date" id="graduation_date"
+                                                        class="@error('graduation_date') is-invalid @enderror form-control"
+                                                        type="text" value="{{ old('graduation_date') }}" max="4"
+                                                        min="1" />
+
+                                                    @error('graduation_date')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
@@ -693,8 +1040,6 @@
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
                                                     </div>
-
-
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
@@ -857,6 +1202,62 @@
                                                 </label>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="pb-5" data-wizard-type="step-content">
+                                        <h5 class="mb-10 font-weight-bold text-dark">Review your Details and Submit</h5>
+                                        <!--begin::Item-->
+                                        <div class="border-bottom mb-5 pb-5">
+                                            <div class="font-weight-bolder mb-3">Your Account Details:</div>
+                                            <div class="line-height-xl">
+                                                Full Name:
+                                                <span id="reviewFullName"></span>
+                                                <br />
+                                                Phone:
+                                                <span id="reviewPhone"></span>
+                                                <br />
+                                                Email: <span id="reviewEmail"></span>
+                                                <br />
+                                                Date Of Birth: <span id="reviewDOB"></span>
+                                                <br />
+                                                Gender: <span id="reviewGender"></span>
+                                                <br />
+                                            </div>
+                                        </div>
+
+                                        <div class="border-bottom mb-5 pb-5">
+                                            <div class="font-weight-bolder mb-3">Location:</div>
+                                            <div class="line-height-xl">
+                                                Region: <span id="reviewRegion"></span>
+                                                <br />
+                                                Zone:
+                                                <span id="reviewZone"></span>
+                                                <br />
+                                                Woreda: <span id="reviewWoreda"></span>
+                                            </div>
+                                        </div>
+                                        <div class="border-bottom mb-5 pb-5">
+                                            <div class="font-weight-bolder mb-3">Education Background:</div>
+                                            <div class="line-height-xl">
+                                                Education Level: <span id="reviewEducationLevel"></span>
+                                                <br />
+                                                Feild Of Study:
+                                                <span id="reviewFieldOfStudy"></span>
+                                                <br />
+                                                GPA: <span id="reviewGPA"></span>
+                                                <br />
+                                                Year of Graduation: <span id="reviewGraduationYear"></span>
+                                            </div>
+                                        </div>
+                                        <div class="border-bottom mb-5 pb-5">
+                                            <div class="font-weight-bolder mb-3">Other Documents:</div>
+                                            <div class="line-height-xl">
+                                                Contact Name: <span id="reviewContactName"></span>
+                                                <br />
+                                                Contact Phone:
+                                                <span id="reviewContactPhone"></span>
+                                            </div>
+                                        </div>
+                                        <!--end::Item-->
                                     </div>
                                     <!--end: Wizard Step 4-->
 
