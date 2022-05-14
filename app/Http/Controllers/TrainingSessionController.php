@@ -665,7 +665,6 @@ class TrainingSessionController extends Controller
                     array_push($a, $accepted_arr);
                 }
             }
-            dd($a);
             $approved_applicants = ApprovedApplicant::where('training_session_id', $id)->get();
 
             foreach ($approved_applicants as $key => $app_vol) {
