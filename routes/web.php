@@ -79,6 +79,8 @@ Route::get('training-center/regional-volunteer-contribution/{id}', [DashboardCon
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
 Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
+Route::get('training_session/{training_session}/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('training_session/{training_session}/qouta', [TrainingSessionController::class, 'showQuota'])->name('training_session.quota');
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
