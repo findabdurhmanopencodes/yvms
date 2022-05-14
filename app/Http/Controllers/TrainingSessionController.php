@@ -72,15 +72,15 @@ class TrainingSessionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreTrainingSessionRequest $request)
-    {   
+    {
         $date_now = Carbon::now();
         $date_now_et = DateTimeFactory::fromDateTime($date_now)->format('d/m/y');
         $request->validate([
-            'start_date' => ['required', 'date', 'after:' . $date_now_et],
-            'end_date' => ['required', 'date', 'after:' . $request->get('start_date')],
-            'registration_start_date' => ['required', 'date', 'after:' . $request->get('start_date'), 'before:' . $request->get('end_date')],
-            'registration_dead_line' => ['required', 'date', 'after:' . $request->get('registration_start_date'), 'before:' . $request->get('end_date')],
-            'quantity' => 'required'
+            // 'start_date' => ['required', 'between:' . $date_now_et.','.$request->get('end_date')],
+            // // 'end_date' => ["required", "after:". $request->get('start_date')],
+            // 'registration_start_date' => ['required', 'between:' . $request->get('start_date').','.$request->get('end_date')],
+            // 'registration_dead_line' => ['required', 'between:' . $request->get('registration_start_date').','.$request->get('end_date')],
+            // 'quantity' => 'required'
         ]);
 
         $trainingSession = new TrainingSession();
@@ -139,7 +139,7 @@ class TrainingSessionController extends Controller
                         array_push($arr_zon, $zon);
                     }
                 }
-    
+
                 if ($arr_zon) {
                     $zons = [];
                     $division_zon = $sum_zon/sizeof($arr_zon);
@@ -188,9 +188,9 @@ class TrainingSessionController extends Controller
                                         $zone_sum = intval($zone_quantity * $zone_qouta) * sizeof($zons);
                                         // dump($zone_quantity*$zone_qouta);
                                         $check_zone_qua = $zone_quantity - $zone_sum;
-            
+
                                         $check_zone_check = $check_zone_qua - $keyzone;
-            
+
                                         // dump($zone_quantity - $zone_sum);
                                         if ($check_zone_check > 0) {
                                             $qouta->quantity = intval($zone_quantity * $zone_qouta) + 1;
@@ -199,7 +199,7 @@ class TrainingSessionController extends Controller
                                             $qouta->quantity = intval($zone_quantity * $zone_qouta);
                                             $zone->quotas()->save($qouta);
                                         }
-            
+
                                         foreach ($wors as $keyworeda => $woreda) {
                                             if ($woreda) {
                                                 $qouta = new Qouta();
@@ -209,11 +209,11 @@ class TrainingSessionController extends Controller
                                                     $woreda_qouta = $woreda->qoutaInpercent;
                                                     $qouta->training_session_id = $trainingSession->id;
                                                     $woreda_sum = intval($woreda_quantity * $woreda_qouta) * sizeof($wors);
-            
+
                                                     $check_woreda_qua = $woreda_quantity - $woreda_sum;
-            
+
                                                     $check_woreda_check = $check_woreda_qua - $keyworeda;
-            
+
                                                     if ($check_woreda_check > 0) {
                                                         $qouta->quantity = intval($woreda_quantity * $woreda_qouta) + 1;
                                                         $woreda->quotas()->save($qouta);
@@ -238,7 +238,7 @@ class TrainingSessionController extends Controller
                 }
             }
         }
-        
+
         // dd('sdffd');
         return redirect()->route('training_session.index')->with('message', 'Region edited successfully');
     }
@@ -296,7 +296,7 @@ class TrainingSessionController extends Controller
                 array_push($arr, $reg);
             }
         }
-        
+
         if($arr){
             $regs = [];
             $division = $sum/sizeof($arr);
@@ -305,7 +305,7 @@ class TrainingSessionController extends Controller
                 $reg_new->qoutaInpercent = $reg_new->qoutaInpercent + $division;
                 array_push($regs, $reg_new);
             }
-            
+
             $trainingSession->update($data);
             $qouta_all = $qouta->all();
             foreach ($qouta_all as $key => $qou) {
@@ -316,7 +316,7 @@ class TrainingSessionController extends Controller
             $reg_sum = 0;
             foreach ($regions as $key => $region) {
                 $qouta = new Qouta();
-                $region_validate = $qouta->where('training_session', $trainingSession->id)->where('qoutable_id', $region->id)->where('qoutable_type', 'App\Models\Region');
+                $region_validate = $qouta->where('training_session_id', $trainingSession->id)->where('quotable_id', $region->id)->where('quotable_type', 'App\Models\Region');
 
                 $sum_zon = 0;
                 $arr_zon = [];
@@ -349,11 +349,11 @@ class TrainingSessionController extends Controller
                             $qouta->quantity = intval($request->get('quantity') * $reg_qouta);
                             $region->quotas()->save($qouta);
                         }
-    
+
                         foreach ($zons as $keyzone => $zone) {
                             if ($zone) {
                                 $qouta = new Qouta();
-                                $zone_validate = $qouta->where('training_session', $trainingSession->id)->where('qoutable_id', $zone->id)->where('qoutable_type', 'App\Models\Region');
+                                $zone_validate = $qouta->where('training_session_id', $trainingSession->id)->where('quotable_id', $zone->id)->where('quotable_type', 'App\Models\Zone');
 
                                 $sum_wor = 0;
                                 $arr_wor = [];
@@ -381,9 +381,9 @@ class TrainingSessionController extends Controller
                                         $zone_sum = intval($zone_quantity * $zone_qouta) * sizeof($zons);
                                         // dump($zone_quantity*$zone_qouta);
                                         $check_zone_qua = $zone_quantity - $zone_sum;
-        
+
                                         $check_zone_check = $check_zone_qua - $keyzone;
-        
+
                                         // dump($zone_quantity - $zone_sum);
                                         if ($check_zone_check > 0) {
                                             $qouta->quantity = intval($zone_quantity * $zone_qouta) + 1;
@@ -395,18 +395,18 @@ class TrainingSessionController extends Controller
                                         foreach ($wors as $keyworeda => $woreda) {
                                             if ($woreda) {
                                                 $qouta = new Qouta();
-                                                $woreda_validate = $qouta->where('training_session', $trainingSession->id)->where('qoutable_id', $woreda->id)->where('qoutable_type', 'App\Models\Region');
+                                                $woreda_validate = $qouta->where('training_session_id', $trainingSession->id)->where('quotable_id', $woreda->id)->where('quotable_type', 'App\Models\Woreda');
                                                 if ($woreda_validate) {
                                                     $woreda_quantity = $qouta::where('quotable_id', $zone->id)->where('quotable_type', 'App\Models\Zone')->pluck('quantity')[0];
                                                     $woreda_qouta = $woreda->qoutaInpercent;
                                                     // dump($woreda_quantity);
                                                     $qouta->training_session_id = $trainingSession->id;
                                                     $woreda_sum = intval($woreda_quantity * $woreda_qouta) * sizeof($wors);
-        
+
                                                     $check_woreda_qua = $woreda_quantity - $woreda_sum;
-        
+
                                                     $check_woreda_check = $check_woreda_qua - $keyworeda;
-        
+
                                                     if ($check_woreda_check > 0) {
                                                         $qouta->quantity = intval($woreda_quantity * $woreda_qouta) + 1;
                                                         $woreda->quotas()->save($qouta);
@@ -549,6 +549,14 @@ class TrainingSessionController extends Controller
                 }
             }
             $approved_applicants = ApprovedApplicant::where('training_session_id', $id)->get();
+            // dd($a);
+            // if ($approved_applicants->count() < $train_session) {
+            //     dump('yes');
+            // }
+            // else{
+            //     dump('no');
+            // }
+            // dd('sdfsd');
             foreach ($approved_applicants as $key => $app_vol) {
                 $app_vol->delete();
             }

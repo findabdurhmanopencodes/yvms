@@ -11,17 +11,16 @@ aria-haspopup="true" data-menu-toggle="hover">
 <div class="menu-submenu">
     <i class="menu-arrow"></i>
     <ul class="menu-subnav">
-       
+
         <li class="menu-item {{ strpos(Route::currentRouteName(), 'region.place') === 0 ? 'menu-item-active' : '' }}"
         aria-haspopup="true">
-        <a href="{{ route('region.place',[]) }}" class="menu-link">
+        <a href="{{ route('training.placement',[]) }}" class="menu-link">
             <i class="menu-bullet menu-bullet-dot">
                 <span></span>
             </i>
             <span class="menu-text"> View Placement</span>
         </a>
 
-       
     </li>
 
         <li class="menu-item {{ strpos(Route::currentRouteName(), 'role.index') === 0 ? 'menu-item-active' : '' }}"

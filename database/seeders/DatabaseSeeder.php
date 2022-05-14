@@ -17,6 +17,7 @@ use DateTime;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,12 +28,38 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call([
-        //     // PermissionSeeder::class,
-        //     RoleSeeder::class,
-        //     BaseSeeder::class,
+        $this->call([
+            PermissionSeeder::class,
+            RoleSeeder::class,
+            // BaseSeeder::class,
         //     // FakeDataSeeder::class,
-        // ]);
+        ]);
+
+        User::create(
+            [
+                'first_name' => 'Super',
+                'father_name' => 'Admin',
+                'grand_father_name' => 'Mop',
+                'dob' => '1999-04-28',
+                'gender' => 'M',
+                'email' => 'super@gmail.com',
+                'email_verified_at' => now(),
+                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+                'remember_token' => Str::random(10),
+            ]
+        );
+
+
+        TrainingSession::create([
+            'start_date' => '2022-05-06',
+            'end_date' => '2022-05-16',
+            'moto' => 'We are in the community',
+            'registration_start_date' => '2022-05-8',
+            'registration_dead_line' => '2022-05-25',
+            'quantity' => 2000,
+            'status' => 0,
+        ]);
+
         \App\Models\Region::factory(4)->create();
         //Zone creation
         $quota = [0.4, 0.3, 0.3];

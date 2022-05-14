@@ -48,13 +48,13 @@
                             $(parent).closest('tr')[0].remove();
                             Swal.fire(
                                 "Deleted!",
-                                "Role has been deleted.",
+                                "Woreda has been deleted.",
                                 "success"
                             )
                         },
                         error: function(data) {
                             if (data.status) {
-                                Swal.fire("Forbidden!", "You can't delete this role!", "error");
+                                Swal.fire("Forbidden!", "You can't delete this woreda!", "error");
                             }
                         }
                     });
@@ -64,6 +64,7 @@
     </script>
     <script>
         $( document ).ready(function() {
+            $(":submit").attr("disabled", true);
             $('#zone').select2({
                 placeholder: "Select a zone"
             });
@@ -82,7 +83,6 @@
                      "_token": $('meta[name="csrf-token"]').attr('content'),
                   },
                   success: function(result){
-                      console.log(result);
                       if (result.limit == false) {
                           $('#message').html('you reached max qouta');
                           $(":submit").attr("disabled", true);
@@ -94,7 +94,6 @@
                 });
               }
         })
-
 
         var COLUMNS = [{
                 field: 'id',
@@ -207,7 +206,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <label>Woreda Quota:</label>
+                                                        <label>Woreda Quota(%):</label>
                                                         <div class="input-group">
                                                             <input type="number" class="form-control" placeholder="Woreda quota in percent" name="woreda_quota" id="woreda_quota"/>
                                                             <div class="input-group-append">

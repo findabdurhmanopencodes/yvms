@@ -101,7 +101,6 @@ class TrainingCenterCapacityController extends Controller
         $trainingCenterCapacity=TrainingCenterCapacity::where('trainining_center_id',$trainingCenterId)->where('training_session_id',$trainingSessionId)->get()->first();
         $trainingCenterCapacity->update(['capacity'=>$request->get('capacity')]);
         $trainingCenterCapacity->save();
-
         return redirect()->back();
     }
 }

@@ -14,13 +14,14 @@ class EducationalLevelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // if(!Auth::user()->can('educationalLevel.index')){
-        //     return abort(403);
-        // }
-        $educational_levels = EducationalLevel::paginate(10);
-        return view('educationalLevel.index', compact('educational_levels'));
+        if ($request->ajax()) {
+            return datatables()->of(EducationalLevel::select())->make(true);
+        }
+
+        $educationalLevel = EducationalLevel::all();
+        return view('educationalLevel.index', compact('educationalLevel'));
     }
 
     /**

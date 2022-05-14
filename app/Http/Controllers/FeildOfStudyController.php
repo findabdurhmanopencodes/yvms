@@ -15,12 +15,14 @@ class FeildOfStudyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-       // $feild_of_studies = FeildOfStudy::all();
-        $feild_of_studies = FeildOfStudy::paginate(10);
+        if ($request->ajax()) {
+            return datatables()->of(FeildOfStudy::select())->make(true);
+        }
 
-        return view('fieldofstudy.index', compact('feild_of_studies'));
+        $feildOfStudy = FeildOfStudy::all();
+        return view('fieldofstudy.index', compact('feildOfStudy'));
     }
 
     /**
