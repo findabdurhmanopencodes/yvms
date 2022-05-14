@@ -125,6 +125,7 @@
                         <td bgcolor="#ffffff" align="center"
                             style="padding: 20px 30px 40px 30px; color: #000000; font-family: serif, sans-serif; font-size: 16px;  line-height: 25px;">
                             <p>
+                                <strong>Dear {{ $volunteer->name() }}</strong>
                                 <b>Congratulations!</b> You have been selected to participate in the Training course which will
                                 take place in
                                 <strong>{{ $volunteer->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->name }}</strong>.
