@@ -13,6 +13,7 @@ use App\Models\Disablity;
 use App\Models\EducationalLevel;
 use App\Models\FeildOfStudy;
 use App\Models\File;
+use App\Models\Qouta;
 use App\Models\Region;
 use App\Models\Status;
 use App\Models\TrainingSession;
