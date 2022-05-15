@@ -53,7 +53,6 @@ class VolunteerController extends Controller
         // }
         // dd('dsf');
         $applicants = Volunteer::whereRelation('status','acceptance_status',0)->where('training_session_id', $session_id);
-        dd($applicants->get());
 
 
         // foreach(Volunteer::all() as $applicant){
