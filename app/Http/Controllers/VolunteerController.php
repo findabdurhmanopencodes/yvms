@@ -283,10 +283,10 @@ class VolunteerController extends Controller
         if ($request->get('type') == 'accept') {
             // dd('11');
             Status::Create(['volunteer_id' => $applicant_id, 'acceptance_status' => 1]);
-            return redirect()->route('applicant.index',['session_id'=>Volunteer::find($applicant_id)->training_session_id]);
+            return redirect()->route('session.applicant.index',['training_session'=>Volunteer::find($applicant_id)->training_session_id]);
         } elseif ($request->get('type') == 'reject') {
             Status::Create(['volunteer_id' => $applicant_id, 'acceptance_status' => 2, 'rejection_reason' => $request->get('rejection_reason')]);
-            return redirect()->route('applicant.index',['session_id'=>Volunteer::find($applicant_id)->training_session_id]);
+            return redirect()->route('session.applicant.index',['training_session'=>Volunteer::find($applicant_id)->training_session_id]);
             // return redirect()->back();
         }
     }

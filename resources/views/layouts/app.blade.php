@@ -130,6 +130,18 @@
                                 </a>
                             </li>
 
+
+                            @if (Request::route('training_session'))
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.applicant') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.applicant.index', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon flaticon-users"></i>
+                                        <span class="menu-text">Applicants</span>
+                                    </a>
+                                </li>
+                            @endif
+
                             <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'user') === 0 ? 'menu-item-open' : '' }}"
                                 aria-haspopup="true" data-menu-toggle="hover">
 
