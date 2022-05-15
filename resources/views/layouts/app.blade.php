@@ -193,7 +193,7 @@
                                 </li>
                                 {{-- <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.pacement') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
-                                    <a href="{{ route('session.placement', ['training_session' => Request::route('training_session')]) }}"
+                                    <a href="{{ route('session.placement.index', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot">
                                             <span></span>
@@ -210,9 +210,9 @@
                                         <span class="menu-text">Applicants</span>
                                     </a>
                                 </li> --}}
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.placement') === 0 ? 'menu-item-active' : '' }}"
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.placement.index') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
-                                    <a href="{{ route('session.placement', ['training_session' => Request::route('training_session')]) }}"
+                                    <a href="{{ route('session.placement.index', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
                                         <i class="menu-icon flaticon-users"></i>
                                         <span class="menu-text">Placment Result</span>

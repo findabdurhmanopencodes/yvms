@@ -107,7 +107,7 @@
                                                 <a href="/training_session/' + training_sessionId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-pen"></i>\
                                                 </a>\
-                                                <a href="/session/' + training_sessionId + '/dashboard" class="btn btn-sm btn-clean btn-icon">\
+                                                <a href="' + training_sessionId + '/dashboard" class="btn btn-sm btn-clean btn-icon">\
                                                     <i class="flaticon-eye"></i>\
                                                 </a>\
                                                 \

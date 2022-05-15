@@ -19,11 +19,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\ZoneController;
+use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\Volunteer;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -41,7 +43,6 @@ use Symfony\Component\Console\Input\Input;
 */
 
 // Route::get('/profile/{user?}',[UserController::class,'profile'])->name('profile.show');
-
 
 Route::get('/login', function () {
     return view('auth.login');
@@ -81,25 +82,19 @@ Route::get('application_form', [VolunteerController::class, 'application_form'])
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
 Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
 
-Route::group(['prefix' => 'session/{training_session}', 'middleware' => ['auth'], 'as' => 'session.'], function () {
+Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' => 'session.'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/quota', [TrainingSessionController::class, 'showQuota'])->name('training_session.quota');
     Route::any('applicant/', [VolunteerController::class, 'index'])->name('applicant.index');
     Route::resource('/applicant', VolunteerController::class)->except(['index']);
     Route::post('applicant/{applicant_id}/screen', [VolunteerController::class, 'screen'])->name('applicant.screen');
+    Route::post('applicant/place', [TrainingPlacementController::class, 'place'])->name('applicant.place');
     Route::get('applicants/email/unverified', [VolunteerController::class, 'emailUnverified'])->name('applicant.email.unVerified');
     Route::get('/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');
     Route::get('applicants/document-verified', [VolunteerController::class, 'verifiedApplicant'])->name('applicant.verified');
     Route::get('applicants/selected', [VolunteerController::class, 'selected'])->name('applicant.selected');
-    Route::get('placement', [TrainingPlacementController::class, 'index'])->name('placement');
-
-
-
-
-
-
-
-
+    Route::get('placement', [TrainingPlacementController::class, 'index'])->name('placement.index');
+    Route::post('{training_placement}/change', [TrainingPlacementController::class, 'changePlacement'])->name('placement.change');
 });
 
 
