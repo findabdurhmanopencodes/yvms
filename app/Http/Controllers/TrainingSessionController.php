@@ -679,7 +679,7 @@ class TrainingSessionController extends Controller
             // dd(Status::where('volunteer_id', 1)->get()[0]);
             foreach ($a as $key => $accepted) {
                 $approved_applicant = new ApprovedApplicant();
-                $status = Status::where('volunteer_id', $accepted->id)->get();
+                $status = Status::where('volunteer_id', $accepted->id)->get()[0];
                 $status->acceptance_status = 3;
                 $status->save();
                 $approved_applicant->training_session_id = $id;
