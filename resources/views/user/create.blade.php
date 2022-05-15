@@ -177,55 +177,6 @@
                             },
                         }
                     },
-                    @if (isset($user))
-                        password: {
-                            validators: {
-                                stringLength: {
-                                    min: 8,
-                                    message: 'The password must have at least 8 characters',
-                                },
-                            },
-                        },
-                        password_confirmation: {
-                            validators: {
-                                identical: {
-                                    compare: function() {
-                                        return form.querySelector('[name="password"]').value;
-                                    },
-                                    message: 'The confirmation password and its confirm are not the same',
-                                },
-                            },
-                        }
-                    @else
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: 'The password is required',
-                                },
-                                stringLength: {
-                                    min: 8,
-                                    message: 'The password must have at least 8 characters',
-                                },
-                            },
-                        },
-                        password_confirmation: {
-                            validators: {
-                                notEmpty: {
-                                    message: 'The confirmation password is required',
-                                },
-                                stringLength: {
-                                    min: 8,
-                                    message: 'The password must have at least 8 characters',
-                                },
-                                identical: {
-                                    compare: function() {
-                                        return form.querySelector('[name="password"]').value;
-                                    },
-                                    message: 'The password and its confirm are not the same',
-                                },
-                            },
-                        }
-                    @endif
                 },
 
                 plugins: {
@@ -387,25 +338,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="col-md-4 form-group">
-                                <x-jet-label for="password" value="{{ __('Password') }}" />
-                                <input id="password" class="form-control @error('password') is-invalid @enderror"
-                                    type="password" placeholder="Password" name="password" requiredd
-                                    autocomplete="new-password" />
-                                @error('password')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col-md-4 form-group">
-                                <x-jet-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                                <input id="password_confirmation"
-                                    class="form-control @error('password_confirmation') is-invalid @enderror"
-                                    type="password" placeholder="Confirm Password" name="password_confirmation" requiredd
-                                    autocomplete="new-password" />
-                                @error('password_confirmation')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+
                         </div>
                         <div class="row">
                             <div class="col-md-4 form-group {{ old('region') ? '' : ($user?->isCordinator() ? '' : 'd-none') }} col-md-4"

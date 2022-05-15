@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Models\Permission;
 use Yajra\Datatables\Facades\Datatables;
-
+use Illuminate\Support\Str;
 class UserController extends Controller
 {
 
@@ -96,12 +96,12 @@ class UserController extends Controller
             'zone.required_if' => 'The Zone field is required when user has zone cordinator role.',
             'region.required_if' => 'The Region field is required when user has regional or zone cordinator role.',
         ]);
-        if (isset($request->password)) {
-            $userData['password'] = $request->validate([
-                'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            ])['password'];
-            $userData['password'] = Hash::make($userData['password']);
-        }
+        // if (isset($request->password)) {
+        //     $userData['password'] = $request->validate([
+        //         'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        //     ])['password'];
+        //     $userData['password'] = Hash::make($userData['password']);
+        // }
 
         if ($userData['role'] == $regionalCordinator->id) {
             if ($user->hasRole($regionalCordinator->id)) {
@@ -190,7 +190,6 @@ class UserController extends Controller
             'dob' => ['required', 'date_format:d/m/Y'],
             'gender' => ['required', 'string', 'in:M,F'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required'],
             'region' => ['required_if:role,==,' . $regionalCordinator->id . ''],
             'zone' => ['required_if:role,==,' . $zoneCordinator->id . ''],
@@ -214,6 +213,7 @@ class UserController extends Controller
         if ($request->role == Role::findByName('volunteer')) {
             return abort(404);
         }
+        $userData['password'] = Str::random(8);
         $userData['dob'] = $dob_GC;
         $userData['password'] = Hash::make($userData['password']);
         $user = User::create($userData);
@@ -231,7 +231,6 @@ class UserController extends Controller
                 'levelable_id' => $zoneCordinator->id,
             ]);
         }
-
         event(new Registered($user));
         return redirect(route('user.index'))->with('message', 'User registered successfully');
     }
