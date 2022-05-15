@@ -568,110 +568,156 @@ class TrainingSessionController extends Controller
                 }
             }
 
+            // $ss = [];
+
+            // foreach ($accepted_arr as $key => $value) {
+            //     if ($value->woreda->zone->region->id == 4) {
+            //         array_push($ss, $value->woreda->zone->region->id);
+            //     }
+            // }
+            // dd($ss);
+
             $a = [];
             $b = [];
             $left_arr = [];
             $group_reg = [];
+            $final_arr =[];
             $group_zon = [];
+
+
 
             $train_session = TrainingSession::where('id', $id)->get()[0]->quantity;
 
-            if (sizeof($accepted_arr) > $train_session) {
-                sort($accepted_arr);
-                $new_slice_arr = array_slice($accepted_arr, 0, $train_session, true);
-                foreach ($new_slice_arr as $key => $value) {
-                    array_push($a, $value);
-                }
-            } else if (sizeof($accepted_arr) < $train_session) {
-                sort($accepted_arr);
-                foreach ($accepted_arr as $key => $value) {
-                    $group_reg[$value['woreda_id']][] = $value;
+            if (count($accepted_arr) < $train_session) {
+                foreach ($accepted_arr as $key => $acc) {
+                    array_push($left_arr, $acc->woreda->zone->region->id);
                 }
 
-                foreach ($group_reg as $key => $val) {
-                    $wore_quantity = Qouta::where('training_session_id', $id)->where('quotable_type',Woreda::class)->where('quotable_id',$key)->get()[0]->quantity;
-
-                    if (sizeof($val) < $wore_quantity) {
-                        foreach (Woreda::where('id',$key)->get()[0]->zone->woredas as $key => $zone) {
-                            foreach ($zone->applicants as $key => $zon_app) {
-
-                                if (!in_array($zon_app, $accepted_arr)) {
-                                    array_push($accepted_arr, $zon_app);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                foreach ($accepted_arr as $key => $value) {
-                    $group_zon[$value['woreda_id']][] = $value;
-                }
-
-                foreach ($group_zon as $key => $val) {
-                    $wore_quantity = Qouta::where('training_session_id', $id)->where('quotable_type',Woreda::class)->where('quotable_id',$key)->get()[0]->quantity;
-
-                    if (sizeof($val) < $wore_quantity) {
-                        foreach (Woreda::where('id',$key)->get()[0]->zone->region->zones as $key => $zone) {
-                            foreach ($zone->woredas as $key => $wore) {
-                                foreach ($wore->applicants as $key => $wor_app) {
-
-                                    if (!in_array($wor_app, $accepted_arr)) {
-                                        array_push($accepted_arr, $wor_app);
+                foreach (array_count_values($left_arr) as $key_co => $count) {
+                    $gr_reg = [];
+                    $count_diff = 0;
+                    foreach (Qouta::where('training_session_id', $id)->where('quotable_type', Region::class)->get() as $key => $reg_quota) {
+                        if ($reg_quota->quotable->id == $key_co) {
+                            if ($count < $reg_quota->quantity) {
+                                foreach ($arr as $key => $val) {
+                                    if ($val->woreda->zone->region->id == $reg_quota->quotable_id) {
+                                        array_push($gr_reg, $val);
+                                        $count_diff = $reg_quota->quantity - $count;
                                     }
                                 }
                             }
                         }
                     }
+                    sort($gr_reg);
+                    $new_slice_arr = array_slice($gr_reg, 0, $count_diff, true);
+                    array_push($group_reg, $new_slice_arr);
                 }
-
-
-                if (sizeof($accepted_arr) < $train_session) {
-                    $no_volunteer = Volunteer::all();
-                    if ($train_session <= count($no_volunteer)) {
-                        $dif_arr = $train_session - sizeof($accepted_arr);
-                        $merge_arr = array_diff($arr, $accepted_arr);
-
-                        foreach ($merge_arr as $value) {
-                            array_push($b, $value);
-                        }
-                        sort($b);
-                        $new_slice_merge_arr = array_slice($b, 0, $dif_arr);
-                        $merged_array = array_merge($accepted_arr, $new_slice_merge_arr);
-
-                        foreach ($merged_array as $key => $value) {
-                            array_push($a, $value);
-                        }
-                    }else{
-                        foreach ($accepted_arr as $key => $value) {
-                            array_push($a, $value);
-                        }
+                foreach ($group_reg as $key => $gr) {
+                    foreach ($gr as $key => $sub_gr) {
+                        array_push($accepted_arr, $sub_gr);
                     }
-                }
-
-                elseif(sizeof($accepted_arr) == $train_session){
-                    foreach ($accepted_arr as $key => $value) {
-                        array_push($a, $value);
-                    }
-                }else{
-                    sort($accepted_arr);
-                    $new_slice_arr = array_slice($accepted_arr, 0, $train_session);
-                    foreach ($new_slice_arr as $key => $value) {
-                        array_push($a, $value);
-                    }
-                }
-
-            } else {
-                foreach ($accepted_arr as $key => $value) {
-                    array_push($a, $accepted_arr);
                 }
             }
+            // dd($accepted_arr);
+            // dd('sdfd');
+
+
+            // if (sizeof($accepted_arr) > $train_session) {
+            //     sort($accepted_arr);
+            //     $new_slice_arr = array_slice($accepted_arr, 0, $train_session, true);
+            //     foreach ($new_slice_arr as $key => $value) {
+            //         array_push($a, $value);
+            //     }
+            // } else if (sizeof($accepted_arr) < $train_session) {
+            //     sort($accepted_arr);
+            //     foreach ($accepted_arr as $key => $value) {
+            //         $group_reg[$value['woreda_id']][] = $value;
+            //     }
+
+            //     foreach ($group_reg as $key => $val) {
+            //         $wore_quantity = Qouta::where('training_session_id', $id)->where('quotable_type',Woreda::class)->where('quotable_id',$key)->get()[0]->quantity;
+
+            //         if (sizeof($val) < $wore_quantity) {
+            //             foreach (Woreda::where('id',$key)->get()[0]->zone->woredas as $key => $zone) {
+            //                 foreach ($zone->applicants as $key => $zon_app) {
+
+            //                     if (!in_array($zon_app, $accepted_arr)) {
+            //                         array_push($accepted_arr, $zon_app);
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     }
+
+            //     foreach ($accepted_arr as $key => $value) {
+            //         $group_zon[$value['woreda_id']][] = $value;
+            //     }
+
+            //     foreach ($group_zon as $key => $val) {
+            //         $wore_quantity = Qouta::where('training_session_id', $id)->where('quotable_type',Woreda::class)->where('quotable_id',$key)->get()[0]->quantity;
+
+            //         if (sizeof($val) < $wore_quantity) {
+            //             foreach (Woreda::where('id',$key)->get()[0]->zone->region->zones as $key => $zone) {
+            //                 foreach ($zone->woredas as $key => $wore) {
+            //                     foreach ($wore->applicants as $key => $wor_app) {
+
+            //                         if (!in_array($wor_app, $accepted_arr)) {
+            //                             array_push($accepted_arr, $wor_app);
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     }
+
+
+            //     if (sizeof($accepted_arr) < $train_session) {
+            //         $no_volunteer = Volunteer::all();
+            //         if ($train_session <= count($no_volunteer)) {
+            //             $dif_arr = $train_session - sizeof($accepted_arr);
+            //             $merge_arr = array_diff($arr, $accepted_arr);
+
+            //             foreach ($merge_arr as $value) {
+            //                 array_push($b, $value);
+            //             }
+            //             sort($b);
+            //             $new_slice_merge_arr = array_slice($b, 0, $dif_arr);
+            //             $merged_array = array_merge($accepted_arr, $new_slice_merge_arr);
+
+            //             foreach ($merged_array as $key => $value) {
+            //                 array_push($a, $value);
+            //             }
+            //         }else{
+            //             foreach ($accepted_arr as $key => $value) {
+            //                 array_push($a, $value);
+            //             }
+            //         }
+            //     }
+
+            //     elseif(sizeof($accepted_arr) == $train_session){
+            //         foreach ($accepted_arr as $key => $value) {
+            //             array_push($a, $value);
+            //         }
+            //     }else{
+            //         sort($accepted_arr);
+            //         $new_slice_arr = array_slice($accepted_arr, 0, $train_session);
+            //         foreach ($new_slice_arr as $key => $value) {
+            //             array_push($a, $value);
+            //         }
+            //     }
+
+            // } else {
+            //     foreach ($accepted_arr as $key => $value) {
+            //         array_push($a, $accepted_arr);
+            //     }
+            // }
             $approved_applicants = ApprovedApplicant::where('training_session_id', $id)->get();
 
             foreach ($approved_applicants as $key => $app_vol) {
                 $app_vol->delete();
             }
 
-            foreach ($a as $key => $accepted) {
+            foreach ($accepted_arr as $key => $accepted) {
                 $approved_applicant = new ApprovedApplicant();
                 $status = Status::where('volunteer_id', $accepted->id)->get()[0];
                 $status->acceptance_status = 3;
@@ -682,7 +728,7 @@ class TrainingSessionController extends Controller
                 $approved_applicant->save();
             }
         }
-        return redirect()->route('applicant.verified', ['session' => $id])->with('message', 'Applicant approved successfully');
+        return redirect()->route('session.applicant.verified', ['training_session' => $id])->with('message', 'Applicant approved successfully');
     }
     public function resetScreen($training_session_id)
     {
