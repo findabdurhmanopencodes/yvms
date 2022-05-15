@@ -346,8 +346,8 @@ class TrainingSessionController extends Controller
                         $qouta->training_session_id = $trainingSession->id;
                         $reg_sum = intval($request->get('quantity') * $reg_qouta) * sizeof($regions);
                         $check_reg_qua = ($request->get('quantity') - $reg_sum) - $key;
-                        $check_decimal = ($request->get('quantity')*$reg_qouta) - floor($request->get('quantity')*$reg_qouta);
-                        $check_sum_reg+=$check_decimal;
+                        $check_decimal = ($request->get('quantity') * $reg_qouta) - floor($request->get('quantity') * $reg_qouta);
+                        $check_sum_reg += $check_decimal;
                         // dump($check_sum_ch);
                         if ($check_sum_reg >= 1) {
                             $qouta->quantity = intval($request->get('quantity') * $reg_qouta) + 1;
@@ -391,10 +391,10 @@ class TrainingSessionController extends Controller
                                         $check_zone_qua = $zone_quantity - $zone_sum;
                                         // dump($zone_quantity*$zone_qouta);
 
-                                        $check_decimal_zon = ($zone_quantity*$zone_qouta) - floor($zone_quantity*$zone_qouta);
+                                        $check_decimal_zon = ($zone_quantity * $zone_qouta) - floor($zone_quantity * $zone_qouta);
                                         // dump($check_decimal_zon);
 
-                                        $check_sum_zon+=$check_decimal_zon;
+                                        $check_sum_zon += $check_decimal_zon;
 
                                         $check_zone_check = $check_zone_qua - $keyzone;
 
@@ -422,11 +422,11 @@ class TrainingSessionController extends Controller
 
                                                     $check_woreda_check = $check_woreda_qua - $keyworeda;
 
-                                                    $check_decimal_wor = ($woreda_quantity*$woreda_qouta) - floor($woreda_quantity*$woreda_qouta);
+                                                    $check_decimal_wor = ($woreda_quantity * $woreda_qouta) - floor($woreda_quantity * $woreda_qouta);
 
 
 
-                                                    $check_sum_wor+=$check_decimal_wor;
+                                                    $check_sum_wor += $check_decimal_wor;
 
                                                     if ($check_sum_wor >= 1) {
                                                         $qouta->quantity = intval($woreda_quantity * $woreda_qouta) + 1;
@@ -453,33 +453,33 @@ class TrainingSessionController extends Controller
                 }
             }
             // dd('dfgfd');
+        }
+        $qouta_reg = Qouta::where('training_session_id', $trainingSession->id)->where('quotable_type', Region::class)->get();
+        $qouta_zon = Qouta::where('training_session_id', $trainingSession->id)->where('quotable_type', Zone::class)->get();
+        $qouta_wor = Qouta::where('training_session_id', $trainingSession->id)->where('quotable_type', Woreda::class)->get();
+        // dd($qouta_reg);
+        $regional_qouta = 0;
+        $zonal_qouta = 0;
+        $woredal_qoutal = 0;
+        foreach ($qouta_reg as $key => $reg_qou) {
+            $regional_qouta += $reg_qou->quantity;
+        }
+        // dd($qouta_reg);
+        if ($regional_qouta < $request->get('quantity')) {
+            $qouta_reg[0]->update(['quantity', $qouta_reg[0]->quantity += ($request->get('quantity') - $regional_qouta)]);
+            foreach ($qouta_zon as $key => $zon_qou) {
+                $zonal_qouta += $zon_qou->quantity;
             }
-            $qouta_reg = Qouta::where('training_session_id',$trainingSession->id)->where('quotable_type',Region::class)->get();
-            $qouta_zon = Qouta::where('training_session_id',$trainingSession->id)->where('quotable_type',Zone::class)->get();
-            $qouta_wor = Qouta::where('training_session_id',$trainingSession->id)->where('quotable_type',Woreda::class)->get();
-            // dd($qouta_reg);
-            $regional_qouta = 0;
-            $zonal_qouta = 0;
-            $woredal_qoutal = 0;
-            foreach ($qouta_reg as $key => $reg_qou) {
-                $regional_qouta+=$reg_qou->quantity;
-            }
-            // dd($qouta_reg);
-            if ($regional_qouta < $request->get('quantity')) {
-                $qouta_reg[0]->update(['quantity', $qouta_reg[0]->quantity+=($request->get('quantity') - $regional_qouta)]);
-                foreach ($qouta_zon as $key => $zon_qou) {
-                    $zonal_qouta+=$zon_qou->quantity;
+            if ($zonal_qouta < $request->get('quantity')) {
+                $qouta_zon[0]->update(['quantity', $qouta_zon[0]->quantity += ($request->get('quantity') - $zonal_qouta)]);
+                foreach ($qouta_wor as $key => $wor_qou) {
+                    $woredal_qoutal += $wor_qou->quantity;
                 }
-                if ($zonal_qouta < $request->get('quantity')) {
-                    $qouta_zon[0]->update(['quantity', $qouta_zon[0]->quantity+=($request->get('quantity') - $zonal_qouta)]);
-                    foreach ($qouta_wor as $key => $wor_qou) {
-                        $woredal_qoutal+=$wor_qou->quantity;
-                    }
-                    if ($woredal_qoutal < $request->get('quantity')) {
-                        $qouta_wor[0]->update(['quantity', $qouta_wor[0]->quantity+=($request->get('quantity') - $woredal_qoutal)]);
-                    }
+                if ($woredal_qoutal < $request->get('quantity')) {
+                    $qouta_wor[0]->update(['quantity', $qouta_wor[0]->quantity += ($request->get('quantity') - $woredal_qoutal)]);
                 }
             }
+        }
         return redirect()->route('training_session.index')->with('message', 'Program updated successfully');
     }
 
@@ -738,12 +738,11 @@ class TrainingSessionController extends Controller
 
                 if ($volunteer->id == $status->volunteer_id) {
 
-                    Status::find($status->id)->update(['acceptance_status'=>1]);
+                    Status::find($status->id)->update(['acceptance_status' => 1]);
                 }
         }
         ApprovedApplicant::truncate();
 
-       return redirect()->back();
-
+        return redirect()->back();
     }
 }

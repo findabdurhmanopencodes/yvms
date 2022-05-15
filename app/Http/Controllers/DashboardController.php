@@ -72,7 +72,7 @@ class DashboardController extends Controller
     public function trainginCenersVolenteerRegionalDistribution($trainingCenterId)
     {
         $ts = TrainingSession::availableSession()->first();
-        $contr = collect(DB::select("SELECT r.name as x, COUNT(tp.approved_applicant_id) as y FROM `training_placements` tp LEFT JOIN approved_applicants app ON tp.approved_applicant_id = app.id LEFT JOIN volunteers vl ON app.volunteer_id = vl.id LEFT JOIN woredas w ON vl.woreda_id = w.id LEFT JOIN zones z ON w.zone_id = z.id LEFT JOIN regions r ON z.region_id = r.id LEFT JOIN training_center_capacities tcc ON tp.training_center_capacity_id = tcc.id LEFT JOIN trainining_centers tc ON tcc.trainining_center_id = tc.id WHERE tp.training_session_id = $ts->id AND tc.id = $trainingCenterId GROUP BY r.id"));
+        $contr = collect(DB::select("SELECT r.name as x, COUNT(tp.approved_applicant_id) as y FROM `training_placements` tp LEFT JOIN approved_applicants app ON tp.approved_applicant_id = app.id LEFT JOIN volunteers vl ON app.volunteer_id = vl.id LEFT JOIN woredas w ON vl.woreda_id = w.id LEFT JOIN zones z ON w.zone_id = z.id LEFT JOIN regions r ON z.region_id = r.id LEFT JOIN training_center_capacities tcc ON tp.training_center_capacity_id = tcc.id LEFT JOIN trainining_centers tc ON tcc.trainining_center_id = tc.id WHERE tp.training_session_id = $ts->id AND tc.id = $trainingCenterId GROUP BY r.code"));
 
         return $contr;
     }

@@ -32,7 +32,7 @@
             <div class="card-title">
                 <h3 class="card-label">Selected Applicants
                     <span class="d-block text-muted pt-2 font-size-sm">All Selected Applicants
-                        {{ $trainingSession->moto }}</span>
+                        {{ $trainingSession?->moto }}</span>
                 </h3>
 
 
