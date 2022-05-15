@@ -77,10 +77,10 @@
             <div class="card-title">
                 <h3 class="card-label">Applicants
                     <span class="d-block text-muted pt-2 font-size-sm">All Applicants In
-                        {{ $trainingSession->moto }}</span>
+                        {{ $trainingSession?->moto }}</span>
                 </h3>
             </div>
-            @if (count($volunters) > 0)
+            @if (count($approve) < 1)
                 <div>
 
                     <a class="btn btn-sm btn-info"

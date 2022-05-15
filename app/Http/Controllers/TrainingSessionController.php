@@ -658,13 +658,6 @@ class TrainingSessionController extends Controller
                     }
                 }
 
-                // foreach ($variable as $key => $value) {
-                //     # code...
-                // }
-
-                foreach ($accepted_arr as $key => $value) {
-                    array_push($a, $value);
-                }
             } else {
                 foreach ($accepted_arr as $key => $value) {
                     array_push($a, $accepted_arr);

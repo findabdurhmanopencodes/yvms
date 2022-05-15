@@ -16,7 +16,9 @@ use App\Models\File;
 use App\Models\Qouta;
 use App\Models\Region;
 use App\Models\Status;
+use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
+use App\Models\TraininingCenter;
 use App\Models\User;
 use App\Models\VerifyVolunteer;
 use App\Models\Woreda;
@@ -26,6 +28,7 @@ use DateTime;
 use Faker\Factory;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -303,8 +306,11 @@ class VolunteerController extends Controller
      */
     public function verifiedApplicant(Request $request, $training_session)
     {
-        $applicants =  Volunteer::whereRelation('status', 'acceptance_status', 1)->where('training_session_id', $training_session);
-        return view('volunter.verified_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($training_session)]);
+        $applicants=  Volunteer::whereRelation('status','acceptance_status',1)->where('training_session_id',$training_session);
+
+        $approved = ApprovedApplicant::where('training_session_id',$training_session)->get();
+
+        return view('volunter.verified_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($training_session), 'approve'=>$approved]);
     }
     public function selected(Request $request, $training_session)
     {
