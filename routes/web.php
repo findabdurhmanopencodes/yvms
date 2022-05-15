@@ -87,6 +87,7 @@ Route::group(['prefix' => 'session/{training_session}', 'middleware' => ['auth']
     // Route::any('applicant/', [VolunteerController::class, 'index'])->name('session.applicant.index');
     Route::resource('/applicant', VolunteerController::class);
 });
+Route::get('training_session/{training_session}/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 

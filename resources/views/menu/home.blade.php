@@ -6,7 +6,8 @@
             <div class="container">
                 <div class="py-2 text-center d-flex align-items-stretch flex-column">
                     <div class="row">
-                        <div class="col-md-6">
+                       
+                        <div class="col-md-4">
                             <img src="{{ asset('img/peace_logo_max.png') }}" class="mx-auto" width="300" alt="">
                             <h6 style="font-family:serif !important;padding: 0;font-size:25px;margin: 0; line-height: 1; color: #01afee;align-self:center;">በጎነት ለአብሮነት</h6>
                         </div>
@@ -16,6 +17,14 @@
                                 <p style="font-weight: 100;">ብሔራዊ የበጎ ፈቃድ ማህበረሰብ <br> አገልገሎት</p>
                             </div>
                         </div>
+
+
+                        <div class="col-md-4 d-flex">
+                            <img src="{{ asset('img/peace_logo_max.png') }}" class="mx-auto" width="300" alt="">
+                        </div>
+
+
+
                     </div>
                     <!--begin::Heading-->
                 </div>
@@ -23,6 +32,7 @@
         </div>
         {{-- <img src="{{ asset('assets/media/logos/header.jpg') }}" class="col-md-10"/> --}}
     </div>
+
     <div class="row bg-blend-lighten">
         <div class="col-lg-6">
             <!--begin::Callout-->
