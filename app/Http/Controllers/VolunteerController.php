@@ -16,6 +16,7 @@ use App\Models\File;
 use App\Models\Qouta;
 use App\Models\Region;
 use App\Models\Status;
+use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
@@ -315,7 +316,7 @@ class VolunteerController extends Controller
     public function selected(Request $request, $training_session)
     {
         $applicants =  Volunteer::has('approvedApplicant')->where('training_session_id', $training_session);
-        return view('volunter.selected_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($training_session)]);
+        return view('volunter.selected_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($training_session),'trainingCenterCapacities'=>TrainingCenterCapacity::where('training_session_id',$training_session)->get()]);
     }
     protected function verifyEmail($token)
     {

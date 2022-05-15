@@ -17,10 +17,44 @@
 
 @section('content')
 
+    <div class="modal fade" id="trainingCenterEdit" tabindex="-1" role="dialog" aria-labelledby="trainingCenterEdit"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                {{-- <form action="/trh" method="POST"> --}}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Assign Training Center</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="changePlacementForm" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="training_center" class="font-weight-bold">Training Center</label>
+                            <select name="training_center_capacity_id" id="training_center_capacity_id"
+                                class="form-control select2" style="width: 100%">
+                                @foreach ($trainingCenterCapacities as $trainingCenterCapacity)
+                                    <option value="{{ $trainingCenterCapacity->id }}">
+                                        {{ $trainingCenterCapacity->trainingCenter->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Assign" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="card card-custom">
+
         @if ($errors->any())
             <div class="alert alert-danger">
-                <p><strong>Opps Something went wrong</strong></p>
+                <p><strong>Oops Something went wrong</strong></p>
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -42,9 +76,10 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-3 ml-auto">
-                    <form method="POST" action="{{ route('session.applicant.place',[request()->route('training_session')]) }}">
-                            @csrf
-                        <button class="btn btn-primary">Place Volunteers</button>
+                    <form method="POST"
+                        action="{{ route('session.applicant.place', [request()->route('training_session')]) }}">
+                        @csrf
+                        <button class="btn btn-primary">Place All Volunteers</button>
                     </form>
                 </div>
             </div>
@@ -59,6 +94,7 @@
                             <th>Phone</th>
                             <th>Woreda</th>
                             <th>status</th>
+                            <th>Action</th>
 
                         </tr>
                     </thead>
@@ -84,7 +120,15 @@
                                 </td>
                                 <td>
                                     <span
-                                        class="badge badge-success badge-pill">{{ $volunter->status?->acceptance_status == 3 ? 'Accepted' : 'pendind' }}</span>
+                                        class="badge badge-success badge-pill">{{ $volunter->status?->acceptance_status == 3 ? 'Accepted' : 'pending' }}</span>
+                                </td>
+                                <td>
+                                    <a href="#"
+                                        data-action="{{ route('session.placement.manual', [request()->route('training_session'), $volunter->approvedApplicant->id]) }}"
+                                        class="btn btn-icon"
+                                        onclick="$('#changePlacementForm').attr('action',this.dataset.action);onSubmit();">
+                                        <span class="fa fa-edit"></span>
+                                    </a>
                                 </td>
 
                             </tr>
@@ -105,3 +149,25 @@
     </div>
 
 @endsection
+@push('js')
+    <script>
+        $('.select2').select2({});
+    </script>
+
+    <script>
+        function onSubmit() {
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This Will Place the Volunteer to a training center!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, Place it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $('#trainingCenterEdit').modal();
+                }
+            });
+        }
+    </script>
+@endpush
