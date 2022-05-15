@@ -86,18 +86,19 @@ Route::group(['prefix' => 'session/{training_session}', 'middleware' => ['auth']
     Route::get('/quota', [TrainingSessionController::class, 'showQuota'])->name('training_session.quota');
     Route::resource('/applicant', VolunteerController::class);
     Route::post('applicant/{applicant_id}/screen', [VolunteerController::class, 'screen'])->name('applicant.screen');
-    Route::get('applicants/selected', [VolunteerController::class, 'selected'])->name('applicant.selected');
-
-
-
-
-
-
-
-
-    Route::get('/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');
-    Route::get('applicants/{session}/document-verified', [VolunteerController::class, 'verifiedApplicant'])->name('applicant.verified');
     Route::get('applicants/email/unverified', [VolunteerController::class, 'emailUnverified'])->name('applicant.email.unVerified');
+    Route::get('/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');
+    Route::get('applicants/document-verified', [VolunteerController::class, 'verifiedApplicant'])->name('applicant.verified');
+    Route::get('applicants/selected', [VolunteerController::class, 'selected'])->name('applicant.selected');
+    Route::get('placement', [TrainingPlacementController::class, 'index'])->name('placement');
+
+
+
+
+
+
+
+
 });
 
 
@@ -122,7 +123,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ////////////////////////////////////////////////////////////////////////////////
     Route::get('training_sessions', [RegionController::class, 'place'])->name('region.place');
 
-    Route::get('placement', [TrainingPlacementController::class, 'index'])->name('training.placement');
     //Route::get('training_',[RegionController::class,'place'])->name('region.place');
     ///////////////////////////////////////////////////////////////////////////////////
     Route::resource('training_session', TrainingSessionController::class);

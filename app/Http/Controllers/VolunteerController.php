@@ -291,9 +291,9 @@ class VolunteerController extends Controller
             // return redirect()->back();
         }
     }
-    public function emailUnverified()
+    public function emailUnverified($training_session)
     {
-        $volunters = Volunteer::whereRelation('User', 'email_verified_at', null)->paginate(6);
+        $volunters = Volunteer::whereRelation('User', 'email_verified_at', null)->where('training_session_id',$training_session)->paginate(6);
         return view('volunter.email_unverified_volunter', ['volunters' => $volunters]);
     }
     /**
@@ -301,11 +301,10 @@ class VolunteerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function verifiedApplicant(Request $request, $session_id)
+    public function verifiedApplicant(Request $request, $training_session)
     {
-        $applicants =  Volunteer::whereRelation('status', 'acceptance_status', 1)->where('training_session_id', $session_id);
-
-        return view('volunter.verified_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($session_id)]);
+        $applicants =  Volunteer::whereRelation('status', 'acceptance_status', 1)->where('training_session_id', $training_session);
+        return view('volunter.verified_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($training_session)]);
     }
     public function selected(Request $request, $training_session)
     {
