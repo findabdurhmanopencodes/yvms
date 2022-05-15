@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             // PermissionSeeder::class,
             // RoleSeeder::class,
             // BaseSeeder::class,
-        //     // FakeDataSeeder::class,
+            //     // FakeDataSeeder::class,
         ]);
 
         User::create(

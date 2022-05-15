@@ -1,4 +1,4 @@
-@extends('layouts.session_layout')
+@extends('layouts.app')
 @section('action_title', 'Screeing Applicants')
 @section('title', 'Screeing Applicants')
 @section('breadcrumbTitle', 'Screeing Applicants')
@@ -15,7 +15,7 @@
     <!--end::Page Scripts-->~
 @endpush
 
-@section('action_content')
+@section('content')
     <div class="accordion accordion-solid accordion-toggle-plus " id="accordionExample6">
 
         <div class="card ">
@@ -90,7 +90,7 @@
             @else
                 <div>
                     <a class="btn btn-sm btn-info"
-                        href="{{ route('aplication.resetScreen', ['training_session' => $trainingSession->id]) }}">
+                        href="{{ route('session.aplication.resetScreen', ['training_session' => $trainingSession->id]) }}">
                         <i class="fa fa-recycle"></i> Reset </a>
                 </div>
             @endif

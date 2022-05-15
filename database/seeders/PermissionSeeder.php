@@ -114,8 +114,8 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'TrainingSession.store']);
         Permission::create(['name'=>'TrainingSession.show']);
         Permission::create(['name'=>'TrainingSession.edit']);
-        Permission::create(['name'=>'TrainingSession.update']);
         Permission::create(['name'=>'TrainingSession.destroy']);
+        Permission::create(['name'=>'TrainingSession.update']);
         Permission::create(['name'=>'TrainingSession.show.quota']);
         Permission::create(['name'=>'TrainingSession.screen']);
 

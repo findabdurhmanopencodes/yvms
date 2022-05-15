@@ -1,4 +1,4 @@
-@extends('layouts.session_layout')
+@extends('layouts.app')
 @section('action_title', 'Selected Applicants')
 @section('title', 'Selected Applicants')
 @section('breadcrumbTitle', 'Selected Applicants')
@@ -15,7 +15,7 @@
     <!--end::Page Scripts-->~
 @endpush
 
-@section('action_content')
+@section('content')
 
     <div class="card card-custom">
         @if ($errors->any())
