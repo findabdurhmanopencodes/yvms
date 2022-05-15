@@ -92,8 +92,8 @@
 
                                 </div>
                                 {{-- @dd($applicant->status) --}}
-                                @if ($applicant->status?->acceptance_status == 0 ||     )
-                                    <form action="{{ route('applicant.screen', ['applicant_id' => $applicant->id]) }}"
+                                @if ($applicant->status?->acceptance_status == 0 || $applicant->status?->acceptance_status == 2)
+                                    <form action="{{ route('session.applicant.screen', ['training_session'=>Request::route('training_session'),'applicant_id' => $applicant->id]) }}"
                                         method="POST">
                                         @csrf
                                         <button class="btn btn-bg btn-info font-weight-bolder" type="submit"><i
@@ -508,7 +508,7 @@
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="POST" action="{{ route('applicant.screen', ['applicant_id' => $applicant->id]) }}">
+                <form method="POST" action="{{ route('session.applicant.screen', ['training_session'=>Request::route('training_session'),'applicant_id' => $applicant->id]) }}">
                     @csrf
 
                     <div class="modal-header">
