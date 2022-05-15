@@ -12,7 +12,7 @@
     <!--begin::Page Scripts(used by this page)-->
     <script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
     <script src="{{ asset('assets/js/pages/custom/profile/profile.js') }}"></script>
-    <!--end::Page Scripts-->~
+    <!--end::Page Scripts-->
 @endpush
 
 @section('content')
@@ -32,7 +32,7 @@
             <div class="card-title">
                 <h3 class="card-label">Selected Applicants
                     <span class="d-block text-muted pt-2 font-size-sm">All Selected Applicants
-                        {{ $trainingSession->moto }}</span>
+                        {{ $trainingSession?->moto }}</span>
                 </h3>
 
 
@@ -40,6 +40,14 @@
 
         </div>
         <div class="card-body">
+            <div class="row">
+                <div class="col-3 ml-auto">
+                    <form method="POST" action="{{ route('session.applicant.place',[request()->route('training_session')]) }}">
+                            @csrf
+                        <button class="btn btn-primary">Place Volunteers</button>
+                    </form>
+                </div>
+            </div>
             <!--begin: Datatable-->
             <div class="datatable datatable-default datatable-bordered datatable-loaded">
                 <table class="table table-responsive">

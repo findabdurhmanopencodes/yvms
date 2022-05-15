@@ -73,6 +73,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_photo_url',
     ];
 
+    public function getSessionAttribute()
+    {
+        return request()->route('training_session');
+    }
     public function getNameAttribute(): string
     {
         return $this->first_name . ' ' . $this->father_name . ' ' . $this->grand_father_name;
@@ -109,7 +113,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isCordinator()
     {
-        return $this->isRegionalCordinator()!=null || $this->isZoneCordinator() != null;
+        return $this->isRegionalCordinator() != null || $this->isZoneCordinator() != null;
     }
 
     public function isRegionalCordinator()
@@ -124,7 +128,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getCordinatingRegion()
     {
-        if($this->isZoneCordinator()){
+        if ($this->isZoneCordinator()) {
             return $this->getCordinatingZone()->region;
         }
         return UserRegion::where('user_id', $this->id)->where('levelable_type', Region::class)->first()?->levelable;

@@ -18,49 +18,6 @@
 @section('content')
     <div class="accordion accordion-solid accordion-toggle-plus " id="accordionExample6">
 
-        <div class="card ">
-            <div id="headingThree6" class="card-header text-white" style="background-color: rgba(15, 69, 105, 0.6);">
-                <div class="card-title collapsed text-white" data-toggle="collapse" data-target="#collapseThree6"
-                    style="background-color: rgba(15, 69, 105, 0.6);">
-                    <i class="flaticon2-search fa-2x text-white"></i> Screen requirments
-                </div>
-            </div>
-            <div id="collapseThree6" class="collapse" data-parent="#accordionExample6">
-                <div class="card-body">
-                    @csrf
-                    {{-- <div class="row"> --}}
-                    <form class="form">
-                        <div class="form-group row">
-                            <div class="col-lg-6">
-                                <label>Age</label>
-                                <div class="radio-list">
-                                    <label class="radio">
-                                        <input type="radio" name="age" />18 - 25
-                                        <span></span></label>
-                                    <label class="radio">
-                                        <input type="radio" name="age" />26 - 35
-                                        <span></span></label>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <label>Graduation Year</label>
-                                <div class="radio-list">
-                                    <label class="radio">
-                                        <input type="radio" name="year" />last year
-                                        <span></span></label>
-                                    <label class="radio">
-                                        <input type="radio" name="year" />last two year
-                                        <span></span></label>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    {{-- </div> --}}
-                </div>
-
-            </div>
-        </div>
     </div>
     <div class="card card-custom">
         @if ($errors->any())
@@ -77,7 +34,7 @@
             <div class="card-title">
                 <h3 class="card-label">Applicants
                     <span class="d-block text-muted pt-2 font-size-sm">All Applicants In
-                        {{ $trainingSession->moto }}</span>
+                        {{ $trainingSession?->moto }}</span>
                 </h3>
             </div>
             @if (count($approve) < 1)

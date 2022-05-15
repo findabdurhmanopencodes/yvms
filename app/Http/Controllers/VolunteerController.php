@@ -53,7 +53,7 @@ class VolunteerController extends Controller
         //     $status->save();
         // }
         // dd('dsf');
-        $applicants = Volunteer::doesntHave('status')->where('training_session_id', $session_id);
+        $applicants = Volunteer::whereRelation('status','acceptance_status',0)->where('training_session_id', $session_id);
 
 
         // foreach(Volunteer::all() as $applicant){
