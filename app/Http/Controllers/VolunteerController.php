@@ -52,6 +52,13 @@ class VolunteerController extends Controller
         //     $status->save();
         // }
         // dd('dsf');
+// $r =[];
+//         foreach (Volunteer::all() as $key => $value) {
+//             if ($value->woreda->zone->region->id == 1) {
+//                 array_push($r, $value->woreda->zone->region->id == 1);
+//             }
+//         }
+//         dd(count($r));
         $applicants = Volunteer::whereRelation('status','acceptance_status',0)->where('training_session_id', $session_id);
 
 
@@ -315,7 +322,8 @@ class VolunteerController extends Controller
     public function selected(Request $request, $training_session)
     {
         $applicants =  Volunteer::has('approvedApplicant')->where('training_session_id', $training_session);
-        return view('volunter.selected_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($training_session)]);
+        // dd($applicants->get());
+        return view('volunter.selected_volunter', ['volunters' => $applicants->paginate(10), 'trainingSession' => TrainingSession::find($training_session)]);
     }
     protected function verifyEmail($token)
     {
