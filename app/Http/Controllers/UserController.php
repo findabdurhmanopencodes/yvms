@@ -15,6 +15,7 @@ use Andegna\DateTimeFactory;
 use App\Models\Region;
 use App\Models\UserRegion;
 use App\Models\Zone;
+use App\Policies\UserPolicy;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +25,11 @@ use Yajra\Datatables\Facades\Datatables;
 use Illuminate\Support\Str;
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(User::class,'user');
+    }
 
     public function index(Request $request)
     {
@@ -213,7 +219,8 @@ class UserController extends Controller
         if ($request->role == Role::findByName('volunteer')) {
             return abort(404);
         }
-        $userData['password'] = Str::random(8);
+        // $userData['password'] = Str::random(8);
+        $userData['password'] = '12345678';
         $userData['dob'] = $dob_GC;
         $userData['password'] = Hash::make($userData['password']);
         $user = User::create($userData);
@@ -250,9 +257,9 @@ class UserController extends Controller
         // if(!Auth::user()->can('role.permission.assign')){
         //     return abort(403);
         // }
-        foreach ($user->permissions()->get() as $permission) {
-            $user->revokePermissionTo($permission);
-        }
+        // foreach ($user->permissions()->get() as $permission) {
+        //     $user->revokePermissionTo($permission);
+        // }
         $request->validate(['permissions' => 'required']);
         $permissions = $request->get('permissions');
         foreach ($permissions as $permission) {

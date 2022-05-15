@@ -155,9 +155,7 @@ class PermissionSeeder extends Seeder
 
         Permission::create(['name'=>'User.index']);
         Permission::create(['name'=>'User.create']);
-        Permission::create(['name'=>'User.store']);
         Permission::create(['name'=>'User.show']);
-        Permission::create(['name'=>'User.edit']);
         Permission::create(['name'=>'User.update']);
         Permission::create(['name'=>'User.destroy']);
         Permission::create(['name'=>'User.profile']);
