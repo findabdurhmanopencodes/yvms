@@ -84,7 +84,8 @@ Route::get('training_session/{training_session}/screenout', [TrainingSessionCont
 Route::group(['prefix' => 'session/{training_session}', 'middleware' => ['auth'], 'as' => 'session.'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/quota', [TrainingSessionController::class, 'showQuota'])->name('training_session.quota');
-    Route::resource('/applicant', VolunteerController::class);
+    Route::any('applicant/', [VolunteerController::class, 'index'])->name('applicant.index');
+    Route::resource('/applicant', VolunteerController::class)->except(['index']);
     Route::post('applicant/{applicant_id}/screen', [VolunteerController::class, 'screen'])->name('applicant.screen');
     Route::get('applicants/email/unverified', [VolunteerController::class, 'emailUnverified'])->name('applicant.email.unVerified');
     Route::get('/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');

@@ -44,6 +44,7 @@ class VolunteerController extends Controller
      */
     public function index(Request $request, $session_id)
     {
+
         // $status = new Status();
         // foreach (Volunteer::all() as $key => $value) {
         //     $status = new Status();
