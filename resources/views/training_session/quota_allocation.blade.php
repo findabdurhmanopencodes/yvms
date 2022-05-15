@@ -1,4 +1,4 @@
-@extends('layouts.session_layout')
+@extends('layouts.app')
 @section('action_title','Quota Allocation')
 @section('title','Quota Allocation')
 @section('breadcrumbTitle','Quota Allocation')
@@ -15,11 +15,11 @@
     <!--end::Page Scripts-->~
 @endpush
 
-@section('action_content')
+@section('content')
     <div class="card card-custom">
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label">Youth Volunteer 
+                <h3 class="card-label">Youth Volunteer
                 <span class="d-block text-muted pt-2 font-size-sm">Youth Volunteer Qouta</span></h3>
             </div>
         </div>
@@ -61,7 +61,7 @@
 					// template: function(row) {
 					// 	return '<span>' + row.b + ' - ' + row.c + '</span>';
 					// },
-				}, 
+				},
 				{
 					field: 'region_name',
 					title: 'Zone',
@@ -71,7 +71,7 @@
 					field: 'quantity',
 					title: 'Quantity',
 					width: 100
-				}, 
+				},
             ];
 
      var main_column = [
@@ -81,11 +81,11 @@
 				// 	sortable: false,
 				// 	width: 30,
 				// 	textAlign: 'center',
-				// }, 
+				// },
 				{
 					field: 'key',
 					title: '#',
-				}, 
+				},
 				{
 					field: 'name',
 					title: 'Region',
@@ -94,7 +94,7 @@
 					field: 'region_quantity',
 					title: 'Number of volunteer allowed',
 				},
-                
+
 			];
 
             var regions = @json($regions);
@@ -115,7 +115,7 @@
                 // }
             });
 
-            
+
 
             // DATAS.push({"id":1, "key": element.id, "name":element.name, "region_quantity":element.quantity.quantity, "zone":[{"id":ele.id, "region_name":ele.name, "quantity":ele.quotas}]});
 
@@ -125,12 +125,12 @@
             //         // SUB_DATAS.push();
             //     });
 
-                
+
 
             //     // SUB_DATAS = [];
             // });
 
-            
+
 </script>
 <script src="{{ asset('assets/js/pages/crud/ktdatatable/child/data-local.js') }}"></script>
 @endpush

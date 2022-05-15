@@ -83,14 +83,25 @@ Route::get('training_session/{training_session}/screenout', [TrainingSessionCont
 
 Route::group(['prefix' => 'session/{training_session}', 'middleware' => ['auth'], 'as' => 'session.'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/qouta', [TrainingSessionController::class, 'showQuota'])->name('training_session.quota');
-    // Route::any('applicant/', [VolunteerController::class, 'index'])->name('session.applicant.index');
+    Route::get('/quota', [TrainingSessionController::class, 'showQuota'])->name('training_session.quota');
     Route::resource('/applicant', VolunteerController::class);
+    Route::post('applicant/{applicant_id}/screen', [VolunteerController::class, 'screen'])->name('applicant.screen');
+    Route::get('applicants/selected', [VolunteerController::class, 'selected'])->name('applicant.selected');
+
+
+
+
+
+
+
+
+    Route::get('/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');
+    Route::get('applicants/{session}/document-verified', [VolunteerController::class, 'verifiedApplicant'])->name('applicant.verified');
+    Route::get('applicants/email/unverified', [VolunteerController::class, 'emailUnverified'])->name('applicant.email.unVerified');
 });
-Route::get('training_session/{training_session}/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
-
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
     // Route::middleware(['guest'])->group(function () {
 
@@ -139,10 +150,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
-    Route::post('applicant/{applicant_id}/screen', [VolunteerController::class, 'screen'])->name('applicant.screen');
-    Route::get('applicants/{session}/document-verified', [VolunteerController::class, 'verifiedApplicant'])->name('applicant.verified');
-    Route::get('applicants/{session}/selected', [VolunteerController::class, 'selected'])->name('applicant.selected');
-    Route::get('applicants/email/unverified', [VolunteerController::class, 'emailUnverified'])->name('applicant.email.unVerified');
     Route::resource('TrainingCenterCapacity', TrainingCenterCapacityController::class);
     Route::post('TrainingCenter/Capacity', [TrainingCenterCapacityController::class, 'capacityChange'])->name('TrainingCenterCapacity.capacityChange');
 });
