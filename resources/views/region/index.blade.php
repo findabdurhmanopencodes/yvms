@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@section('title', 'All Regions')
+@section('title', 'All Regions/City Administrations')
 @section('breadcrumb-list')
-    <li class="active">Regions</li>
+    <li class="active">Regions/City Administrations</li>
 @endsection
 @section('breadcrumbTitle', 'Regions')
 @section('breadcrumbList')
     <li class="breadcrumb-item">
-        <a href="" class="text-muted">Regions</a>
+        <a href="" class="text-muted">Regions/City Administrations</a>
     </li>
 @endsection
 @push('js')
@@ -36,13 +36,13 @@
                             $(parent).closest('tr')[0].remove();
                             Swal.fire(
                                 "Deleted!",
-                                "Region has been deleted.",
+                                "Region/City Administration has been deleted.",
                                 "success"
                             )
                         },
                         error: function(data) {
                             if (data.status) {
-                                Swal.fire("Forbidden!", "You can't delete this region!", "error");
+                                Swal.fire("Forbidden!", "You can't delete this region/city administration!", "error");
                             }
                         }
                     });
@@ -129,8 +129,8 @@
     <div class="card card-custom">
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label">List of regions
-                    <span class="text-muted pt-2 font-size-sm d-block">Regions</span>
+                <h3 class="card-label">List of regions/city adminstration
+                    <span class="text-muted pt-2 font-size-sm d-block">Regions/City Administartion</span>
                 </h3>
             </div>
             <div class="card-toolbar">
@@ -142,14 +142,14 @@
                         <i class="fal fa-plus"></i>
                         <!--end::Svg Icon-->
                  </span>
-                 Add New Region</a>
+                 Add New Region/City Adminstration</a>
                 <form method="POST" action="{{ route('region.store', []) }}">
                         @csrf
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg"  role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Add new Region</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Add new Region/City Adminstrtion</h5>
                                         <button type="button" class="close" data-dismiss="modal" -label="Close">
                                             <i aria-hidden="true" class="ki ki-close"></i>
                                         </button>
@@ -159,19 +159,19 @@
                                             <div class="card-body">
                                                 <div class="form-group row">
                                                     <div class="col-lg-6">
-                                                        <label>Region Name:</label>
-                                                        <input type="text" class="form-control" placeholder="region name" name="name"/>
+                                                        <label>Region/City Adminstration Name:</label>
+                                                        <input type="text" class="form-control" placeholder="region/city adminstration name" name="name"/>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <label>Region Code:</label>
+                                                        <label>Region/City Adminstration Code:</label>
                                                         <input type="text" class="form-control" placeholder="region code" name="code"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <div class="col-lg-6">
-                                                        <label>Region Quota(%):</label>
+                                                        <label>Region/City Adminstration Quota(%):</label>
                                                         <div class="input-group">
-                                                            <input type="number" class="form-control" placeholder="Region Quota in percent" name="region_quota" id="reg_quota"/>
+                                                            <input type="number" class="form-control" placeholder="Region/City Adminstration Quota in percent" name="region_quota" id="reg_quota"/>
                                                             <div class="input-group-append">
                                                                 <span class="input-group-text">%</span>
                                                             </div>
