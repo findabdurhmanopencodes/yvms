@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('father_name');
             $table->string('grand_father_name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->date('dob');
             $table->string('gender');
             $table->string('phone');

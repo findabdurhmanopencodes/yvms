@@ -112,7 +112,8 @@
                         <td bgcolor="#ffffff" align="center" valign="top"
                             style="padding: 40px 20px 20px 20px; border-radius: 2px 2px 0px 0px; color: #AADB1E; font-family: 'Londrina Solid'Helvetica, Arial, sans-serif; font-size: 45px; font-weight: 700; letter-spacing: 2px; line-height: 48px;">
                             <img src="{{ asset('img/logo_peace.png') }}" width="120" alt="">
-                            <h1 style="color:#02afef;font-size: 40px; font-weight:700; margin: w-50;">{{ env('APP_NAME') }}</h1>
+                            <h1 style="color:#02afef;font-size: 40px; font-weight:700; margin: w-50;">
+                                {{ env('APP_NAME') }}</h1>
                         </td>
                     </tr>
                 </table>
@@ -122,14 +123,27 @@
             <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px;">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                     <tr>
-
                         <td bgcolor="#ffffff" align="center"
                             style="padding: 20px 30px 40px 30px; color: #000000; font-family:'Montserrat bold' Helvetica, Arial, sans-serif; font-size: 16px; line-height: 25px;">
                             <p style="">
-                                Your application is submited. You should receive a reply from a representative of our web site if you are accpted. Occasionally we receive a very large number of messages, and your response may take a little longer.  Thank you for taking the time to apply. Have a great day, <a href="{{ route('home', []) }}">Ministry of Peace</a>
+                                Your application is submited. You should receive a reply from a representative of our
+                                web site if you are accpted. Occasionally we receive a very large number of messages,
+                                and your response may take a little longer. Thank you for taking the time to apply. Have
+                                a great day, <a href="{{ route('home', []) }}">Ministry of Peace</a>
                             </p>
                         </td>
                     </tr>
+{{--
+                    <tr style="">
+                        <td>
+                            <h2 style="text-align: center;background-color: #fff; margin:0px; padding:10px 50px;">Credential Information</h2>
+                            <p style="background-color: #fff; margin:0px; padding:10px 50px;">
+                                <b>Name:</b> {{$volunteer->name()}}<br>
+                                <b>Email: </b> {{$volunteer->email}} <br>
+                                <b>Passwor:</b> {{$password}}
+                            </p>
+                        </td>
+                    </tr> --}}
                     <tr>
                         <td bgcolor="#ffffff" align="center"
                             style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #000000; font-family:'Montserrat'Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 25px;">

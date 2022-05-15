@@ -6,6 +6,7 @@ use Andegna\DateTimeFactory;
 use App\Models\Volunteer;
 use App\Http\Requests\StoreVolunteerRequest;
 use App\Http\Requests\UpdateVolunteerRequest;
+use App\Jobs\SendEmailJob;
 use App\Mail\VerifyMail;
 use App\Mail\VolunteerAppliedMail;
 use App\Models\ApprovedApplicant;
@@ -278,8 +279,7 @@ class VolunteerController extends Controller
             'volunteer_id' => $volunteer->id,
             'token' => sha1(time())
         ]);
-        Mail::to($volunteer->email)->send(new VerifyMail($volunteer));
-        // event(new Registered($user));
+        dispatch(new SendEmailJob($volunteer->email, new VerifyMail($volunteer)));
         return redirect()->route('home')->with('apply_success', 'You successfully applied! Check your email');
     }
     public function Screen(Request $request, $applicant_id)
@@ -296,7 +296,7 @@ class VolunteerController extends Controller
     }
     public function emailUnverified($training_session)
     {
-        $volunters = Volunteer::whereRelation('User', 'email_verified_at', null)->where('training_session_id',$training_session)->paginate(6);
+        $volunters = Volunteer::whereRelation('User', 'email_verified_at', null)->where('training_session_id', $training_session)->paginate(6);
         return view('volunter.email_unverified_volunter', ['volunters' => $volunters]);
     }
     /**
@@ -306,11 +306,11 @@ class VolunteerController extends Controller
      */
     public function verifiedApplicant(Request $request, $training_session)
     {
-        $applicants=  Volunteer::whereRelation('status','acceptance_status',1)->where('training_session_id',$training_session);
+        $applicants =  Volunteer::whereRelation('status', 'acceptance_status', 1)->where('training_session_id', $training_session);
 
-        $approved = ApprovedApplicant::where('training_session_id',$training_session)->get();
+        $approved = ApprovedApplicant::where('training_session_id', $training_session)->get();
 
-        return view('volunter.verified_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($training_session), 'approve'=>$approved]);
+        return view('volunter.verified_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($training_session), 'approve' => $approved]);
     }
     public function selected(Request $request, $training_session)
     {
@@ -342,9 +342,9 @@ class VolunteerController extends Controller
                 $volunteer->user_id = $user->id;
                 $volunteer->update();
                 $volunteer->save();
-                $verifyVolunteer->delete();
+                // $verifyVolunteer->delete();
                 Auth::login($user);
-                Mail::to($volunteer->email)->send(new VolunteerAppliedMail($volunteer));
+                dispatch(new SendEmailJob($volunteer->email, new VolunteerAppliedMail($volunteer)));
                 return redirect(route('home'))->with('message', 'Your Service Request Form will be reviewed shortly and a response made to the email address');
             } else {
                 $status = "Your e-mail is already verified. You can now login.";
