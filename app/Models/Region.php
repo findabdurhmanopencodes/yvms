@@ -35,4 +35,8 @@ class Region extends Model
         return $this->morphOne(UserRegion::class, 'levelable');
     }
 
+    public function sessionRegions(){
+        return $this->hasMany(SessionRegion::class);
+    }
+
 }

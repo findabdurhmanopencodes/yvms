@@ -80,7 +80,7 @@
                         {{ $trainingSession->moto }}</span>
                 </h3>
             </div>
-            @if (count($volunters) > 0)
+            @if (count($approve) < 1)
                 <div>
 
                     <a class="btn btn-sm btn-info"

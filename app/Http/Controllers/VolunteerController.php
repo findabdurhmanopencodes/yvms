@@ -308,7 +308,9 @@ class VolunteerController extends Controller
     {
         $applicants=  Volunteer::whereRelation('status','acceptance_status',1)->where('training_session_id',$session_id);
 
-        return view('volunter.verified_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($session_id)]);
+        $approved = ApprovedApplicant::where('training_session_id',$session_id)->get();
+
+        return view('volunter.verified_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($session_id), 'approve'=>$approved]);
     }
     public function selected(Request $request, $session_id)
     {

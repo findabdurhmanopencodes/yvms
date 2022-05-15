@@ -55,4 +55,16 @@ class TrainingSession extends Model
     public function trainingPlacements(){
         return $this->hasMany(TrainingPlacement::class,'training_session_id','id');
     }
+
+    public function sessionRegions(){
+        return $this->hasMany(SessionRegion::class);
+    }
+
+    public function sessionZones(){
+        return $this->hasMany(SessionRegion::class);
+    }
+
+    public function sessionWoredas(){
+        return $this->hasMany(SessionRegion::class);
+    }
 }

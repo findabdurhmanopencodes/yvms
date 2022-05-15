@@ -43,4 +43,8 @@ class Zone extends Model
         return $this->morphOne(UserRegion::class, 'levelable');
     }
 
+    public function sessionZones(){
+        return $this->hasMany(SessionZone::class);
+    }
+
 }
