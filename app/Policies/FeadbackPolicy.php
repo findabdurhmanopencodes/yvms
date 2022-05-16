@@ -19,6 +19,9 @@ class FeadbackPolicy
     public function viewAny(User $user)
     {
         //
+        if ($user->hasPermissionTo('Feadback.index'))
+            return true;
+        return false;
     }
 
     /**
@@ -31,6 +34,9 @@ class FeadbackPolicy
     public function view(User $user, Feadback $feadback)
     {
         //
+        if ($user->hasPermissionTo('Feadback.show'))
+            return true;
+        return false;
     }
 
     /**
@@ -42,6 +48,9 @@ class FeadbackPolicy
     public function create(User $user)
     {
         //
+        if ($user->hasPermissionTo('Feadback.create'))
+            return true;
+        return false;
     }
 
     /**
@@ -54,6 +63,9 @@ class FeadbackPolicy
     public function update(User $user, Feadback $feadback)
     {
         //
+        if ($user->hasPermissionTo('Feadback.update'))
+            return true;
+        return false;
     }
 
     /**
@@ -66,6 +78,9 @@ class FeadbackPolicy
     public function delete(User $user, Feadback $feadback)
     {
         //
+        if ($user->hasPermissionTo('Feadback.destroy'))
+            return true;
+        return false;
     }
 
     /**

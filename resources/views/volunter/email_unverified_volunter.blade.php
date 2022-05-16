@@ -15,7 +15,7 @@
 <div class="card-body">
 .<div class="card">
     <div class="card-header">
-        <a class="btn btn-primary float-right">Export TO Pdf</a>
+        <a class="btn btn-primary float-right">Export To Pdf</a>
     </div>
     <div class="card-body">
         <h5 class="card-title">Title</h5>

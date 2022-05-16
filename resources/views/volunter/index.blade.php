@@ -32,7 +32,7 @@
 
         });
     </script>
-    <!--end::Page Scripts-->~
+    <!--end::Page Scripts-->
 @endpush
 @push('css')
     <style>
@@ -60,7 +60,9 @@
             <div id="collapseThree6" class="collapse" data-parent="#accordionExample6">
                 <div class="card-body">
 
-                    <form action="{{ route('session.applicant.index', ['training_session' => Request::route('training_session')]) }}" method="post">
+                    <form
+                        action="{{ route('session.applicant.index', ['training_session' => Request::route('training_session')]) }}"
+                        method="post">
                         @csrf
                         <div class="row">
                             <div class="col-sm-4">
@@ -170,11 +172,18 @@
                 </ul>
             </div>
         @endif
+
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label">Applicants
+                <h3 class="card-label">
+                    <span>Total: {{ $volunters->total() }}</span>
+                     Applicants
                     <span class="d-block text-muted pt-2 font-size-sm">All Applicants In
                         {{ $trainingSession?->moto }}</span>
+                        <div class="">
+
+
+                        </div>
                 </h3>
 
 
@@ -200,36 +209,36 @@
                     <tbody style="" class="datatable-body">
 
                         @foreach ($volunters as $volunter)
-                        <tr data-row="0" class="datatable-row" style="left: 0px;">
-                            <td>
-                                {{ $volunters->perPage() * $volunters->currentPage() - ($volunters->perPage() - ($loop->index + 1)) }}
-                            </td>
-                            <td>
-                                {{ $volunter->first_name }} {{ $volunter->father_name }}
-                            </td>
-                            <td>
-                                {{ $volunter->gender }}
-                            </td>
-                            <td>
-                                {{ $volunter->phone }}
-                            </td>
+                            <tr data-row="0" class="datatable-row" style="left: 0px;">
+                                <td>
+                                    {{ $volunters->perPage() * $volunters->currentPage() - ($volunters->perPage() - ($loop->index + 1)) }}
+                                </td>
+                                <td>
+                                    {{ $volunter->first_name }} {{ $volunter->father_name }}
+                                </td>
+                                <td>
+                                    {{ $volunter->gender }}
+                                </td>
+                                <td>
+                                    {{ $volunter->phone }}
+                                </td>
 
-                            <td>
-                                {{ $volunter->woreda?->name }}
-                            </td>
-                            <td>
-                                <span
-                                    class="badge badge-warning badge-pill">{{ $volunter->status?->acceptance_status == 0 ? 'pending' : 'decided' }}</span>
-                            </td>
-                            <td>
-                                <div class="row">
-                                    <a class="btn btn-sm btn-info"
-                                        href="{{ route('session.applicant.show', ['training_session'=>Request::route('training_session'),'applicant' => $volunter->id]) }}">
-                                        <i class="fa fa-sm fa-eye"></i> Detail</a>
-                                </div>
+                                <td>
+                                    {{ $volunter->woreda?->name }}
+                                </td>
+                                <td>
+                                    <span
+                                        class="badge badge-warning badge-pill">{{ $volunter->status?->acceptance_status == 0 ? 'pending' : 'decided' }}</span>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <a class="btn btn-sm btn-info"
+                                            href="{{ route('session.applicant.show', ['training_session' => Request::route('training_session'), 'applicant' => $volunter->id]) }}">
+                                            <i class="fa fa-sm fa-eye"></i> Detail</a>
+                                    </div>
 
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
                         @endforeach
                         @if (count($volunters) < 1)
                             <tr>

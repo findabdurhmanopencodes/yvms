@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 class FeildOfStudyController extends Controller
 {
+    public function __construct()
+    {
+
+        $this->authorizeResource(FeildOfStudy::class,'feildOfStudy');
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -44,7 +50,7 @@ class FeildOfStudyController extends Controller
      */
     public function store(StoreFeildOfStudyRequest $request)
     {
-        
+
         $request->validate(['name' => 'required|string|unique:feild_of_studies,name']);
         FeildOfStudy::create(['name' => $request->get('name')]);
         return redirect()->route('feild_of_study.index')->with('message', 'Feild of Study created successfully');
@@ -58,12 +64,12 @@ class FeildOfStudyController extends Controller
      */
     public function show($id)
     {
-        
+
         return view('fieldofstudy.show', [
             'FeildOfStudy' => FeildOfStudy::findOrFail($id)
         ]);
     }
-    
+
 
     /**
      * Show the form for editing the specified resource.

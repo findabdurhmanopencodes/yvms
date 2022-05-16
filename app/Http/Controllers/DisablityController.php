@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class DisablityController extends Controller
 {
+    public function __construct()
+    {
+
+        $this->authorizeResource(Disablity::class,'disablity');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -84,7 +89,7 @@ class DisablityController extends Controller
         return redirect()->route('disablity.index')->with('message', 'Disablity created successfully');
         //
     }
-    
+
 
     /**
      * Remove the specified resource from storage.

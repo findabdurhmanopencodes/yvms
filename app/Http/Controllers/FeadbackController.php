@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 class FeadbackController extends Controller
 {
+    public function __construct()
+    {
+
+        $this->authorizeResource(FeadBack::class,'feadback');
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -85,7 +91,7 @@ class FeadbackController extends Controller
         $data = $request->validate(['name' => 'required|string|unique:feadbacks,msg,'.$feadback->id]);
         $feadback->update($data);
         return redirect()->route('feadback.index')->with('message', 'Message updated successfully');
-        
+
     }
 
     /**

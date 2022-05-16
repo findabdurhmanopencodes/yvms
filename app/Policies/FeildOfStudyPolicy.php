@@ -19,6 +19,9 @@ class FeildOfStudyPolicy
     public function viewAny(User $user)
     {
         //
+        if ($user->hasPermissionTo('FeildOfStudy.index'))
+            return true;
+        return false;
     }
 
     /**
@@ -31,6 +34,9 @@ class FeildOfStudyPolicy
     public function view(User $user, FeildOfStudy $feildOfStudy)
     {
         //
+        if ($user->hasPermissionTo('FeildOfStudy.show'))
+            return true;
+        return false;
     }
 
     /**
@@ -42,6 +48,9 @@ class FeildOfStudyPolicy
     public function create(User $user)
     {
         //
+        if ($user->hasPermissionTo('FeildOfStudy.create'))
+            return true;
+        return false;
     }
 
     /**
@@ -54,6 +63,9 @@ class FeildOfStudyPolicy
     public function update(User $user, FeildOfStudy $feildOfStudy)
     {
         //
+        if ($user->hasPermissionTo('FeildOfStudy.index'))
+            return true;
+        return false;
     }
 
     /**
@@ -66,6 +78,9 @@ class FeildOfStudyPolicy
     public function delete(User $user, FeildOfStudy $feildOfStudy)
     {
         //
+        if ($user->hasPermissionTo('FeildOfStudy.destroy'))
+            return true;
+        return false;
     }
 
     /**
