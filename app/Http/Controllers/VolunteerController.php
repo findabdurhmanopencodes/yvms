@@ -43,7 +43,7 @@ class VolunteerController extends Controller
 
     public function __construct()
     {
-        $this->authorizeResource(Volunteer::class, 'volunteer');
+        $this->authorizeResource(Volunteer::class, 'applicant');
     }
     /**
      * Display a listing of the resource.
@@ -56,11 +56,11 @@ class VolunteerController extends Controller
         $user = Auth::user();
         if ($user->hasRole('regional-coordinator')) {
             $region = UserRegion::where('user_id', $user->id)->where('levelable_type', Region::class)->first();
-            $applicants->whereRelation('woreda.zone.region', 'id', $region->levelable_id);
+            $applicants = $applicants->whereRelation('woreda.zone.region', 'id', $region->levelable_id);
         }
         if ($user->hasRole('zone-coordinator')) {
             $zone = UserRegion::where('user_id', $user->id)->where('levelable_type', Zone::class)->first();
-            $applicants->whereRelation('woreda.zone', 'id', $zone->levelable_id);
+            $applicants = $applicants->whereRelation('woreda.zone', 'id', $zone->levelable_id);
         }
         if ($request->has('filter')) {
             $first_name = $request->get('first_name');
@@ -139,9 +139,9 @@ class VolunteerController extends Controller
      * @param  \App\Models\Volunteer  $volunteer
      * @return \Illuminate\Http\Response
      */
-    public function show($session_id, $volunteer)
+    public function show($session_id, Volunteer $applicant)
     {
-        return view('volunter.show', ['applicant' => Volunteer::find($volunteer)]);
+        return view('volunter.show', ['applicant' => $applicant]);
     }
 
     /**
