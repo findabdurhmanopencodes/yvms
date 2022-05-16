@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\TrainingPlacement;
 use App\Http\Requests\StoreTrainingPlacementRequest;
 use App\Http\Requests\UpdateTrainingPlacementRequest;
+use App\Models\ApprovedApplicant;
 use App\Models\Region;
+use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\Woreda;
@@ -23,7 +25,8 @@ class TrainingPlacementController extends Controller
      */
     public function index(Request $request)
     {
-        $q = TrainingPlacement::query()->where('training_placements.training_session_id', TrainingSession::availableSession()->first()->id);
+        $trainingSession = TrainingSession::availableSession()->first();
+        $q = TrainingPlacement::query()->where('training_placements.training_session_id', $trainingSession->id);
 
 
         if ($request->get('training_center') != null) {
@@ -50,7 +53,28 @@ class TrainingPlacementController extends Controller
 
 
         $placedVolunteers = $q->paginate(10);
-        return view('placement.index', ['placedVolunteers' => $placedVolunteers, 'zones' => Zone::all(), 'woredas' => Woreda::all(), 'regions' => Region::all(), 'training_centers' => TraininingCenter::all()]);
+
+        return view('placement.index', ['placedVolunteers' => $placedVolunteers, 'trainingCenterCapacities' => TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->get(), 'zones' => Zone::all(), 'woredas' => Woreda::all(), 'regions' => Region::all(), 'training_centers' => TraininingCenter::all()]);
+    }
+
+    public function placeManually(Request $request)
+    {
+
+        if (TrainingPlacement::where(['approved_applicant_id' => $request->route('approvedApplicant'), 'training_session_id' => $request->route('training_session')])->first()) {
+            TrainingPlacement::where(['approved_applicant_id' => $request->route('approvedApplicant'), 'training_session_id' => $request->route('training_session')])->first()->delete();
+        }
+        ApprovedApplicant::where(['id' => $request->route('approvedApplicant')])->update(['status' => 2]);
+        TrainingPlacement::create([
+            'training_session_id' => $request->route('training_session'), 'approved_applicant_id' => $request->route('approvedApplicant'),
+            'training_center_capacity_id' => $request->get('training_center_capacity_id')
+        ]);
+
+        return  redirect(route('session.placement.index', [$request->route('training_session')]))->with(['message' => 'Successfully Placed']);
+    }
+    public function resetPlacement()
+    {
+        TrainingPlacement::where(['training_session_id' => request()->route('training_session')])->delete();
+        return redirect()->back()->with(['message' => 'Successfully Cleared']);
     }
 
     /**
@@ -72,6 +96,27 @@ class TrainingPlacementController extends Controller
     public function store(StoreTrainingPlacementRequest $request)
     {
         //
+    }
+
+    public function place(Request $request)
+    {
+        $output = shell_exec('php ../artisan training:place');
+        if (!$output)
+            $message = 'Succefully Placed Volunteers';
+        else
+            $message = $output;
+
+        return redirect(route('session.placement.index', [$request->route('training_session')]))->with('message', $message);
+    }
+
+    public function changePlacement(Request $request)
+    {
+
+        $request->validate([
+            'training_center_capacity_id' => 'required'
+        ]);
+        TrainingPlacement::where('id', '=', $request->route('training_placement'))->update(['training_center_capacity_id' => $request->get('training_center_capacity_id')]);
+        return redirect(route('session.placement.index', [$request->route('training_session')]))->with('message', 'Successfully Changed Placement');
     }
 
     /**

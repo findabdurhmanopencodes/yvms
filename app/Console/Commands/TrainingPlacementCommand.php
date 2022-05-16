@@ -10,6 +10,7 @@ use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class TrainingPlacementCommand extends Command
 {
@@ -79,6 +80,8 @@ class TrainingPlacementCommand extends Command
     {
 
         $activeSession = TrainingSession::availableSession()->first();
+        DB::delete('DELETE FROM training_placements where training_session_id = ?;', [$activeSession->id]);
+
         $applicants = ApprovedApplicant::all();
 
         $trainingCenters = TrainingCenterCapacity::where(['training_session_id' => 1])->get();

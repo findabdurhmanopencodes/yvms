@@ -60,7 +60,7 @@
             <div id="collapseThree6" class="collapse" data-parent="#accordionExample6">
                 <div class="card-body">
 
-                    <form action="{{ route('applicant.index', ['session_id' => $trainingSession->id]) }}" method="post">
+                    <form action="{{ route('session.applicant.index', ['training_session' => Request::route('training_session')]) }}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-sm-4">
@@ -174,7 +174,7 @@
             <div class="card-title">
                 <h3 class="card-label">Applicants
                     <span class="d-block text-muted pt-2 font-size-sm">All Applicants In
-                        {{ $trainingSession->moto }}</span>
+                        {{ $trainingSession?->moto }}</span>
                 </h3>
 
 
@@ -224,7 +224,7 @@
                             <td>
                                 <div class="row">
                                     <a class="btn btn-sm btn-info"
-                                        href="{{ route('applicant.show', ['applicant' => $volunter->id]) }}">
+                                        href="{{ route('session.applicant.show', ['training_session'=>Request::route('training_session'),'applicant' => $volunter->id]) }}">
                                         <i class="fa fa-sm fa-eye"></i> Detail</a>
                                 </div>
 

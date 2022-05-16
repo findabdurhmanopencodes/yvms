@@ -7,6 +7,7 @@ use App\Models\Zone;
 use App\Http\Requests\StoreRegionRequest;
 use App\Http\Requests\UpdateRegionRequest;
 use App\Models\Qouta;
+use App\Models\TrainingSession;
 use App\Models\Woreda;
 use Illuminate\Http\Request;
 

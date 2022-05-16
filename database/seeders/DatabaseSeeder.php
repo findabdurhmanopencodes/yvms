@@ -34,6 +34,12 @@ class DatabaseSeeder extends Seeder
             // BaseSeeder::class,
         //     // FakeDataSeeder::class,
         // ]);
+        $this->call([
+            // PermissionSeeder::class,
+            // RoleSeeder::class,
+            // BaseSeeder::class,
+            //     // FakeDataSeeder::class,
+        ]);
 
         User::create(
             [

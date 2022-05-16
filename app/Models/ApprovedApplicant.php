@@ -24,9 +24,9 @@ class ApprovedApplicant extends Model
 
     protected $append = ['region'];
 
-    public function trainingPlacements()
+    public function trainingPlacement()
     {
-        return $this->hasMany(TrainingPlacement::class, 'approved_applicant_id', 'id');
+        return $this->hasOne(TrainingPlacement::class, 'approved_applicant_id', 'id');
     }
 
     public function getRegionAttribute()

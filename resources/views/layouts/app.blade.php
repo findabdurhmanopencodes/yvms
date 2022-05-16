@@ -130,6 +130,104 @@
                                 </a>
                             </li>
 
+
+                            @if (Request::route('training_session'))
+                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'session.applicant') === 0 ? 'menu-item-open' : '' }}"
+                                    aria-haspopup="true" data-menu-toggle="hover">
+
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <i class="menu-icon flaticon-users"></i>
+                                        <span class="menu-text">Applicants</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
+                                            <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                                <span class="menu-link">
+                                                    <span class="menu-text">Applicants</span>
+                                                </span>
+                                            </li>
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.applicant.index') === 0 ? 'menu-item-active' : '' }}"
+                                                aria-haspopup="true">
+                                                <a href="{{ route('session.applicant.index', ['training_session' => Request::route('training_session')]) }}"
+                                                    class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Applicants</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.applicant.verified') === 0 ? 'menu-item-active' : '' }}"
+                                                aria-haspopup="true">
+                                                <a href="{{ route('session.applicant.verified', ['training_session' => Request::route('training_session')]) }}"
+                                                    class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Verified Applicants</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.applicant.selected') === 0 ? 'menu-item-active' : '' }}"
+                                                aria-haspopup="true">
+                                                <a href="{{ route('session.applicant.selected', ['training_session' => Request::route('training_session')]) }}"
+                                                    class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Selected Applicant</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.applicant.email.unVerified') === 0 ? 'menu-item-active' : '' }}"
+                                                aria-haspopup="true">
+                                                <a href="{{ route('session.applicant.email.unVerified', ['training_session' => Request::route('training_session')]) }}"
+                                                    class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Unverified Email</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                {{-- <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.pacement') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.placement.index', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">Placed Applicant</span>
+                                    </a>
+                                </li> --}}
+
+                                {{-- <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.applicant') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.applicant.index', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon flaticon-users"></i>
+                                        <span class="menu-text">Applicants</span>
+                                    </a>
+                                </li> --}}
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.placement.index') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.placement.index', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon flaticon-users"></i>
+                                        <span class="menu-text">Placment Result</span>
+                                    </a>
+                                </li>
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_session.quota') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.training_session.quota', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon flaticon-users"></i>
+                                        <span class="menu-text">Regional Quota</span>
+                                    </a>
+                                </li>
+                            @endif
+
                             <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'user') === 0 ? 'menu-item-open' : '' }}"
                                 aria-haspopup="true" data-menu-toggle="hover">
 

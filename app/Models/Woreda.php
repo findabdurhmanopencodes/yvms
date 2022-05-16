@@ -49,4 +49,8 @@ class Woreda extends Model
     {
         return $this->hasMany(Volunteer::class);
     }
+
+    public function sessionWoredas(){
+        return $this->hasMany(SessionWoreda::class);
+    }
 }
