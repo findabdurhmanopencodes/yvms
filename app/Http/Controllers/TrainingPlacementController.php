@@ -57,6 +57,26 @@ class TrainingPlacementController extends Controller
         return view('placement.index', ['placedVolunteers' => $placedVolunteers, 'trainingCenterCapacities' => TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->get(), 'zones' => Zone::all(), 'woredas' => Woreda::all(), 'regions' => Region::all(), 'training_centers' => TraininingCenter::all()]);
     }
 
+    public function placeManually(Request $request)
+    {
+
+        if (TrainingPlacement::where(['approved_applicant_id' => $request->route('approvedApplicant'), 'training_session_id' => $request->route('training_session')])->first()) {
+            TrainingPlacement::where(['approved_applicant_id' => $request->route('approvedApplicant'), 'training_session_id' => $request->route('training_session')])->first()->delete();
+        }
+        ApprovedApplicant::where(['id' => $request->route('approvedApplicant')])->update(['status' => 2]);
+        TrainingPlacement::create([
+            'training_session_id' => $request->route('training_session'), 'approved_applicant_id' => $request->route('approvedApplicant'),
+            'training_center_capacity_id' => $request->get('training_center_capacity_id')
+        ]);
+
+        return  redirect(route('session.placement.index', [$request->route('training_session')]))->with(['message' => 'Successfully Placed']);
+    }
+    public function resetPlacement()
+    {
+        TrainingPlacement::where(['training_session_id' => request()->route('training_session')])->delete();
+        return redirect()->back()->with(['message' => 'Successfully Cleared']);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

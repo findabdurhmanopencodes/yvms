@@ -19,11 +19,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\ZoneController;
+use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\Volunteer;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -91,6 +93,8 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' =
     Route::get('applicants/document-verified', [VolunteerController::class, 'verifiedApplicant'])->name('applicant.verified');
     Route::get('applicants/selected', [VolunteerController::class, 'selected'])->name('applicant.selected');
     Route::get('placement', [TrainingPlacementController::class, 'index'])->name('placement.index');
+    Route::get('placement/reset', [TrainingPlacementController::class, 'resetPlacement'])->name('placement.reset');
+    Route::post('{approvedApplicant}/manual-placement', [TrainingPlacementController::class, 'placeManually'])->name('placement.manual');
     Route::post('{training_placement}/change', [TrainingPlacementController::class, 'changePlacement'])->name('placement.change');
 });
 

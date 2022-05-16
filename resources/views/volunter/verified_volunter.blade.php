@@ -6,7 +6,7 @@
     <li class="breadcrumb-item">
         <a href="{{ route('training_session.index', []) }}">All Program</a>
     </li>
-    <li class="active">Screeing Applicants</li>
+    <li class="active">Screening Applicants</li>
 @endsection
 @push('js')
     <!--begin::Page Scripts(used by this page)-->
