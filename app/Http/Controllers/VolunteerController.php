@@ -17,6 +17,7 @@ use App\Models\File;
 use App\Models\Qouta;
 use App\Models\Region;
 use App\Models\Status;
+use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
@@ -180,7 +181,7 @@ class VolunteerController extends Controller
 
     public function application_form()
     {
-        $availableSession = TrainingSession::availableSession();
+        $availableSession = TrainingSession::availableForRegistration();
         if (count($availableSession) <= 0) {
             return view('application.no-open-form');
         }
@@ -280,6 +281,7 @@ class VolunteerController extends Controller
             'volunteer_id' => $volunteer->id,
             'token' => sha1(time())
         ]);
+        Status::Create(['volunteer_id' => $volunteer->id, 'acceptance_status' => 0]);
         dispatch(new SendEmailJob($volunteer->email, new VerifyMail($volunteer)));
         return redirect()->route('home')->with('apply_success', 'You successfully applied! Check your email');
     }
@@ -316,7 +318,7 @@ class VolunteerController extends Controller
     public function selected(Request $request, $training_session)
     {
         $applicants =  Volunteer::has('approvedApplicant')->where('training_session_id', $training_session);
-        return view('volunter.selected_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($training_session)]);
+        return view('volunter.selected_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($training_session),'trainingCenterCapacities'=>TrainingCenterCapacity::where('training_session_id',$training_session)->get()]);
     }
     protected function verifyEmail($token)
     {

@@ -28,6 +28,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // $this->call([
+        //     PermissionSeeder::class,
+        //     RoleSeeder::class,
+            // BaseSeeder::class,
+        //     // FakeDataSeeder::class,
+        // ]);
         $this->call([
             // PermissionSeeder::class,
             // RoleSeeder::class,
@@ -53,7 +59,7 @@ class DatabaseSeeder extends Seeder
         TrainingSession::create([
             'start_date' => '2022-05-06',
             'end_date' => '2022-05-16',
-            'moto' => 'We are in the community',
+            'moto' => 'Kindness for living together',
             'registration_start_date' => '2022-05-8',
             'registration_dead_line' => '2022-05-25',
             'quantity' => 2000,

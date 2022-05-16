@@ -74,10 +74,11 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="training_center" class="font-weight-bold">Training Center</label>
-                            <select name="training_center_capacity_id" id="training_center_capacity_id" class="form-control select2"
-                                style="width: 100%">
+                            <select name="training_center_capacity_id" id="training_center_capacity_id"
+                                class="form-control select2" style="width: 100%">
                                 @foreach ($trainingCenterCapacities as $trainingCenterCapacity)
-                                        <option value="{{ $trainingCenterCapacity->id }}">{{ $trainingCenterCapacity->trainingCenter->name }}</option>
+                                    <option value="{{ $trainingCenterCapacity->id }}">
+                                        {{ $trainingCenterCapacity->trainingCenter->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -99,6 +100,9 @@
             <span>Total: {{ $placedVolunteers->total() }}</span>
             <span>Page {{ $placedVolunteers->currentPage() > 0 ? $placedVolunteers->currentPage() : 0 }} of
                 {{ ceil($placedVolunteers->total() / $placedVolunteers->perPage()) }}</span>
+            <div class="col-2"><a class="btn btn-sm btn-info"
+                href="{{ route('session.placement.reset', [request()->route('training_session')]) }}">
+                <i class="fa fa-recycle"></i> Reset </a></div>
         </div>
         <div class="card-body">
             <table width="100%" class="table table-striped ">
@@ -125,8 +129,7 @@
                                 <a href="#"
                                     data-action="{{ route('session.placement.change', [request()->route('training_session'), $placedVolunteer->id]) }}"
                                     class="btn btn-icon"
-                                    onclick="$('#changePlacementForm').attr('action',this.dataset.action);onSubmit();"
-                                    >
+                                    onclick="$('#changePlacementForm').attr('action',this.dataset.action);onSubmit();">
                                     <span class="fa fa-edit"></span>
                                 </a>
                             </td>
@@ -147,14 +150,14 @@
     </script>
 
     <script>
-        function onSubmit(){
+        function onSubmit() {
 
             // require false;
 
             event.preventDefault();
             Swal.fire({
                 title: "Are you sure?",
-                text: "You Will change the training center of the Volunteer!",
+                text: "This Will change the training center of the Volunteer!",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Yes, Change it!"
