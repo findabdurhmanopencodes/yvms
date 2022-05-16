@@ -588,9 +588,8 @@ class TrainingSessionController extends Controller
             $final_arr =[];
             $group_zon = [];
 
-
-
             $train_session = TrainingSession::where('id', $id)->get()[0]->quantity;
+            $merge_arr = array_diff($arr, $accepted_arr);
 
             if (count($accepted_arr) < $train_session) {
                 foreach ($accepted_arr as $key => $acc) {
@@ -603,35 +602,59 @@ class TrainingSessionController extends Controller
                     foreach (Qouta::where('training_session_id', $id)->where('quotable_type', Region::class)->get() as $key => $reg_quota) {
                         if ($reg_quota->quotable->id == $key_co) {
                             if ($count < $reg_quota->quantity) {
-                                foreach ($arr as $key => $val) {
+                                foreach ($merge_arr as $key => $val) {
                                     if ($val->woreda->zone->region->id == $reg_quota->quotable_id) {
-                                        array_push($gr_reg, $val);
-                                        $count_diff = $reg_quota->quantity - $count;
+                                        if (!in_array($val, $accepted_arr)) {
+                                            array_push($gr_reg, $val);
+                                            $count_diff = $reg_quota->quantity - $count;
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    // dump($count_diff);
                     sort($gr_reg);
-                    $new_slice_arr = array_slice($gr_reg, 0, $count_diff, true);
+                    $new_slice_arr = array_slice($gr_reg, 0, $count_diff);
                     array_push($group_reg, $new_slice_arr);
                 }
+
                 foreach ($group_reg as $key => $gr) {
                     foreach ($gr as $key => $sub_gr) {
                         array_push($accepted_arr, $sub_gr);
                     }
                 }
+                $b =[];
+
+                if (count($accepted_arr) < $train_session) {
+                    $dif_arr = $train_session - count($accepted_arr);
+
+                    $merge_acc = array_diff($arr, $accepted_arr);
+                    foreach ($merge_acc as $acc) {
+                        array_push($b, $acc);
+                    }
+                    sort($b);
+                    $new_slice_merge_arr = array_slice($b, 0, $dif_arr);
+                    $merged_array = array_merge($accepted_arr, $new_slice_merge_arr);
+                    foreach ($merged_array as $key => $value) {
+                        array_push($accepted_arr, $value);
+                    }
+                }elseif (count($accepted_arr) > $train_session) {
+                    sort($accepted_arr);
+                    $new_slice_arr = array_slice($accepted_arr, 0, $train_session);
+                    foreach ($new_slice_arr as $key => $value) {
+                        array_push($accepted_arr, $value);
+                    }
+                }
             }
-            // dd($accepted_arr);
-            // dd('sdfd');
 
 
             // if (sizeof($accepted_arr) > $train_session) {
-            //     sort($accepted_arr);
-            //     $new_slice_arr = array_slice($accepted_arr, 0, $train_session, true);
-            //     foreach ($new_slice_arr as $key => $value) {
-            //         array_push($a, $value);
-            //     }
+                // sort($accepted_arr);
+                // $new_slice_arr = array_slice($accepted_arr, 0, $train_session, true);
+                // foreach ($new_slice_arr as $key => $value) {
+                //     array_push($a, $value);
+                // }
             // } else if (sizeof($accepted_arr) < $train_session) {
             //     sort($accepted_arr);
             //     foreach ($accepted_arr as $key => $value) {

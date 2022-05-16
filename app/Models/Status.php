@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 class Status extends Model
 {
@@ -14,6 +15,8 @@ class Status extends Model
     {
         return $this->belongsTo(Volunteer::class);
     }
+
+
     public static $status = [
         0 => 'Pending',
         1 => 'Verified',

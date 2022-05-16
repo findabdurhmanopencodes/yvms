@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('title', 'All Zones')
 @section('breadcrumb-list')
-    <li class="active">Zones</li>
+    <li class="active">Zones/Subcities</li>
 @endsection
-@section('breadcrumbTitle', 'Zones')
+@section('breadcrumbTitle', 'Zones/Subcities')
 @section('breadcrumbList')
     <li class="breadcrumb-item">
-        <a href="" class="text-muted">Zones</a>
+        <a href="" class="text-muted">Zones/Subcities</a>
     </li>
 @endsection
 @push('css')
@@ -117,7 +117,7 @@
             },
             {
                 field: 'region',
-                title: 'Region',
+                title: 'Region/City Administration',
                 sortable: 'asc',
                 // template: function(row) {
                 //     console.log(row);
@@ -157,8 +157,8 @@
     <div class="card card-custom">
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label">List of zones
-                    <span class="text-muted pt-2 font-size-sm d-block">Zones</span>
+                <h3 class="card-label">List of zones/subcities
+                    <span class="text-muted pt-2 font-size-sm d-block">Zones/Subcities</span>
                 </h3>
             </div>
             <div class="card-toolbar">
@@ -169,7 +169,7 @@
                         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                         <i class="fal fa-plus"></i>
                         <!--end::Svg Icon-->
-                    </span>Add New Zone</a>
+                    </span>Add New Zone/Subcity</a>
 
                     <form method="POST" action="{{ route('zone.store', []) }}">
                         @csrf
@@ -177,7 +177,7 @@
                             <div class="modal-dialog modal-lg"  role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Add new Zone</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Add new Zone/Subcity</h5>
                                         <button type="button" class="close" data-dismiss="modal" -label="Close">
                                             <i aria-hidden="true" class="ki ki-close"></i>
                                         </button>
@@ -187,18 +187,18 @@
                                             <div class="card-body">
                                                 <div class="form-group row">
                                                     <div class="col-lg-6">
-                                                        <label>Zone Name:</label>
+                                                        <label>Zone/Subcity Name:</label>
                                                         <input type="text" class="form-control" placeholder="zone name" name="name" required/>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <label>Zone Code:</label>
+                                                        <label>Zone/Subcity Code:</label>
                                                         <input type="text" class="form-control" placeholder="zone code" name="code" required/>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group row">
                                                     <div class="col-lg-6">
-                                                        <label>Region:</label>
+                                                        <label>Region/City Administration:</label>
                                                         <br>
                                                         <select class="form-control select2" id="region" name="region" required>
                                                             <option value=""></option>
@@ -208,7 +208,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <label>Zone Quota(%):</label>
+                                                        <label>Zone/Subcity Quota(%):</label>
                                                         <div class="input-group">
                                                             <input type="number" class="form-control" placeholder="Zone quota in percent" name="zone_quota" id="zon_quota"/>
                                                             <div class="input-group-append">

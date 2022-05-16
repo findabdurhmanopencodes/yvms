@@ -66,6 +66,8 @@
                     <!--begin::Details-->
                     <div class="d-flex mb-9">
                         <!--begin: Pic-->
+                        {{-- @dd($applicant->picture()->file_path)
+                        @dd(asset($applicant->picture()->file_path) ) --}}
                         <div class="flex-shrink-0 mr-7 mt-lg-0 mt-3">
                             <div class="symbol symbol-40 symbol-lg-90">
                                 <img src="{{ asset($applicant->picture()->file_path) }}" alt="image">
