@@ -19,6 +19,9 @@ class ZonePolicy
     public function viewAny(User $user)
     {
         //
+        if ($user->hasPermissionTo('Zone.index'))
+            return true;
+        return false;
     }
 
     /**
@@ -31,6 +34,9 @@ class ZonePolicy
     public function view(User $user, Zone $zone)
     {
         //
+        if ($user->hasPermissionTo('Zone.show'))
+            return true;
+        return false;
     }
 
     /**
@@ -42,6 +48,9 @@ class ZonePolicy
     public function create(User $user)
     {
         //
+        if ($user->hasPermissionTo('Zone.create'))
+            return true;
+        return false;
     }
 
     /**
@@ -54,6 +63,9 @@ class ZonePolicy
     public function update(User $user, Zone $zone)
     {
         //
+        if ($user->hasPermissionTo('Zone.update'))
+            return true;
+        return false;
     }
 
     /**
@@ -66,6 +78,9 @@ class ZonePolicy
     public function delete(User $user, Zone $zone)
     {
         //
+        if ($user->hasPermissionTo('Zone.destroy'))
+            return true;
+        return false;
     }
 
     /**

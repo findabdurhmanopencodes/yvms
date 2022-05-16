@@ -13,6 +13,25 @@ use Illuminate\Http\Request;
 
 class RegionController extends Controller
 {
+    public function __construct()
+    {
+
+        $this->authorizeResource(Region::class,'region');
+
+    }
+    protected function resourceAbilityMap()
+    {
+        return [
+            'show' => 'view',
+            'create' => 'create',
+            'store' => 'create',
+            'edit' => 'update',
+            'update' => 'update',
+            'destroy' => 'delete',
+            'place'=>'place',
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,7 +49,7 @@ class RegionController extends Controller
 
     public function place(Request $request)
     {
-      
+
         $regions = Region::all();
         return view('region.placement', compact('regions'));
     }

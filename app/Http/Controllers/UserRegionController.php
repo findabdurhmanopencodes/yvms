@@ -8,6 +8,10 @@ use App\Http\Requests\UpdateUserRegionRequest;
 
 class UserRegionController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(UserRegion::class,'userRegion');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +29,7 @@ class UserRegionController extends Controller
      */
     public function create()
     {
-        //  
+        //
     }
 
     /**

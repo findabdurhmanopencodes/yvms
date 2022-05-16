@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 
 class ZoneController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Zone::class,'zone');
+    }
     /**
      * Display a listing of the resource.
      *

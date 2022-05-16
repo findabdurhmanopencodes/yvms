@@ -25,6 +25,10 @@ use League\CommonMark\Extension\SmartPunct\Quote;
 
 class TrainingSessionController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(TrainingSession::class,'trainingSession');
+    }
     /**
      * Display a listing of the resource.
      *
