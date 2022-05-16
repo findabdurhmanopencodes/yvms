@@ -45,6 +45,18 @@ class VolunteerController extends Controller
     {
         $this->authorizeResource(Volunteer::class, 'applicant');
     }
+    protected function resourceAbilityMap()
+    {
+        return [
+            'show' => 'view',
+            'create' => 'create',
+            'store' => 'create',
+            'edit' => 'update',
+            'update' => 'update',
+            'destroy' => 'delete',
+            'Screen'=>'screen',
+        ];
+    }
     /**
      * Display a listing of the resource.
      *
@@ -93,7 +105,7 @@ class VolunteerController extends Controller
                 $applicants = $applicants->where('disablity_id', '=', $disablity_id);
             }
             if (!empty($region_id)) {
-                $applicants = $applicants->where('region_id', '=', $region_id);
+                $applicants = $applicants->whereRelation('woreda.zone.region', 'id', $region_id);
             }
             if (!empty($zone_id)) {
                 $applicants = $applicants->where('zone_id', '=', $zone_id);

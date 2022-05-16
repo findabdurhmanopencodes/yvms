@@ -135,4 +135,9 @@ class VolunteerPolicy
     {
         //
     }
+
+    public function screen()
+    {
+        return false;
+    }
 }

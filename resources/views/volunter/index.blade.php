@@ -112,7 +112,7 @@
                                 <input class="form-control" type="text" name="phone" id="phone">
                             </div>
 
-                            {{-- <div class="col-sm-4">
+                            <div class="col-sm-4">
                                 <label for="region_id" class=" col-sm-12 col-form-label">Region</label>
                                 <select class="form-control select2" id="region_id" name="region_id">
                                     <option value="">Select region</option>
@@ -121,7 +121,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div> --}}
+                            </div>
                             <div class="col-sm-4">
                                 <label for="zone_id" class=" col-sm-12 col-form-label">Zone</label>
                                 <select class="form-control select2" id="zone_id" name="zone_id">
