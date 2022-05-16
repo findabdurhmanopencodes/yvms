@@ -97,6 +97,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' =
     Route::get('placement/reset', [TrainingPlacementController::class, 'resetPlacement'])->name('placement.reset');
     Route::post('{approvedApplicant}/manual-placement', [TrainingPlacementController::class, 'placeManually'])->name('placement.manual');
     Route::post('{training_placement}/change', [TrainingPlacementController::class, 'changePlacement'])->name('placement.change');
+    Route::post('{approvedApplicant}/manual-screen', [TrainingSessionController::class, 'screenManually'])->name('screen.manual');
 });
 
 
@@ -109,6 +110,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('region/validate', [RegionController::class, 'validateForm'])->name('validate.region');
     Route::post('zone/validate', [ZoneController::class, 'validateForm'])->name('validate.zone');
     Route::post('woreda/validate', [WoredaController::class, 'validateForm'])->name('validate.woreda');
+    Route::post('applicant/infromation', [TrainingSessionController::class, 'applicantInfo'])->name('applicant.info');
 
     Route::post('user/{user}/giveAllPermission', [UserController::class, 'giveAllPermission'])->name('user.giveAllPermission');
     Route::post('user/{user}/removeAllPermission', [UserController::class, 'removeAllPermission'])->name('user.removeAllPermission');
