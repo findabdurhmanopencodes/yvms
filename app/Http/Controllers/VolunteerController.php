@@ -22,6 +22,7 @@ use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\User;
+use App\Models\UserRegion;
 use App\Models\VerifyVolunteer;
 use App\Models\Woreda;
 use App\Models\Zone;
@@ -39,6 +40,11 @@ use Spatie\Permission\Models\Role;
 
 class VolunteerController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Volunteer::class,'volunteer');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -46,7 +52,6 @@ class VolunteerController extends Controller
      */
     public function index(Request $request, $session_id)
     {
-
         // $status = new Status();
         // foreach (Volunteer::all() as $key => $value) {
         //     $status = new Status();
@@ -63,8 +68,15 @@ class VolunteerController extends Controller
 //         }
 //         dd(count($r));
         $applicants = Volunteer::whereRelation('status','acceptance_status',0)->where('training_session_id', $session_id);
-
-
+        $user = Auth::user();
+        if($user->hasRole('regional-coordinator')){
+            $region = UserRegion::where('user_id',$user->id)->where('levelable_type',Region::class)->first();
+            $applicants->whereRelation('woreda.zone.region','id',$region->levelable_id);
+        }
+        if($user->hasRole('zone-coordinator')){
+            $zone = UserRegion::where('user_id',$user->id)->where('levelable_type',Zone::class)->first();
+            $applicants->whereRelation('woreda.zone','id',$zone->levelable_id);
+        }
         // foreach(Volunteer::all() as $applicant){
         //             Status::create(['volunteer_id'=>$applicant->id,'acceptance_status'=>1]);
         // }

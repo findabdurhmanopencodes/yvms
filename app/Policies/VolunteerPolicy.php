@@ -18,7 +18,11 @@ class VolunteerPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        if($user->hasPermissionTo('Volunteer.index')){
+            
+            return true;
+        }
+        return false;
     }
 
     /**
