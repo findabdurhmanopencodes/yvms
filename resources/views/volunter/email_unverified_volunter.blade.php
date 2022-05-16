@@ -15,7 +15,7 @@
 <div class="card-body">
 .<div class="card">
     <div class="card-header">
-        <a class="btn btn-primary float-right">Export To Pdf</a>
+        <a class="btn btn-primary float-right" href="{{ route('applicant.unverified-email-download','1') }}">Export To Pdf</a>
     </div>
     <div class="card-body">
         <h5 class="card-title">Title</h5>

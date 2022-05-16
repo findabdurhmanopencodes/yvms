@@ -18,6 +18,10 @@ use Symfony\Component\Console\Input\Input;
 
 class TrainingPlacementController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(TrainingPlacement::class,'trainingPlacement');
+    }
     /**
      * Display a listing of the resource.
      *

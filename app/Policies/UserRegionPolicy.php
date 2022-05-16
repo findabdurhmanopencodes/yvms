@@ -18,7 +18,9 @@ class UserRegionPolicy
      */
     public function viewAny(User $user)
     {
-        
+
+        if ($user->hasPermissionTo('UserRegion.index'))
+            return true;
         return false;
     }
 
@@ -32,6 +34,10 @@ class UserRegionPolicy
     public function view(User $user, UserRegion $userRegion)
     {
         //
+        if ($user->hasPermissionTo('UserRegion.show')) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -43,6 +49,9 @@ class UserRegionPolicy
     public function create(User $user)
     {
         //
+        if ($user->hasPermissionTo('UserRegion.create'))
+            return true;
+        return false;
     }
 
     /**
@@ -55,6 +64,9 @@ class UserRegionPolicy
     public function update(User $user, UserRegion $userRegion)
     {
         //
+        if ($user->hasPermissionTo('UserRegion.update'))
+            return true;
+        return false;
     }
 
     /**
@@ -67,6 +79,9 @@ class UserRegionPolicy
     public function delete(User $user, UserRegion $userRegion)
     {
         //
+        if ($user->hasPermissionTo('UserRegion.destroy'))
+            return true;
+        return false;
     }
 
     /**

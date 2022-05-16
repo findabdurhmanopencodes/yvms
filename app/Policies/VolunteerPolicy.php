@@ -19,7 +19,7 @@ class VolunteerPolicy
     public function viewAny(User $user)
     {
         if($user->hasPermissionTo('Volunteer.index')){
-            
+
             return true;
         }
         return false;
@@ -35,6 +35,10 @@ class VolunteerPolicy
     public function view(User $user, Volunteer $volunteer)
     {
         //
+        //
+        if ($user->hasPermissionTo('Volunteer.show'))
+            return true;
+        return false;
     }
 
     /**
@@ -46,6 +50,10 @@ class VolunteerPolicy
     public function create(User $user)
     {
         //
+        //
+        if ($user->hasPermissionTo('Volunteer.create'))
+            return true;
+        return false;
     }
 
     /**
@@ -58,6 +66,10 @@ class VolunteerPolicy
     public function update(User $user, Volunteer $volunteer)
     {
         //
+        //
+        if ($user->hasPermissionTo('Volunteer.update'))
+            return true;
+        return false;
     }
 
     /**
@@ -70,6 +82,10 @@ class VolunteerPolicy
     public function delete(User $user, Volunteer $volunteer)
     {
         //
+        //
+        if ($user->hasPermissionTo('Volunteer.destroy'))
+            return true;
+        return false;
     }
 
     /**
