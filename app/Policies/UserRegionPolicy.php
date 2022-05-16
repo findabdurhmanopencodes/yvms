@@ -18,7 +18,8 @@ class UserRegionPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        
+        return false;
     }
 
     /**
