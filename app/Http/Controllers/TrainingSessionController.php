@@ -835,4 +835,11 @@ class TrainingSessionController extends Controller
 
         return redirect()->route('session.applicant.verified', ['training_session' => $session_id])->with('message', 'Applicant approved successfully');
     }
+
+    public function applicantInfo(Request $request, Volunteer $volunteer){
+        $applicant = Volunteer::where('training_session_id', $request->training_session_id)->where('id',$request->applicant_id)->get()[0];
+        
+        $applicant_region = $applicant->woreda->zone->region->name;
+        return response()->json(['applicant'=>$applicant, 'applicant_woreda'=>$applicant_region]);
+    }
 }

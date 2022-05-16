@@ -324,12 +324,12 @@ class VolunteerController extends Controller
 
         $approved = ApprovedApplicant::where('training_session_id', $training_session)->get();
 
-        return view('volunter.verified_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($training_session), 'approve' => $approved]);
+        return view('volunter.verified_volunter', ['volunters' => $applicants->paginate(10), 'trainingSession' => TrainingSession::find($training_session), 'approve' => $approved, 'traininig_session'=> $training_session]);
     }
     public function selected(Request $request, $training_session)
     {
         $applicants =  Volunteer::has('approvedApplicant')->where('training_session_id', $training_session);
-        return view('volunter.selected_volunter', ['volunters' => $applicants->paginate(6), 'trainingSession' => TrainingSession::find($training_session),'trainingCenterCapacities'=>TrainingCenterCapacity::where('training_session_id',$training_session)->get()]);
+        return view('volunter.selected_volunter', ['volunters' => $applicants->paginate(10), 'trainingSession' => TrainingSession::find($training_session),'trainingCenterCapacities'=>TrainingCenterCapacity::where('training_session_id',$training_session)->get()]);
     }
     protected function verifyEmail($token)
     {
