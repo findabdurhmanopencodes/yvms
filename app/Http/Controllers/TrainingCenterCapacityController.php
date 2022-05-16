@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class TrainingCenterCapacityController extends Controller
 {
+    public function __construct()
+    {
+
+        $this->authorizeResource(TrainingCenterCapacity::class,'trainingCenterCapacity');
+    }
     /**
      * Display a listing of the resource.
      *

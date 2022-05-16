@@ -39,6 +39,10 @@ use Spatie\Permission\Models\Role;
 
 class VolunteerController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Volunteer::class,'volunteer');
+    }
     /**
      * Display a listing of the resource.
      *

@@ -124,9 +124,9 @@ class RoleController extends Controller
         // if(!Auth::user()->can('role.permission.assign')){
         //     return abort(403);
         // }
-        foreach ($role->permissions()->get() as $permission) {
-            $role->revokePermissionTo($permission);
-        }
+        // foreach ($role->permissions()->get() as $permission) {
+        //     $role->revokePermissionTo($permission);
+        // }
         $request->validate(['permissions' => 'required']);
         $permissions = $request->get('permissions');
         foreach ($permissions as $permission) {

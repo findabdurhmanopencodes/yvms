@@ -19,6 +19,9 @@ class TrainingPlacementPolicy
     public function viewAny(User $user)
     {
         //
+        if ($user->hasPermissionTo('TrainingPlacement.index'))
+            return true;
+        return false;
     }
 
     /**
@@ -31,6 +34,9 @@ class TrainingPlacementPolicy
     public function view(User $user, TrainingPlacement $trainingPlacement)
     {
         //
+        if ($user->hasPermissionTo('TrainingPlacement.show'))
+        return true;
+    return false;
     }
 
     /**
@@ -42,6 +48,9 @@ class TrainingPlacementPolicy
     public function create(User $user)
     {
         //
+        if ($user->hasPermissionTo('TrainingPlacement.create'))
+        return true;
+    return false;
     }
 
     /**
@@ -54,6 +63,9 @@ class TrainingPlacementPolicy
     public function update(User $user, TrainingPlacement $trainingPlacement)
     {
         //
+        if ($user->hasPermissionTo('TrainingPlacement.update'))
+        return true;
+    return false;
     }
 
     /**
@@ -66,6 +78,9 @@ class TrainingPlacementPolicy
     public function delete(User $user, TrainingPlacement $trainingPlacement)
     {
         //
+        if ($user->hasPermissionTo('TrainingPlacement.destroy'))
+        return true;
+    return false;
     }
 
     /**

@@ -8,6 +8,12 @@ use Spatie\Permission\Models\Role;
 use Yajra\Datatables\Facades\Datatables;
 class PermissionController extends Controller
 {
+    public function __construct()
+    {
+
+        $this->authorizeResource(Permission::class,'permission');
+
+    }
     /**
      * Display a listing of the resource.
      *
