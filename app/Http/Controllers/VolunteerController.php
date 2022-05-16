@@ -180,7 +180,7 @@ class VolunteerController extends Controller
 
     public function application_form()
     {
-        $availableSession = TrainingSession::availableSession();
+        $availableSession = TrainingSession::availableForRegistration();
         if (count($availableSession) <= 0) {
             return view('application.no-open-form');
         }
@@ -280,6 +280,7 @@ class VolunteerController extends Controller
             'volunteer_id' => $volunteer->id,
             'token' => sha1(time())
         ]);
+        Status::Create(['volunteer_id' => $volunteer->id, 'acceptance_status' => 0]);
         dispatch(new SendEmailJob($volunteer->email, new VerifyMail($volunteer)));
         return redirect()->route('home')->with('apply_success', 'You successfully applied! Check your email');
     }

@@ -30,6 +30,12 @@ class TrainingSession extends Model
     static public function availableSession()
     {
         $today = Carbon::today();
+        return TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
+    }
+
+    static public function availableForRegistration()
+    {
+        $today = Carbon::today();
         return TrainingSession::where('registration_start_date', '<=', $today)->where('registration_dead_line', '>=', $today)->get();
     }
 
