@@ -19,6 +19,9 @@ class DisablityPolicy
     public function viewAny(User $user)
     {
         //
+        if ($user->hasPermissionTo('Disablity.index'))
+            return true;
+        return false;
     }
 
     /**
@@ -30,8 +33,11 @@ class DisablityPolicy
      */
     public function view(User $user, Disablity $disablity)
     {
-        //
+        if ($user->hasPermissionTo('Disablity.show'))
+            return true;
+        return false;
     }
+
 
     /**
      * Determine whether the user can create models.
@@ -41,7 +47,11 @@ class DisablityPolicy
      */
     public function create(User $user)
     {
+        if ($user->hasPermissionTo('Disablity.create'))
+            return true;
+        return false;
         //
+
     }
 
     /**
@@ -54,6 +64,9 @@ class DisablityPolicy
     public function update(User $user, Disablity $disablity)
     {
         //
+        if ($user->hasPermissionTo('Disablity.update'))
+            return true;
+        return false;
     }
 
     /**
@@ -66,6 +79,9 @@ class DisablityPolicy
     public function delete(User $user, Disablity $disablity)
     {
         //
+        if ($user->hasPermissionTo('Disablity.destroy'))
+            return true;
+        return false;
     }
 
     /**

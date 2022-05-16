@@ -24,7 +24,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'Disablity.show']);
         Permission::create(['name'=>'Disablity.edit']);
         Permission::create(['name'=>'Disablity.update']);
-        Permission::create(['name'=>'disablity.destroy']);
+        Permission::create(['name'=>'Disablity.destroy']);
 
         Permission::create(['name'=>'EducationalLevel.index']);
         Permission::create(['name'=>'EducationalLevel.create']);

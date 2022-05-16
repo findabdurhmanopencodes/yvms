@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class FileController extends Controller
 {
+    public function __construct()
+    {
+
+        $this->authorizeResource(File::class,'file');
+
+    }
 
     public static function fileUpload($file)
     {
