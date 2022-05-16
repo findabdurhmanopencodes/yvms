@@ -146,7 +146,7 @@ class VolunteerController extends Controller
      * @param  \App\Models\Volunteer  $volunteer
      * @return \Illuminate\Http\Response
      */
-    public function show($volunteer)
+    public function show($session_id, $volunteer)
     {
         return view('volunter.show', ['applicant' => Volunteer::find($volunteer)]);
     }
@@ -291,14 +291,14 @@ class VolunteerController extends Controller
         dispatch(new SendEmailJob($volunteer->email, new VerifyMail($volunteer)));
         return redirect()->route('home')->with('apply_success', 'You successfully applied! Check your email');
     }
-    public function Screen(Request $request, $applicant_id)
+    public function Screen(Request $request, $session_id,$applicant_id)
     {
         if ($request->get('type') == 'accept') {
-            // dd('11');
-            Status::Create(['volunteer_id' => $applicant_id, 'acceptance_status' => 1]);
-            return redirect()->route('session.applicant.index', ['training_session' => Volunteer::find($applicant_id)->training_session_id]);
+            Volunteer::find($applicant_id)->status->update(['acceptance_status' => 1]);
+        
+            return redirect()->route('session.applicant.index', ['training_session' => Volunteer::find($applicant_id)->training_session_id])->with('message','Volunter document  Verified');
         } elseif ($request->get('type') == 'reject') {
-            Status::Create(['volunteer_id' => $applicant_id, 'acceptance_status' => 2, 'rejection_reason' => $request->get('rejection_reason')]);
+            Volunteer::find($applicant_id)->status->update(['acceptance_status' => 2]);
             return redirect()->route('session.applicant.index', ['training_session' => Volunteer::find($applicant_id)->training_session_id]);
             // return redirect()->back();
         }

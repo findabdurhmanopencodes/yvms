@@ -74,7 +74,9 @@ class Volunteer extends Model
     }
     public function status()
     {
-        return $this->hasOne(Status::class);
+        // dd($this->id);
+        return $this->hasOne(Status::class,'volunteer_id','id');
+        return Status::where('volunteer_id',$this->id)->get();
     }
 
     public function approvedApplicant()
