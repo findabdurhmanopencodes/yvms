@@ -296,7 +296,7 @@ class VolunteerController extends Controller
     {
         if ($request->get('type') == 'accept') {
             Volunteer::find($applicant_id)->status->update(['acceptance_status' => 1]);
-        
+
             return redirect()->route('session.applicant.index', ['training_session' => Volunteer::find($applicant_id)->training_session_id])->with('message','Volunter document  Verified');
         } elseif ($request->get('type') == 'reject') {
             Volunteer::find($applicant_id)->status->update(['acceptance_status' => 2]);
@@ -352,7 +352,7 @@ class VolunteerController extends Controller
                 $volunteer->user_id = $user->id;
                 $volunteer->update();
                 $volunteer->save();
-                // $verifyVolunteer->delete();
+                $verifyVolunteer->delete();
                 Auth::login($user);
                 dispatch(new SendEmailJob($volunteer->email, new VolunteerAppliedMail($volunteer)));
                 return redirect(route('home'))->with('message', 'Your Service Request Form will be reviewed shortly and a response made to the email address');

@@ -24,6 +24,7 @@ use App\Models\ApprovedApplicant;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
+use App\Models\User;
 use App\Models\Volunteer;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Pagination\Paginator;
@@ -47,7 +48,6 @@ use Symfony\Component\Console\Input\Input;
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
-
 
 Route::get('/', function () {
     return view('menu.home');
@@ -103,6 +103,8 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' =
 Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
     // Route::middleware(['guest'])->group(function () {
+
+    Route::get('user/{user}/credential', [UserController::class, 'downloadCredential'])->name('user.print.credential');
 
     Route::post('region/validate', [RegionController::class, 'validateForm'])->name('validate.region');
     Route::post('zone/validate', [ZoneController::class, 'validateForm'])->name('validate.zone');
