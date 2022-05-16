@@ -46,6 +46,10 @@ class VolunteerController extends Controller
      */
     public function index(Request $request, $session_id)
     {
+        // foreach (Volunteer::all() as $key => $value) {
+        //     Status::create(['volunteer_id'=>$value->id, 'acceptance_status'=>1]);
+        // }
+        // dd('done');
 
         // $status = new Status();
         // foreach (Volunteer::all() as $key => $value) {
