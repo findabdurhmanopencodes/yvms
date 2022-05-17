@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\UserRegion;
+use App\Models\UserAttendance;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserRegionPolicy
+class UserAttendancePolicy
 {
     use HandlesAuthorization;
 
@@ -18,25 +18,19 @@ class UserRegionPolicy
      */
     public function viewAny(User $user)
     {
-        if ($user->hasPermissionTo('UserRegion.index'))
-            return true;
-        return false;
+        //
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\UserRegion  $userRegion
+     * @param  \App\Models\UserAttendance  $userAttendance
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, UserRegion $userRegion)
+    public function view(User $user, UserAttendance $userAttendance)
     {
         //
-        if ($user->hasPermissionTo('UserRegion.show')) {
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -48,49 +42,40 @@ class UserRegionPolicy
     public function create(User $user)
     {
         //
-        if ($user->hasPermissionTo('UserRegion.create'))
-            return true;
-        return false;
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\UserRegion  $userRegion
+     * @param  \App\Models\UserAttendance  $userAttendance
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, UserRegion $userRegion)
+    public function update(User $user, UserAttendance $userAttendance)
     {
         //
-        if ($user->hasPermissionTo('UserRegion.update'))
-            return true;
-        return false;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\UserRegion  $userRegion
+     * @param  \App\Models\UserAttendance  $userAttendance
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, UserRegion $userRegion)
+    public function delete(User $user, UserAttendance $userAttendance)
     {
         //
-        if ($user->hasPermissionTo('UserRegion.destroy'))
-            return true;
-        return false;
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\UserRegion  $userRegion
+     * @param  \App\Models\UserAttendance  $userAttendance
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, UserRegion $userRegion)
+    public function restore(User $user, UserAttendance $userAttendance)
     {
         //
     }
@@ -99,10 +84,10 @@ class UserRegionPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\UserRegion  $userRegion
+     * @param  \App\Models\UserAttendance  $userAttendance
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, UserRegion $userRegion)
+    public function forceDelete(User $user, UserAttendance $userAttendance)
     {
         //
     }

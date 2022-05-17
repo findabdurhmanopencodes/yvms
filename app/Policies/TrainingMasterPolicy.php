@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\TrainingMaster;
 use App\Models\User;
-use App\Models\UserRegion;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserRegionPolicy
+class TrainingMasterPolicy
 {
     use HandlesAuthorization;
 
@@ -18,25 +18,19 @@ class UserRegionPolicy
      */
     public function viewAny(User $user)
     {
-        if ($user->hasPermissionTo('UserRegion.index'))
-            return true;
-        return false;
+        //
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\UserRegion  $userRegion
+     * @param  \App\Models\TrainingMaster  $trainingMaster
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, UserRegion $userRegion)
+    public function view(User $user, TrainingMaster $trainingMaster)
     {
         //
-        if ($user->hasPermissionTo('UserRegion.show')) {
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -48,49 +42,40 @@ class UserRegionPolicy
     public function create(User $user)
     {
         //
-        if ($user->hasPermissionTo('UserRegion.create'))
-            return true;
-        return false;
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\UserRegion  $userRegion
+     * @param  \App\Models\TrainingMaster  $trainingMaster
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, UserRegion $userRegion)
+    public function update(User $user, TrainingMaster $trainingMaster)
     {
         //
-        if ($user->hasPermissionTo('UserRegion.update'))
-            return true;
-        return false;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\UserRegion  $userRegion
+     * @param  \App\Models\TrainingMaster  $trainingMaster
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, UserRegion $userRegion)
+    public function delete(User $user, TrainingMaster $trainingMaster)
     {
         //
-        if ($user->hasPermissionTo('UserRegion.destroy'))
-            return true;
-        return false;
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\UserRegion  $userRegion
+     * @param  \App\Models\TrainingMaster  $trainingMaster
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, UserRegion $userRegion)
+    public function restore(User $user, TrainingMaster $trainingMaster)
     {
         //
     }
@@ -99,10 +84,10 @@ class UserRegionPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\UserRegion  $userRegion
+     * @param  \App\Models\TrainingMaster  $trainingMaster
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, UserRegion $userRegion)
+    public function forceDelete(User $user, TrainingMaster $trainingMaster)
     {
         //
     }

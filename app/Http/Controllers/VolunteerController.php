@@ -367,4 +367,8 @@ class VolunteerController extends Controller
         }
         return redirect('/login')->with('message', $status);
     }
+    public function checkIn(){
+                return view('check_in\check_in');
+
+    }
 }
