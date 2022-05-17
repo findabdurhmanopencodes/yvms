@@ -48,13 +48,14 @@ class VolunteerController extends Controller
     protected function resourceAbilityMap()
     {
         return [
+            'index' => 'viewAny',
             'show' => 'view',
             'create' => 'create',
             'store' => 'create',
             'edit' => 'update',
             'update' => 'update',
             'destroy' => 'delete',
-            'Screen'=>'screen',
+            'Screen' => 'screen',
         ];
     }
     /**
@@ -296,8 +297,11 @@ class VolunteerController extends Controller
         dispatch(new SendEmailJob($volunteer->email, new VerifyMail($volunteer)));
         return redirect()->route('home')->with('apply_success', 'You successfully applied! Check your email');
     }
-    public function Screen(Request $request, $session_id, $applicant_id)
+    public function Screen(Request $request, $session_id, Volunteer $applicant)
     {
+        
+        dd($applicant);
+        dd('as');
         if ($request->get('type') == 'accept') {
             Volunteer::find($applicant_id)->status->update(['acceptance_status' => 1]);
 

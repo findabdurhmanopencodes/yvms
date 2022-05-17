@@ -138,6 +138,7 @@ class VolunteerPolicy
 
     public function screen()
     {
+        dd('asd');
         return false;
     }
 }
