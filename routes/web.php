@@ -6,6 +6,7 @@ use App\Http\Controllers\FeildOfStudyController;
 use App\Http\Controllers\EducationalLevelController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PrintController;
 use App\Http\Controllers\QoutaController;
 use App\Http\Controllers\QuotaController;
 use App\Http\Controllers\RegionController;
@@ -85,9 +86,14 @@ Route::get('training_session/{training_session}/screenout', [TrainingSessionCont
 Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' => 'session.'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/quota', [TrainingSessionController::class, 'showQuota'])->name('training_session.quota');
-    Route::any('volunteer/', [VolunteerController::class, 'index'])->name('applicant.index');
+    Route::any('volunteer/', [VolunteerController::class, 'index'])->name('volunteer.index');
     Route::resource('/volunteer', VolunteerController::class,['names'=>'applicant'])->parameters(['volunteer' => 'applicant'])->except(['index']);
     Route::post('applicant/{volunteer}/screen', [VolunteerController::class, 'Screen'])->name('applicant.screen');
+    Route::get('volunteer/unverified/email/download',[PrintController::class,'unverifiedEmail'])->name('volunteer.unverified.email.download');
+
+
+
+
     Route::post('applicant/place', [TrainingPlacementController::class, 'place'])->name('applicant.place');
     Route::get('applicants/email/unverified', [VolunteerController::class, 'emailUnverified'])->name('applicant.email.unVerified');
     Route::get('/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');
