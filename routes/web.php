@@ -24,6 +24,7 @@ use App\Models\ApprovedApplicant;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
+use App\Models\User;
 use App\Models\Volunteer;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Pagination\Paginator;
@@ -47,7 +48,6 @@ use Symfony\Component\Console\Input\Input;
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
-
 
 Route::get('/', function () {
     return view('menu.home');
@@ -85,9 +85,9 @@ Route::get('training_session/{training_session}/screenout', [TrainingSessionCont
 Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' => 'session.'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/quota', [TrainingSessionController::class, 'showQuota'])->name('training_session.quota');
-    Route::any('applicant/', [VolunteerController::class, 'index'])->name('applicant.index');
-    Route::resource('/applicant', VolunteerController::class)->except(['index']);
-    Route::post('applicant/{applicant_id}/screen', [VolunteerController::class, 'screen'])->name('applicant.screen');
+    Route::any('volunteer/', [VolunteerController::class, 'index'])->name('applicant.index');
+    Route::resource('/volunteer', VolunteerController::class,['names'=>'applicant'])->parameters(['volunteer' => 'applicant'])->except(['index']);
+    Route::post('applicant/{volunteer}/screen', [VolunteerController::class, 'Screen'])->name('applicant.screen');
     Route::post('applicant/place', [TrainingPlacementController::class, 'place'])->name('applicant.place');
     Route::get('applicants/email/unverified', [VolunteerController::class, 'emailUnverified'])->name('applicant.email.unVerified');
     Route::get('/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');
@@ -97,6 +97,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' =
     Route::get('placement/reset', [TrainingPlacementController::class, 'resetPlacement'])->name('placement.reset');
     Route::post('{approvedApplicant}/manual-placement', [TrainingPlacementController::class, 'placeManually'])->name('placement.manual');
     Route::post('{training_placement}/change', [TrainingPlacementController::class, 'changePlacement'])->name('placement.change');
+    Route::post('{approvedApplicant}/manual-screen', [TrainingSessionController::class, 'screenManually'])->name('screen.manual');
 });
 
 
@@ -104,9 +105,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
     // Route::middleware(['guest'])->group(function () {
 
+    Route::get('user/{user}/credential', [UserController::class, 'downloadCredential'])->name('user.print.credential');
+
     Route::post('region/validate', [RegionController::class, 'validateForm'])->name('validate.region');
     Route::post('zone/validate', [ZoneController::class, 'validateForm'])->name('validate.zone');
     Route::post('woreda/validate', [WoredaController::class, 'validateForm'])->name('validate.woreda');
+    Route::post('applicant/infromation', [TrainingSessionController::class, 'applicantInfo'])->name('applicant.info');
 
     Route::post('user/{user}/giveAllPermission', [UserController::class, 'giveAllPermission'])->name('user.giveAllPermission');
     Route::post('user/{user}/removeAllPermission', [UserController::class, 'removeAllPermission'])->name('user.removeAllPermission');

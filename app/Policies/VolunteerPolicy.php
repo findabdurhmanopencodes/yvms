@@ -2,8 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\Region;
 use App\Models\User;
+use App\Models\UserRegion;
 use App\Models\Volunteer;
+use App\Models\Zone;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class VolunteerPolicy
@@ -18,9 +21,10 @@ class VolunteerPolicy
      */
     public function viewAny(User $user)
     {
-        //
-        if ($user->hasPermissionTo('Volunteer.index'))
+        if ($user->hasPermissionTo('Volunteer.index')) {
+
             return true;
+        }
         return false;
     }
 
@@ -33,10 +37,31 @@ class VolunteerPolicy
      */
     public function view(User $user, Volunteer $volunteer)
     {
-        //
-        //
-        if ($user->hasPermissionTo('Volunteer.show'))
+        if ($user->hasPermissionTo('Volunteer.show')) {
+            if ($user->hasRole('regional-coordinator')) {
+                $userRegion = UserRegion::where('user_id', $user->id)->where('levelable_type', Region::class)->first();
+                if ($userRegion == null)
+                    return false;
+                $region = $userRegion->levelable;
+                if ($volunteer->woreda->zone->region->id == $region->id) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } elseif ($user->hasRole('zone-coordinator')) {
+                $userZone = UserRegion::where('user_id', $user->id)->where('levelable_type', Zone::class)->first();
+                if ($userZone == null)
+                    return false;
+                $zone = $userZone->levelable;
+                if ($volunteer->woreda->zone->id == $zone->id) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
             return true;
+        }
+
         return false;
     }
 
@@ -109,5 +134,11 @@ class VolunteerPolicy
     public function forceDelete(User $user, Volunteer $volunteer)
     {
         //
+    }
+
+    public function screen()
+    {
+        dd('asd');
+        return false;
     }
 }

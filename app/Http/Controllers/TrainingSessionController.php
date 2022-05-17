@@ -772,4 +772,78 @@ class TrainingSessionController extends Controller
 
         return redirect()->back();
     }
+
+    public function screenManually(Request $request, $session_id, $applicant_id){
+        $woreda = Volunteer::where('id', $applicant_id)->get()[0]->woreda;
+        $zone = $woreda->zone;
+        $region = $zone->region;
+
+        $session_amount = TrainingSession::where('id', $session_id)->get()[0]->quantity;
+        $approved_amount = ApprovedApplicant::all();
+        $del_stack = [];
+        $approved_stack = [];
+
+        if (count($approved_amount) == $session_amount) {
+            foreach (ApprovedApplicant::where('training_session_id', $session_id)->get() as $key => $approved) {
+                if ($woreda->id == $approved->volunteer->woreda->id) {
+                    array_push($approved_stack, $approved->volunteer);
+                }
+            }
+
+            if ($approved_stack) {
+                foreach ($approved_stack as $key => $app) {
+                    array_push($del_stack, $app);
+                }
+            }else{
+                foreach (ApprovedApplicant::where('training_session_id', $session_id)->get() as $key => $approved) {
+                    if ($zone->id == $approved->volunteer->woreda->zone->id) {
+                        array_push($approved_stack, $approved->volunteer);
+                    }
+                }
+                if ($approved_stack) {
+                    foreach ($approved_stack as $key => $app) {
+                        array_push($del_stack, $app);
+                    }
+                }else{
+                    foreach (ApprovedApplicant::where('training_session_id', $session_id)->get() as $key => $approved) {
+                        if ($region->id == $approved->volunteer->woreda->zone->region->id) {
+                            array_push($approved_stack, $approved->volunteer);
+                        }
+                    }
+                    if ($approved_stack) {
+                        foreach ($approved_stack as $key => $app) {
+                            array_push($del_stack, $app);
+                        }
+                    }else{
+                        foreach (ApprovedApplicant::where('training_session_id', $session_id)->get() as $key => $approved) {
+                            array_push($del_stack, $approved);
+                        }
+                    }
+                }
+            }
+
+            sort($del_stack);
+            // dd($del_stack);
+
+            foreach ($del_stack as $del) {
+                $del_val = ApprovedApplicant::where('volunteer_id', $del->id)->get()[0];
+            }
+
+            $del_val->delete();
+            ApprovedApplicant::create(['training_session_id'=> $session_id, 'volunteer_id'=>$applicant_id, 'status'=>1]);
+            Status::where('volunteer_id', $applicant_id)->get()[0]->update(['acceptance_status'=> 3]);
+        }elseif (count($approved_amount) < $session_amount) {
+            ApprovedApplicant::create(['training_session_id'=> $session_id, 'volunteer_id'=>$applicant_id, 'status'=>1]);
+            Status::where('volunteer_id', $applicant_id)->get()[0]->update(['acceptance_status'=> 3]);
+        }
+
+        return redirect()->route('session.applicant.verified', ['training_session' => $session_id])->with('message', 'Applicant approved successfully');
+    }
+
+    public function applicantInfo(Request $request, Volunteer $volunteer){
+        $applicant = Volunteer::where('training_session_id', $request->training_session_id)->where('id',$request->applicant_id)->get()[0];
+        
+        $applicant_region = $applicant->woreda->zone->region->name;
+        return response()->json(['applicant'=>$applicant, 'applicant_woreda'=>$applicant_region]);
+    }
 }
