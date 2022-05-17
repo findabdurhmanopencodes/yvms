@@ -18,7 +18,9 @@ class WoredaPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        if ($user->hasPermissionTo('Woreda.index'))
+            return true;
+        return false;
     }
 
     /**
@@ -31,6 +33,9 @@ class WoredaPolicy
     public function view(User $user, Woreda $woreda)
     {
         //
+        if ($user->hasPermissionTo('Woreda.show'))
+        return true;
+    return false;
     }
 
     /**
@@ -42,6 +47,9 @@ class WoredaPolicy
     public function create(User $user)
     {
         //
+        if ($user->hasPermissionTo('Woreda.create'))
+        return true;
+    return false;
     }
 
     /**
@@ -54,6 +62,9 @@ class WoredaPolicy
     public function update(User $user, Woreda $woreda)
     {
         //
+        if ($user->hasPermissionTo('Woreda.update'))
+        return true;
+    return false;
     }
 
     /**
@@ -66,6 +77,9 @@ class WoredaPolicy
     public function delete(User $user, Woreda $woreda)
     {
         //
+        if ($user->hasPermissionTo('Woreda.destroy'))
+        return true;
+    return false;
     }
 
     /**

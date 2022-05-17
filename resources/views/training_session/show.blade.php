@@ -17,7 +17,7 @@
 
 @section('action_content')
     <div>
-        <a href="{{ route('applicant.index', ['session_id' => $trainingSession->id]) }}" class="btn btn-primary my-4  mx-4" >
+        <a href="{{ route('volunteer.index', ['session_id' => $trainingSession->id]) }}" class="btn btn-primary my-4  mx-4" >
         Verify Documents</a>
     </div>
 @endsection

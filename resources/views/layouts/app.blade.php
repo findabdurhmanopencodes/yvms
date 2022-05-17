@@ -148,9 +148,9 @@
                                                     <span class="menu-text">Applicants</span>
                                                 </span>
                                             </li>
-                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.applicant.index') === 0 ? 'menu-item-active' : '' }}"
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.volunteer.index') === 0 ? 'menu-item-active' : '' }}"
                                                 aria-haspopup="true">
-                                                <a href="{{ route('session.applicant.index', ['training_session' => Request::route('training_session')]) }}"
+                                                <a href="{{ route('session.volunteer.index', ['training_session' => Request::route('training_session')]) }}"
                                                     class="menu-link">
                                                     <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
@@ -204,7 +204,7 @@
 
                                 {{-- <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.applicant') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
-                                    <a href="{{ route('session.applicant.index', ['training_session' => Request::route('training_session')]) }}"
+                                    <a href="{{ route('session.volunteer.index', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
                                         <i class="menu-icon flaticon-users"></i>
                                         <span class="menu-text">Applicants</span>

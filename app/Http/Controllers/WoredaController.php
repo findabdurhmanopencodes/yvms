@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 
 class WoredaController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Woreda::class,'woreda');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -104,7 +108,7 @@ class WoredaController extends Controller
             if ($request->get('status') == 'on') {
                 $woreda->status = 1;
             }else{
-                $woreda->status = 0;   
+                $woreda->status = 0;
             }
         }else{
             $woreda->status = 0;

@@ -14,6 +14,10 @@ use Spatie\Permission\Models\Role;
 
 class TraininingCenterController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(TraininingCenter::class,'TraininingCenter');
+       }
     /**
      * Display a listing of the resource.
      *
