@@ -443,10 +443,13 @@
                             </div>
                         </div>
                         <div class="navi-text">
+                            <a href="{{ route('profile.show', []) }}">
+
                             <div class="font-weight-bold">My Profile</div>
                             <div class="text-muted">Account settings and more
                                 <span class="label label-light-danger label-inline font-weight-bold"></span>
                             </div>
+                            </a>
                         </div>
                     </div>
                 </a>

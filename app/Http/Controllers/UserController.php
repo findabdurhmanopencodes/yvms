@@ -21,6 +21,7 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Models\Permission;
 use Yajra\Datatables\Facades\Datatables;
@@ -317,7 +318,7 @@ class UserController extends Controller
     public function downloadCredential(User $user)
     {
         $pdf = $this->getCredential($user);
-        return $pdf->download('credential for '.$user->father_name.'.pdf');
+        return $pdf->download('credential for ' . $user->father_name . '.pdf');
     }
 
     public function printCredential(User $user)
@@ -328,9 +329,30 @@ class UserController extends Controller
     public function getCredential(User $user)
     {
         $password = Str::random(8);
-        $user->update(['password'=>Hash::make($password)]);
+        $user->update(['password' => Hash::make($password)]);
         $user->save();
         $date = DateTimeFactory::fromDateTime(new Carbon('now'))->format('d/m/Y h:i:s');
-        return PDF::loadView('pdf.user-credential', compact('user','date','password'));
+        return PDF::loadView('pdf.user-credential', compact('user', 'date', 'password'));
+    }
+
+    public function profile_edit()
+    {
+        $user = Auth::user();
+        return view('profile.edit', compact('user'));
+    }
+
+    public function profile_update(Request $request)
+    {
+        $request->validate([
+            'password' => ['nullable', 'confirmed', Password::defaults()],
+        ]);
+        $status = null;
+        $message = null;
+        if (($request->get('password'))) {
+            Auth::user()->update(['password' => Hash::make($request->get('password'))]);
+            $status = 'message';
+            $message = 'Password changed successfully';
+        }
+        return redirect()->back()->with($status,$message);
     }
 }

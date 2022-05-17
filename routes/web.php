@@ -44,7 +44,6 @@ use Symfony\Component\Console\Input\Input;
 |
 */
 
-// Route::get('/profile/{user?}',[UserController::class,'profile'])->name('profile.show');
 
 Route::get('/login', function () {
     return view('auth.login');
@@ -87,9 +86,9 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' =
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/quota', [TrainingSessionController::class, 'showQuota'])->name('training_session.quota');
     Route::any('volunteer/', [VolunteerController::class, 'index'])->name('volunteer.index');
-    Route::resource('/volunteer', VolunteerController::class,['names'=>'applicant'])->parameters(['volunteer' => 'applicant'])->except(['index']);
+    Route::resource('/volunteer', VolunteerController::class, ['names' => 'applicant'])->parameters(['volunteer' => 'applicant'])->except(['index']);
     Route::post('applicant/{volunteer}/screen', [VolunteerController::class, 'Screen'])->name('applicant.screen');
-    Route::get('volunteer/unverified/email/download',[PrintController::class,'unverifiedEmail'])->name('volunteer.unverified.email.download');
+    Route::get('volunteer/unverified/email/download', [PrintController::class, 'unverifiedEmail'])->name('volunteer.unverified.email.download');
 
 
 
@@ -111,6 +110,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
     // Route::middleware(['guest'])->group(function () {
 
+    Route::get('/profile/edit',[UserController::class,'profile_edit'])->name('profile.edit');
+    Route::post('/profile/update',[UserController::class,'profile_update'])->name('profile.update');
+
+    Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('profile.show');
     Route::get('user/{user}/credential', [UserController::class, 'downloadCredential'])->name('user.print.credential');
 
     Route::post('region/validate', [RegionController::class, 'validateForm'])->name('validate.region');
