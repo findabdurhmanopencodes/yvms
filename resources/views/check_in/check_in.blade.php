@@ -1,156 +1,141 @@
 @extends('layouts.app')
-@section('title', 'All Zones')
-@section('breadcrumb-list')
-    <li class="active">Check-in Student</li>
-@endsection
-@section('breadcrumbTitle', 'Zones/Subcities')
-@section('breadcrumbList')
-    <li class="breadcrumb-item">
-        <a href="" class="text-muted">Zones/Subcities</a>
-    </li>
-@endsection
+@push('css')
+    <style>
+        #myTable {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ddd;
+            font-size: 18px;
+        }
 
+        #myTable th,
+        #myTable td {
+            text-align: left;
+            padding: 12px;
+        }
 
+        #myTable tr {
+            border-bottom: 1px solid #ddd;
+        }
 
+        #myTable tr.header,
+        #myTable tr:hover {
+            background-color: #f1f1f1;
+        }
 
+    </style>
+@endpush
 @section('content')
-    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
-
-        <div class="card">
-            <div class="card-header" id="headingThree6">
-                <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseThree6">
-                    <i class="flaticon2-search fa-2x"></i> Filter
-                </div>
-            </div>
-            <div id="collapseThree6" class="collapse" data-parent="#accordionExample6">
-                <div class="card-body">
-                    <form method="post">
-                        @csrf
-                        <div class="row">
-
-                            <div class="col-4">
-                                <label for="location_id" class=" col-4 col-form-label">Lab name</label>
-                                <input class="form-control" type="text" name="name">
-
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary  mx-4 my-4" name="filter" value="filter"><i
-                                class="fa fa-search"></i> Search</button>
-                    </form>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <ol class="breadcrumb text-muted fs-6 fw-bold">
-
-
-        {{-- @if (count($offices) > 1)
-            <li class="breadcrumb-item pe-3"><a href="{{ route('lab.structureDetail', $parent_id) }}"
-                    class="pe-3">{{ $offices[0]?->parent->name }}</a></li>
-        @endif --}}
-
-
-    </ol>
-
-
-    <div class="card card-custom">
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <p><strong>Opps Something went wrong</strong></p>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <div class="card-header flex-wrap border-0 pt-6 pb-0">
-            <div class="card-title">
-                <h3 class="card-label">Structures
-                    <span class="d-block text-muted pt-2 font-size-sm"></span>
-                </h3>
-            </div>
-
+    <div class="card">
+        <div class="card-header">
+            <h2>Check-In</h2>
         </div>
         <div class="card-body">
-            <!--begin: Datatable-->
-            <div class="datatable datatable-default datatable-bordered datatable-loaded">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th> Name</th>
-                            <th>Code</th>
-                            <th> Actions</th>
+            <h5 class="card-title">Search</h5>
+            <form action="" method="POST">
 
-                        </tr>
-                    </thead>
-                    <tbody style="" class="datatable-body">
-                        {{-- @foreach ($offices as $office)
-                            <tr data-row="0" class="datatable-row" style="left: 0px;">
-                                <td>
-                                    {{ $offices->perPage() * $offices->currentPage() - ($offices->perPage() - ($loop->index + 1)) }}
-                                </td>
-                                <td>{{ $office->name }}</td>
-                                <td>{{ $office->code }}</td>
-                                <td>
-                                    <div class="row">
-                                        @if ($office->labs !== null)
-                                            <a class="btn nbtn-sm btn-info mx-4"
-                                                href="{{ route('lab.office', $office->id) }}">
-                                                <i class="fa fa-eye "></i> Show Lab</a>
-                                        @else
-                                            <a class="btn nbtn-sm btn-info mx-4"
-                                                href="{{ route('lab.structureDetail', $office->id) }}">
-                                                <i class="fa fa-eye "></i> detail</a>
-                                        @endif
+                @csrf
 
-                                    </div>
+                <input type="text" id="myInput" placeholder="Search VOlunter Using Id Number .." title="Type in a name"
+                    class="typeahead form-control col-12 mb-6" style="background-color: #f1f1f1">
 
-                                </td>
-                            </tr>
-                        @endforeach
-                        @if (count($offices) < 1)
-                            <tr>
-                                <td class="font-size-h1-sm text-danger">No Result Found</td>
-                            </tr>
-                        @endif --}}
-                    </tbody>
-                </table>
-                <div class="d-flex justify-content-center">
-                    {{-- {!! $offices->links() !!} --}}
+            </form>
+
+            <div class="card card-custom md-6">
+                <div class="card-header ribbon ribbon-top ribbon-ver">
+                    <div class="ribbon-target bg-success" style="top: -2px; right: 20px;">
+
+                    </div>
+                    <h3 class="card-title">
+
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <a class="btn btn-primary mb-4">
+                        <h4><i class="fa fa-check-circle"></i>Check-In</h4>
+                    </a>
+                    <img src="{{ asset('assets/media/users/100_10.jpg') }}" class="rounded float-right img-thumbnail"
+                        alt="..." width="200">
+                    <h1>Name:Ajaib Mohammed</h1>
+                    <h1>Phone:0931979439</h1>
+                    <h1>Region:Oromia</h1>
+                    <h1>Training Center:Jit</h1>
+
+                    {{-- <span class="badge badge-pill badge-info mt-4"><h3>Accepted</h3></span> --}}
+
+
+
                 </div>
             </div>
-            <!--end: Datatable-->
         </div>
+
     </div>
 @endsection
-@section('additional_javascript')
+
+{{-- @section('additional_javascript')
     <script>
-        // Class definition
-        var KTSelect2 = function() {
-            // Private functions
-            var demos = function() {
-                // multi select
-                $('.select2').select2({
-                    placeholder: "select Organization",
-                    width: '100%'
 
-                });
-            }
-            return {
-                init: function() {
-                    demos();
-                }
-            };
-        }();
+autocomp();
+        $('#myInput').on('keyup', function() {
 
-        // Initialization
-        jQuery(document).ready(function() {
-            KTSelect2.init();
+
+ search();
+
         });
+        function autocomp(){
+
+            // var route = "{{ url('autocomplete.searchBox') }}";
+            // $('#a').typeahead({
+            //     source: function (query, process) {
+            //         return $.get(route, {
+            //             query: query
+            //         }, function (data) {
+            //             return process(data);
+            //         });
+            //     }
+            // });
+        }
+
+
+        function search() {
+            // var keyword = $('#myInput').val();
+            // $.post('{{ route('autocomplete') }}', {
+            //         _token: $('meta[name="csrf-token"]').attr('content'),
+            //         keyword: keyword
+            //     },
+            //     function(data) {
+            //         table_post_row(data, keyword);
+
+            //     });
+
+
+        }
+        // table row with ajax
+        function table_post_row(res, keyword) {
+
+            let htmlView = '';
+            if (res.lab.length <= 0) {
+                htmlView += `
+           <tr>
+              <td colspan="4" class="text-danger h2 font">No Laboratory  Found with Service  <span class="font-weight-boldest">"${keyword}"</span> </td>
+          </tr>`;
+            }
+            for (let i = 0; i < res.lab.length; i++) {
+                 var id=res.lab[i].id;
+                htmlView += `
+            <tr>
+               <td>` + (i + 1) + `</td>
+                  <td>` + res.lab[i].name + `</td>
+                  <td><a class='btn btn-info float-right' href={{ route("lab.show",1) }}> <i class='fa fa-eye '></i> Show Detail</a></td>
+            </tr>`;
+
+            }
+            $('tbody').html(htmlView);
+        }
+
+        function searcha() {
+
+
+        }
     </script>
-@endsection
+@endsection --}}

@@ -135,8 +135,11 @@ class TraininingCenterController extends Controller
      * @param  \App\Models\TraininingCenter  $traininingCenter
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TraininingCenter $traininingCenter)
+    public function destroy(Request $request,TraininingCenter $traininingCenter)
     {
-        //
+        $traininingCenter->delete();
+        if ($request->ajax()) {
+            return response()->json(array('msg' => 'deleted successfully'), 200);
+        }
     }
 }
