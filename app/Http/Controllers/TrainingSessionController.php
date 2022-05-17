@@ -37,12 +37,33 @@ class TrainingSessionController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return datatables()->of(TrainingSession::select())->make(true);
+            return datatables()->of(TrainingSession::select())->addColumn('start_date_et', function (TrainingSession $trainingSession){
+                return $trainingSession->startDateET();
+            })->addColumn('end_date_et', function (TrainingSession $trainingSession){
+                return $trainingSession->endDateET();
+            })->addColumn('start_reg_date_et', function (TrainingSession $trainingSession){
+                return $trainingSession->startRegDateET();
+            })->addColumn('reg_end_date_et', function (TrainingSession $trainingSession){
+                return $trainingSession->endRegDateET();
+            })->make(true);
+        }
+
+        $date_now = Carbon::now();
+        $check_date = false;
+
+        $training_sessions = TrainingSession::all();
+
+        if ($training_sessions) {
+            foreach ($training_sessions as $training_session) {
+                if ((new DateTime($training_session->start_date) <= new DateTime($date_now->format('Y-m-d')) ) && (new DateTime($date_now->format('Y-m-d')) <= new DateTime($training_session->end_date))) {
+                    $check_date = true;
+                }
+            }
         }
 
         $training_session = TrainingSession::all();
         $regions = Region::all();
-        return view('training_session.index', compact(['training_session', 'regions']));
+        return view('training_session.index', compact(['training_session', 'regions', 'check_date']));
     }
 
     /**
@@ -60,9 +81,10 @@ class TrainingSessionController extends Controller
         // dd(new DateTime($date_now_et));
         $training_sessions = TrainingSession::all();
         // dd($training_sessions);
+        // new DateTime($training_session->end_date) <= new DateTime($date_now->format('Y-m-d'))
         if ($training_sessions) {
             foreach ($training_sessions as $training_session) {
-                if ($training_session->end_date <= $date_now->format('Y-m-d')) {
+                if ((new DateTime($training_session->start_date) <= new DateTime($date_now->format('Y-m-d')) ) && (new DateTime($date_now->format('Y-m-d')) <= new DateTime($training_session->end_date))) {
                     return redirect()->route('training_session.index');
                 }
             }
@@ -79,13 +101,15 @@ class TrainingSessionController extends Controller
     public function store(StoreTrainingSessionRequest $request)
     {
         $date_now = Carbon::now();
-        $date_now_et = DateTimeFactory::fromDateTime($date_now)->format('d/m/y');
+        $date_now_et = DateTimeFactory::fromDateTime($date_now)->format('d/m/Y');
+
         $request->validate([
-            // 'start_date' => ['required', 'between:' . $date_now_et.','.$request->get('end_date')],
-            // // 'end_date' => ["required", "after:". $request->get('start_date')],
-            // 'registration_start_date' => ['required', 'between:' . $request->get('start_date').','.$request->get('end_date')],
-            // 'registration_dead_line' => ['required', 'between:' . $request->get('registration_start_date').','.$request->get('end_date')],
-            // 'quantity' => 'required'
+            'name' => 'required',
+            'start_date' => ['date_format:d/m/Y','after:'.$date_now_et],
+            'end_date' => ['date_format:d/m/Y','after_or_equal:start_date'],
+            'registration_start_date' => ['required', 'date_format:d/m/Y', 'after_or_equal:start_date', 'before_or_equal:end_date'],
+            'registration_dead_line' => ['required', 'date_format:d/m/Y', 'after_or_equal:registration_start_date', 'before_or_equal:end_date'],
+            'quantity' => 'required'
         ]);
 
         $trainingSession = new TrainingSession();
@@ -101,9 +125,13 @@ class TrainingSessionController extends Controller
         // dd('sdfsd');
 
         $trainingSession->start_date = DateTimeFactory::of($date_start->format('Y'), $date_start->format('m'), $date_start->format('d'))->toGregorian();
+
         $trainingSession->end_date = DateTimeFactory::of($date_end->format('Y'), $date_end->format('m'), $date_end->format('d'))->toGregorian();
+        
         $trainingSession->registration_start_date = DateTimeFactory::of($date_reg_start->format('Y'), $date_reg_start->format('m'), $date_reg_start->format('d'))->toGregorian();
+
         $trainingSession->registration_dead_line = DateTimeFactory::of($date_reg_end->format('Y'), $date_reg_end->format('m'), $date_reg_end->format('d'))->toGregorian();
+        
         $trainingSession->quantity = $request->get('quantity');
         $trainingSession->moto = $request->get('name');
         $trainingSession->status = 0;
@@ -267,6 +295,10 @@ class TrainingSessionController extends Controller
      */
     public function edit(TrainingSession $training_session)
     {
+        $training_session->start_date = DateTimeFactory::fromDateTime(new DateTime($training_session->start_date))->format('d/m/y');
+        $training_session->end_date = DateTimeFactory::fromDateTime(new DateTime($training_session->end_date))->format('d/m/y');
+        $training_session->registration_start_date = DateTimeFactory::fromDateTime(new DateTime($training_session->registration_start_date))->format('d/m/y');
+        $training_session->registration_dead_line = DateTimeFactory::fromDateTime(new DateTime($training_session->registration_dead_line))->format('d/m/y');
         return view('training_session.create', compact('training_session'));
     }
 
@@ -281,13 +313,16 @@ class TrainingSessionController extends Controller
     {
         $date_now = Carbon::now();
         $date_now_et = DateTimeFactory::fromDateTime($date_now)->format('d/m/y');
+
         $data = $request->validate([
-            'start_date' => ['required', 'date', 'after:' . $date_now_et],
-            'end_date' => ['required', 'date', 'after:' . $request->get('start_date')],
-            'registration_start_date' => ['required', 'date', 'after:' . $request->get('start_date'), 'before:' . $request->get('end_date')],
-            'registration_dead_line' => ['required', 'date', 'after:' . $request->get('registration_start_date'), 'before:' . $request->get('end_date')],
+            'name' => 'required',
+            'start_date' => ['date_format:d/m/y','after:'.$date_now_et],
+            'end_date' => ['date_format:d/m/y','after_or_equal:start_date'],
+            'registration_start_date' => ['required', 'date_format:d/m/y', 'after_or_equal:start_date', 'before_or_equal:end_date'],
+            'registration_dead_line' => ['required', 'date_format:d/m/y', 'after_or_equal:registration_start_date', 'before_or_equal:end_date'],
             'quantity' => 'required'
         ]);
+        
         $regions = Region::all();
         $zones = Zone::all();
         $woredas = Woreda::all();
@@ -311,7 +346,21 @@ class TrainingSessionController extends Controller
                 array_push($regs, $reg_new);
             }
 
-            $trainingSession->update($data);
+            $date_start_gc =  DateTime::createFromFormat('d/m/y', $data['start_date']);
+            $date_end_gc =  DateTime::createFromFormat('d/m/y', $data['end_date']);
+            $date_start_reg_gc =  DateTime::createFromFormat('d/m/y', $data['registration_start_date']);
+            $date_end_reg_gc =  DateTime::createFromFormat('d/m/y', $data['registration_dead_line']);
+
+            $d_s_t_g = DateTimeFactory::of($date_start_gc->format('Y'), $date_start_gc->format('m'), $date_start_gc->format('d'))->toGregorian();
+
+            $d_e_t_g = DateTimeFactory::of($date_end_gc->format('Y'), $date_end_gc->format('m'), $date_end_gc->format('d'))->toGregorian();
+
+            $d_r_s_t_g = DateTimeFactory::of($date_start_reg_gc->format('Y'), $date_start_reg_gc->format('m'), $date_start_reg_gc->format('d'))->toGregorian();
+
+            $d_r_d_t_g = DateTimeFactory::of($date_end_reg_gc->format('Y'), $date_end_reg_gc->format('m'), $date_end_reg_gc->format('d'))->toGregorian();
+
+            $trainingSession->update(['moto'=>$data['name'], 'start_date'=>$d_s_t_g, 'end_date'=>$d_e_t_g, 'registration_start_date'=>$d_r_s_t_g, 'registration_dead_line'=>$d_r_d_t_g]);
+
             $qouta_all = $qouta->all();
             foreach ($qouta_all as $key => $qou) {
                 $qo = Qouta::where('training_session_id', $trainingSession->id);
