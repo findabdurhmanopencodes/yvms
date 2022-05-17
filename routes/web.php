@@ -14,6 +14,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TraininingCenterController;
 use App\Http\Controllers\TotalQuotaController;
 use App\Http\Controllers\TrainingCenterCapacityController;
+use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TrainingPlacementController;
 use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\UserController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\ZoneController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
+use App\Models\Training;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
@@ -111,6 +113,8 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth','verifie
 Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
     // Route::middleware(['guest'])->group(function () {
+
+        Route::resource('training',TrainingController::class);
 
     Route::get('/profile/edit',[UserController::class,'profile_edit'])->name('profile.edit');
     Route::post('/profile/update',[UserController::class,'profile_update'])->name('profile.update');

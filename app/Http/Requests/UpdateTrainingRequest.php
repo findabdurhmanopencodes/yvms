@@ -13,7 +13,7 @@ class UpdateTrainingRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class UpdateTrainingRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'string','min:3','max:255'],
+            'code' => ['nullable', 'string','min:3','max:255','unique:trainings,code,'.$this->route('training')->id]
         ];
     }
 }
