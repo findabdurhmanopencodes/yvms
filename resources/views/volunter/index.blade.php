@@ -61,7 +61,7 @@
                 <div class="card-body">
 
                     <form
-                        action="{{ route('session.applicant.index', ['training_session' => Request::route('training_session')]) }}"
+                        action="{{ route('session.volunteer.index', ['training_session' => Request::route('training_session')]) }}"
                         method="post">
                         @csrf
                         <div class="row">

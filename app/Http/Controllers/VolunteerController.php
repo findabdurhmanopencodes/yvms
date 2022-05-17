@@ -297,19 +297,14 @@ class VolunteerController extends Controller
         dispatch(new SendEmailJob($volunteer->email, new VerifyMail($volunteer)));
         return redirect()->route('home')->with('apply_success', 'You successfully applied! Check your email');
     }
-    public function Screen(Request $request, $session_id, Volunteer $applicant)
+    public function Screen(Request $request, $session_id, Volunteer $volunteer)
     {
-
-        dd($applicant);
-        dd('as');
         if ($request->get('type') == 'accept') {
-            Volunteer::find($applicant_id)->status->update(['acceptance_status' => 1]);
-
-            return redirect()->route('session.applicant.index', ['training_session' => Volunteer::find($applicant_id)->training_session_id])->with('message', 'Volunter document  Verified');
+            $volunteer->status->update(['acceptance_status' => 1]);
+            return redirect()->route('session.volunteer.index', ['training_session' => $volunteer->training_session_id])->with('message', 'Volunter document  Verified');
         } elseif ($request->get('type') == 'reject') {
-            Volunteer::find($applicant_id)->status->update(['acceptance_status' => 2]);
-            return redirect()->route('session.applicant.index', ['training_session' => Volunteer::find($applicant_id)->training_session_id]);
-            // return redirect()->back();
+            $volunteer->status->update(['acceptance_status' => 2]);
+            return redirect()->route('session.volunteer.index', ['training_session' => $volunteer->training_session_id])->with('message', 'Volunter document  unverified');
         }
     }
     public function emailUnverified($training_session)
