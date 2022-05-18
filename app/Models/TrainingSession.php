@@ -8,6 +8,7 @@ use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class TrainingSession extends Model
 {
@@ -45,6 +46,16 @@ class TrainingSession extends Model
         'training_start_date' => 'date',
         'training_end_date' => 'date',
     ];
+
+    /**
+     * Get all of the trainings for the TrainingSession
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function trainingScheduless(): HasManyThrough
+    {
+        return $this->hasManyThrough(TrainingSchedule::class, Schedule::class,'training_session_id','schedule_id');
+    }
 
 
     static public function availableSession()

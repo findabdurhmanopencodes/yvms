@@ -25,9 +25,29 @@ class ScheduleController extends Controller
      */
     public function index(Request $request, TrainingSession $trainingSession)
     {
-        $schedules = $trainingSession->schedules;
+        $trainingSchedules = $trainingSession->trainingScheduless;
+        $events = [];
+        foreach ($trainingSchedules as $trainingSchedule) {
+            $now = Carbon::now();
+            $className = ($now >= $trainingSchedule->schedule->date) ? 'fc-event-light fc-event-solid-danger' : 'fc-event-light fc-event-solid-primary';
+            $start = $trainingSchedule->schedule->date;
+            $shift = $trainingSchedule->schedule->shift;
+            if($shift ==0 ){
+                $start = Carbon::createFromDate($start)->setHour(2);
+            }else{
+                $start = Carbon::createFromDate($start)->setHour(8);
+            }
+            $event = [
+                'url' => $trainingSchedule->id,
+                'title' => $trainingSchedule->training->name.$trainingSchedule->id,
+                'start' => $start->format('Y-m-d H:i:s'),
+                'description' => $trainingSchedule->training?->description,
+                'className' => $className,
+            ];
+            array_push($events, $event);
+        }
         $trainings = Training::all();
-        return view('schedule.index', compact('trainingSession', 'schedules', 'trainings'));
+        return view('schedule.index', compact('trainingSession', 'trainings', 'trainingSchedules', 'events'));
     }
 
     /**
@@ -91,9 +111,9 @@ class ScheduleController extends Controller
      * @param  \App\Models\Schedule  $schedule
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Schedule $schedule)
+    public function destroy(TrainingSession $trainingSession,Schedule $schedule)
     {
-        //
+        dd($trainingSession);
     }
 
     public function addSchedule(Request $request, TrainingSession $trainingSession)
@@ -157,20 +177,33 @@ class ScheduleController extends Controller
         for ($i = $startDateGC; $i <= $endDateGC; $i->modify('+1 day')) {
             $schedule = Schedule::where('training_session_id', '=', $trainingSession->id)->where('date', '=', $i)->where('shift', '=', $shift)->first();
             if ($schedule == null) {
-                $schedule = Schedule::create([
-                    'training_session_id' => $trainingSession->id,
-                    'date' => $i,
-                    'shift' => $shift,
-                ]);
+                if ($shift != 2) {
+                    $schedule = Schedule::create([
+                        'training_session_id' => $trainingSession->id,
+                        'date' => $i,
+                        'shift' => $shift,
+                    ]);
+                } else {
+                    $schedule = Schedule::create([
+                        'training_session_id' => $trainingSession->id,
+                        'date' => $i,
+                        'shift' => 0,
+                    ]);
+                    $schedule = Schedule::create([
+                        'training_session_id' => $trainingSession->id,
+                        'date' => $i,
+                        'shift' => 1,
+                    ]);
+                }
             }
-            $trainingSchedule = TrainingSchedule::where('training_id', '=',$training->id)->where('schedule_id','=',$schedule->id);
-            if (!$trainingSchedule) {
+            $trainingSchedule = TrainingSchedule::where('training_id', '=', $training->id)->where('schedule_id', '=', $schedule->id)->first();
+            if ($trainingSchedule == null) {
                 TrainingSchedule::create([
                     'training_id' => $training->id,
                     'schedule_id' => $schedule->id,
                 ]);
             }
         }
-        return redirect()->back()->with('message','Schedule created successfully');
+        return redirect()->back()->with('message', 'Schedule created successfully');
     }
 }

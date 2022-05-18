@@ -59,30 +59,33 @@
                             }
                         },
 
-                        defaultView: 'listWeek',
+                        defaultView: 'dayGridMonth',
                         defaultDate: TODAY,
 
                         editable: true,
                         eventLimit: true, // allow "more" link when too many events
                         navLinks: true,
-                        events: [{
-                                title: 'All Day Event',
-                                start: YM + '-01',
-                                description: 'Toto lorem ipsum dolor sit incid idunt ut',
-                                className: "fc-event-danger fc-event-solid-warning"
-                            },
-                            {
-                                title: 'Reporting',
-                                start: YM + '-14T13:30:00',
-                                description: 'Lorem ipsum dolor incid idunt ut labore',
-                                end: YM + '-14',
-                                className: "fc-event-success"
-                            },
-                        ],
-
+                        events: @json($events),
                         eventRender: function(info) {
                             var element = $(info.el);
-
+                            element.click(function(e){
+                                e.preventDefault();
+                            });
+                            element.dblclick(function() {
+                                Swal.fire({
+                                    title: "Are you sure?",
+                                    text: "You won't be able to revert this!",
+                                    type: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonText: "Yes, delete it!"
+                                }).then(function(result) {
+                                    if (result.value) {
+                                        var elementId = element.attr('href');
+                                        $('#deleteScheduleForm').attr('action','/{{$trainingSession->id}}/training_schedule/'+elementId);
+                                        $('#deleteScheduleForm').submit();
+                                    }
+                                });
+                            });
                             if (info.event.extendedProps && info.event.extendedProps.description) {
                                 if (element.hasClass('fc-day-grid-event')) {
                                     element.data('content', info.event.extendedProps.description);
@@ -139,6 +142,11 @@
     </script>
 @endpush
 @section('content')
+
+    <form action="" method="POST" id="deleteScheduleForm">
+        @csrf
+        @method('DELETE')
+    </form>
 
     <div class="card card-custom card-body mb-3">
         @if ($trainingSession->training_start_date != null)
