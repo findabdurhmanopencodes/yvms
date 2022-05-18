@@ -9,6 +9,7 @@ use App\Models\ApprovedApplicant;
 use App\Models\Qouta;
 use App\Models\Region;
 use App\Models\Status;
+use App\Models\Training;
 use App\Models\TrainingSession;
 use App\Models\Volunteer;
 use App\Models\Woreda;
@@ -21,13 +22,14 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use League\CommonMark\Extension\SmartPunct\Quote;
 
 class TrainingSessionController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(TrainingSession::class,'trainingSession');
+        $this->authorizeResource(TrainingSession::class, 'trainingSession');
     }
     /**
      * Display a listing of the resource.
@@ -37,13 +39,13 @@ class TrainingSessionController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return datatables()->of(TrainingSession::select())->addColumn('start_date_et', function (TrainingSession $trainingSession){
+            return datatables()->of(TrainingSession::select())->addColumn('start_date_et', function (TrainingSession $trainingSession) {
                 return $trainingSession->startDateET();
-            })->addColumn('end_date_et', function (TrainingSession $trainingSession){
+            })->addColumn('end_date_et', function (TrainingSession $trainingSession) {
                 return $trainingSession->endDateET();
-            })->addColumn('start_reg_date_et', function (TrainingSession $trainingSession){
+            })->addColumn('start_reg_date_et', function (TrainingSession $trainingSession) {
                 return $trainingSession->startRegDateET();
-            })->addColumn('reg_end_date_et', function (TrainingSession $trainingSession){
+            })->addColumn('reg_end_date_et', function (TrainingSession $trainingSession) {
                 return $trainingSession->endRegDateET();
             })->make(true);
         }
@@ -55,7 +57,7 @@ class TrainingSessionController extends Controller
 
         if ($training_sessions) {
             foreach ($training_sessions as $training_session) {
-                if ((new DateTime($training_session->start_date) <= new DateTime($date_now->format('Y-m-d')) ) && (new DateTime($date_now->format('Y-m-d')) <= new DateTime($training_session->end_date))) {
+                if ((new DateTime($training_session->start_date) <= new DateTime($date_now->format('Y-m-d'))) && (new DateTime($date_now->format('Y-m-d')) <= new DateTime($training_session->end_date))) {
                     $check_date = true;
                 }
             }
@@ -84,7 +86,7 @@ class TrainingSessionController extends Controller
         // new DateTime($training_session->end_date) <= new DateTime($date_now->format('Y-m-d'))
         if ($training_sessions) {
             foreach ($training_sessions as $training_session) {
-                if ((new DateTime($training_session->start_date) <= new DateTime($date_now->format('Y-m-d')) ) && (new DateTime($date_now->format('Y-m-d')) <= new DateTime($training_session->end_date))) {
+                if ((new DateTime($training_session->start_date) <= new DateTime($date_now->format('Y-m-d'))) && (new DateTime($date_now->format('Y-m-d')) <= new DateTime($training_session->end_date))) {
                     return redirect()->route('training_session.index');
                 }
             }
@@ -105,8 +107,8 @@ class TrainingSessionController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'start_date' => ['date_format:d/m/Y','after:'.$date_now_et],
-            'end_date' => ['date_format:d/m/Y','after_or_equal:start_date'],
+            'start_date' => ['date_format:d/m/Y', 'after:' . $date_now_et],
+            'end_date' => ['date_format:d/m/Y', 'after_or_equal:start_date'],
             'registration_start_date' => ['required', 'date_format:d/m/Y', 'after_or_equal:start_date', 'before_or_equal:end_date'],
             'registration_dead_line' => ['required', 'date_format:d/m/Y', 'after_or_equal:registration_start_date', 'before_or_equal:end_date'],
             'quantity' => 'required'
@@ -127,11 +129,11 @@ class TrainingSessionController extends Controller
         $trainingSession->start_date = DateTimeFactory::of($date_start->format('Y'), $date_start->format('m'), $date_start->format('d'))->toGregorian();
 
         $trainingSession->end_date = DateTimeFactory::of($date_end->format('Y'), $date_end->format('m'), $date_end->format('d'))->toGregorian();
-        
+
         $trainingSession->registration_start_date = DateTimeFactory::of($date_reg_start->format('Y'), $date_reg_start->format('m'), $date_reg_start->format('d'))->toGregorian();
 
         $trainingSession->registration_dead_line = DateTimeFactory::of($date_reg_end->format('Y'), $date_reg_end->format('m'), $date_reg_end->format('d'))->toGregorian();
-        
+
         $trainingSession->quantity = $request->get('quantity');
         $trainingSession->moto = $request->get('name');
         $trainingSession->status = 0;
@@ -316,13 +318,13 @@ class TrainingSessionController extends Controller
 
         $data = $request->validate([
             'name' => 'required',
-            'start_date' => ['date_format:d/m/y','after:'.$date_now_et],
-            'end_date' => ['date_format:d/m/y','after_or_equal:start_date'],
+            'start_date' => ['date_format:d/m/y', 'after:' . $date_now_et],
+            'end_date' => ['date_format:d/m/y', 'after_or_equal:start_date'],
             'registration_start_date' => ['required', 'date_format:d/m/y', 'after_or_equal:start_date', 'before_or_equal:end_date'],
             'registration_dead_line' => ['required', 'date_format:d/m/y', 'after_or_equal:registration_start_date', 'before_or_equal:end_date'],
             'quantity' => 'required'
         ]);
-        
+
         $regions = Region::all();
         $zones = Zone::all();
         $woredas = Woreda::all();
@@ -359,7 +361,7 @@ class TrainingSessionController extends Controller
 
             $d_r_d_t_g = DateTimeFactory::of($date_end_reg_gc->format('Y'), $date_end_reg_gc->format('m'), $date_end_reg_gc->format('d'))->toGregorian();
 
-            $trainingSession->update(['moto'=>$data['name'], 'start_date'=>$d_s_t_g, 'end_date'=>$d_e_t_g, 'registration_start_date'=>$d_r_s_t_g, 'registration_dead_line'=>$d_r_d_t_g]);
+            $trainingSession->update(['moto' => $data['name'], 'start_date' => $d_s_t_g, 'end_date' => $d_e_t_g, 'registration_start_date' => $d_r_s_t_g, 'registration_dead_line' => $d_r_d_t_g]);
 
             $qouta_all = $qouta->all();
             foreach ($qouta_all as $key => $qou) {
@@ -634,7 +636,7 @@ class TrainingSessionController extends Controller
             $b = [];
             $left_arr = [];
             $group_reg = [];
-            $final_arr =[];
+            $final_arr = [];
             $group_zon = [];
 
             $train_session = TrainingSession::where('id', $id)->get()[0]->quantity;
@@ -673,7 +675,7 @@ class TrainingSessionController extends Controller
                         array_push($accepted_arr, $sub_gr);
                     }
                 }
-                $b =[];
+                $b = [];
 
                 if (count($accepted_arr) < $train_session) {
                     $dif_arr = $train_session - count($accepted_arr);
@@ -688,7 +690,7 @@ class TrainingSessionController extends Controller
                     foreach ($merged_array as $key => $value) {
                         array_push($accepted_arr, $value);
                     }
-                }elseif (count($accepted_arr) > $train_session) {
+                } elseif (count($accepted_arr) > $train_session) {
                     sort($accepted_arr);
                     $new_slice_arr = array_slice($accepted_arr, 0, $train_session);
                     foreach ($new_slice_arr as $key => $value) {
@@ -699,11 +701,11 @@ class TrainingSessionController extends Controller
 
 
             // if (sizeof($accepted_arr) > $train_session) {
-                // sort($accepted_arr);
-                // $new_slice_arr = array_slice($accepted_arr, 0, $train_session, true);
-                // foreach ($new_slice_arr as $key => $value) {
-                //     array_push($a, $value);
-                // }
+            // sort($accepted_arr);
+            // $new_slice_arr = array_slice($accepted_arr, 0, $train_session, true);
+            // foreach ($new_slice_arr as $key => $value) {
+            //     array_push($a, $value);
+            // }
             // } else if (sizeof($accepted_arr) < $train_session) {
             //     sort($accepted_arr);
             //     foreach ($accepted_arr as $key => $value) {
@@ -822,7 +824,8 @@ class TrainingSessionController extends Controller
         return redirect()->back();
     }
 
-    public function screenManually(Request $request, $session_id, $applicant_id){
+    public function screenManually(Request $request, $session_id, $applicant_id)
+    {
         $woreda = Volunteer::where('id', $applicant_id)->get()[0]->woreda;
         $zone = $woreda->zone;
         $region = $zone->region;
@@ -843,7 +846,7 @@ class TrainingSessionController extends Controller
                 foreach ($approved_stack as $key => $app) {
                     array_push($del_stack, $app);
                 }
-            }else{
+            } else {
                 foreach (ApprovedApplicant::where('training_session_id', $session_id)->get() as $key => $approved) {
                     if ($zone->id == $approved->volunteer->woreda->zone->id) {
                         array_push($approved_stack, $approved->volunteer);
@@ -853,7 +856,7 @@ class TrainingSessionController extends Controller
                     foreach ($approved_stack as $key => $app) {
                         array_push($del_stack, $app);
                     }
-                }else{
+                } else {
                     foreach (ApprovedApplicant::where('training_session_id', $session_id)->get() as $key => $approved) {
                         if ($region->id == $approved->volunteer->woreda->zone->region->id) {
                             array_push($approved_stack, $approved->volunteer);
@@ -863,7 +866,7 @@ class TrainingSessionController extends Controller
                         foreach ($approved_stack as $key => $app) {
                             array_push($del_stack, $app);
                         }
-                    }else{
+                    } else {
                         foreach (ApprovedApplicant::where('training_session_id', $session_id)->get() as $key => $approved) {
                             array_push($del_stack, $approved);
                         }
@@ -879,20 +882,57 @@ class TrainingSessionController extends Controller
             }
 
             $del_val->delete();
-            ApprovedApplicant::create(['training_session_id'=> $session_id, 'volunteer_id'=>$applicant_id, 'status'=>1]);
-            Status::where('volunteer_id', $applicant_id)->get()[0]->update(['acceptance_status'=> 3]);
-        }elseif (count($approved_amount) < $session_amount) {
-            ApprovedApplicant::create(['training_session_id'=> $session_id, 'volunteer_id'=>$applicant_id, 'status'=>1]);
-            Status::where('volunteer_id', $applicant_id)->get()[0]->update(['acceptance_status'=> 3]);
+            ApprovedApplicant::create(['training_session_id' => $session_id, 'volunteer_id' => $applicant_id, 'status' => 1]);
+            Status::where('volunteer_id', $applicant_id)->get()[0]->update(['acceptance_status' => 3]);
+        } elseif (count($approved_amount) < $session_amount) {
+            ApprovedApplicant::create(['training_session_id' => $session_id, 'volunteer_id' => $applicant_id, 'status' => 1]);
+            Status::where('volunteer_id', $applicant_id)->get()[0]->update(['acceptance_status' => 3]);
         }
 
         return redirect()->route('session.applicant.verified', ['training_session' => $session_id])->with('message', 'Applicant approved successfully');
     }
 
-    public function applicantInfo(Request $request, Volunteer $volunteer){
-        $applicant = Volunteer::where('training_session_id', $request->training_session_id)->where('id',$request->applicant_id)->get()[0];
-        
+    public function applicantInfo(Request $request, Volunteer $volunteer)
+    {
+        $applicant = Volunteer::where('training_session_id', $request->training_session_id)->where('id', $request->applicant_id)->get()[0];
+
         $applicant_region = $applicant->woreda->zone->region->name;
-        return response()->json(['applicant'=>$applicant, 'applicant_woreda'=>$applicant_region]);
+        return response()->json(['applicant' => $applicant, 'applicant_woreda' => $applicant_region]);
+    }
+
+
+    public function setSchedule(Request $request, TrainingSession $trainingSession)
+    {
+        $data = $request->validate([
+            'training_start_date' => ['required'],
+            'training_end_date' => ['required',]
+        ]);
+        $date =  DateTime::createFromFormat('d/m/Y', $request->get('training_start_date'));
+        $year = $date->format('Y');
+        $month = $date->format('m');
+        $day = $date->format('d');
+        $scheduleStartDate = DateTimeFactory::of($year, $month, $day)->toGregorian();
+
+        $date =  DateTime::createFromFormat('d/m/Y', $request->get('training_end_date'));
+        $year = $date->format('Y');
+        $month = $date->format('m');
+        $day = $date->format('d');
+        $scheduleEndDate = DateTimeFactory::of($year, $month, $day)->toGregorian();
+
+        $sessionStartDate = $trainingSession->start_date;
+        $sessionEndDate = $trainingSession->end_date;
+        if ($scheduleStartDate < Carbon::today()) {
+            throw ValidationException::withMessages(['training_start_date' => 'Please make sure start date is after today']);
+        }
+        if ($scheduleStartDate > $scheduleEndDate) {
+            throw ValidationException::withMessages(['training_start_date' => 'Please make sure start date is correct']);
+        }
+        if ($scheduleEndDate > $sessionEndDate) {
+            throw ValidationException::withMessages(['training_end_date' => 'Please make sure end date is before Training session date']);
+        }
+        $data['training_start_date'] =$scheduleStartDate;
+        $data['training_end_date'] =$scheduleEndDate;
+        $trainingSession->update($data);
+        return redirect()->back()->with('message','Schedule created successfully!');
     }
 }

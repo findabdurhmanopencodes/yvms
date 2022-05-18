@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Training;
 use App\Http\Requests\StoreTrainingRequest;
 use App\Http\Requests\UpdateTrainingRequest;
+use Illuminate\Validation\ValidationException;
 
 class TrainingController extends Controller
 {
@@ -37,7 +38,6 @@ class TrainingController extends Controller
      */
     public function store(StoreTrainingRequest $request)
     {
-
         Training::create($request->validated());
         return redirect()->back()->with('message','Training created successfully');
     }

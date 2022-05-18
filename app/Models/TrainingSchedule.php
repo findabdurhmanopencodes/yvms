@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class TrainingSchedule extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 }

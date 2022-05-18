@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TrainingSession extends Model
 {
@@ -25,9 +26,26 @@ class TrainingSession extends Model
         'registration_dead_line',
         'quantity',
         'status',
-        'moto'
+        'moto',
+        'training_start_date',
+        'training_end_date'
     ];
     protected $append = ['sessionQouta'];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'registration_start_date' => 'date',
+        'registration_dead_line' => 'date',
+        'training_start_date' => 'date',
+        'training_end_date' => 'date',
+    ];
+
 
     static public function availableSession()
     {
@@ -38,7 +56,7 @@ class TrainingSession extends Model
     {
         return DateTimeFactory::fromDateTime(new DateTime($this->start_date))->format('d/m/Y');
     }
-    
+
     public function endDateET()
     {
         return DateTimeFactory::fromDateTime(new DateTime($this->end_date))->format('d/m/Y');
@@ -79,19 +97,33 @@ class TrainingSession extends Model
         return $this->hasMany(TrainingCenterCapacity::class);
     }
 
-    public function trainingPlacements(){
-        return $this->hasMany(TrainingPlacement::class,'training_session_id','id');
+    public function trainingPlacements()
+    {
+        return $this->hasMany(TrainingPlacement::class, 'training_session_id', 'id');
     }
 
-    public function sessionRegions(){
+    public function sessionRegions()
+    {
         return $this->hasMany(SessionRegion::class);
     }
 
-    public function sessionZones(){
+    public function sessionZones()
+    {
         return $this->hasMany(SessionRegion::class);
     }
 
-    public function sessionWoredas(){
+    public function sessionWoredas()
+    {
         return $this->hasMany(SessionRegion::class);
+    }
+
+    /**
+     * Get all of the schedules for the TrainingSession
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(Schedule::class);
     }
 }

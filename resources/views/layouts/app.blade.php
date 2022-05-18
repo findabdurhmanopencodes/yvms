@@ -226,6 +226,15 @@
                                         <span class="menu-text">Regional Quota</span>
                                     </a>
                                 </li>
+
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_session.quota') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.schedule', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon flaticon-users"></i>
+                                        <span class="menu-text">Training Schedule</span>
+                                    </a>
+                                </li>
                             @endif
 
                             <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'user') === 0 ? 'menu-item-open' : '' }}"

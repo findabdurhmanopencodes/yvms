@@ -11,6 +11,7 @@ use App\Http\Controllers\QoutaController;
 use App\Http\Controllers\QuotaController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TraininingCenterController;
 use App\Http\Controllers\TotalQuotaController;
 use App\Http\Controllers\TrainingCenterCapacityController;
@@ -107,6 +108,9 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth','verifie
     Route::post('{approvedApplicant}/manual-screen', [TrainingSessionController::class, 'screenManually'])->name('screen.manual');
     Route::get('volunteer/check-in/', [VolunteerController::class, 'checkIn'])->name('volunteer.CheckIn');
 
+    Route::get('/schedules',[ScheduleController::class,'index'])->name('schedule');
+    Route::post('/schedules',[TrainingSessionController::class,'setSchedule'])->name('schedule.set');
+    Route::post('/addSchedule',[ScheduleController::class,'addSchedule'])->name('schedule.add');
 });
 
 
