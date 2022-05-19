@@ -13,7 +13,7 @@ class StoreTrainingMasterPlacementRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,6 +25,8 @@ class StoreTrainingMasterPlacementRequest extends FormRequest
     {
         return [
             //
+            'trainner' => ['required'],
+            'training_center' => ['required'],
         ];
     }
 }

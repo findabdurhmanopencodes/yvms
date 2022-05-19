@@ -4,8 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class TrainingMasterPlacement extends Model
 {
     use HasFactory;
+    protected $guarded = [];
+
+    /**
+     * Get the master associated with the TrainingMasterPlacement
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function master(): BelongsTo
+    {
+        return $this->belongsTo(TrainingMaster::class,'training_master_id','id');
+    }
+
+    /**
+     * Get the center that owns the TrainingMasterPlacement
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function center(): BelongsTo
+    {
+        return $this->belongsTo(TraininingCenter::class, 'trainining_center_id', 'id');
+    }
 }

@@ -88,7 +88,7 @@ class TrainingMasterController extends Controller
      */
     public function show(TrainingMaster $trainingMaster)
     {
-        //
+        return view('master.show',compact('trainingMaster'));
     }
 
     /**

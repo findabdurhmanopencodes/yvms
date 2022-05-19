@@ -218,6 +218,15 @@
                                         <span class="menu-text">Placment Result</span>
                                     </a>
                                 </li>
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_master_placement') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.training_master_placement.index', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon flaticon-check-point"></i>
+                                        <span class="menu-text">Assigned Trainner</span>
+                                    </a>
+                                </li>
+
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_session.quota') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.training_session.quota', ['training_session' => Request::route('training_session')]) }}"
@@ -248,7 +257,7 @@
                                 aria-haspopup="true">
                                 <a href="{{ route('training_master.index', []) }}" class="menu-link">
                                     <i class="menu-icon flaticon-road"></i>
-                                    <span class="menu-text">Session Trainers</span>
+                                    <span class="menu-text">Master Trainers</span>
                                 </a>
                             </li>
 

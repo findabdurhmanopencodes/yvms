@@ -18,6 +18,7 @@ use App\Http\Controllers\TotalQuotaController;
 use App\Http\Controllers\TrainingCenterCapacityController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TrainingMasterController;
+use App\Http\Controllers\TrainingMasterPlacementController;
 use App\Http\Controllers\TrainingPlacementController;
 use App\Http\Controllers\TrainingScheduleController;
 use App\Http\Controllers\TrainingSessionController;
@@ -30,6 +31,7 @@ use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
 use App\Models\Training;
 use App\Models\TrainingMaster;
+use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSchedule;
 use App\Models\TrainingSession;
@@ -122,6 +124,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::post('/schedules', [TrainingSessionController::class, 'setSchedule'])->name('schedule.set');
     Route::post('/addSchedule', [ScheduleController::class, 'addSchedule'])->name('schedule.add');
     Route::delete('/training_schedule/{training_schedule}', [TrainingScheduleController::class, 'destroy'])->name('trainingschedule.destroy');
+    Route::resource('training_master_placement', TrainingMasterPlacementController::class);
 });
 
 
