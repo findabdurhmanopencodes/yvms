@@ -289,7 +289,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'training') === 0 ? 'menu-item-active' : '' }}"
+                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'training.') === 0 ? 'menu-item-active' : '' }}"
                                 aria-haspopup="true">
                                 <a href="{{ route('training.index', []) }}" class="menu-link">
                                     <i class="menu-icon flaticon-home"></i>

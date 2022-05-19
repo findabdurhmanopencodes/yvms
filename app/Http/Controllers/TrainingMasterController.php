@@ -67,7 +67,7 @@ class TrainingMasterController extends Controller
             ]);
             throw $validationException;
         }
-        unset($userData['training_center'],$userData['bank_account']);
+        unset($userData['bank_account']);
         $userData['password'] = Str::random(8);
         $userData['dob'] = $dob_GC;
         $userData['password'] = Hash::make($userData['password']);
@@ -99,7 +99,9 @@ class TrainingMasterController extends Controller
      */
     public function edit(TrainingMaster $trainingMaster)
     {
-        //
+        $master = $trainingMaster;
+        $trainingCenters = TraininingCenter::all();
+        return view('master.create',compact('master','trainingCenters'));
     }
 
     /**
@@ -111,7 +113,36 @@ class TrainingMasterController extends Controller
      */
     public function update(UpdateTrainingMasterRequest $request, TrainingMaster $trainingMaster)
     {
-        //
+        $data = $request->validated();
+        $userData = $data;
+        $date = DateTime::createFromFormat('d/m/Y', $request->get('dob'));
+        $year = $date->format('Y');
+        $month = $date->format('m');
+        $day = $date->format('d');
+        $date = new Carbon();
+        $dob_GC = DateTimeFactory::of($year, $month, $day)->toGregorian();
+        $after = Carbon::now()->subYears(100);
+        $before = $date->subYears(18);
+        if (!Carbon::createFromDate($dob_GC)->isBetween($after, $before)) {
+            $afterET = DateTimeFactory::fromDateTime($after)->format('d/m/Y');
+            $beforeET = DateTimeFactory::fromDateTime($before)->format('d/m/Y');
+            $validationException = ValidationException::withMessages([
+                'dob' => 'The Date of Birth must be a date after ' . $afterET . ' before ' . $beforeET,
+            ]);
+            throw $validationException;
+        }
+        unset($userData['bank_account']);
+        $userData['password'] = Str::random(8);
+        $userData['dob'] = $dob_GC;
+        $userData['password'] = Hash::make($userData['password']);
+        $user = $trainingMaster->user;
+        $user->update($userData);
+        $trainingMaster->update([
+            'bank_account' => $data['bank_account']
+        ]);
+        $user->save();
+        $trainingMaster->save();
+        return redirect()->back()->with('message','Training master information updated successfully');
     }
 
     /**

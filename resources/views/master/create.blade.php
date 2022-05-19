@@ -53,7 +53,7 @@
                         <label class="d-block">First Name</label>
                         <input type="text" class="@error('first_name') is-invalid @enderror form-control" name="first_name"
                             placeholder="First Name"
-                            value="{{ old('first_name') ?? (isset($master) ? $master->first_name : '') }}" />
+                            value="{{ old('first_name') ?? (isset($master) ? $master->user->first_name : '') }}" />
                         @error('first_name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -63,7 +63,7 @@
                         <x-jet-label for="father_name" class="d-block" value="{{ __('Father Name') }}" />
                         <input id="father_name" class="@error('father_name') is-invalid @enderror  form-control "
                             type="text" name="father_name"
-                            value="{{ old('father_name') ?? (isset($master) ? $master->father_name : '') }}"
+                            value="{{ old('father_name') ?? (isset($master) ? $master->user->father_name : '') }}"
                             placeholder="Father Name" requiredd autocomplete="father_name" />
                         @error('father_name')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -76,7 +76,7 @@
                         <input id="grand_father_name"
                             class="@error('grand_father_name') is-invalid @enderror form-control  " type="text"
                             name="grand_father_name" placeholder="Grand Father Name"
-                            value="{{ old('grand_father_name') ?? (isset($master) ? $master->grand_father_name : '') }}"
+                            value="{{ old('grand_father_name') ?? (isset($master) ? $master->user->grand_father_name : '') }}"
                             requiredd autocomplete="grand_father_name" />
                         @error('grand_father_name')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -87,7 +87,7 @@
                         <x-jet-label for="email" value="{{ __('Email') }}" />
                         <input id="email" class=" form-control @error('email') is-invalid @enderror" type="email"
                             placeholder="Email" name="email"
-                            value="{{ old('email') ?? (isset($master) ? $master->email : '') }}" requiredd />
+                            value="{{ old('email') ?? (isset($master) ? $master->user->email : '') }}" requiredd />
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -99,10 +99,10 @@
                             class=" @error('gender') is-invalid @enderror select2 form-control  form-control select2">
                             <option value="">Select</option>
                             <option
-                                {{ old('gender') != null ? (old('gender') == 'M' ? 'selected' : '') : (isset($master) ? ($master->gender == 'M' ? 'selected' : '') : '') }}
+                                {{ old('gender') != null ? (old('gender') == 'M' ? 'selected' : '') : (isset($master) ? ($master->user->gender == 'M' ? 'selected' : '') : '') }}
                                 value="M">Male</option>
                             <option
-                                {{ old('gender') != null ? (old('gender') == 'F' ? 'selected' : '') : (isset($master) ? ($master->gender == 'F' ? 'selected' : '') : '') }}
+                                {{ old('gender') != null ? (old('gender') == 'F' ? 'selected' : '') : (isset($master) ? ($master->user->gender == 'F' ? 'selected' : '') : '') }}
                                 value="F">Female</option>
                         </select>
                         @error('gender')
@@ -110,26 +110,11 @@
                         @enderror
                         <span class="form-text text-muted">Please select gender.</span>
                     </div>
-
-                    <div class="col-md-4 form-group">
-                        <label for="training_center">Training Center</label>
-                        <select name="training_center" id="training_center"
-                            class=" @error('training_center') is-invalid @enderror form-control  form-control select2">
-                            <option value="">Select</option>
-                            @foreach ($trainingCenters as $training)
-                                <option value="{{ $training->id }}">{{ $training->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('training_center')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <span class="form-text text-muted">Please training center.</span>
-                    </div>
                     <div class="form-group col-md-4">
                         <label class="d-block">Date Of Birth</label>
                         <input type="text" id="dob" class="@error('dob') is-invalid @enderror form-control" name="dob"
                             placeholder="Date of Birth" autocomplete="off"
-                            value="{{ old('dob') ?? (isset($master) ? $master->dobET() : '') }}" />
+                            value="{{ old('dob') ?? (isset($master) ? $master->user->dobET() : '') }}" />
                         @error('dob')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -140,14 +125,16 @@
                         <x-jet-label for="bank_account" value="{{ __('Bank Account') }}" />
                         <input id="bank_account" class=" form-control @error('bank_account') is-invalid @enderror"
                             type="text" placeholder="Bank Account" name="bank_account"
-                            value="{{ old('bank_account') ?? (isset($master) ? $master->bank_account : '') }}" requiredd />
+                            value="{{ old('bank_account') ?? (isset($master) ? $master->bank_account : '') }}"
+                            requiredd />
                         @error('bank_account')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                         <span class="form-text text-muted">Please enter bank_account.</span>
                     </div>
                     <div class="col-md-12">
-                        <input type="submit" class="btn btn-primary float-right" value="Add Master Trainer">
+                        <input type="submit" class="btn btn-primary float-right"
+                            value="{{ ($master) ? 'Update' : 'Add' }} Master Trainer">
 
                     </div>
                 </div>
