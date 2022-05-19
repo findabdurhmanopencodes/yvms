@@ -19,6 +19,9 @@ class RegionPolicy
     public function viewAny(User $user)
     {
         //
+        if ($user->hasPermissionTo('Region.index'))
+            return true;
+        return false;
     }
 
     /**
@@ -31,6 +34,9 @@ class RegionPolicy
     public function view(User $user, Region $region)
     {
         //
+        if ($user->hasPermissionTo('Region.show'))
+            return true;
+        return false;
     }
 
     /**
@@ -42,6 +48,9 @@ class RegionPolicy
     public function create(User $user)
     {
         //
+        if ($user->hasPermissionTo('Region.create'))
+            return true;
+        return false;
     }
 
     /**
@@ -54,6 +63,9 @@ class RegionPolicy
     public function update(User $user, Region $region)
     {
         //
+        if ($user->hasPermissionTo('Region.update'))
+            return true;
+        return false;
     }
 
     /**
@@ -66,6 +78,9 @@ class RegionPolicy
     public function delete(User $user, Region $region)
     {
         //
+        if ($user->hasPermissionTo('Region.destroy'))
+            return true;
+        return false;
     }
 
     /**
@@ -90,5 +105,12 @@ class RegionPolicy
     public function forceDelete(User $user, Region $region)
     {
         //
+    }
+    public function place(User $user, Region $region)
+    {
+        //
+        if ($user->hasPermissionTo('Region.place'))
+            return true;
+        return false;
     }
 }

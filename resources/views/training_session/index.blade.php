@@ -65,22 +65,22 @@
                 }
             },
             {
-                field: 'start_date',
+                field: 'start_date_et',
                 title: 'Program start date',
                 sortable: 'asc',
             },
             {
-                field: 'end_date',
+                field: 'end_date_et',
                 title: 'Program end date',
                 sortable: 'asc',
             },
             {
-                field: 'registration_start_date',
+                field: 'start_reg_date_et',
                 title: 'Registration start date',
                 sortable: 'asc',
             },
             {
-                field: 'registration_dead_line',
+                field: 'reg_end_date_et',
                 title: 'Registration end date',
                 sortable: 'asc',
             },
@@ -132,13 +132,15 @@
             <div class="card-toolbar">
 
                 <!--begin::Button-->
-                <a href="{{ route('training_session.create', []) }}" class="btn btn-primary font-weight-bolder">
-                    <span class="svg-icon svg-icon-md">
-                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-                        <i class="fal fa-plus"></i>
-                        <!--end::Svg Icon-->
-                    </span>Add New Program</a>
-                <!--end::Button-->
+                @if ($check_date == false)
+                    <a href="{{ route('training_session.create', []) }}" class="btn btn-primary font-weight-bolder">
+                        <span class="svg-icon svg-icon-md">
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                            <i class="fal fa-plus"></i>
+                            <!--end::Svg Icon-->
+                        </span>Add New Program</a>
+                    <!--end::Button-->
+                @endif
             </div>
         </div>
         <div class="card-body">

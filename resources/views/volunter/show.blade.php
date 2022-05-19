@@ -93,9 +93,9 @@
 
 
                                 </div>
-                                {{-- @dd($applicant->status) --}}
                                 @if ($applicant->status?->acceptance_status == 0 || $applicant->status?->acceptance_status == 2)
-                                    <form action="{{ route('session.applicant.screen', ['training_session'=>Request::route('training_session'),'applicant_id' => $applicant->id]) }}"
+                                    <form
+                                        action="{{ route('session.applicant.screen', ['training_session' => Request::route('training_session'), 'volunteer' => $applicant->id]) }}"
                                         method="POST">
                                         @csrf
                                         <button class="btn btn-bg btn-info font-weight-bolder" type="submit"><i
@@ -510,32 +510,34 @@
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="POST" action="{{ route('session.applicant.screen', ['training_session'=>Request::route('training_session'),'applicant_id' => $applicant->id]) }}">
-                    @csrf
+                @can('Volunteer.Screen',)
+                    <form method="POST"
+                        action="{{ route('session.applicant.screen', ['training_session' => Request::route('training_session'), 'volunteer' => $applicant->id]) }}">
+                        @csrf
 
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Rejection Reason</h5>
-                        <button type="button" class="close" data-dismiss="modal" -label="Close">
-                            <i aria-hidden="true" class="ki ki-close"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <div class="form-group mb-1">
-                            <label for="exampleTextarea">Rejection Reason</label>
-                            <textarea class="form-control" id="exampleTextarea" rows="3" name="rejection_reason"></textarea>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Rejection Reason</h5>
+                            <button type="button" class="close" data-dismiss="modal" -label="Close">
+                                <i aria-hidden="true" class="ki ki-close"></i>
+                            </button>
                         </div>
+                        <div class="modal-body">
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light-primary font-weight-bold"
-                            data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary font-weight-bold" value="reject" name="type">Save
-                            changes</button>
-                    </div>
+                            <div class="form-group mb-1">
+                                <label for="exampleTextarea">Rejection Reason</label>
+                                <textarea class="form-control" id="exampleTextarea" rows="3" name="rejection_reason"></textarea>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light-primary font-weight-bold"
+                                data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary font-weight-bold" value="reject" name="type">Save
+                                changes</button>
+                        </div>
+                    </form>
+                @endcan
             </div>
-            </form>
-
         </div>
     </div>
 @endsection

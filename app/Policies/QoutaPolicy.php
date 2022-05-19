@@ -18,7 +18,9 @@ class QoutaPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        if ($user->hasPermissionTo('Qouta.index'))
+        return true;
+    return false;
     }
 
     /**
@@ -31,6 +33,9 @@ class QoutaPolicy
     public function view(User $user, Qouta $qouta)
     {
         //
+        if ($user->hasPermissionTo('Qouta.show'))
+        return true;
+    return false;
     }
 
     /**
@@ -42,6 +47,9 @@ class QoutaPolicy
     public function create(User $user)
     {
         //
+        if ($user->hasPermissionTo('Qouta.create'))
+        return true;
+    return false;
     }
 
     /**
@@ -54,6 +62,9 @@ class QoutaPolicy
     public function update(User $user, Qouta $qouta)
     {
         //
+        if ($user->hasPermissionTo('Qouta.update'))
+        return true;
+    return false;
     }
 
     /**
@@ -66,6 +77,9 @@ class QoutaPolicy
     public function delete(User $user, Qouta $qouta)
     {
         //
+        if ($user->hasPermissionTo('Qouta.destroy'))
+        return true;
+    return false;
     }
 
     /**

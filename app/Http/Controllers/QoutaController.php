@@ -8,6 +8,10 @@ use App\Http\Requests\UpdateQoutaRequest;
 
 class QoutaController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Qouta::class,'qouta');
+    }
     /**
      * Display a listing of the resource.
      *

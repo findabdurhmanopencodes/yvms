@@ -24,7 +24,7 @@
                 sortable: 'asc',
                 template: function(row) {
                     console.log(row);
-                    return row.first_name + ' ' + row.last_name + ' ' + row.grand_father_name;
+                    return row.first_name + ' ' + row.father_name + ' ' + row.grand_father_name;
                 }
             },
             {
@@ -59,6 +59,8 @@
                             <a href="/user/' + userId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                 <i class="far fa-pen"></i>\
                             </a>\
+                            <a href="user/' + userId + '/credential" class="btn btn-sm btn-clean btn-icon" >\
+                                <i class="far fa-print"></i>\
                                     \
                         </div>\
                                 ';

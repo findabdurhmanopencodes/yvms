@@ -16,30 +16,34 @@ use App\Models\Region;
 use App\Models\UserRegion;
 use App\Models\Zone;
 use App\Policies\UserPolicy;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Models\Permission;
 use Yajra\Datatables\Facades\Datatables;
 use Illuminate\Support\Str;
+
 class UserController extends Controller
 {
 
     public function __construct()
     {
-        $this->authorizeResource(User::class,'user');
+        $this->authorizeResource(User::class, 'user');
     }
 
     public function index(Request $request)
     {
+
         if ($request->ajax()) {
-            return datatables()->of(User::select())->make(true);
+            return datatables()->of(User::whereRelation('roles', 'name', '!=', 'super-admin')->whereRelation('roles', 'name', '!=', 'volunteer'))->make(true);
         }
         // if(!Auth::user()->can('user.index')){
         //     return abort(403);
         // }
-        $users = User::paginate(20);
+        $users = User::whereRelation('roles', 'name', '!=', 'super-admin')->whereRelation('roles', 'name', '!=', 'volunteer')->paginate(20);
         return view('user.index', compact('users'));
     }
 
@@ -49,14 +53,14 @@ class UserController extends Controller
         //     return abort(403);
         // }
         $user = null;
-        $userRegion= null;
+        $userRegion = null;
         $roles = Role::all();
         $after = Carbon::now()->subYears(100);
         $regions = Region::all();
         $before = Carbon::now()->subYears(18);
         $after = DateTimeFactory::fromDateTime($after)->format('d/m/Y');
         $before = DateTimeFactory::fromDateTime($before)->format('d/m/Y');
-        return view('user.create', compact('roles', 'user', 'after', 'before', 'regions','userRegion'));
+        return view('user.create', compact('roles', 'user', 'after', 'before', 'regions', 'userRegion'));
     }
 
     public function edit(User $user)
@@ -69,7 +73,7 @@ class UserController extends Controller
 
         $after = DateTimeFactory::fromDateTime($after)->format('d/m/Y');
         $before = DateTimeFactory::fromDateTime($before)->format('d/m/Y');
-        return view('user.create', compact('user', 'roles', 'after', 'before', 'regions','userRegion'));
+        return view('user.create', compact('user', 'roles', 'after', 'before', 'regions', 'userRegion'));
     }
 
     public function show(User $user)
@@ -219,8 +223,8 @@ class UserController extends Controller
         if ($request->role == Role::findByName('volunteer')) {
             return abort(404);
         }
-        // $userData['password'] = Str::random(8);
-        $userData['password'] = '12345678';
+        $userData['password'] = Str::random(8);
+        // $userData['password'] = '12345678';
         $userData['dob'] = $dob_GC;
         $userData['password'] = Hash::make($userData['password']);
         $user = User::create($userData);
@@ -239,7 +243,7 @@ class UserController extends Controller
             ]);
         }
         event(new Registered($user));
-        return redirect(route('user.index'))->with('message', 'User registered successfully');
+        return $this->printCredential($user);
     }
     //
     public function profile($user = null)
@@ -309,5 +313,24 @@ class UserController extends Controller
             $user->revokePermissionTo($permission);
         }
         return redirect()->back()->with('message', 'All permission removed');
+    }
+    public function downloadCredential(User $user)
+    {
+        $pdf = $this->getCredential($user);
+        return $pdf->download('credential for '.$user->father_name.'.pdf');
+    }
+
+    public function printCredential(User $user)
+    {
+        $pdf = $this->getCredential($user);
+        return $pdf->stream();
+    }
+    public function getCredential(User $user)
+    {
+        $password = Str::random(8);
+        $user->update(['password'=>Hash::make($password)]);
+        $user->save();
+        $date = DateTimeFactory::fromDateTime(new Carbon('now'))->format('d/m/Y h:i:s');
+        return PDF::loadView('pdf.user-credential', compact('user','date','password'));
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Andegna\DateTimeFactory;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,6 +33,25 @@ class TrainingSession extends Model
     {
         $today = Carbon::today();
         return TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
+    }
+    public function startDateET()
+    {
+        return DateTimeFactory::fromDateTime(new DateTime($this->start_date))->format('d/m/Y');
+    }
+    
+    public function endDateET()
+    {
+        return DateTimeFactory::fromDateTime(new DateTime($this->end_date))->format('d/m/Y');
+    }
+
+    public function startRegDateET()
+    {
+        return DateTimeFactory::fromDateTime(new DateTime($this->registration_start_date))->format('d/m/Y');
+    }
+
+    public function endRegDateET()
+    {
+        return DateTimeFactory::fromDateTime(new DateTime($this->registration_dead_line))->format('d/m/Y');
     }
 
     static public function availableForRegistration()

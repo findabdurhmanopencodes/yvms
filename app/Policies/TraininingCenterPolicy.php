@@ -19,6 +19,9 @@ class TraininingCenterPolicy
     public function viewAny(User $user)
     {
         //
+        if ($user->hasPermissionTo('TraininingCenter.index'))
+            return true;
+        return false;
     }
 
     /**

@@ -13,6 +13,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -55,6 +56,19 @@ class User extends Authenticatable implements MustVerifyEmail
         'two_factor_secret',
     ];
 
+    public static function administratorUsers()
+    {
+        return User::whereHas('roles', function ($query) {
+            $query->where('name','!=', 'volunteer');
+        });
+    }
+    public static function getUserWithoutRole(Role $role)
+    {
+        return User::whereHas('roles', function ($query) use($role) {
+            $query->where('name','!=', $role->name);
+        });
+    }
+
     /**
      * The attributes that should be cast.
      *
@@ -73,6 +87,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_photo_url',
     ];
 
+    public function name()
+    {
+        return $this->first_name . ' ' . $this->father_name . ' ' . $this->grand_father_name;
+    }
     public function getSessionAttribute()
     {
         return request()->route('training_session');
