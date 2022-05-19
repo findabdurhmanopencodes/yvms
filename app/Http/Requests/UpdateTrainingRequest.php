@@ -25,7 +25,7 @@ class UpdateTrainingRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string','min:3','max:255'],
-            'code' => ['nullable', 'string','min:3','max:255','unique:trainings,code,'.$this->route('training')->id]
+            'code' => ['nullable', 'string','min:1','max:255','unique:trainings,code,'.$this->route('training')->id]
         ];
     }
 }

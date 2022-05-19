@@ -19,7 +19,7 @@ class TrainingMasterPlacement extends Model
      */
     public function master(): BelongsTo
     {
-        return $this->belongsTo(TrainingMaster::class,'training_master_id','id');
+        return $this->belongsTo(TrainingMaster::class, 'training_master_id', 'id');
     }
 
     /**
@@ -30,5 +30,16 @@ class TrainingMasterPlacement extends Model
     public function center(): BelongsTo
     {
         return $this->belongsTo(TraininingCenter::class, 'trainining_center_id', 'id');
+    }
+
+
+    /**
+     * Get the training that owns the TrainingPlacement
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function training(): BelongsTo
+    {
+        return $this->belongsTo(Training::class, 'training_id', 'id');
     }
 }

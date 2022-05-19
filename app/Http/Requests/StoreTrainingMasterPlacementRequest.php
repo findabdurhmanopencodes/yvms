@@ -27,6 +27,7 @@ class StoreTrainingMasterPlacementRequest extends FormRequest
             //
             'trainner' => ['required'],
             'training_center' => ['required'],
+            'training' => ['required'],
         ];
     }
 }

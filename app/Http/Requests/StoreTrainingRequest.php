@@ -25,7 +25,7 @@ class StoreTrainingRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string','min:3','max:255'],
-            'code' => ['nullable', 'string','min:3','max:255','unique:trainings,code']
+            'code' => ['nullable', 'string','min:1','max:255','unique:trainings,code']
         ];
     }
 }
