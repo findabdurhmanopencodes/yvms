@@ -5,6 +5,7 @@ use App\Http\Controllers\DisablityController;
 use App\Http\Controllers\FeildOfStudyController;
 use App\Http\Controllers\EducationalLevelController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\IdGenerateController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PrintController;
 use App\Http\Controllers\QoutaController;
@@ -104,6 +105,8 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' =
     Route::post('{approvedApplicant}/manual-placement', [TrainingPlacementController::class, 'placeManually'])->name('placement.manual');
     Route::post('{training_placement}/change', [TrainingPlacementController::class, 'changePlacement'])->name('placement.change');
     Route::post('{approvedApplicant}/manual-screen', [TrainingSessionController::class, 'screenManually'])->name('screen.manual');
+    Route::get('applicant/generate', [IdGenerateController::class, 'idGenerate'])->name('id.generate');
+    Route::post('applicant/print', [IdGenerateController::class, 'printID'])->name('id.print');
 });
 
 
