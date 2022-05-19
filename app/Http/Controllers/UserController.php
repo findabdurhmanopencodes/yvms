@@ -353,6 +353,6 @@ class UserController extends Controller
             $status = 'message';
             $message = 'Password changed successfully';
         }
-        return redirect()->back()->with($status,$message);
+        return redirect()->back()->with($status, $message);
     }
 }

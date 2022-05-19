@@ -371,4 +371,8 @@ class VolunteerController extends Controller
                 return view('check_in\check_in');
 
     }
+    public function atendance(TrainingSession $trainingSession,Volunteer $volunteer)
+    {
+        return view('volunter.attendance',compact('volunteer'));
+    }
 }

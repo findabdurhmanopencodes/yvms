@@ -1,7 +1,8 @@
 <?php
 
+use App\Models\TrainingMaster;
 use App\Models\TrainingSession;
-use App\Models\User;
+use App\Models\TraininingCenter;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,10 +16,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('training_masters', function (Blueprint $table) {
+        Schema::create('training_master_placements', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained();
-            $table->string('bank_account');
+            $table->foreignIdFor(TrainingSession::class);
+            $table->foreignIdFor(TrainingMaster::class);
+            $table->foreignIdFor(TraininingCenter::class);
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('training_masters');
+        Schema::dropIfExists('training_master_placements');
     }
 };

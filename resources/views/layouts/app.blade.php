@@ -226,16 +226,31 @@
                                         <span class="menu-text">Regional Quota</span>
                                     </a>
                                 </li>
-
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_session.quota') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.schedule', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
-                                        <i class="menu-icon flaticon-users"></i>
+                                        <i class="menu-icon flaticon-calendar"></i>
                                         <span class="menu-text">Training Schedule</span>
                                     </a>
                                 </li>
+
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.attendance') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.attendance.index', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon flaticon-list"></i>
+                                        <span class="menu-text">Volunteer Attendance</span>
+                                    </a>
+                                </li>
                             @endif
+                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'training_master') === 0 ? 'menu-item-active' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ route('training_master.index', []) }}" class="menu-link">
+                                    <i class="menu-icon flaticon-road"></i>
+                                    <span class="menu-text">Session Trainers</span>
+                                </a>
+                            </li>
 
                             <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'user') === 0 ? 'menu-item-open' : '' }}"
                                 aria-haspopup="true" data-menu-toggle="hover">
@@ -462,10 +477,10 @@
                         <div class="navi-text">
                             <a href="{{ route('profile.show', []) }}">
 
-                            <div class="font-weight-bold">My Profile</div>
-                            <div class="text-muted">Account settings and more
-                                <span class="label label-light-danger label-inline font-weight-bold"></span>
-                            </div>
+                                <div class="font-weight-bold">My Profile</div>
+                                <div class="text-muted">Account settings and more
+                                    <span class="label label-light-danger label-inline font-weight-bold"></span>
+                                </div>
                             </a>
                         </div>
                     </div>

@@ -935,4 +935,17 @@ class TrainingSessionController extends Controller
         $trainingSession->update($data);
         return redirect()->back()->with('message','Schedule created successfully!');
     }
+    public function trainings(TrainingSession $trainingSession)
+    {
+        $trainingSchedules = $trainingSession->trainingScheduless;
+        $trainings = [];
+        $trainingIds = [];
+        foreach ($trainingSchedules as $ts ) {
+            if(!in_array($ts->training->id,$trainingIds)){
+                array_push($trainings,$ts->training);
+                array_push($trainingIds,$ts->training->id);
+            }
+        }
+        return view('training_session.training',compact('trainings'));
+    }
 }

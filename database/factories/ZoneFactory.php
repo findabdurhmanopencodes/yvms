@@ -18,7 +18,7 @@ class ZoneFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name(),
+            'name' => $this->faker->firstName(),
             'code' => $this->faker->countryCode(),
             'qoutaInpercent' => $this->faker->unique(true)->randomElement([0.4,0.3,0.3]),
             'region_id' => $this->faker->unique()->numberBetween(1,Region::count()),

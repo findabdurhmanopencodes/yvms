@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DisablityController;
 use App\Http\Controllers\FeildOfStudyController;
@@ -16,9 +17,11 @@ use App\Http\Controllers\TraininingCenterController;
 use App\Http\Controllers\TotalQuotaController;
 use App\Http\Controllers\TrainingCenterCapacityController;
 use App\Http\Controllers\TrainingController;
+use App\Http\Controllers\TrainingMasterController;
 use App\Http\Controllers\TrainingPlacementController;
 use App\Http\Controllers\TrainingScheduleController;
 use App\Http\Controllers\TrainingSessionController;
+use App\Http\Controllers\UserAttendanceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\WoredaController;
@@ -26,6 +29,7 @@ use App\Http\Controllers\ZoneController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
 use App\Models\Training;
+use App\Models\TrainingMaster;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSchedule;
 use App\Models\TrainingSession;
@@ -87,13 +91,17 @@ Route::get('application_form', [VolunteerController::class, 'application_form'])
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
 Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
 
-Route::group(['prefix' => '{training_session}', 'middleware' => ['auth','verified'], 'as' => 'session.'], function () {
+Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verified'], 'as' => 'session.'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/quota', [TrainingSessionController::class, 'showQuota'])->name('training_session.quota');
     Route::any('volunteer/', [VolunteerController::class, 'index'])->name('volunteer.index');
     Route::resource('/volunteer', VolunteerController::class, ['names' => 'applicant'])->parameters(['volunteer' => 'applicant'])->except(['index']);
     Route::post('applicant/{volunteer}/screen', [VolunteerController::class, 'Screen'])->name('applicant.screen');
     Route::get('volunteer/unverified/email/download', [PrintController::class, 'unverifiedEmail'])->name('volunteer.unverified.email.download');
+    // Route::get('/training',[TrainingSessionController::class,'trainings'])->name('training.index');
+    Route::resource('/user_attendances', UserAttendanceController::class);
+    Route::resource('/attendance', AttendanceController::class);
+    Route::get('volunteer/{volunteer}/attendances', [VolunteerController::class, 'atendance'])->name('volunteer.attendance');
 
 
 
@@ -110,25 +118,22 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth','verifie
     Route::post('{approvedApplicant}/manual-screen', [TrainingSessionController::class, 'screenManually'])->name('screen.manual');
     Route::get('volunteer/check-in/', [VolunteerController::class, 'checkIn'])->name('volunteer.CheckIn');
 
-    Route::get('/schedules',[ScheduleController::class,'index'])->name('schedule');
-    Route::post('/schedules',[TrainingSessionController::class,'setSchedule'])->name('schedule.set');
-    Route::post('/addSchedule',[ScheduleController::class,'addSchedule'])->name('schedule.add');
-    Route::delete('/training_schedule/{training_schedule}',[TrainingScheduleController::class,'destroy'])->name('trainingschedule.destroy');
+    Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedule');
+    Route::post('/schedules', [TrainingSessionController::class, 'setSchedule'])->name('schedule.set');
+    Route::post('/addSchedule', [ScheduleController::class, 'addSchedule'])->name('schedule.add');
+    Route::delete('/training_schedule/{training_schedule}', [TrainingScheduleController::class, 'destroy'])->name('trainingschedule.destroy');
 });
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
     // Route::middleware(['guest'])->group(function () {
-
-        Route::resource('training',TrainingController::class);
-
-    Route::get('/profile/edit',[UserController::class,'profile_edit'])->name('profile.edit');
-    Route::post('/profile/update',[UserController::class,'profile_update'])->name('profile.update');
-
+    Route::resource('training_master', TrainingMasterController::class);
+    Route::resource('training', TrainingController::class);
+    Route::get('/profile/edit', [UserController::class, 'profile_edit'])->name('profile.edit');
+    Route::post('/profile/update', [UserController::class, 'profile_update'])->name('profile.update');
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('profile.show');
     Route::get('user/{user}/credential', [UserController::class, 'downloadCredential'])->name('user.print.credential');
-
     Route::post('region/validate', [RegionController::class, 'validateForm'])->name('validate.region');
     Route::post('zone/validate', [ZoneController::class, 'validateForm'])->name('validate.zone');
     Route::post('woreda/validate', [WoredaController::class, 'validateForm'])->name('validate.woreda');

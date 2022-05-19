@@ -39,7 +39,7 @@ class ScheduleController extends Controller
             }
             $event = [
                 'url' => $trainingSchedule->id,
-                'title' => $trainingSchedule->training->name.$trainingSchedule->id,
+                'title' => $trainingSchedule->training->name,
                 'start' => $start->format('Y-m-d H:i:s'),
                 'description' => $trainingSchedule->training?->description,
                 'className' => $className,
@@ -113,7 +113,6 @@ class ScheduleController extends Controller
      */
     public function destroy(TrainingSession $trainingSession,Schedule $schedule)
     {
-        dd($trainingSession);
     }
 
     public function addSchedule(Request $request, TrainingSession $trainingSession)
