@@ -97,7 +97,7 @@
                 <div class="d-flex flex-column text-dark-75">
                     <span class="font-weight-bolder font-size-sm">Total Volunteers</span>
                     <span class="font-weight-bolder font-size-h5">
-                        <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span>
+                        {{-- <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span> --}}
                 </div>
             </div>
             <!--end: Item-->
@@ -109,7 +109,7 @@
                 <div class="d-flex flex-column text-dark-75">
                     <span class="font-weight-bolder font-size-sm">Checked In Volunteer</span>
                     <span class="font-weight-bolder font-size-h5">
-                        <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span>
+                        {{-- <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span> --}}
                 </div>
             </div>
             <!--end: Item-->
@@ -121,7 +121,7 @@
                 <div class="d-flex flex-column text-dark-75">
                     <span class="font-weight-bolder font-size-sm">Training Masters</span>
                     <span class="font-weight-bolder font-size-h5">
-                        <span class="text-dark-50 font-weight-bold"></span>{{$totalTrainingMasters}}</span>
+                        {{-- <span class="text-dark-50 font-weight-bold"></span>{{$totalTrainingMasters}}</span> --}}
                 </div>
             </div>
             <!--end: Item-->
@@ -259,7 +259,7 @@
                     <div class="d-flex flex-column text-dark-75">
                         <span class="font-weight-bolder font-size-sm">Total Volunteers</span>
                         <span class="font-weight-bolder font-size-h5">
-                            <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span>
+                            {{-- <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span> --}}
                     </div>
                 </div>
                 <!--end: Item-->
@@ -271,7 +271,7 @@
                     <div class="d-flex flex-column text-dark-75">
                         <span class="font-weight-bolder font-size-sm">Checked In Volunteer</span>
                         <span class="font-weight-bolder font-size-h5">
-                            <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span>
+                            {{-- <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span> --}}
                     </div>
                 </div>
                 <!--end: Item-->
@@ -283,7 +283,7 @@
                     <div class="d-flex flex-column text-dark-75">
                         <span class="font-weight-bolder font-size-sm">Training Masters</span>
                         <span class="font-weight-bolder font-size-h5">
-                            <span class="text-dark-50 font-weight-bold"></span>{{$totalTrainingMasters}}</span>
+                            {{-- <span class="text-dark-50 font-weight-bold"></span>{{$totalTrainingMasters}}</span> --}}
                     </div>
                 </div>
                 <!--end: Item-->
