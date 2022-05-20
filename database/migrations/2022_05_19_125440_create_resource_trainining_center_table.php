@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Zone;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('trainining_centers', function (Blueprint $table) {
+        Schema::create('resource_trainining', function (Blueprint $table) {
             $table->id();
-            $table->string('logo')->nullable();
-            $table->string('name');
-            $table->string('decription')->nullable();
-            $table->string('code')->nullable();
-            $table->foreignIdFor(Zone::class)->onDelete('cascade');
+            $table->foreignId('trainining_center_id')->nullable()->constrained('trainining_centers','id')->nullOnDelete();
+            $table->foreignId('resource_id')->nullable()->constrained('resources','id')->nullOnDelete();
+            $table->integer('current_balance');
+            $table->integer('initial_balance');
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('trainining_centers');
+        Schema::dropIfExists('resource_trainining');
     }
 };

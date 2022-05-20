@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class TrainingPlacement extends Model
 {
     use HasFactory;
-
     protected $fillable = ['training_center_capacity_id', 'approved_applicant_id', 'training_session_id'];
     protected $append = ['region'];
 

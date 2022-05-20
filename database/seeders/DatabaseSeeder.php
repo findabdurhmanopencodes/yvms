@@ -16,6 +16,7 @@ use Database\Factories\UserFactory;
 use DateTime;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
 
@@ -34,7 +35,6 @@ class DatabaseSeeder extends Seeder
             // BaseSeeder::class,
             // FakeDataSeeder::class,
         ]);
-
         $superUser = User::create(
             [
                 'first_name' => 'Super',
