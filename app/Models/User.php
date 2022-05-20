@@ -107,6 +107,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the trainner associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function trainner(): HasOne
+    {
+        return $this->hasOne(TrainingMaster::class);
+    }
+
+    /**
      * Get the volunteer associated with the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

@@ -219,74 +219,153 @@
         @method('DELETE')
     </form>
     <!--begin::Card-->
-    <div class="card card-custom gutter-b">
-        <div class="card-header border-0 py-5">
-            <h3 class="card-title align-items-start flex-column">
-                <span class="card-label font-weight-bolder text-dark">Training and trainners</span>
-                <span class="text-muted mt-3 font-weight-bold font-size-sm">Total {{ count($trainings) }} trainings in
-                    this
-                    session</span>
-            </h3>
-            <div class="card-toolbar">
-                <a href="#" data-toggle="modal" data-target="#assignMasterModal"
-                    class="btn btn-success font-weight-bolder font-size-sm">
-                    <span class="svg-icon svg-icon-md svg-icon-white">
-                    </span>
-                    Assign master trainners
-                </a>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card card-custom gutter-b">
+                <div class="card-header border-0 py-5">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label font-weight-bolder text-dark">Training and trainners</span>
+                        <span class="text-muted mt-3 font-weight-bold font-size-sm">Total {{ count($trainings) }}
+                            trainings in
+                            this
+                            session</span>
+                    </h3>
+                    <div class="card-toolbar">
+                        <a href="#" data-toggle="modal" data-target="#assignMasterModal"
+                            class="btn btn-success font-weight-bolder font-size-sm">
+                            <span class="svg-icon svg-icon-md svg-icon-white">
+                            </span>
+                            Assign master trainners
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <table width="100%" class="table">
+                        <thead>
+                            </tr>
+                            <th> # </th>
+                            <th> Training </th>
+                            <th> Trainner </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($trainings as $key => $training)
+                                @php
+
+                                    $masterId = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->master->id;
+                                    $trainner = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->master->user;
+                                @endphp
+                                <tr>
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>
+                                        {{ $training->name }}
+                                    </td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <span
+                                                class="btn {{ $trainner ? 'btn-light-primary' : 'btn-light-danger' }} btn-sm font-weight-bold btn-upper btn-text">
+                                                {{ $trainner?->name() == null ? 'Assign Trainner' : '' }}
+                                                @if ($trainner)
+                                                    <a href="#" onclick="confirmDeleteMasterPlacement({{ $masterId }})"
+                                                        style="display: flex;align-items: center;justify-content: space-between;width: 185px;">
+                                                        {{ $trainner?->name() }}
+                                                        <i class="fa fa-times fa-sm"></i>
+                                                    </a>
+                                                @endif
+
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            @if (count($trainings) <= 0)
+                                <tr class="text-center">
+                                    <td colspan="3" style="">No training assigned</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                    <!--begin: Items-->
+                </div>
             </div>
         </div>
-        <div class="card-body pt-0">
-            <table width="100%" class="table">
-                <thead>
-                    </tr>
-                    <th> # </th>
-                    <th> Training </th>
-                    <th> Trainner </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($trainings as $key => $training)
-                        @php
+        <div class="col-md-4">
+            <div class="card card-custom gutter-b">
+                <div class="card-header border-0 py-5">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label font-weight-bolder text-dark">Checker</span>
+                    </h3>
+                    <div class="card-toolbar">
 
-                            $masterId = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->master->id;
-                            $trainner = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->master->user;
-                        @endphp
-                        <tr>
-                            <td>{{ $key + 1 }}</td>
-                            <td>
-                                {{ $training->name }}
-                            </td>
-                            <td>
-                                <div class="d-flex">
-                                    <span
-                                        class="btn {{ $trainner ? 'btn-light-primary' : 'btn-light-danger' }} btn-sm font-weight-bold btn-upper btn-text">
-                                        {{ $trainner?->name() == null ? 'Assign Trainner' : '' }}
-                                        @if ($trainner)
-                                            <a href="#" onclick="confirmDeleteMasterPlacement({{ $masterId }})"
-                                                style="display: flex;align-items: center;justify-content: space-between;width: 185px;">
-                                                {{ $trainner?->name() }}
-                                                <i class="fa fa-times fa-sm"></i>
-                                            </a>
-                                        @endif
+                    </div>
+                </div>
+                <div class="card-body pt-1">
+                    <form id="checkerForm"
+                        action="{{ route('session.training_center.assign_checker', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+                        method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <select name="checkerUser" id="checkerUser" required
+                                class=" @error('checkerUser') is-invalid @enderror select2 form-control  form-control select2">
+                                @foreach ($checkerUsers as $checkerUser)
+                                    <option
+                                        {{ old('checkerUser') != null ? (old('checkerUser') == $checkerUser->id ? 'selected' : '') : '' }}
+                                        value="{{ $checkerUser->id }}">
+                                        {{ $checkerUser->name }}
+                                    </option>
+                                @endforeach
 
-                                    </span>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                    @if (count($trainings) <= 0)
-                        <tr class="text-center">
-                            <td colspan="3" style="">No training assigned</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
-            <!--begin: Items-->
+                                @if (count($checkerUsers) <= 0)
+                                    <option>
+                                        Please add checker users
+                                    </option>
+                                @endif
+                            </select>
+                            @error('checkerUser')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <span class="form-text text-muted">Please select Checker User center.</span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Assign checkers"
+                                class="btn btn-success float-right font-weight-bolder font-size-sm">
+                        </div>
+                    </form>
+                    <table width="100%" class="table">
+                        <thead>
+                            </tr>
+                            <th> Name </th>
+                            <th> Action </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($centerCheckers as $centerChecker)
+                                <tr>
+                                    <td>{{ $centerChecker->name }}</td>
+                                    <td><a href="#" onclick="confirmDeleteChecker({{ $centerChecker->id }})"><i
+                                                class="fa fa-times"></i></a></td>
+                                </tr>
+                            @endforeach
+                            @if (count($centerCheckers) <= 0)
+                                <tr>
+                                    <td colspan="2" class="text-center">
+                                        Please add checker users
+                                    </td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     <!--end::Card-->
-
+    <form id="removeCheckerForm"
+        action="{{ route('session.training_center.assign_checker', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+        method="POST">
+        @csrf
+        <input type="hidden" name="checkerUser" id="checkerUserRemove">
+    </form>
 @endsection
 @push('js')
     <script>
@@ -309,6 +388,21 @@
             }).then(function(result) {
                 if (result.value) {
                     $('#deleteForm').submit();
+                }
+            });
+        }
+
+        function confirmDeleteChecker(checkerId) {
+            $('#checkerUserRemove').val(checkerId);
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $('#removeCheckerForm').submit();
                 }
             });
         }

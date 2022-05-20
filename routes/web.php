@@ -125,8 +125,9 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::post('/addSchedule', [ScheduleController::class, 'addSchedule'])->name('schedule.add');
     Route::delete('/training_schedule/{training_schedule}', [TrainingScheduleController::class, 'destroy'])->name('trainingschedule.destroy');
     Route::resource('training_master_placement', TrainingMasterPlacementController::class);
-    Route::get('training_center',[TrainingSessionController::class,'trainingCenterIndex'])->name('training_center.index');
-    Route::get('training_center/{training_center}',[TrainingSessionController::class,'trainingCenterShow'])->name('training_center.show');
+    Route::get('training_center', [TrainingSessionController::class, 'trainingCenterIndex'])->name('training_center.index');
+    Route::get('training_center/{training_center}', [TrainingSessionController::class, 'trainingCenterShow'])->name('training_center.show');
+    Route::post('training_center/{training_center}/assign_checker', [TraininingCenterController::class, 'assignChecker'])->name('training_center.assign_checker');
 });
 
 Route::get('check-in/', [TraininingCenterController::class, 'checkInView'])->name('TrainingCenter.CheckIn');
@@ -179,7 +180,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('role/{role}/removeAllPermission', [RoleController::class, 'removeAllPermission'])->name('role.removeAllPermission');
     Route::post('users/{user}/role', [UserController::class, 'assignRole'])->name('users.assignRole');
     Route::post('users/{user}/role/remove', [UserController::class, 'removeRole'])->name('users.removeRole');
-    Route::post('training-center/assign-checker', [TraininingCenterController::class, 'assignChecker'])->name('TrainingCenter.assignChecker');
+
     Route::get('training-center/remove-checker{checker_id}', [TraininingCenterController::class, 'removeChecker'])->name('TrainingCenter.removeChecker');
     Route::resource('TrainingCenter', TraininingCenterController::class);
 

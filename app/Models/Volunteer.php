@@ -33,8 +33,6 @@ class Volunteer extends Model
         return $this->first_name . ' ' . $this->father_name . ' ' . $this->grand_father_name;
     }
 
-
-
     public function picture()
     {
         return File::find($this->photo);
