@@ -10,16 +10,80 @@
         <a href="" class="text-muted">{{ $trainingCenter->name }}</a>
     </li>
 @endsection
+@push('css')
+    <style>
+        .select2,
+        .select2-container,
+        .select2-container--default,
+        .select2-container--below {
+            width: 100% !important;
+        }
+
+    </style>
+@endpush
+@push('js')
+    <script>
+        $(document).ready(function() {
+            $('#user_id').select2({
+                placeholder: "Select a User"
+            });
+
+        });
+    </script>
+@endpush
 @section('content')
     <div class="card">
-        <div class="card-header">
-            @if (count($capaityAddedInCenter) < 1)
-                <a class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#addCapacity"><i
-                        class="fa  fa-plus"></i>Add Capacity For Session</a>
-            @endif
 
+        <div class="card-header">
+            <div class="col-xl-10">
+                <!--begin::List Widget 13-->
+                <div class="card card-custom card-stretch gutter-b">
+                    <!--begin::Header-->
+                    <div class="card-header border-0">
+                        <h3 class="card-title font-weight-bolder text-dark">Training Center Checker </h3>
+                        <a data-toggle="modal" data-target="#assignChecker"
+                        class="btn btn-sm btn-clean btn-primary float-lg-right my-4 mx-4">
+                        <i class="fa fa-user-plus">Adding Checker</i>
+                    </a>
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body pt-2">
+                        <!--begin::Item-->
+                        <div class="d-flex flex-wrap align-items-center mb-10">
+
+                                @foreach ($trainingCenter->checkers as $checker)
+                                <div class="d-flex justify-around">
+                                <h4>
+                                    {{ $checker->name }} <a class="btn btn-icon btn-danger  ml-4"
+                                        onclick="confirm('Are You Sure Removing This User');"
+                                        href="{{ route('TrainingCenter.removeChecker', ['checker_id' => $checker->id]) }}"><i
+                                            class="fa fa-trash"></i></a>
+                                </h4>
+                            </div>
+
+                            @endforeach
+                            @if (count($trainingCenter->checkers) < 1)
+                        <p class="text text-danger">No Checker Assigned Yet!!</p>
+                    @endif
+                        </div>
+                        <!--end::Item-->
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::List Widget 13-->
+            </div>
 
         </div>
+
+
+        @if (count($capaityAddedInCenter) < 1)
+            <div>
+                <a class="btn btn-primary btn-sm float-right mx-2 my-2" data-toggle="modal" data-target="#addCapacity"><i
+                        class="fa  fa-plus"></i>Add Capacity For Session</a>
+            </div>
+        @endif
+
         <div class="card-body">
             <h5 class="card-title">{{ $trainingCenter->name }}</h5>
 
@@ -30,8 +94,8 @@
                     <th>Actions</th>
                 </thead>
                 <tbody>
+
                     @foreach ($trainingCenter->capacities as $capacityHistory)
-                    {{-- @dd($capacityHistory) --}}
                         <tr>
                             <td> {{ $capacityHistory->capacity }} Volunter</td>
 
@@ -41,7 +105,7 @@
                             <td>
                                 @if (Carbon\Carbon::now()->between(Carbon\Carbon::parse($capacityHistory->trainningSession?->start_date), Carbon\Carbon::parse($capacityHistory->trainningSession?->end_date)))
                                     <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCapacity"
-                                        onclick="capacityChange({{ $capacityHistory->trainining_center_id}},{{   $capacityHistory->training_session_id }});"><i
+                                        onclick="capacityChange({{ $capacityHistory->trainining_center_id }},{{ $capacityHistory->training_session_id }});"><i
                                             class="fa fa-edit"></i>change Capacity</a>
                                 @else
                                     <span class="badge badge-danger badge-pill">Can't Change Capacity</span>
@@ -53,6 +117,8 @@
             </table>
 
         </div>
+
+
 
     </div>
 
@@ -116,11 +182,51 @@
         </div>
     </div>
 
+    <div class="modal fade" id="assignChecker" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="assignLeader" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <form name="new_store" method="post" action="{{ route('TrainingCenter.assignChecker') }}">
+                <input type="hidden" name="trainingCenterId" value="{{ $trainingCenter->id }}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Assign Store-Leader </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @csrf
+
+                        <div class="form-group row">
+                            <div class="col-lg-6">
+                                <label>Users</label>
+                                <br>
+                                <select class="form-control select2" id="user_id" name="user_id[]" required multiple>
+                                    <option value=""></option>
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->id }}">{{ $user->first_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="close" type="button" class="btn btn-light-primary font-weight-bold"
+                            data-dismiss="modal">Close
+                        </button>
+                        <button type="submit" class="btn btn-primary font-weight-bold">Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 @endsection
 @push('js')
     <script>
         function capacityChange(training_center, training_session) {
-            console.log(training_center,training_session)
+            console.log(training_center, training_session)
             $('#training_session_id').val(training_session);
             $('#trainining_center_id').val(training_center);
         }

@@ -2,6 +2,7 @@
 
 use App\Models\Schedule;
 use App\Models\Training;
+use App\Models\TrainingSessionTraining;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,7 @@ return new class extends Migration
     {
         Schema::create('training_schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Training::class);
+            $table->foreignIdFor(TrainingSessionTraining::class);
             $table->foreignIdFor(Schedule::class);
             $table->timestamps();
         });

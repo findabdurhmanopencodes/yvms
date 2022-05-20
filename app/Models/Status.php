@@ -21,6 +21,8 @@ class Status extends Model
         0 => 'Pending',
         1 => 'Verified',
         2 => 'Rejected',
-        2 => 'Selected',
+        3 => 'Selected',
+        4 => 'Placed',
+        5 => 'checked-In',
     ];
 }

@@ -367,4 +367,10 @@ class VolunteerController extends Controller
         }
         return redirect('/login')->with('message', $status);
     }
+
+
+    public function atendance(TrainingSession $trainingSession,Volunteer $volunteer)
+    {
+        return view('volunter.attendance',compact('volunteer'));
+    }
 }

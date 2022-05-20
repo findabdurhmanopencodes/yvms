@@ -11,35 +11,26 @@ use Illuminate\Support\Facades\App;
 
 class IdGenerateController extends Controller
 {
-    public function idGenerate(TrainingSession $trainingSession){
+    public function checkedInList(Request $request, TrainingSession $trainingSession){
+        $applicants = Volunteer::paginate(10);
+        return view('id.checkedIn', compact('applicants'));
+    }
+    public function idGenerate(TrainingSession $trainingSession , Request $request){
+
+        $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->find($request->get('applicant'));
+        $paginate_apps = Volunteer::whereIn('id', $request->get('applicant'))->take(5)->get();
+            
         $training_session_id = $trainingSession->availableSession()[0]->id;
-        $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->take(3)->get();
-        return view('id.design', compact('applicants', 'training_session_id'));
+        // $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->take(3)->get();
+        return view('id.design', compact('applicants', 'training_session_id', 'paginate_apps'));
     }
 
-    public function printID(Request $request, TrainingSession $trainingSession){
-        $id = $request->get('id');
-        $id_x = $request->get('id_x');
-        $id_y = $request->get('id_y');
+    public function searchApplciant(Request $request){
+        $search_var = $request->search;
+        $applicant = [];
 
-        $name = $request->get('name');
-        $name_x = $request->get('name_x');
-        $name_y = $request->get('name_y');
-
-        $center = $request->get('center');
-        $center_x = $request->get('center_x');
-        $center_y = $request->get('center_y');
-
-        $img_src = $request->get('img_value');
-        // dd($img_src);
-
-        $applicants = Volunteer::take(3)->get();
-
-        // $pdf = Pdf::loadHTML($img_src);
-        // return $pdf->stream();
-
-        $pdf = Pdf::loadView('id.print_design', compact('id', 'id_x', 'id_y', 'name', 'name_x', 'name_y', 'center', 'center_x', 'center_y', 'applicants'));
-        return $pdf->stream();
-        // return view('id.print_design', compact('id', 'id_x', 'id_y', 'name', 'name_x', 'name_y', 'center', 'center_x', 'center_y', 'img_src'));
+        $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->where('id', 'like', '%' . $search_var . '%')->paginate(10);
+        
+        return response()->json(['applicants'=>$applicants]);
     }
 }

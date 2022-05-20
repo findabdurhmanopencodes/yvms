@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TrainingSchedule;
 use App\Http\Requests\StoreTrainingScheduleRequest;
 use App\Http\Requests\UpdateTrainingScheduleRequest;
+use App\Models\TrainingSession;
 
 class TrainingScheduleController extends Controller
 {
@@ -79,8 +80,9 @@ class TrainingScheduleController extends Controller
      * @param  \App\Models\TrainingSchedule  $trainingSchedule
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TrainingSchedule $trainingSchedule)
+    public function destroy(TrainingSession $trainingSession,TrainingSchedule $trainingSchedule)
     {
-        //
+        $trainingSchedule->delete();
+        return redirect()->back()->with('message','Training schedule deleted successfully');
     }
 }

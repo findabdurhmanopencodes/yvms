@@ -18,7 +18,6 @@ class UserRegionPolicy
      */
     public function viewAny(User $user)
     {
-
         if ($user->hasPermissionTo('UserRegion.index'))
             return true;
         return false;

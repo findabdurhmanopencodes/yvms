@@ -47,7 +47,7 @@ class UserAttendanceController extends Controller
      */
     public function show(UserAttendance $userAttendance)
     {
-        //
+        return view('attendance.show',compact('userAttendance'));
     }
 
     /**

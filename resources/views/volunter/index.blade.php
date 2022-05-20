@@ -193,7 +193,7 @@
         <div class="card-body">
             <!--begin: Datatable-->
             <div class="datatable datatable-default datatable-bordered datatable-loaded">
-                <table class="table table-responsive">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>No.</th>

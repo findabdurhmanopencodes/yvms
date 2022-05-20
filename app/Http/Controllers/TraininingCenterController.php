@@ -9,15 +9,18 @@ use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingSession;
 use App\Models\Zone;
 use App\Models\Region;
+use App\Models\User;
+use App\Models\Volunteer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 
 class TraininingCenterController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(TraininingCenter::class,'TraininingCenter');
-       }
+        $this->authorizeResource(TraininingCenter::class, 'TraininingCenter');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -69,7 +72,7 @@ class TraininingCenterController extends Controller
             'name' => 'min:2|required|string|unique:trainining_centers,name',
             'code' => 'required|string|unique:trainining_centers,code',
         ]);
-        $path = $request->file('logo')->store('public/Training Centers');
+        $path = $request->file('logo')->store('Training Centers');
         $TrainingCenter = TraininingCenter::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'logo' => $path, 'zone_id' => $request->get('zone_id')]);
 
         return redirect()->route('TrainingCenter.index')->with('message', 'Training Center created successfully');
@@ -90,7 +93,7 @@ class TraininingCenterController extends Controller
         $capaityAddedInCenter = TrainingCenterCapacity::where('training_session_id', $trainingSessionId)->where('trainining_center_id', $traininingCenter->id)->get();
         // dd($capaityAddedInCenter);
 
-        return view('training_center.show', ['trainingCenter' => $traininingCenter,'capaityAddedInCenter'=>$capaityAddedInCenter]);
+        return view('training_center.show', ['trainingCenter' => $traininingCenter, 'capaityAddedInCenter' => $capaityAddedInCenter, 'users' => User::all()]);
     }
 
     /**
@@ -135,8 +138,77 @@ class TraininingCenterController extends Controller
      * @param  \App\Models\TraininingCenter  $traininingCenter
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TraininingCenter $traininingCenter)
+    public function destroy(Request $request, TraininingCenter $traininingCenter)
     {
-        //
+        $traininingCenter->delete();
+        if ($request->ajax()) {
+            return response()->json(array('msg' => 'deleted successfully'), 200);
+        }
+    }
+    public function assignChecker(Request $request,)
+    {
+        // dd($request->all());
+
+        foreach ($request->get('user_id') as $user_id) {
+            $user = User::find($user_id);
+            $user->update(['trainining_center_id' => $request->get('trainingCenterId')]);
+        }
+        return redirect()->back();
+    }
+    public function RemoveChecker($checker_id)
+    {
+        // dd($checker_id);
+        $user = User::find($checker_id);
+
+
+        $user->trainingCheckerOf()->dissociate();
+        $user->save();
+        return redirect()->back();
+    }
+    public function checkInView()
+    {
+        // dd('d');
+        return view('training_center.check_in.check_in');
+    }
+    public function result(Request $request)
+    {
+
+        if (true) {
+            $output = '';
+            $query = $request->get('query');
+            // ->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',Auth::user()->trainingCheckerOf->id);
+            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id', $query)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',Auth::user()->trainingCheckerOf->id);
+
+
+            if (count($volunteerQuery->get()) > 0) {
+                $data = $volunteerQuery->whereRelation('status', 'acceptance_status', 4)->first();
+                $accepted = $volunteerQuery->whereRelation('status', 'acceptance_status', 5)->first();
+
+                if (!$data) {
+                    return json_encode(['status' => 505]);
+                }
+                return json_encode(['status' => 200, 'data' => $data]);
+                // }
+            } else {
+                return json_encode(['status' => 404]);
+            }
+            // echo json_encode($data);
+        }
+    }
+    public function checkIn($id)
+    {
+        Volunteer::find($id)->status->update(['acceptance_status' => 5]);
+        return redirect()->back()->with('message', 'Volunteer Sucessfuily Checked-In');
+    }
+    public function indexChecking(Request $request)
+    {
+        $volunteersChecked = Volunteer::with('woreda.zone.region')->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', Auth::user()?->trainingCheckerOf?->id);
+        if ($request->has('filter')) {
+            $status = $request->get('status');
+            if (!empty($status)) {
+                $volunteersChecked->whereRelation('status', 'acceptance_status', $status);
+            }
+        }
+        return view('training_center.check_in.index', ['volunteersChecked' => $volunteersChecked->paginate(10)]);
     }
 }

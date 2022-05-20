@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\TrainingSession;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,7 +18,7 @@ return new class extends Migration
         Schema::create('training_masters', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
-            $table->integer('bank_account');
+            $table->string('bank_account');
             $table->timestamps();
         });
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DisablityController;
 use App\Http\Controllers\FeildOfStudyController;
@@ -11,19 +12,30 @@ use App\Http\Controllers\PrintController;
 use App\Http\Controllers\QoutaController;
 use App\Http\Controllers\QuotaController;
 use App\Http\Controllers\RegionController;
+use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TraininingCenterController;
 use App\Http\Controllers\TotalQuotaController;
 use App\Http\Controllers\TrainingCenterCapacityController;
+use App\Http\Controllers\TrainingController;
+use App\Http\Controllers\TrainingMasterController;
+use App\Http\Controllers\TrainingMasterPlacementController;
 use App\Http\Controllers\TrainingPlacementController;
+use App\Http\Controllers\TrainingScheduleController;
 use App\Http\Controllers\TrainingSessionController;
+use App\Http\Controllers\UserAttendanceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\ZoneController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
+use App\Models\Training;
+use App\Models\TrainingMaster;
+use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingPlacement;
+use App\Models\TrainingSchedule;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\User;
@@ -45,7 +57,6 @@ use Symfony\Component\Console\Input\Input;
 |
 */
 
-// Route::get('/profile/{user?}',[UserController::class,'profile'])->name('profile.show');
 
 Route::get('/login', function () {
     return view('auth.login');
@@ -84,13 +95,17 @@ Route::get('application_form', [VolunteerController::class, 'application_form'])
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
 Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
 
-Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' => 'session.'], function () {
+Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verified'], 'as' => 'session.'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/quota', [TrainingSessionController::class, 'showQuota'])->name('training_session.quota');
     Route::any('volunteer/', [VolunteerController::class, 'index'])->name('volunteer.index');
-    Route::resource('/volunteer', VolunteerController::class,['names'=>'applicant'])->parameters(['volunteer' => 'applicant'])->except(['index']);
+    Route::resource('/volunteer', VolunteerController::class, ['names' => 'applicant'])->parameters(['volunteer' => 'applicant'])->except(['index']);
     Route::post('applicant/{volunteer}/screen', [VolunteerController::class, 'Screen'])->name('applicant.screen');
-    Route::get('volunteer/unverified/email/download',[PrintController::class,'unverifiedEmail'])->name('volunteer.unverified.email.download');
+    Route::get('volunteer/unverified/email/download', [PrintController::class, 'unverifiedEmail'])->name('volunteer.unverified.email.download');
+    // Route::get('/training',[TrainingSessionController::class,'trainings'])->name('training.index');
+    Route::resource('/user_attendances', UserAttendanceController::class);
+    Route::resource('/attendance', AttendanceController::class);
+    Route::get('volunteer/{volunteer}/attendances', [VolunteerController::class, 'atendance'])->name('volunteer.attendance');
 
 
 
@@ -105,17 +120,32 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' =
     Route::post('{approvedApplicant}/manual-placement', [TrainingPlacementController::class, 'placeManually'])->name('placement.manual');
     Route::post('{training_placement}/change', [TrainingPlacementController::class, 'changePlacement'])->name('placement.change');
     Route::post('{approvedApplicant}/manual-screen', [TrainingSessionController::class, 'screenManually'])->name('screen.manual');
-    Route::get('applicant/generate', [IdGenerateController::class, 'idGenerate'])->name('id.generate');
-    Route::post('applicant/print', [IdGenerateController::class, 'printID'])->name('id.print');
+
+    Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedule');
+    Route::post('/schedules', [TrainingSessionController::class, 'setSchedule'])->name('schedule.set');
+    Route::post('/addSchedule', [ScheduleController::class, 'addSchedule'])->name('schedule.add');
+    Route::delete('/training_schedule/{training_schedule}', [TrainingScheduleController::class, 'destroy'])->name('trainingschedule.destroy');
+    Route::resource('training_master_placement', TrainingMasterPlacementController::class);
+    Route::get('training_center',[TrainingSessionController::class,'trainingCenterIndex'])->name('training_center.index');
+    Route::get('training_center/{training_center}',[TrainingSessionController::class,'trainingCenterShow'])->name('training_center.show');
+    Route::post('{training_center}/id/print', [IdGenerateController::class, 'idGenerate'])->name('training_center.generate');
+    Route::get('{training_center}/checkedIn/list', [IdGenerateController::class, 'checkedInList'])->name('training_center.checkedIn_list');
 });
 
-
+Route::get('check-in/', [TraininingCenterController::class, 'checkInView'])->name('TrainingCenter.CheckIn');
+Route::get('result/', [TraininingCenterController::class, 'result'])->name('result');
+Route::get('/check-in/action/{id}', [TraininingCenterController::class, 'checkIn'])->name('TrainingCenter.checked');
+Route::any('/check-in/reports/', [TraininingCenterController::class, 'indexChecking'])->name('TrainingCenter.index.checked');
+// Route::get('result/', [VolunteerController::class, 'result'])->name('result');
 Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
     // Route::middleware(['guest'])->group(function () {
-
+    Route::resource('training_master', TrainingMasterController::class);
+    Route::resource('training', TrainingController::class);
+    Route::get('/profile/edit', [UserController::class, 'profile_edit'])->name('profile.edit');
+    Route::post('/profile/update', [UserController::class, 'profile_update'])->name('profile.update');
+    Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('profile.show');
     Route::get('user/{user}/credential', [UserController::class, 'downloadCredential'])->name('user.print.credential');
-
     Route::post('region/validate', [RegionController::class, 'validateForm'])->name('validate.region');
     Route::post('zone/validate', [ZoneController::class, 'validateForm'])->name('validate.zone');
     Route::post('woreda/validate', [WoredaController::class, 'validateForm'])->name('validate.woreda');
@@ -130,7 +160,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('feild_of_study', FeildOfStudyController::class);
     Route::resource('disablity', DisablityController::class);
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
-
     ////////////////////////////////////////////////////////////////////////////////
     Route::get('training_sessions', [RegionController::class, 'place'])->name('region.place');
 
@@ -144,6 +173,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('woreda', WoredaController::class);
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
+    Route::resource('resource', ResourceController::class);
+    Route::post('resource/assign', [ResourceController::class, 'assign'])->name('resource.assign');
     Route::get('role/{role}/permission', [RoleController::class, 'permissions'])->name('role.permission.index');
     Route::post('role/{role}/permission', [RoleController::class, 'givePermission'])->name('role.permission.give');
     Route::delete('role/{role}/permission/{permission}', [RoleController::class, 'revokePermission'])->name('role.permission.revoke');
@@ -151,7 +182,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('role/{role}/removeAllPermission', [RoleController::class, 'removeAllPermission'])->name('role.removeAllPermission');
     Route::post('users/{user}/role', [UserController::class, 'assignRole'])->name('users.assignRole');
     Route::post('users/{user}/role/remove', [UserController::class, 'removeRole'])->name('users.removeRole');
+    Route::post('training-center/assign-checker', [TraininingCenterController::class, 'assignChecker'])->name('TrainingCenter.assignChecker');
+    Route::get('training-center/remove-checker{checker_id}', [TraininingCenterController::class, 'removeChecker'])->name('TrainingCenter.removeChecker');
     Route::resource('TrainingCenter', TraininingCenterController::class);
+    Route::post('search/applicant', [IdGenerateController::class, 'searchApplciant'])->name('search.applicant');
 
     Route::get('/dashboard', function () {
         if (count(TrainingSession::availableSession()) > 0) {

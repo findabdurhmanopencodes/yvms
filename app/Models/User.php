@@ -40,7 +40,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'dob',
-        'gender'
+        'gender',
+        'trainining_center_id'
     ];
 
 
@@ -154,5 +155,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getCordinatingZone()
     {
         return UserRegion::where('user_id', $this->id)->where('levelable_type', Zone::class)->first()?->levelable;
+    }
+
+    public function trainingCheckerOf()
+    {
+        return $this->belongsTo(TraininingCenter::class,'trainining_center_id', 'id');
     }
 }

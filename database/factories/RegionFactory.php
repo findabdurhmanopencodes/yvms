@@ -18,7 +18,7 @@ class RegionFactory extends Factory
     {
         return [
             //
-            'name' => $this->faker->name(),
+            'name' => $this->faker->firstName(),
             'code' => $this->faker->countryCode(),
             'qoutaInpercent' => $this->faker->unique()->randomElement([0.4,0.2,0.3,0.1]),
             'status'=>1

@@ -31,147 +31,70 @@
             <div class="card-header">
                 <div class="card-title">
                     <h3 class="card-label">
-                        ID design
+                        <div>ID design</div>
                         <small>Design id for volunteers</small>
                     </h3>
                 </div>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            <label>ID no: </label>
-                            <input type="text" class="form-control" id="id_text" name="id"/>
+                    <div class="col-lg-5">
+                        <div class="card-body">
+                            <table width="100%" class="table table-striped ">
+                                <thead>
+                                    <tr>
+                                        <th> ID </th>
+                                        <th> Name </th>
+                                        <th> Training Center </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($paginate_apps as $key => $applicant)
+                                        <tr>
+                                            <td>
+                                                {{ $applicant->id }}
+                                            </td>
+                                            <td>
+                                                {{$applicant->first_name}}
+                                            </td>
+                                            <td>
+                                                {{ $applicant->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->code }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="form-group">
-                            <label>X:</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <a href="#" id="value_x_minus">-</a>
-                                    </span>
-                                </div>
-                                <input type="text" class="form-control" id="id_x" value="95.9" name="id_x"/>
-                                <div class="input-group-postpend">
-                                    <span class="input-group-text">
-                                        <a href="#" id="value_x_plus">+</a>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Y:</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <a href="#" id="value_y_minus">-</a>
-                                    </span>
-                                </div>
-                                <input type="text" class="form-control" id="id_y" name="id_y" value="213.25"/>
-                                <div class="input-group-postpend">
-                                    <span class="input-group-text">
-                                        <a href="#" id="value_y_plus">
-                                            +
-                                        </a>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#" id="id_btn" class="btn btn-primary mr-2">Add ID</a>
-                    </div>
-                    <div class="col-lg-2">
-                        {{-- <div class="col-lg-4"> --}}
-                        <div class="form-group">
-                            <label>Name: </label>
-                            <input type="text" class="form-control" name="name" id="name_text"/>
-                        </div>
-                        <div class="form-group">
-                            <label>X:</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <a href="#" id="value_x_minus">-</a>
-                                    </span>
-                                </div>
-                                <input type="text" class="form-control" id="name_x" name="name_x" value="94"/>
-                                <div class="input-group-postpend">
-                                    <span class="input-group-text">
-                                        <a href="#" id="value_x_plus">+</a>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Y:</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <a href="#" id="value_y_minus">-</a>
-                                    </span>
-                                </div>
-                                <input type="text" class="form-control" id="name_y" name="name_y" value="200"/>
-                                <div class="input-group-postpend">
-                                    <span class="input-group-text">
-                                        <a href="#" id="value_y_plus">
-                                            +
-                                        </a>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- <a href="#" id="name_btn" class="btn btn-primary mr-2">Add name</a> --}}
-                    </div>
-                    <div class="col-lg-2">
-                        {{-- <div class="col-lg-4"> --}}
-                        <div class="form-group">
-                            <label>Training center: </label>
-                            <input type="text" class="form-control" id="center_text" name="center"/>
-                        </div>
-                        <div class="form-group">
-                            <label>X:</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <a href="#" id="value_x_minus">-</a>
-                                    </span>
-                                </div>
-                                <input type="text" class="form-control" id="center_x" name="center_x" value="128"/>
-                                <div class="input-group-postpend">
-                                    <span class="input-group-text">
-                                        <a href="#" id="value_x_plus">+</a>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Y:</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <a href="#" id="value_y_minus">-</a>
-                                    </span>
-                                </div>
-                                <input type="text" class="form-control" id="center_y" name="center_y" value="190"/>
-                                <div class="input-group-postpend">
-                                    <span class="input-group-text">
-                                        <a href="#" id="value_y_plus">
-                                            +
-                                        </a>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- <a href="#" id="center_btn" class="btn btn-primary mr-2">Add center</a> --}}
+                        {{-- <div class="m-auto col-6 mt-3">
+                            {{ $paginate_apps->withQueryString()->links() }}
+                        </div> --}}
                     </div>
                     <div class="col-lg-1">
                     </div>
-                    <div class="col-lg-5">
-                        <div>
-                            <div id="myDesign" style=" width: 220px; height:339px;background-size:cover;background-image: url({{ asset('img/id_page_1.jpg') }})">
-                                {{-- <img src="{{ asset('img/id_page_1.jpg') }}" alt="background image" style="width: 100%;"> --}}
+                    <div class="col-lg-6">
+                        <div class="card card-custom card-fit card-border">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    {{-- <span class="card-icon">
+                                        <i class="flaticon2-pin text-primary"></i>
+                                    </span> --}}
+                                    <h3 class="card-label">ID Design
+                                </div>
+                            </div>
+                            <div class="card-body pt-2">
+                                <div>
+                                    <div id="myDesign" style="width: 220px; height:339px;background-size:cover;background-image: url({{ asset('img/id_page_1.jpg') }});">
+                                        {{-- <img src="{{ asset('img/id_page_1.jpg') }}" alt="background image" style="width: 100%;"> --}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+                                <div class="card-toolbar">
+                                    <a id="print_btn" class="btn btn-sm btn-primary font-weight-bold" style="float: right; margin-right: 80px"><i class="flaticon2-print"></i>Print ID</a>
+                                </div>
                             </div>
                         </div>
-                        <a id="print_btn" class="btn btn-primary mt-5" style="float: right; margin-right: 150px">Print ID</a>
                     </div>
                 </div>
             </div>
@@ -280,70 +203,12 @@
                 // mywindow.close();
             }, 300);
 
+            toastr.success('ID printed');
+
             document.getElementById('print_btn').style.visibility = 'hidden';
             // location.reload();
             return true;
         }
-        
-        $("#id_btn").on("click", function(){
-            if ($('#id_text').val() != '' && $('#name_text').val() != '' && $('#center_text').val() != '') {
-                var myDesigntem = document.getElementById("myDesign");
-                ptem = document.createElement('p');
-                var stem = document.createElement("strong");
-                var textToAddstem = document.createTextNode($('#id_text').val());
-                stem.appendChild(textToAddstem);
-                ptem.appendChild(stem);
-                ptem.style.position = "relative";
-                ptem.style.left = $('#id_x').val();
-                ptem.style.top = $('#id_y').val();
-                ptem.style.backgroundColor = "inherit";
-                ptem.style.fontSize = '0.7vw';
-                ptem.style.color = 'blue';
-                myDesigntem.appendChild(ptem);
-
-                ptem = document.createElement('p');
-                var stem = document.createElement("strong");
-                var textToAddstem = document.createTextNode($('#name_text').val());
-                stem.appendChild(textToAddstem);
-                ptem.appendChild(stem);
-                ptem.style.position = "relative";
-                ptem.style.left = $('#name_x').val();
-                ptem.style.top = $('#name_y').val();
-                ptem.style.backgroundColor = "inherit";
-                ptem.style.fontSize = '0.7vw';
-                ptem.style.color = 'blue';
-                myDesigntem.appendChild(ptem);
-
-                ptem = document.createElement('p');
-                var stem = document.createElement("strong");
-                var textToAddstem = document.createTextNode($('#center_text').val());
-                stem.appendChild(textToAddstem);
-                ptem.appendChild(stem);
-                ptem.style.position = "relative";
-                ptem.style.left = $('#center_x').val();
-                ptem.style.top = $('#center_y').val();
-                ptem.style.backgroundColor = "inherit";
-                ptem.style.fontSize = '0.7vw';
-                ptem.style.color = 'blue';
-                myDesigntem.appendChild(ptem);
-
-                var profile_img2 = document.createElement('img');
-                var div_img2 = document.createElement('div');
-                profile_img2.src = '{{ asset("img/meti.jpg") }}';
-                profile_img2.style.width = '92px';
-                profile_img2.style.height = '86.7px';
-                profile_img2.style.borderRadius = "50%";
-
-                div_img2.appendChild(profile_img2);
-                div_img2.style.position = "relative";
-                div_img2.style.left = '62';
-                div_img2.style.top = '45';
-                myDesigntem.appendChild(div_img2);  
-            }else{
-                alert('Field is empty!!')
-            }
-            
-        });
 
     </script>
 @endpush

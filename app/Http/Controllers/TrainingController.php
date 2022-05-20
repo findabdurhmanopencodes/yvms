@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Training;
 use App\Http\Requests\StoreTrainingRequest;
 use App\Http\Requests\UpdateTrainingRequest;
+use Illuminate\Validation\ValidationException;
 
 class TrainingController extends Controller
 {
@@ -15,7 +16,8 @@ class TrainingController extends Controller
      */
     public function index()
     {
-        //
+        $trainings = Training::paginate(10);
+        return view('training.index',compact('trainings'));
     }
 
     /**
@@ -36,7 +38,8 @@ class TrainingController extends Controller
      */
     public function store(StoreTrainingRequest $request)
     {
-        //
+        Training::create($request->validated());
+        return redirect()->back()->with('message','Training created successfully');
     }
 
     /**
@@ -70,7 +73,8 @@ class TrainingController extends Controller
      */
     public function update(UpdateTrainingRequest $request, Training $training)
     {
-        //
+        $training->update($request->validated());
+        return redirect()->back()->with('message','Training updated successfully');
     }
 
     /**
@@ -81,6 +85,7 @@ class TrainingController extends Controller
      */
     public function destroy(Training $training)
     {
-        //
+        $training->delete();
+        return redirect()->back()->with('message','Training deleted successfully');
     }
 }
