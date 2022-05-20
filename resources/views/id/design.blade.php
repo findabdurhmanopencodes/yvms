@@ -41,7 +41,7 @@
                     <div class="col-lg-2">
                         <div class="form-group">
                             <label>ID no: </label>
-                            <input type="text" class="form-control" id="id_text" name="id" value="JU3767/09"/>
+                            <input type="text" class="form-control" id="id_text" name="id"/>
                         </div>
                         <div class="form-group">
                             <label>X:</label>
@@ -51,7 +51,7 @@
                                         <a href="#" id="value_x_minus">-</a>
                                     </span>
                                 </div>
-                                <input type="text" class="form-control" id="id_x" value="105.859375" name="id_x"/>
+                                <input type="text" class="form-control" id="id_x" value="95.9" name="id_x"/>
                                 <div class="input-group-postpend">
                                     <span class="input-group-text">
                                         <a href="#" id="value_x_plus">+</a>
@@ -77,13 +77,13 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- <a href="#" id="id_btn" class="btn btn-primary mr-2">Add ID</a> --}}
+                        <a href="#" id="id_btn" class="btn btn-primary mr-2">Add ID</a>
                     </div>
                     <div class="col-lg-2">
                         {{-- <div class="col-lg-4"> --}}
                         <div class="form-group">
                             <label>Name: </label>
-                            <input type="text" class="form-control" name="name" value="Milky Seifu" id="name_text"/>
+                            <input type="text" class="form-control" name="name" id="name_text"/>
                         </div>
                         <div class="form-group">
                             <label>X:</label>
@@ -93,7 +93,7 @@
                                         <a href="#" id="value_x_minus">-</a>
                                     </span>
                                 </div>
-                                <input type="text" class="form-control" id="name_x" name="name_x" value="92"/>
+                                <input type="text" class="form-control" id="name_x" name="name_x" value="94"/>
                                 <div class="input-group-postpend">
                                     <span class="input-group-text">
                                         <a href="#" id="value_x_plus">+</a>
@@ -109,7 +109,7 @@
                                         <a href="#" id="value_y_minus">-</a>
                                     </span>
                                 </div>
-                                <input type="text" class="form-control" id="name_y" name="name_y" value="212"/>
+                                <input type="text" class="form-control" id="name_y" name="name_y" value="200"/>
                                 <div class="input-group-postpend">
                                     <span class="input-group-text">
                                         <a href="#" id="value_y_plus">
@@ -125,7 +125,7 @@
                         {{-- <div class="col-lg-4"> --}}
                         <div class="form-group">
                             <label>Training center: </label>
-                            <input type="text" class="form-control" id="center_text" name="center" value="JU"/>
+                            <input type="text" class="form-control" id="center_text" name="center"/>
                         </div>
                         <div class="form-group">
                             <label>X:</label>
@@ -135,7 +135,7 @@
                                         <a href="#" id="value_x_minus">-</a>
                                     </span>
                                 </div>
-                                <input type="text" class="form-control" id="center_x" name="center_x" value="141.859375"/>
+                                <input type="text" class="form-control" id="center_x" name="center_x" value="128"/>
                                 <div class="input-group-postpend">
                                     <span class="input-group-text">
                                         <a href="#" id="value_x_plus">+</a>
@@ -151,7 +151,7 @@
                                         <a href="#" id="value_y_minus">-</a>
                                     </span>
                                 </div>
-                                <input type="text" class="form-control" id="center_y" name="center_y" value="244.7"/>
+                                <input type="text" class="form-control" id="center_y" name="center_y" value="190"/>
                                 <div class="input-group-postpend">
                                     <span class="input-group-text">
                                         <a href="#" id="value_y_plus">
@@ -285,6 +285,65 @@
             return true;
         }
         
+        $("#id_btn").on("click", function(){
+            if ($('#id_text').val() != '' && $('#name_text').val() != '' && $('#center_text').val() != '') {
+                var myDesigntem = document.getElementById("myDesign");
+                ptem = document.createElement('p');
+                var stem = document.createElement("strong");
+                var textToAddstem = document.createTextNode($('#id_text').val());
+                stem.appendChild(textToAddstem);
+                ptem.appendChild(stem);
+                ptem.style.position = "relative";
+                ptem.style.left = $('#id_x').val();
+                ptem.style.top = $('#id_y').val();
+                ptem.style.backgroundColor = "inherit";
+                ptem.style.fontSize = '0.7vw';
+                ptem.style.color = 'blue';
+                myDesigntem.appendChild(ptem);
+
+                ptem = document.createElement('p');
+                var stem = document.createElement("strong");
+                var textToAddstem = document.createTextNode($('#name_text').val());
+                stem.appendChild(textToAddstem);
+                ptem.appendChild(stem);
+                ptem.style.position = "relative";
+                ptem.style.left = $('#name_x').val();
+                ptem.style.top = $('#name_y').val();
+                ptem.style.backgroundColor = "inherit";
+                ptem.style.fontSize = '0.7vw';
+                ptem.style.color = 'blue';
+                myDesigntem.appendChild(ptem);
+
+                ptem = document.createElement('p');
+                var stem = document.createElement("strong");
+                var textToAddstem = document.createTextNode($('#center_text').val());
+                stem.appendChild(textToAddstem);
+                ptem.appendChild(stem);
+                ptem.style.position = "relative";
+                ptem.style.left = $('#center_x').val();
+                ptem.style.top = $('#center_y').val();
+                ptem.style.backgroundColor = "inherit";
+                ptem.style.fontSize = '0.7vw';
+                ptem.style.color = 'blue';
+                myDesigntem.appendChild(ptem);
+
+                var profile_img2 = document.createElement('img');
+                var div_img2 = document.createElement('div');
+                profile_img2.src = '{{ asset("img/meti.jpg") }}';
+                profile_img2.style.width = '92px';
+                profile_img2.style.height = '86.7px';
+                profile_img2.style.borderRadius = "50%";
+
+                div_img2.appendChild(profile_img2);
+                div_img2.style.position = "relative";
+                div_img2.style.left = '62';
+                div_img2.style.top = '45';
+                myDesigntem.appendChild(div_img2);  
+            }else{
+                alert('Field is empty!!')
+            }
+            
+        });
 
     </script>
 @endpush
