@@ -43,20 +43,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($applicants as $key => $applicant)
-                        <tr>
-                            <td><input type="checkbox" name="applicant[]" value="{{ $applicant->id }}" id="checkbox"/></td>
-                            <td>
-                                {{ $applicant->id }}
-                            </td>
-                            <td>
-                                {{$applicant->first_name}}
-                            </td>
-                            <td>
-                                {{ $applicant->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->code }}
-                            </td>
-                        </tr>
-                    @endforeach
+                    @if (count($applicants) > 1)
+                        @foreach ($applicants as $key => $applicant)
+                            <tr>
+                                <td><input type="checkbox" name="applicant[]" value="{{ $applicant->id }}" id="checkbox"/></td>
+                                <td>
+                                    {{ $applicant->id }}
+                                </td>
+                                <td>
+                                    {{$applicant->first_name}}
+                                </td>
+                                <td>
+                                    {{ $applicant->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->code }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                    <tr>
+                        <td class="text text-danger text-center" colspan="4">
+                            Volunteer not found
+                        </td>
+                    </tr>
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -73,17 +81,7 @@
         var table = $("#search_card").html();
         var i = document.createElement('i');
         i.classList.add("flaticon2-print");
-        $('#checkbox').change(function() {
-            if(this.checked) {
-                $('#print_all').html('');
-                $('#print_all').append(i);
-                $('#print_all').append('Print ID')
-            }else{
-                $('#print_all').html('');
-                $('#print_all').append(i);
-                $('#print_all').append('Print All ID')
-            }
-        });
+        
         function getTableCell(c){
             return `<td>${c}</td>`;
         }
@@ -98,20 +96,34 @@
                     "_token": $('meta[name="csrf-token"]').attr('content'),
                 },
                 success: function(result){
-                    if (result.applicants.data) {
-                        var data = result.applicants.data;
+                    var data = result.applicants.data;
+                    if (data.length > 0) {
                         $('#search_table tbody').html('');
                         data.forEach(element => {
-                            var input = `<input type="checkbox" name="applicant[]" value="${element.id}"/>`;
+                            var input = `<input type="checkbox" name="applicant[]" value="${element.id}" id="checkbox"/>`;
                             $('#search_table tbody').append("<tr>"+getTableCell(input)+getTableCell(element.id)+getTableCell(element.first_name)+getTableCell(element.approved_applicant.training_placement.training_center_capacity.training_center.code)+"</tr>");
                         });
                         $("#paginate").hide();
+                    }else{
+                        // $('#search_table tbody').html('');
+                        $('#search_table tbody').html("<tr><td class='text text-danger text-center' colspan='4'>Volunteer not found</td> </tr>");
                     }
                 },
                 });
             }else{
-                $('#search_table tbody').html('');
-                $('#search_table tbody').append(body);
+                $('#search_table tbody').html(body);
+            }
+        });
+
+        $('#checkbox').change(function() {
+            if(this.checked) {
+                $('#print_all').html('');
+                $('#print_all').append(i);
+                $('#print_all').append('Print ID')
+            }else{
+                $('#print_all').html('');
+                $('#print_all').append(i);
+                $('#print_all').append('Print All ID')
             }
         });
     </script>
