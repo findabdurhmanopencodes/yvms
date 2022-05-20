@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Resource;
 use App\Http\Requests\StoreResourceRequest;
 use App\Http\Requests\UpdateResourceRequest;
+use App\Models\TraininingCenter;
+use Illuminate\Http\Request;
 
 class ResourceController extends Controller
 {
@@ -13,9 +15,13 @@ class ResourceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            return datatables()->of(Resource::select())->make(true);
+        }
+        $roles = Resource::all();
+        return view('resource.index', compact('roles'));
     }
 
     /**
@@ -25,7 +31,7 @@ class ResourceController extends Controller
      */
     public function create()
     {
-        //
+        return view('resource.create');
     }
 
     /**
@@ -34,9 +40,12 @@ class ResourceController extends Controller
      * @param  \App\Http\Requests\StoreResourceRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreResourceRequest $request)
+    public function store(Request $request)
     {
         //
+        $request->validate(['name' => 'required|string|unique:resources,name']);
+        Resource::create(['name' => $request->get('name')]);
+        return redirect()->route('resource.index')->with('message', 'Resource created successfully');
     }
 
     /**
@@ -47,7 +56,8 @@ class ResourceController extends Controller
      */
     public function show(Resource $resource)
     {
-        //
+
+        return view('resource.show',['resource'=>$resource,'trainingCenters'=>TraininingCenter::all()]);
     }
 
     /**
@@ -59,6 +69,8 @@ class ResourceController extends Controller
     public function edit(Resource $resource)
     {
         //
+        return view('resource.create', compact('resource'));
+
     }
 
     /**
@@ -68,9 +80,11 @@ class ResourceController extends Controller
      * @param  \App\Models\Resource  $resource
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateResourceRequest $request, Resource $resource)
+    public function update(Request $request, Resource $resource)
     {
-        //
+        $data = $request->validate(['name' => 'required|string|unique:resources,name,' . $resource->id]);
+        $resource->update($data);
+        return redirect()->route('resource.index')->with('message', 'resource updated successfully');
     }
 
     /**
@@ -79,8 +93,24 @@ class ResourceController extends Controller
      * @param  \App\Models\Resource  $resource
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Resource $resource)
+    public function destroy(Request $request ,Resource $resource)
     {
-        //
+
+        $resource->delete();
+        if ($request->ajax()) {
+            return response()->json(array('msg' => 'deleted successfully'), 200);
+        }
+    }
+    public function assign(Request $request)
+    {
+
+        $training_center_id=$request->get('training_center_id');
+        $resource_id=$request->get('resource_id');
+        $amount=$request->get('amount');
+        $trainingCenter=TraininingCenter::find($training_center_id);
+        dd($trainingCenter->resources());
+        $trainingCenter->resources()->attach($resource_id,['initial_balance'=>$amount,'current_balance	'=>$amount],false);
+            return redirect()->back()->with('msg','Resource Added Sucessfuily TO Training Center');
+        // $model->problems()->sync([$problemId => [ 'price' => $newPrice] ], false);
     }
 }

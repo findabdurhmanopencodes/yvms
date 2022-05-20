@@ -25,5 +25,13 @@ class TraininingCenter extends Model
     {
         return $this->hasMany(TrainingCenterCapacity::class,'trainining_center_id', 'id');
     }
+    public function checkers()
+    {
+        return $this->hasMany(User::class);
+    }
+    public function resources()
+    {
+        return $this->belongsToMany(Resource::class,'resource_trainining')->withPivot('current_balance','initial_balance');
+    }
 
 }

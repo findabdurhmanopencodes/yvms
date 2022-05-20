@@ -11,6 +11,7 @@ use App\Http\Controllers\PrintController;
 use App\Http\Controllers\QoutaController;
 use App\Http\Controllers\QuotaController;
 use App\Http\Controllers\RegionController;
+use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TraininingCenterController;
@@ -118,7 +119,6 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::post('{approvedApplicant}/manual-placement', [TrainingPlacementController::class, 'placeManually'])->name('placement.manual');
     Route::post('{training_placement}/change', [TrainingPlacementController::class, 'changePlacement'])->name('placement.change');
     Route::post('{approvedApplicant}/manual-screen', [TrainingSessionController::class, 'screenManually'])->name('screen.manual');
-    Route::get('volunteer/check-in/', [VolunteerController::class, 'checkIn'])->name('volunteer.CheckIn');
 
     Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedule');
     Route::post('/schedules', [TrainingSessionController::class, 'setSchedule'])->name('schedule.set');
@@ -129,7 +129,11 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('training_center/{training_center}',[TrainingSessionController::class,'trainingCenterShow'])->name('training_center.show');
 });
 
-
+Route::get('check-in/', [TraininingCenterController::class, 'checkInView'])->name('TrainingCenter.CheckIn');
+Route::get('result/', [TraininingCenterController::class, 'result'])->name('result');
+Route::get('/check-in/action/{id}', [TraininingCenterController::class, 'checkIn'])->name('TrainingCenter.checked');
+Route::any('/check-in/reports/', [TraininingCenterController::class, 'indexChecking'])->name('TrainingCenter.index.checked');
+// Route::get('result/', [VolunteerController::class, 'result'])->name('result');
 Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
     // Route::middleware(['guest'])->group(function () {
@@ -153,7 +157,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('feild_of_study', FeildOfStudyController::class);
     Route::resource('disablity', DisablityController::class);
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
-
     ////////////////////////////////////////////////////////////////////////////////
     Route::get('training_sessions', [RegionController::class, 'place'])->name('region.place');
 
@@ -167,6 +170,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('woreda', WoredaController::class);
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
+    Route::resource('resource', ResourceController::class);
+    Route::post('resource/assign', [ResourceController::class, 'assign'])->name('resource.assign');
     Route::get('role/{role}/permission', [RoleController::class, 'permissions'])->name('role.permission.index');
     Route::post('role/{role}/permission', [RoleController::class, 'givePermission'])->name('role.permission.give');
     Route::delete('role/{role}/permission/{permission}', [RoleController::class, 'revokePermission'])->name('role.permission.revoke');
@@ -174,6 +179,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('role/{role}/removeAllPermission', [RoleController::class, 'removeAllPermission'])->name('role.removeAllPermission');
     Route::post('users/{user}/role', [UserController::class, 'assignRole'])->name('users.assignRole');
     Route::post('users/{user}/role/remove', [UserController::class, 'removeRole'])->name('users.removeRole');
+    Route::post('training-center/assign-checker', [TraininingCenterController::class, 'assignChecker'])->name('TrainingCenter.assignChecker');
+    Route::get('training-center/remove-checker{checker_id}', [TraininingCenterController::class, 'removeChecker'])->name('TrainingCenter.removeChecker');
     Route::resource('TrainingCenter', TraininingCenterController::class);
 
     Route::get('/dashboard', function () {
