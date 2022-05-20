@@ -25,4 +25,5 @@ class Status extends Model
         4 => 'Placed',
         5 => 'checked-In',
     ];
+
 }

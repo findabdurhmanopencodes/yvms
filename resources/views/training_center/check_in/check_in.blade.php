@@ -34,7 +34,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <h1 class="text text-danger">Voluteer Already Checked-in!!</h1>
+                    <h1 class="text text-danger">Volunteer Already Checked-in!!</h1>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -50,7 +50,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <h1 class="text text-danger">Voluteer Doesn't  Exist With This Id</h1>
+                    <h1 class="text text-danger">Volunteer Doesn't  Exist With This Id</h1>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -163,7 +163,7 @@
                         $("#region").html('Region:' + data.data.woreda.zone.region.name);
                         $("#center").html('Training Center:' + data.data.woreda.zone.name);
                         $("#profile").attr("src", data.data.profilePhoto);
-                        $("#check").html('<h3><a class="btn btn-primary" href="check-in/action/' + data.data
+                        $("#check").html('<h3><a class="btn btn-primary" href="/check-in/action/' + data.data
                             .id + '"><i class="fa fa-check"> Check-In</a></h3>');
 
                     }

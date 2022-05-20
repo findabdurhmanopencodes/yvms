@@ -95,6 +95,8 @@ Route::post('application_form/apply', [VolunteerController::class, 'apply'])->na
 Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
 
 Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verified'], 'as' => 'session.'], function () {
+    Route::any('/volunteer/all', [VolunteerController::class, 'volunteerAll'])->name('volunteer.all');
+    Route::get('/volunteer/{volunteer}/detail', [VolunteerController::class, 'volunteerDetail'])->name('volunteer.detail');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/quota', [TrainingSessionController::class, 'showQuota'])->name('training_session.quota');
     Route::any('volunteer/', [VolunteerController::class, 'index'])->name('volunteer.index');
@@ -125,14 +127,21 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::post('/addSchedule', [ScheduleController::class, 'addSchedule'])->name('schedule.add');
     Route::delete('/training_schedule/{training_schedule}', [TrainingScheduleController::class, 'destroy'])->name('trainingschedule.destroy');
     Route::resource('training_master_placement', TrainingMasterPlacementController::class);
-    Route::get('training_center',[TrainingSessionController::class,'trainingCenterIndex'])->name('training_center.index');
-    Route::get('training_center/{training_center}',[TrainingSessionController::class,'trainingCenterShow'])->name('training_center.show');
+    Route::get('training_center', [TrainingSessionController::class, 'trainingCenterIndex'])->name('training_center.index');
+    Route::get('training_center/{training_center}', [TrainingSessionController::class, 'trainingCenterShow'])->name('training_center.show');
+    Route::post('resource/assign', [TrainingSessionController::class, 'resourceAssignToTrainingCenter'])->name('resource.assign');
+    Route::post('resource/update', [TrainingSessionController::class, 'updateResourceAssignToTrainingCenter '])->name('resource.update');
+    Route::get('/resources', [TrainingSessionController::class, 'allResource'])->name('resource.all');
+    Route::get('/resource/{resource}', [TrainingSessionController::class, 'showResource'])->name('resource.show');
+    Route::get('/training-center/{training_center_id}/resource-assign', [TraininingCenterController::class, 'giveResource'])->name('resource.assign.volunteer');
+    Route::get('check-in/', [TraininingCenterController::class, 'checkInView'])->name('TrainingCenter.CheckIn');
+    Route::get('result/', [TraininingCenterController::class, 'result'])->name('result');
+    Route::get('/check-in/action/{id}', [TraininingCenterController::class, 'checkIn'])->name('TrainingCenter.checked');
+    Route::any('/check-in/reports/', [TraininingCenterController::class, 'indexChecking'])->name('TrainingCenter.index.checked');
+
 });
 
-Route::get('check-in/', [TraininingCenterController::class, 'checkInView'])->name('TrainingCenter.CheckIn');
-Route::get('result/', [TraininingCenterController::class, 'result'])->name('result');
-Route::get('/check-in/action/{id}', [TraininingCenterController::class, 'checkIn'])->name('TrainingCenter.checked');
-Route::any('/check-in/reports/', [TraininingCenterController::class, 'indexChecking'])->name('TrainingCenter.index.checked');
+
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
 Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
@@ -171,7 +180,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
     Route::resource('resource', ResourceController::class);
-    Route::post('resource/assign', [ResourceController::class, 'assign'])->name('resource.assign');
     Route::get('role/{role}/permission', [RoleController::class, 'permissions'])->name('role.permission.index');
     Route::post('role/{role}/permission', [RoleController::class, 'givePermission'])->name('role.permission.give');
     Route::delete('role/{role}/permission/{permission}', [RoleController::class, 'revokePermission'])->name('role.permission.revoke');
