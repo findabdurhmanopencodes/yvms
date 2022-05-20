@@ -48,7 +48,11 @@ class DatabaseSeeder extends Seeder
                 'remember_token' => Str::random(10),
             ]
         );
+<<<<<<< HEAD
         $superUser->assignRole('super-admin');
+=======
+
+>>>>>>> seid
         TrainingSession::create([
             'start_date' => '2022-05-06',
             'end_date' => '2022-06-07',

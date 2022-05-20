@@ -28,6 +28,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\ZoneController;
+
+use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\PayrollSheetController;
+
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
 use App\Models\Training;
@@ -36,6 +40,8 @@ use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSchedule;
 use App\Models\TrainingSession;
+use App\Models\Payroll;
+use App\Models\PayrollSheet;
 use App\Models\TraininingCenter;
 use App\Models\User;
 use App\Models\Volunteer;
@@ -165,6 +171,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('training_session', TrainingSessionController::class);
     Route::resource('qouta', QoutaController::class);
     Route::resource('user', UserController::class);
+
+    Route::resource('payroll', PayrollController::class);
+    Route::resource('payrollSheet', PayrollSheetController::class);
+    
     Route::resource('region', RegionController::class);
     Route::resource('zone', ZoneController::class);
     Route::resource('woreda', WoredaController::class);
@@ -188,6 +198,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             $trainingSession = TrainingSession::availableSession()[0];
             return redirect(route('session.dashboard', ['training_session' => $trainingSession->id]));
         }
+        return 'No active training session found!';
     })->name('dashboard');
 
     Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
