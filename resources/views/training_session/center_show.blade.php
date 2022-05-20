@@ -202,8 +202,6 @@
                             @enderror
                             <span class="form-text text-muted">Please select trainner.</span>
                         </div>
-                        {{-- <div class="col-md-2">
-                        </div> --}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold"
@@ -215,6 +213,11 @@
             </div>
         </div>
     </div>
+
+    <form method="POST" id="deleteForm">
+        @csrf
+        @method('DELETE')
+    </form>
     <!--begin::Card-->
     <div class="card card-custom gutter-b">
         <div class="card-header border-0 py-5">
@@ -245,6 +248,8 @@
                 <tbody>
                     @foreach ($trainings as $key => $training)
                         @php
+
+                            $masterId = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->master->id;
                             $trainner = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->master->user;
                         @endphp
                         <tr>
@@ -253,10 +258,20 @@
                                 {{ $training->name }}
                             </td>
                             <td>
-                                <span
-                                    class="btn {{ $trainner ? 'btn-light-primary' : 'btn-light-danger' }} btn-sm font-weight-bold btn-upper btn-text">
-                                    {{ $trainner?->name() ?? 'Assign Trainner' }}
-                                </span>
+                                <div class="d-flex">
+                                    <span
+                                        class="btn {{ $trainner ? 'btn-light-primary' : 'btn-light-danger' }} btn-sm font-weight-bold btn-upper btn-text">
+                                        {{ $trainner?->name() == null ? 'Assign Trainner' : '' }}
+                                        @if ($trainner)
+                                            <a href="#" onclick="confirmDeleteMasterPlacement({{ $masterId }})"
+                                                style="display: flex;align-items: center;justify-content: space-between;width: 185px;">
+                                                {{ $trainner?->name() }}
+                                                <i class="fa fa-times fa-sm"></i>
+                                            </a>
+                                        @endif
+
+                                    </span>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -281,5 +296,21 @@
         @if (old('training') != null)
             $('#assignMasterModal').modal().show()
         @endif
+
+        function confirmDeleteMasterPlacement(masterId) {
+            var sessionId = '{{ Request::route('training_session')->id }}';
+            $('#deleteForm').attr('action', '/' + sessionId + '/training_master_placement/' + masterId);
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $('#deleteForm').submit();
+                }
+            });
+        }
     </script>
 @endpush
