@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('resource_trainining', function (Blueprint $table) {
             $table->id();
             $table->foreignId('trainining_center_id')->nullable()->constrained('trainining_centers','id')->nullOnDelete();
+            $table->foreignId('training_session_id')->nullable()->constrained('training_sessions','id')->nullOnDelete();
             $table->foreignId('resource_id')->nullable()->constrained('resources','id')->nullOnDelete();
             $table->integer('current_balance');
             $table->integer('initial_balance');

@@ -1000,7 +1000,7 @@
                                                     <label class="d-block">GPA</label>
                                                     <input name="gpa" id="gpa"
                                                         class="@error('gpa') is-invalid @enderror form-control"
-                                                        type="number" value="{{ old('gpa') }}" max="4" min="1" />
+                                                        type="number" value="{{ old('gpa') }}" max="4.0" min="1.0" step="any" />
 
                                                     @error('gpa')
                                                         <div class="invalid-feedback">{{ $message }}</div>

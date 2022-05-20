@@ -101,16 +101,5 @@ class ResourceController extends Controller
             return response()->json(array('msg' => 'deleted successfully'), 200);
         }
     }
-    public function assign(Request $request)
-    {
 
-        $training_center_id=$request->get('training_center_id');
-        $resource_id=$request->get('resource_id');
-        $amount=$request->get('amount');
-        $trainingCenter=TraininingCenter::find($training_center_id);
-        dd($trainingCenter->resources());
-        $trainingCenter->resources()->attach($resource_id,['initial_balance'=>$amount,'current_balance	'=>$amount],false);
-            return redirect()->back()->with('msg','Resource Added Sucessfuily TO Training Center');
-        // $model->problems()->sync([$problemId => [ 'price' => $newPrice] ], false);
-    }
 }

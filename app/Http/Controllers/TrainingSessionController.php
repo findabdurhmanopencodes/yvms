@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateTrainingSessionRequest;
 use App\Models\ApprovedApplicant;
 use App\Models\Qouta;
 use App\Models\Region;
+use App\Models\Resource;
 use App\Models\Status;
 use App\Models\Training;
 use App\Models\TrainingCenterCapacity;
@@ -937,32 +938,32 @@ class TrainingSessionController extends Controller
         if ($scheduleEndDate > $sessionEndDate) {
             throw ValidationException::withMessages(['training_end_date' => 'Please make sure end date is before Training session date']);
         }
-        $data['training_start_date'] =$scheduleStartDate;
-        $data['training_end_date'] =$scheduleEndDate;
+        $data['training_start_date'] = $scheduleStartDate;
+        $data['training_end_date'] = $scheduleEndDate;
         $trainingSession->update($data);
-        return redirect()->back()->with('message','Schedule created successfully!');
+        return redirect()->back()->with('message', 'Schedule created successfully!');
     }
     public function trainings(TrainingSession $trainingSession)
     {
         $trainingSchedules = $trainingSession->trainingScheduless;
         $trainings = [];
         $trainingIds = [];
-        foreach ($trainingSchedules as $ts ) {
-            if(!in_array($ts->training->id,$trainingIds)){
-                array_push($trainings,$ts->training);
-                array_push($trainingIds,$ts->training->id);
+        foreach ($trainingSchedules as $ts) {
+            if (!in_array($ts->training->id, $trainingIds)) {
+                array_push($trainings, $ts->training);
+                array_push($trainingIds, $ts->training->id);
             }
         }
-        return view('training_session.training',compact('trainings'));
+        return view('training_session.training', compact('trainings'));
     }
 
     public function trainingCenterIndex(TrainingSession $trainingSession)
     {
-        $trainingCenterCapacities = TrainingCenterCapacity::where('training_session_id',$trainingSession->id)->get();
-        return view('training_session.centers',compact('trainingSession','trainingCenterCapacities'));
+        $trainingCenterCapacities = TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->get();
+        return view('training_session.centers', compact('trainingSession', 'trainingCenterCapacities'));
     }
 
-    public function trainingCenterShow(TrainingSession $trainingSession,TraininingCenter $trainingCenter)
+    public function trainingCenterShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
         $miniSide = 'aside-minimize';
         $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',$trainingCenter->id)->get();
@@ -979,6 +980,39 @@ class TrainingSessionController extends Controller
         Resource
         Volunteers
         */
-        return view('training_session.center_show',compact('trainingSession','totalTrainingMasters','totalVolunteers','trainingCenter','miniSide'));
+        return view('training_session.center_show', compact('trainingSession', 'trainingCenter', 'miniSide'));
+    }
+    public function resourceAssignToTrainingCenter($training_session , Request $request)
+    {
+        $training_center_id = $request->get('training_center_id');
+        $resource_id = $request->get('resource_id');
+        $amount = $request->get('amount');
+        $trainingCenter = TraininingCenter::find($training_center_id);
+        $trainingCenter->resources()->attach($resource_id, ['current_balance' => $amount, 'initial_balance' => $amount,'training_session_id'=>$training_session]);
+        return redirect()->back()->with('msg', 'Resource Added Sucessfuily TO Training Center');
+    }
+    public function updateResourceAssignToTrainingCenter($training_session ,Request $request)
+    {
+
+        $training_center_id = $request->get('training_center_id');
+        $resource_id = $request->get('resource_id');
+        $amount = $request->get('amount');
+        $trainingCenter = TraininingCenter::find($training_center_id);
+        $trainingCenterResourceCurrentBalance = $trainingCenter->resources()->latest()->first()->pivot->current_balance;
+
+        $trainingCenter->resources()->attach($resource_id, ['current_balance' => (int)$amount+$trainingCenterResourceCurrentBalance, 'initial_balance' => $amount,'training_session_id'=>$training_session]);
+
+        return redirect()->back()->with('msg', 'Resource Added Sucessfuily TO Training Center');
+    }
+    public function showResource($training_session,$resource){
+
+
+        return view('training_session.resource.show',['resource'=>Resource::find($resource),'trainingCenters'=>TraininingCenter::all()]);
+
+}
+    public function allResource(){
+
+            return view('training_session.resource.index',['resources'=>Resource::all()]);
+
     }
 }
