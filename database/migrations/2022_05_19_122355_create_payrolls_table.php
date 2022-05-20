@@ -1,7 +1,11 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
+use App\Models\TrainingSession;
+use App\Models\User;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+
 return new class extends Migration
 {
     /**
@@ -11,12 +15,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('statuses', function (Blueprint $table) {
+        Schema::create('payrolls', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('volunteer_id')->nullable()->constrained('volunteers')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->smallInteger('acceptance_status')->default(0);
-            $table->text('rejection_reason')->nullable();
-            $table->smallInteger('status')->default(0);
+            $table->string('name')->nullable();
+            $table->foreignIdFor(TrainingSession::class)->constrained();
+            $table->foreignIdFor(User::class);
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statuses');
+        Schema::dropIfExists('payrolls');
     }
 };

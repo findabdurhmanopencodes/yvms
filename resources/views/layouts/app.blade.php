@@ -354,6 +354,7 @@
 
                             @include('aside.ms_aside')
                             @include('aside.placement')
+                            @include('aside.payroll')
 
                             <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
                                 aria-haspopup="true" data-menu-toggle="hover">
@@ -373,7 +374,9 @@
                                         @include('aside.ms')
                                         @include('aside.seya')
                                         @include('aside.aj')
+                                    
 
+                                       
                                     </ul>
                                 </div>
 
