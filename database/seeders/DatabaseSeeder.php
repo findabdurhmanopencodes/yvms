@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
             // PermissionSeeder::class,
             // RoleSeeder::class,
             // BaseSeeder::class,
-            //     // FakeDataSeeder::class,
+            // FakeDataSeeder::class,
         ]);
 
         User::create(
@@ -54,7 +54,6 @@ class DatabaseSeeder extends Seeder
                 'remember_token' => Str::random(10),
             ]
         );
-
 
         TrainingSession::create([
             'start_date' => '2022-05-06',
