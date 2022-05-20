@@ -331,11 +331,40 @@
                             </li>
 
                             <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'resource') === 0 ? 'menu-item-open' : '' }}"
+                                aria-haspopup="true" data-menu-toggle="hover">
+
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <i class="menu-icon flaticon-shopping-basket"></i>
+                                    <span class="menu-text">Resources</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                            <span class="menu-link">
+                                                <span class="menu-text">Resources</span>
+                                            </span>
+                                        </li>
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'resource.index') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('resource.index', []) }}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Resource</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </li>
+                            <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'resource') === 0 ? 'menu-item-open' : '' }}"
                             aria-haspopup="true" data-menu-toggle="hover">
 
                             <a href="javascript:;" class="menu-link menu-toggle">
-                                <i class="menu-icon flaticon-shopping-basket"></i>
-                                <span class="menu-text">Resources</span>
+                                <i class="menu-icon flaticon2-check-mark"></i>
+                                <span class="menu-text">Check-In</span>
                                 <i class="menu-arrow"></i>
                             </a>
                             <div class="menu-submenu">
@@ -343,18 +372,28 @@
                                 <ul class="menu-subnav">
                                     <li class="menu-item menu-item-parent" aria-haspopup="true">
                                         <span class="menu-link">
-                                            <span class="menu-text">Resources</span>
+                                            <span class="menu-text">Check-In</span>
                                         </span>
                                     </li>
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'resource.index') === 0 ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('resource.index', []) }}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot">
-                                            <span></span>
-                                        </i>
-                                        <span class="menu-text">Resource</span>
-                                    </a>
-                                </li>
+                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.CheckIn.index') === 0 ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('TrainingCenter.CheckIn') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="menu-text">Check-In</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.CheckIn.index') === 0 ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('TrainingCenter.index.checked') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="menu-text">Reports</span>
+                                        </a>
+                                    </li>
+
                                 </ul>
                             </div>
 

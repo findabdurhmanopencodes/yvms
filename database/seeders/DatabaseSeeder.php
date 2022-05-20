@@ -16,6 +16,7 @@ use Database\Factories\UserFactory;
 use DateTime;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
 
@@ -40,8 +41,7 @@ class DatabaseSeeder extends Seeder
             // BaseSeeder::class,
             //     // FakeDataSeeder::class,
         ]);
-
-        User::create(
+        $super_admin=User::create(
             [
                 'first_name' => 'Super',
                 'father_name' => 'Admin',
@@ -54,6 +54,8 @@ class DatabaseSeeder extends Seeder
                 'remember_token' => Str::random(10),
             ]
         );
+       $super_admin->assignRole('super-admin');
+        // dd('stop');
 
 
         TrainingSession::create([

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Resource;
 use App\Http\Requests\StoreResourceRequest;
 use App\Http\Requests\UpdateResourceRequest;
+use App\Models\TraininingCenter;
 use Illuminate\Http\Request;
 
 class ResourceController extends Controller
@@ -16,12 +17,9 @@ class ResourceController extends Controller
      */
     public function index(Request $request)
     {
-        // dd('aja');
-
         if ($request->ajax()) {
             return datatables()->of(Resource::select())->make(true);
         }
-
         $roles = Resource::all();
         return view('resource.index', compact('roles'));
     }
@@ -58,7 +56,8 @@ class ResourceController extends Controller
      */
     public function show(Resource $resource)
     {
-        //
+
+        return view('resource.show',['resource'=>$resource,'trainingCenters'=>TraininingCenter::all()]);
     }
 
     /**
@@ -101,5 +100,17 @@ class ResourceController extends Controller
         if ($request->ajax()) {
             return response()->json(array('msg' => 'deleted successfully'), 200);
         }
+    }
+    public function assign(Request $request)
+    {
+
+        $training_center_id=$request->get('training_center_id');
+        $resource_id=$request->get('resource_id');
+        $amount=$request->get('amount');
+        $trainingCenter=TraininingCenter::find($training_center_id);
+        dd($trainingCenter->resources());
+        $trainingCenter->resources()->attach($resource_id,['initial_balance'=>$amount,'current_balance	'=>$amount],false);
+            return redirect()->back()->with('msg','Resource Added Sucessfuily TO Training Center');
+        // $model->problems()->sync([$problemId => [ 'price' => $newPrice] ], false);
     }
 }

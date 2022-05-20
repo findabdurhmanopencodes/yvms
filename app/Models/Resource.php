@@ -9,4 +9,9 @@ class Resource extends Model
 {
     use HasFactory;
     protected $fillable=['name'];
+
+    public function traininingCenters()
+    {
+        return $this->belongsToMany(TraininingCenter::class,'resource_trainining')->withPivot('current_balance','initial_balance'   );
+    }
 }

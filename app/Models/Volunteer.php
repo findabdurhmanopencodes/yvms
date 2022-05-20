@@ -12,7 +12,11 @@ class Volunteer extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    protected $appends = ["profilePhoto"];
 
+    public function getProfilePhotoAttribute() {
+         return asset($this->picture()->file_path);
+    }
 
     /**
      * Get the user that owns the Volunteer
@@ -76,7 +80,7 @@ class Volunteer extends Model
     {
         // dd($this->id);
         return $this->hasOne(Status::class,'volunteer_id','id');
-        return Status::where('volunteer_id',$this->id)->get();
+        // return Status::where('volunteer_id',$this->id)->get();
     }
 
     public function approvedApplicant()
