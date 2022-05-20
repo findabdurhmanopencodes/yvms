@@ -10,7 +10,9 @@ use App\Models\Qouta;
 use App\Models\Region;
 use App\Models\Status;
 use App\Models\Training;
+use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingSession;
+use App\Models\TraininingCenter;
 use App\Models\Volunteer;
 use App\Models\Woreda;
 use App\Models\Zone;
@@ -947,5 +949,16 @@ class TrainingSessionController extends Controller
             }
         }
         return view('training_session.training',compact('trainings'));
+    }
+
+    public function trainingCenterIndex(TrainingSession $trainingSession)
+    {
+        $trainingCenterCapacities = TrainingCenterCapacity::where('training_session_id',$trainingSession->id)->get();
+        return view('training_session.centers',compact('trainingSession','trainingCenterCapacities'));
+    }
+
+    public function trainingCenterShow(TrainingSession $trainingSession,TraininingCenter $trainingCenter)
+    {
+        
     }
 }

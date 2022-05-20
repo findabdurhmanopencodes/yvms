@@ -244,6 +244,14 @@
                                     </a>
                                 </li>
 
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_center.index') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.training_center.index', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon flaticon-calendar"></i>
+                                        <span class="menu-text">Training Centers</span>
+                                    </a>
+                                </li>
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.attendance') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.attendance.index', ['training_session' => Request::route('training_session')]) }}"

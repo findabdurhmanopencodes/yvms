@@ -25,4 +25,5 @@ class TraininingCenter extends Model
     {
         return $this->hasMany(TrainingCenterCapacity::class,'trainining_center_id', 'id');
     }
+
 }

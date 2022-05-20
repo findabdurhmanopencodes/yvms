@@ -125,6 +125,8 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::post('/addSchedule', [ScheduleController::class, 'addSchedule'])->name('schedule.add');
     Route::delete('/training_schedule/{training_schedule}', [TrainingScheduleController::class, 'destroy'])->name('trainingschedule.destroy');
     Route::resource('training_master_placement', TrainingMasterPlacementController::class);
+    Route::get('training_center',[TrainingSessionController::class,'trainingCenterIndex'])->name('training_center.index');
+    Route::get('training_center/{training_center}',[TrainingSessionController::class,'trainingCenterShow'])->name('training_center.show');
 });
 
 
