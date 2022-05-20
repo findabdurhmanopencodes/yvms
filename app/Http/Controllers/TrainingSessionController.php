@@ -11,6 +11,7 @@ use App\Models\Region;
 use App\Models\Status;
 use App\Models\Training;
 use App\Models\TrainingCenterCapacity;
+use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\Volunteer;
@@ -960,13 +961,20 @@ class TrainingSessionController extends Controller
     public function trainingCenterShow(TrainingSession $trainingSession,TraininingCenter $trainingCenter)
     {
         $miniSide = 'aside-minimize';
+        $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',$trainingCenter->id)->get();
+        $totalVolunteers = count($volunteers);
+        $totalTrainingMasters = TrainingMasterPlacement::where('training_session_id',$trainingSession->id)->where('trainining_center_id',$trainingCenter->id)->count();
+        // $totalCheckedInVolunteers = ;
         /*
+            cordinators
+            checker assign
+        attendance
         Coordinators
         Checkers
         Mater Trainner
         Resource
         Volunteers
         */
-        return view('training_session.center_show',compact('trainingSession','trainingCenter','miniSide'));
+        return view('training_session.center_show',compact('trainingSession','totalTrainingMasters','totalVolunteers','trainingCenter','miniSide'));
     }
 }

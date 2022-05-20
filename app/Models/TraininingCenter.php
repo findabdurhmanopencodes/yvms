@@ -21,6 +21,12 @@ class TraininingCenter extends Model
         return $this->zone->region;
     }
 
+    public function getLogo()
+    {
+
+        return asset('/storage/'. $this->logo) ?? asset('user.png');
+    }
+
     public function capacities()
     {
         return $this->hasMany(TrainingCenterCapacity::class,'trainining_center_id', 'id');
