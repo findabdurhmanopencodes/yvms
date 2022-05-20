@@ -13,6 +13,7 @@ use App\Models\Training;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingSession;
+use App\Models\TrainingSessionTraining;
 use App\Models\TraininingCenter;
 use App\Models\Volunteer;
 use App\Models\Woreda;
@@ -964,6 +965,7 @@ class TrainingSessionController extends Controller
         $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',$trainingCenter->id)->get();
         $totalVolunteers = count($volunteers);
         $totalTrainingMasters = TrainingMasterPlacement::where('training_session_id',$trainingSession->id)->where('trainining_center_id',$trainingCenter->id)->count();
+        $trainings = Training::whereIn('id',TrainingSessionTraining::where('training_session_id',$trainingSession->id)->pluck('id'))->get();
         // $totalCheckedInVolunteers = ;
         /*
             cordinators
@@ -975,6 +977,6 @@ class TrainingSessionController extends Controller
         Resource
         Volunteers
         */
-        return view('training_session.center_show',compact('trainingSession','totalTrainingMasters','totalVolunteers','trainingCenter','miniSide'));
+        return view('training_session.center_show',compact('trainings','trainingSession','totalTrainingMasters','totalVolunteers','trainingCenter','miniSide'));
     }
 }
