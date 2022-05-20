@@ -1,5 +1,16 @@
 @extends('layouts.app')
 @section('title', 'Center base detail')
+@push('css')
+    <style>
+        .select2,
+        .select2-container,
+        .select2-container--default,
+        .select2-container--below {
+            width: 100% !important;
+        }
+
+    </style>
+@endpush
 @section('content')
     <!--begin::Card-->
     <div class="card card-custom gutter-b">
@@ -143,7 +154,67 @@
     </div>
     <!--end::Card-->
 
-
+    <div class="modal fade" id="assignMasterModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="POST"
+                    action="{{ route('session.training_master_placement.store', ['training_session' => Request::route('training_session')]) }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="height: 200px;">
+                        @csrf
+                        <div class="form-group">
+                            <select name="training" id="training" required
+                                class=" @error('training') is-invalid @enderror select2 form-control  form-control select2">
+                                @foreach ($trainings as $training)
+                                    <option
+                                        {{ old('training') != null ? (old('training') == $training->id ? 'selected' : '') : '' }}
+                                        value="{{ $training->id }}">
+                                        {{ $training->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('training')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <span class="form-text text-muted">Please select training center.</span>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="training_center" value="{{ $trainingCenter->id }}">
+                        </div>
+                        <div class="form-group">
+                            <select name="trainner" id="trainner"
+                                class=" @error('trainner') is-invalid @enderror select2 form-control  form-control select2">
+                                <option value="">Select Trainner</option>
+                                @foreach ($freeTrainners as $freeTrainner)
+                                    <option
+                                        {{ old('trainner') != null ? (old('trainner') == $freeTrainner->id ? 'selected' : '') : '' }}
+                                        value="{{ $freeTrainner->id }}">{{ $freeTrainner->user->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('trainner')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <span class="form-text text-muted">Please select trainner.</span>
+                        </div>
+                        {{-- <div class="col-md-2">
+                        </div> --}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold"
+                            data-dismiss="modal">Close</button>
+                        {{-- <button type="button" class="btn btn-primary font-weight-bold">Save changes</button> --}}
+                        <input type="submit" value="Assign Master Trainer" class="btn btn-sm btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!--begin::Card-->
     <div class="card card-custom gutter-b">
         <div class="card-header border-0 py-5">
@@ -154,10 +225,12 @@
                     session</span>
             </h3>
             <div class="card-toolbar">
-                <a href="{{ route('session.training_master_placement.index', ['training_session' => Request::route('training_session')]) }}"
+                <a href="#" data-toggle="modal" data-target="#assignMasterModal"
                     class="btn btn-success font-weight-bolder font-size-sm">
                     <span class="svg-icon svg-icon-md svg-icon-white">
-                    </span>Assign master trainners</a>
+                    </span>
+                    Assign master trainners
+                </a>
             </div>
         </div>
         <div class="card-body pt-0">
@@ -200,3 +273,13 @@
     <!--end::Card-->
 
 @endsection
+@push('js')
+    <script>
+        $('.select2').select2({
+            allowClear: true
+        });
+        @if (old('training') != null)
+            $('#assignMasterModal').modal().show()
+        @endif
+    </script>
+@endpush
