@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Http\Requests\StoreAttendanceRequest;
 use App\Http\Requests\UpdateAttendanceRequest;
+use App\Models\Volunteer;
 
 class AttendanceController extends Controller
 {
@@ -15,7 +16,8 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        //
+        $volunteers = Volunteer::whereRelation('status','acceptance_status',5)->paginate(10);
+        return view('attendance.index',compact('volunteers'));
     }
 
     /**
@@ -47,7 +49,6 @@ class AttendanceController extends Controller
      */
     public function show(Attendance $attendance)
     {
-        //
     }
 
     /**

@@ -29,19 +29,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call([
-        //     PermissionSeeder::class,
-        //     RoleSeeder::class,
-            // BaseSeeder::class,
-        //     // FakeDataSeeder::class,
-        // ]);
         $this->call([
-            // PermissionSeeder::class,
-            // RoleSeeder::class,
+            PermissionSeeder::class,
+            RoleSeeder::class,
             // BaseSeeder::class,
-            //     // FakeDataSeeder::class,
+            // FakeDataSeeder::class,
         ]);
-        $super_admin=User::create(
+        $superUser = User::create(
             [
                 'first_name' => 'Super',
                 'father_name' => 'Admin',
@@ -54,17 +48,14 @@ class DatabaseSeeder extends Seeder
                 'remember_token' => Str::random(10),
             ]
         );
-       $super_admin->assignRole('super-admin');
-        // dd('stop');
-
-
+        $superUser->assignRole('super-admin');
         TrainingSession::create([
             'start_date' => '2022-05-06',
-            'end_date' => '2022-05-16',
+            'end_date' => '2022-06-07',
             'moto' => 'Kindness for living together',
-            'registration_start_date' => '2022-05-8',
-            'registration_dead_line' => '2022-05-25',
-            'quantity' => 2000,
+            'registration_start_date' => '2022-05-01',
+            'registration_dead_line' => '2022-06-25',
+            'quantity' => 800,
             'status' => 0,
         ]);
 
@@ -140,19 +131,7 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
-
-        $this->call([
-            // TrainingSessionSeeder::class,
-            // VolunteerSeeder::class,
-            // RegionSeeder::class,
-            // ZoneSeeder::class,
-            // WoredaSeeder::class,
-            // EducationalLevelSeeder::class,
-            // FeildOfStudySeeder::class,
-            // TraininingCenterSeeder::class
-        ]);
-
-        $this->approveAllVolunteers();
+        // $this->approveAllVolunteers();
     }
     public function approveAllVolunteers()
     {

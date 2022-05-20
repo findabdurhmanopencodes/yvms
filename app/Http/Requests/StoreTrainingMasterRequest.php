@@ -13,7 +13,7 @@ class StoreTrainingMasterRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,13 @@ class StoreTrainingMasterRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'first_name' => ['required', 'string', 'max:255', 'min:3'],
+            'father_name' => ['required', 'string', 'max:255', 'min:3'],
+            'grand_father_name' => ['required', 'string', 'max:255', 'min:3'],
+            'dob' => ['required', 'date_format:d/m/Y'],
+            'gender' => ['required', 'string', 'in:M,F'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'bank_account' => ['required','string','min:13'],
         ];
     }
 }

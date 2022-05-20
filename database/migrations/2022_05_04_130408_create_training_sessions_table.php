@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('moto')->nullable();
             $table->date('registration_start_date');
             $table->date('registration_dead_line');
+            $table->date('training_start_date')->nullable();
+            $table->date('training_end_date')->nullable();
             $table->integer('quantity');
             $table->tinyInteger('status');
             $table->timestamps();

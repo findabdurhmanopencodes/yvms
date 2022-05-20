@@ -33,4 +33,5 @@ class TraininingCenter extends Model
     {
         return $this->belongsToMany(Resource::class,'resource_trainining')->withPivot('current_balance','initial_balance');
     }
+
 }

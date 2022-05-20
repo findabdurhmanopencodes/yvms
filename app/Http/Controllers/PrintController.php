@@ -17,6 +17,6 @@ class PrintController extends Controller
         $volunteers = Volunteer::whereRelation('User', 'email_verified_at', null)->where('training_session_id', $trainingSession->id)->get();
         $date = DateTimeFactory::fromDateTime(new Carbon('now'))->format('d/m/Y h:i:s');
         $pdf = Pdf::loadView('pdf.unverified_volunteer_email', compact('volunteers','date'));
-        return $pdf->download('unverified_user_'.$trainingSession->moto.'pdf');
+        return $pdf->download('unverified_user_'.$trainingSession->moto.'.pdf');
     }
 }

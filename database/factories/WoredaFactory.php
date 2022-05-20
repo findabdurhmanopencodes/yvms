@@ -18,7 +18,7 @@ class WoredaFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name(),
+            'name' => $this->faker->firstName(),
             'code' => $this->faker->countryCode(),
             'qoutaInpercent' => 0.25,
             'zone_id' => $this->faker->unique(true)->numberBetween(1,Zone::count()),
