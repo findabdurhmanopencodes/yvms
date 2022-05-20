@@ -210,12 +210,22 @@
                                         <span class="menu-text">Applicants</span>
                                     </a>
                                 </li> --}}
+
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.placement.index') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.placement.index', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
                                         <i class="menu-icon flaticon-users"></i>
                                         <span class="menu-text">Placment Result</span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.schedule') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.schedule', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon flaticon-calendar"></i>
+                                        <span class="menu-text">Training Schedule</span>
                                     </a>
                                 </li>
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_master_placement') === 0 ? 'menu-item-active' : '' }}"
@@ -233,14 +243,6 @@
                                         class="menu-link">
                                         <i class="menu-icon flaticon-users"></i>
                                         <span class="menu-text">Regional Quota</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.schedule') === 0 ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('session.schedule', ['training_session' => Request::route('training_session')]) }}"
-                                        class="menu-link">
-                                        <i class="menu-icon flaticon-calendar"></i>
-                                        <span class="menu-text">Training Schedule</span>
                                     </a>
                                 </li>
 
@@ -376,7 +378,6 @@
 
                                     </ul>
                                 </div>
-
                             </li>
 
                             <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'resource') === 0 ? 'menu-item-open' : '' }}"

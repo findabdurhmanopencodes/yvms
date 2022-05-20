@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class TraininingCenter extends Model
 {
@@ -20,11 +22,21 @@ class TraininingCenter extends Model
     {
         return $this->zone->region;
     }
+    /**
+     * Get the photo that owns the TraininingCenter
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function photo(): BelongsTo
+    {
+        return $this->belongsTo(File::class,'logo','id');
+    }
 
     public function getLogo()
     {
-
-        return asset('/storage/'. $this->logo) ?? asset('user.png');
+        return $this->logo();
+        dd($this->logo);
+        // return $this->logo?->; ?? asset('user.png');
     }
 
     public function capacities()

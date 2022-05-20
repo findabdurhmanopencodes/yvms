@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\File;
 use App\Models\Zone;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,7 +17,7 @@ return new class extends Migration
     {
         Schema::create('trainining_centers', function (Blueprint $table) {
             $table->id();
-            $table->string('logo')->nullable();
+            $table->foreignIdFor(File::class,'logo')->nullable();
             $table->string('name');
             $table->string('decription')->nullable();
             $table->string('code')->nullable();

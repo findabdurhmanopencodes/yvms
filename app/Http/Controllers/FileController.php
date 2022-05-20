@@ -16,11 +16,15 @@ class FileController extends Controller
 
     }
 
-    public static function fileUpload($file)
+    // public function delete()
+    // {
+    //     return
+    // }
+    public static function fileUpload($file,$path = 'misc')
     {
         $fileModel = new File;
         $fileName = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('uploads/bsc_document', $fileName, 'public');
+        $filePath = $file->storeAs($path, $fileName, 'public');
         $fileModel->name = time() . '_' . $file->getClientOriginalName();
         $fileModel->file_path = '/storage/' . $filePath;
         $fileModel->save();

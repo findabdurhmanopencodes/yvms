@@ -8,7 +8,7 @@
                 <!--begin: Pic-->
                 <div class="flex-shrink-0 mr-7 mt-lg-0 mt-3">
                     <div class="symbol symbol-50 symbol-lg-120">
-                        <img alt="Pic" src="{{ $trainingCenter->getLogo() }}" />
+                        <img alt="Pic" src="{{ $trainingCenter->photo->file_path }}" />
                     </div>
                     <div class="symbol symbol-50 symbol-lg-120 symbol-primary d-none">
                         <span class="font-size-h3 symbol-label font-weight-boldest">{{ $trainingCenter->code }}</span>
@@ -63,13 +63,13 @@
                             <div class="d-flex align-items-center mr-10">
                                 <div class="mr-6">
                                     <div class="font-weight-bold mb-2">Start Date</div>
-                                    <span class="btn btn-sm btn-text btn-light-primary text-uppercase font-weight-bold">07
-                                        May, 2020</span>
+                                    <span
+                                        class="btn btn-sm btn-text btn-light-primary text-uppercase font-weight-bold">{{ Request::route('training_session')->startDateET() }}</span>
                                 </div>
                                 <div class="">
                                     <div class="font-weight-bold mb-2">Due Date</div>
-                                    <span class="btn btn-sm btn-text btn-light-danger text-uppercase font-weight-bold">10
-                                        June, 2021</span>
+                                    <span
+                                        class="btn btn-sm btn-text btn-light-primary text-uppercase font-weight-bold">{{ Request::route('training_session')->endDateET() }}</span>
                                 </div>
                             </div>
                             <div class="flex-grow-1 flex-shrink-0 w-150px w-xl-300px mt-4 mt-sm-0">
@@ -154,56 +154,44 @@
                     session</span>
             </h3>
             <div class="card-toolbar">
-                <a href="{{ route('session.training_master_placement.index', ['training_session'=>Request::route('training_session')]) }}" class="btn btn-success font-weight-bolder font-size-sm">
-                <span class="svg-icon svg-icon-md svg-icon-white">
-                </span>Add master trainners</a>
+                <a href="{{ route('session.training_master_placement.index', ['training_session' => Request::route('training_session')]) }}"
+                    class="btn btn-success font-weight-bolder font-size-sm">
+                    <span class="svg-icon svg-icon-md svg-icon-white">
+                    </span>Assign master trainners</a>
             </div>
         </div>
         <div class="card-body pt-0">
-            <table width="100%" class="table table-striped ">
+            <table width="100%" class="table">
                 <thead>
                     </tr>
-                        <th> # </th>
-                        <th> Training </th>
-                        <th> Trainner </th>
+                    <th> # </th>
+                    <th> Training </th>
+                    <th> Trainner </th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($trainings as $key => $training)
+                        @php
+                            $trainner = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->master->user;
+                        @endphp
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>
                                 {{ $training->name }}
                             </td>
                             <td>
-                                {{ $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->master->user->name() ?? 'Assign Trainner' }}
+                                <span
+                                    class="btn {{ $trainner ? 'btn-light-primary' : 'btn-light-danger' }} btn-sm font-weight-bold btn-upper btn-text">
+                                    {{ $trainner?->name() ?? 'Assign Trainner' }}
+                                </span>
                             </td>
                         </tr>
                     @endforeach
-                    {{-- @foreach ($trainingMasterPlacements as $key => $trainingMasterPlacement)
-                        <tr>
-                            <td>{{ $key + 1 }}</td>
-                            <td>
-                                <a href="{{ route('training_master.show', ['training_master' => $trainingMasterPlacement->master->id]) }}">
-                                    {{ $trainingMasterPlacement->master->user->name() }}
-                                </a>
-                            </td>
-                            <td>
-                                {{$trainingMasterPlacement->training->name}}
-                            </td>
-                            <td>
-                                <a href="{{ route('TrainingCenter.show', ['TrainingCenter' => $trainingMasterPlacement->center->id]) }}">
-                                    {{ $trainingMasterPlacement->center->name }}
-                                </a>
-                            </td>
-                            <td>
-                                <a href="#" onclick="confirmDeleteMasterPlacement({{ $trainingMasterPlacement->id }})"
-                                    class="btn btn-icon">
-                                    <span class="fa fa-trash"></span>
-                                </a>
-                            </td>
+                    @if (count($trainings) <= 0)
+                        <tr class="text-center">
+                            <td colspan="3" style="">No training assigned</td>
                         </tr>
-                    @endforeach --}}
+                    @endif
                 </tbody>
             </table>
             <!--begin: Items-->

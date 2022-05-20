@@ -72,8 +72,8 @@ class TraininingCenterController extends Controller
             'name' => 'min:2|required|string|unique:trainining_centers,name',
             'code' => 'required|string|unique:trainining_centers,code',
         ]);
-        $path = $request->file('logo')->store('Training Centers');
-        $TrainingCenter = TraininingCenter::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'logo' => $path, 'zone_id' => $request->get('zone_id')]);
+        $logoFile = FileController::fileUpload($request->logo,'training center logos/')->id;
+        $TrainingCenter = TraininingCenter::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'logo' => $logoFile, 'zone_id' => $request->get('zone_id')]);
 
         return redirect()->route('TrainingCenter.index')->with('message', 'Training Center created successfully');
     }
@@ -128,6 +128,7 @@ class TraininingCenterController extends Controller
             'name' => 'min:2|required|string|unique:trainining_centers,name,' . $traininingCenter,
             'code' => 'required|string|unique:trainining_centers,code,' . $traininingCenter
         ]);
+
         $TrainingCenter->update($data);
         return redirect()->route('TrainingCenter.index')->with('message', 'Training Center updated successfully');
     }

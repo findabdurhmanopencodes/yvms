@@ -48,6 +48,7 @@ class ScheduleController extends Controller
             array_push($events, $event);
         }
 
+
         $trainings = Training::all();
         return view('schedule.index', compact('trainingSession', 'trainings', 'trainingSchedules', 'events'));
     }
@@ -198,17 +199,20 @@ class ScheduleController extends Controller
                     ]);
                 }
             }
-        }
-        $trainingSessionTraining = TrainingSessionTraining::where('training_id', $training->id)->where('training_session_id', $trainingSession->id)->first();
-        if ($trainingSessionTraining == null) {
-            $trainingSessionTraining = TrainingSessionTraining::create([
-                'training_session_id' => $trainingSession->id,
-                'training_id' => $training->id,
-            ]);
-            TrainingSchedule::create([
-                'training_session_training_id' => $trainingSessionTraining->id,
-                'schedule_id' => $schedule->id,
-            ]);
+            $trainingSessionTraining = TrainingSessionTraining::where('training_id', $training->id)->where('training_session_id', $trainingSession->id)->latest()->first();
+            if (!$trainingSessionTraining) {
+                $trainingSessionTraining = TrainingSessionTraining::create([
+                    'training_session_id' => $trainingSession->id,
+                    'training_id' => $training->id,
+                ]);
+            }
+            $trainingSchedule = TrainingSchedule::where('training_session_training_id', $trainingSessionTraining->id)->where('schedule_id', $schedule->id)->latest()->first();
+            if ($trainingSchedule == null) {
+                TrainingSchedule::create([
+                    'training_session_training_id' => $trainingSessionTraining->id,
+                    'schedule_id' => $schedule->id,
+                ]);
+            }
         }
         return redirect()->back()->with('message', 'Schedule created successfully');
     }
