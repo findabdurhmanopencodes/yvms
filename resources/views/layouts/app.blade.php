@@ -34,7 +34,7 @@
 <!--begin::Body-->
 
 <body id="kt_body"
-    class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
+    class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading {{$miniSide??''}}">
 
     <!--begin::Main-->
     <!--begin::Header Mobile-->

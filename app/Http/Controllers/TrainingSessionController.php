@@ -959,6 +959,14 @@ class TrainingSessionController extends Controller
 
     public function trainingCenterShow(TrainingSession $trainingSession,TraininingCenter $trainingCenter)
     {
-        
+        $miniSide = 'aside-minimize';
+        /*
+        Coordinators
+        Checkers
+        Mater Trainner
+        Resource
+        Volunteers
+        */
+        return view('training_session.center_show',compact('trainingSession','trainingCenter','miniSide'));
     }
 }
