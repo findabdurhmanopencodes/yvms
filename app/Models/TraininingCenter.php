@@ -40,4 +40,3 @@ class TraininingCenter extends Model
         return $this->belongsToMany(Resource::class,'resource_trainining','trainining_center_id','resource_id')->withPivot('current_balance','initial_balance');
     }
 }
-`
