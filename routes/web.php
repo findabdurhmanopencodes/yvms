@@ -195,7 +195,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('training-center/assign-checker', [TraininingCenterController::class, 'assignChecker'])->name('TrainingCenter.assignChecker');
     Route::get('training-center/remove-checker{checker_id}', [TraininingCenterController::class, 'removeChecker'])->name('TrainingCenter.removeChecker');
     Route::resource('TrainingCenter', TraininingCenterController::class);
-    Route::post('search/applicant', [IdGenerateController::class, 'searchApplciant'])->name('search.applicant');
+    Route::post('{training_center}/search/applicant', [IdGenerateController::class, 'searchApplciant'])->name('search.applicant');
 
     Route::get('/dashboard', function () {
         if (count(TrainingSession::availableSession()) > 0) {

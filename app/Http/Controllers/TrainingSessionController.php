@@ -630,15 +630,6 @@ class TrainingSessionController extends Controller
                 }
             }
 
-            // $ss = [];
-
-            // foreach ($accepted_arr as $key => $value) {
-            //     if ($value->woreda->zone->region->id == 4) {
-            //         array_push($ss, $value->woreda->zone->region->id);
-            //     }
-            // }
-            // dd($ss);
-
             $a = [];
             $b = [];
             $left_arr = [];
@@ -705,97 +696,6 @@ class TrainingSessionController extends Controller
                     }
                 }
             }
-
-
-            // if (sizeof($accepted_arr) > $train_session) {
-            // sort($accepted_arr);
-            // $new_slice_arr = array_slice($accepted_arr, 0, $train_session, true);
-            // foreach ($new_slice_arr as $key => $value) {
-            //     array_push($a, $value);
-            // }
-            // } else if (sizeof($accepted_arr) < $train_session) {
-            //     sort($accepted_arr);
-            //     foreach ($accepted_arr as $key => $value) {
-            //         $group_reg[$value['woreda_id']][] = $value;
-            //     }
-
-            //     foreach ($group_reg as $key => $val) {
-            //         $wore_quantity = Qouta::where('training_session_id', $id)->where('quotable_type',Woreda::class)->where('quotable_id',$key)->get()[0]->quantity;
-
-            //         if (sizeof($val) < $wore_quantity) {
-            //             foreach (Woreda::where('id',$key)->get()[0]->zone->woredas as $key => $zone) {
-            //                 foreach ($zone->applicants as $key => $zon_app) {
-
-            //                     if (!in_array($zon_app, $accepted_arr)) {
-            //                         array_push($accepted_arr, $zon_app);
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     }
-
-            //     foreach ($accepted_arr as $key => $value) {
-            //         $group_zon[$value['woreda_id']][] = $value;
-            //     }
-
-            //     foreach ($group_zon as $key => $val) {
-            //         $wore_quantity = Qouta::where('training_session_id', $id)->where('quotable_type',Woreda::class)->where('quotable_id',$key)->get()[0]->quantity;
-
-            //         if (sizeof($val) < $wore_quantity) {
-            //             foreach (Woreda::where('id',$key)->get()[0]->zone->region->zones as $key => $zone) {
-            //                 foreach ($zone->woredas as $key => $wore) {
-            //                     foreach ($wore->applicants as $key => $wor_app) {
-
-            //                         if (!in_array($wor_app, $accepted_arr)) {
-            //                             array_push($accepted_arr, $wor_app);
-            //                         }
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     }
-
-
-            //     if (sizeof($accepted_arr) < $train_session) {
-            //         $no_volunteer = Volunteer::all();
-            //         if ($train_session <= count($no_volunteer)) {
-            //             $dif_arr = $train_session - sizeof($accepted_arr);
-            //             $merge_arr = array_diff($arr, $accepted_arr);
-
-            //             foreach ($merge_arr as $value) {
-            //                 array_push($b, $value);
-            //             }
-            //             sort($b);
-            //             $new_slice_merge_arr = array_slice($b, 0, $dif_arr);
-            //             $merged_array = array_merge($accepted_arr, $new_slice_merge_arr);
-
-            //             foreach ($merged_array as $key => $value) {
-            //                 array_push($a, $value);
-            //             }
-            //         }else{
-            //             foreach ($accepted_arr as $key => $value) {
-            //                 array_push($a, $value);
-            //             }
-            //         }
-            //     }
-
-            //     elseif(sizeof($accepted_arr) == $train_session){
-            //         foreach ($accepted_arr as $key => $value) {
-            //             array_push($a, $value);
-            //         }
-            //     }else{
-            //         sort($accepted_arr);
-            //         $new_slice_arr = array_slice($accepted_arr, 0, $train_session);
-            //         foreach ($new_slice_arr as $key => $value) {
-            //             array_push($a, $value);
-            //         }
-            //     }
-
-            // } else {
-            //     foreach ($accepted_arr as $key => $value) {
-            //         array_push($a, $accepted_arr);
-            //     }
-            // }
             $approved_applicants = ApprovedApplicant::where('training_session_id', $id)->get();
 
             foreach ($approved_applicants as $key => $app_vol) {

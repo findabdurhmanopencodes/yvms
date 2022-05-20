@@ -111,6 +111,7 @@
         var myDesign;
         $('#print_btn').on('click', function(event){
             var applicants = @json($applicants);
+            console.log(applicants);
             applicants.forEach((applicant, key) => {
                 myDesign = document.createElement("div");
                 myDesign.setAttribute('id', 'myDesign'+key);

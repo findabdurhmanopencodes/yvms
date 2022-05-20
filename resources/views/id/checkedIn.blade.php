@@ -14,6 +14,7 @@
 <form method="POST" action="{{ route('session.training_center.generate', ['training_session' => Request::route('training_session'),'training_center'=>Request::route('training_center')]) }}">
     @csrf
     <div class="card card-custom">
+    <input type="hidden" value="{{ $training_center_id }}" id="training_center_id">
     <div class="card-header flex-wrap  pt-6 ">
         <div class="card-title mr-0">
             {{-- <h3 class="card-label">Checked In Applicant List</h3> --}}
@@ -25,8 +26,8 @@
         </div>
         <div class="card-toolbar">
             <button type="submit" class="btn btn-primary font-weight-bolder" >
-                <span class="svg-icon svg-icon-md">
-                    <i class="flaticon2-print"></i>Print ID
+                <span class="svg-icon svg-icon-md" id="print_all">
+                    <i class="flaticon2-print" id="i_text"></i>Print All ID
                 </span>
             </button>
         </div>
@@ -44,7 +45,7 @@
                 <tbody>
                     @foreach ($applicants as $key => $applicant)
                         <tr>
-                            <td><input type="checkbox" name="applicant[]" value="{{ $applicant->id }}"/></td>
+                            <td><input type="checkbox" name="applicant[]" value="{{ $applicant->id }}" id="checkbox"/></td>
                             <td>
                                 {{ $applicant->id }}
                             </td>
@@ -70,6 +71,19 @@
     <script>
         var body = $('#search_table tbody').html();
         var table = $("#search_card").html();
+        var i = document.createElement('i');
+        i.classList.add("flaticon2-print");
+        $('#checkbox').change(function() {
+            if(this.checked) {
+                $('#print_all').html('');
+                $('#print_all').append(i);
+                $('#print_all').append('Print ID')
+            }else{
+                $('#print_all').html('');
+                $('#print_all').append(i);
+                $('#print_all').append('Print All ID')
+            }
+        });
         function getTableCell(c){
             return `<td>${c}</td>`;
         }
@@ -77,8 +91,9 @@
             if ($('#search').val()) {
                 $.ajax({
                 type: "POST",
-                url: "/search/applicant",
+                url: '/'+{{ $training_center_id }}+"/search/applicant",
                 data: {
+                    'training_center_id': {{ $training_center_id }},
                     'search': $('#search').val(),
                     "_token": $('meta[name="csrf-token"]').attr('content'),
                 },

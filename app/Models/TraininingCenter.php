@@ -41,4 +41,3 @@ class TraininingCenter extends Model
     }
 
 }
-`
