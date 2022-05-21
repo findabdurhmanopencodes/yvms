@@ -224,7 +224,7 @@
     </form>
     <!--begin::Card-->
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-6">
             <div class="card card-custom gutter-b">
                 <div class="card-header border-0 py-5">
                     <h3 class="card-title align-items-start flex-column">
@@ -292,14 +292,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card card-custom gutter-b">
                 <div class="card-header border-0 py-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label font-weight-bolder text-dark">Checker</span>
+                        <span class="card-label font-weight-bolder text-dark">Assign Other users</span>
                     </h3>
                     <div class="card-toolbar">
-
                     </div>
                 </div>
                 <div class="card-body pt-1">
@@ -307,37 +306,73 @@
                         action="{{ route('session.training_center.assign_checker', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
                         method="POST">
                         @csrf
-                        <div class="form-group">
-                            <select name="checkerUser" id="checkerUser" required
-                                class=" @error('checkerUser') is-invalid @enderror select2 form-control  form-control select2">
-                                @foreach ($checkerUsers as $checkerUser)
-                                    <option
-                                        {{ old('checkerUser') != null ? (old('checkerUser') == $checkerUser->id ? 'selected' : '') : '' }}
-                                        value="{{ $checkerUser->id }}">
-                                        {{ $checkerUser->name }}
-                                    </option>
-                                @endforeach
+                        <div class="row">
+                            <div class="form-group col-md-8">
+                                <select name="checkerUser" id="checkerUser" required
+                                    class=" @error('checkerUser') is-invalid @enderror select2 form-control  form-control select2">
+                                    @foreach ($checkerUsers as $checkerUser)
+                                        <option
+                                            {{ old('checkerUser') != null ? (old('checkerUser') == $checkerUser->id ? 'selected' : '') : '' }}
+                                            value="{{ $checkerUser->id }}">
+                                            {{ $checkerUser->name }}
+                                        </option>
+                                    @endforeach
 
-                                @if (count($checkerUsers) <= 0)
-                                    <option>
-                                        Please add checker users
-                                    </option>
-                                @endif
-                            </select>
-                            @error('checkerUser')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            <span class="form-text text-muted">Please select Checker User center.</span>
+                                    @if (count($checkerUsers) <= 0)
+                                        <option>
+                                            Please add checker users
+                                        </option>
+                                    @endif
+                                </select>
+                                @error('checkerUser')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <span class="form-text text-muted">Please select Checker User center.</span>
+                            </div>
+                            <div class="form-group col-md-3 ml-auto">
+                                <input type="submit" value="Assign checkers"
+                                    class="btn btn-success float-right font-weight-bolder font-size-sm">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input type="submit" value="Assign checkers"
-                                class="btn btn-success float-right font-weight-bolder font-size-sm">
+                    </form>
+                    <form id="centerCoordinatorForm"
+                        action="{{ route('session.training_center.assign_checker', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+                        method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="form-group col-md-8">
+                                <select name="centerCoordinator" id="centerCoordinator" required
+                                    class=" @error('centerCoordinator') is-invalid @enderror select2 form-control  form-control select2">
+                                    @foreach ($centerCoordinators as $centerCoordinator)
+                                        <option
+                                            {{ old('centerCoordinator') != null ? (old('centerCoordinator') == $centerCoordinator->id ? 'selected' : '') : '' }}
+                                            value="{{ $centerCoordinator->id }}">
+                                            {{ $centerCoordinator->name }}
+                                        </option>
+                                    @endforeach
+
+                                    @if (count($centerCoordinators) <= 0)
+                                        <option>
+                                            Please add center coordinator
+                                        </option>
+                                    @endif
+                                </select>
+                                @error('centercenterCoordinator')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <span class="form-text text-muted">Please select Checker User center.</span>
+                            </div>
+                            <div class="form-group col-md-3 ml-auto">
+                                <input type="submit" value="Assign Coordinator"
+                                    class="btn btn-success float-right font-weight-bolder font-size-sm">
+                            </div>
                         </div>
                     </form>
                     <table width="100%" class="table">
                         <thead>
                             </tr>
                             <th> Name </th>
+                            <th> Role </th>
                             <th> Action </th>
                             </tr>
                         </thead>

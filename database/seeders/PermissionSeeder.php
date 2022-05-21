@@ -186,6 +186,6 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'Zone.validate.form']);
 
 
-
+        Permission::create(['name'=>'center-coordinator']);
     }
 }
