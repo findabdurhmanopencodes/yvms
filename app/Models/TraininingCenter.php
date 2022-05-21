@@ -29,19 +29,18 @@ class TraininingCenter extends Model
      */
     public function photo(): BelongsTo
     {
-        return $this->belongsTo(File::class,'logo','id');
+        return $this->belongsTo(File::class, 'logo', 'id');
     }
+
 
     public function getLogo()
     {
-        return $this->logo();
-        dd($this->logo);
-        // return $this->logo?->; ?? asset('user.png');
+        return $this->photo?->file_path ?? asset('user.png');
     }
 
     public function capacities()
     {
-        return $this->hasMany(TrainingCenterCapacity::class,'trainining_center_id', 'id');
+        return $this->hasMany(TrainingCenterCapacity::class, 'trainining_center_id', 'id');
     }
     public function checkers()
     {
@@ -49,7 +48,6 @@ class TraininingCenter extends Model
     }
     public function resources()
     {
-        return $this->belongsToMany(Resource::class,'resource_trainining')->withPivot('current_balance','initial_balance');
+        return $this->belongsToMany(Resource::class, 'resource_trainining', 'trainining_center_id', 'resource_id')->withPivot('current_balance', 'initial_balance');
     }
-
 }

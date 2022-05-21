@@ -6,6 +6,7 @@ use App\Http\Controllers\DisablityController;
 use App\Http\Controllers\FeildOfStudyController;
 use App\Http\Controllers\EducationalLevelController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\IdGenerateController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PrintController;
 use App\Http\Controllers\QoutaController;
@@ -28,6 +29,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\ZoneController;
+
+use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\PayrollSheetController;
+
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
 use App\Models\Training;
@@ -36,6 +41,8 @@ use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSchedule;
 use App\Models\TrainingSession;
+use App\Models\Payroll;
+use App\Models\PayrollSheet;
 use App\Models\TraininingCenter;
 use App\Models\User;
 use App\Models\Volunteer;
@@ -95,6 +102,8 @@ Route::post('application_form/apply', [VolunteerController::class, 'apply'])->na
 Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
 
 Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verified'], 'as' => 'session.'], function () {
+    Route::any('/volunteer/all', [VolunteerController::class, 'volunteerAll'])->name('volunteer.all');
+    Route::get('/volunteer/{volunteer}/detail', [VolunteerController::class, 'volunteerDetail'])->name('volunteer.detail');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/quota', [TrainingSessionController::class, 'showQuota'])->name('training_session.quota');
     Route::any('volunteer/', [VolunteerController::class, 'index'])->name('volunteer.index');
@@ -128,12 +137,23 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('training_center', [TrainingSessionController::class, 'trainingCenterIndex'])->name('training_center.index');
     Route::get('training_center/{training_center}', [TrainingSessionController::class, 'trainingCenterShow'])->name('training_center.show');
     Route::post('training_center/{training_center}/assign_checker', [TraininingCenterController::class, 'assignChecker'])->name('training_center.assign_checker');
+    Route::post('resource/assign', [TrainingSessionController::class, 'resourceAssignToTrainingCenter'])->name('resource.assign');
+    Route::post('resource/update', [TrainingSessionController::class, 'updateResourceAssignToTrainingCenter '])->name('resource.update');
+    Route::get('/resources', [TrainingSessionController::class, 'allResource'])->name('resource.all');
+    Route::get('/resource/{resource}', [TrainingSessionController::class, 'showResource'])->name('resource.show');
+    Route::get('/training-center/{training_center_id}/resource-assign', [TraininingCenterController::class, 'giveResource'])->name('resource.assign.volunteer');
+    Route::get('check-in/', [TraininingCenterController::class, 'checkInView'])->name('TrainingCenter.CheckIn');
+    Route::get('result/', [TraininingCenterController::class, 'result'])->name('result');
+    Route::get('/check-in/action/{id}', [TraininingCenterController::class, 'checkIn'])->name('TrainingCenter.checked');
+    Route::any('/check-in/reports/', [TraininingCenterController::class, 'indexChecking'])->name('TrainingCenter.index.checked');
+    Route::get('training_center',[TrainingSessionController::class,'trainingCenterIndex'])->name('training_center.index');
+    Route::get('training_center/{training_center}',[TrainingSessionController::class,'trainingCenterShow'])->name('training_center.show');
+    Route::post('{training_center}/id/print', [IdGenerateController::class, 'idGenerate'])->name('training_center.generate');
+    Route::get('{training_center}/checkedIn/list', [IdGenerateController::class, 'checkedInList'])->name('training_center.checkedIn_list');
+
 });
 
-Route::get('check-in/', [TraininingCenterController::class, 'checkInView'])->name('TrainingCenter.CheckIn');
-Route::get('result/', [TraininingCenterController::class, 'result'])->name('result');
-Route::get('/check-in/action/{id}', [TraininingCenterController::class, 'checkIn'])->name('TrainingCenter.checked');
-Route::any('/check-in/reports/', [TraininingCenterController::class, 'indexChecking'])->name('TrainingCenter.index.checked');
+
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
 Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
@@ -166,13 +186,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('training_session', TrainingSessionController::class);
     Route::resource('qouta', QoutaController::class);
     Route::resource('user', UserController::class);
+
+    Route::resource('payroll', PayrollController::class);
+    Route::resource('payrollSheet', PayrollSheetController::class);
+
     Route::resource('region', RegionController::class);
     Route::resource('zone', ZoneController::class);
     Route::resource('woreda', WoredaController::class);
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
     Route::resource('resource', ResourceController::class);
-    Route::post('resource/assign', [ResourceController::class, 'assign'])->name('resource.assign');
     Route::get('role/{role}/permission', [RoleController::class, 'permissions'])->name('role.permission.index');
     Route::post('role/{role}/permission', [RoleController::class, 'givePermission'])->name('role.permission.give');
     Route::delete('role/{role}/permission/{permission}', [RoleController::class, 'revokePermission'])->name('role.permission.revoke');
@@ -183,12 +206,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('training-center/remove-checker{checker_id}', [TraininingCenterController::class, 'removeChecker'])->name('TrainingCenter.removeChecker');
     Route::resource('TrainingCenter', TraininingCenterController::class);
+    Route::post('{training_center}/search/applicant', [IdGenerateController::class, 'searchApplciant'])->name('search.applicant');
 
     Route::get('/dashboard', function () {
         if (count(TrainingSession::availableSession()) > 0) {
             $trainingSession = TrainingSession::availableSession()[0];
             return redirect(route('session.dashboard', ['training_session' => $trainingSession->id]));
         }
+        return 'No active training session found!';
     })->name('dashboard');
 
     Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');

@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table width="100%" class="table table-striped ">
+            <table width="100%" class="table ">
                 <thead>
                     </tr>
                         <th> # </th>

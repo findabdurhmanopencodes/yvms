@@ -19,7 +19,7 @@
                 <!--begin: Pic-->
                 <div class="flex-shrink-0 mr-7 mt-lg-0 mt-3">
                     <div class="symbol symbol-50 symbol-lg-120">
-                        <img alt="Pic" src="{{ $trainingCenter->photo->file_path }}" />
+                        <img alt="Pic" src="{{ $trainingCenter->getLogo() }}" />
                     </div>
                     <div class="symbol symbol-50 symbol-lg-120 symbol-primary d-none">
                         <span class="font-size-h3 symbol-label font-weight-boldest">{{ $trainingCenter->code }}</span>
@@ -58,11 +58,12 @@
                             <!--end::Contacts-->
                         </div>
                         <div class="my-lg-0 my-1">
-                            <a href="#" class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3">
+                            <a href="{{ route('session.training_center.checkedIn_list', ['training_session'=>Request::route('training_session')->id,'training_center'=>$trainingCenter->id]) }}"
+                                class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3">
                                 <i class="fa fa-users"></i>
-                                Checked In Volunteers
+                                Checked In Volunteers List
                             </a>
-                            {{-- <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">New Task</a> --}}
+                            <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">Checked In</a>
                         </div>
                     </div>
                     <!--end: Title-->
@@ -122,8 +123,9 @@
                     <div class="d-flex flex-column text-dark-75">
                         <span class="font-weight-bolder font-size-sm">Checked In Volunteers</span>
                         <span class="font-weight-bolder font-size-h5">
-                            <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span>
+                            <span class="text-dark-50 font-weight-bold"></span>{{ count($checkedInVolunteers) }}</span>
                     </div>
+
                 </div>
                 <!--end: Item-->
                 <!--begin: Item-->

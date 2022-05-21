@@ -79,20 +79,20 @@
                 template: function(row) {
                     var resourceId = row.id;
                     return '\
-                                                    <div class="d-flex">\
-                                                                <a href="javascript:;" onclick="deleteresource(' +
+                                                        <div class="d-flex">\
+                                                                    <a href="javascript:;" onclick="deleteresource(' +
                         resourceId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
-                                                                    <i class="far fa-trash"></i>\
-                                                                </a>\
-                                                                \
-                                                              \
-                                                                </a>\
-                                                                <a href="/resource/' + resourceId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
-                                                                    <i class="far fa-pen"></i>\
-                                                                </a>\
-                                                                \
-                                                            </div>\
-                                                            ';
+                                                                        <i class="far fa-trash"></i>\
+                                                                    </a>\
+                                                                    \
+                                                                  \
+                                                                    </a>\
+                                                                    <a href="/resource/' + resourceId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                                                                        <i class="far fa-pen"></i>\
+                                                                    </a>\
+                                                                    \
+                                                                </div>\
+                                                                ';
                 },
             }
         ]
@@ -102,7 +102,7 @@
 
 <div id="assignResource" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="{{ route('resource.assign') }}" method="post">
+        <form action="{{ route('session.resource.assign',['training_session'=>]) }}" method="post">
             @csrf
             <input type="hidden" name="resource_id" value="{{ $resource->id }}">
             <input type="hidden" id="training_center_id" name="training_center_id">
@@ -144,10 +144,10 @@
                         {{ $trainingCenter->name }} ({{ $trainingCenter->code }})
                         <div class="list-group-item d-flex justify-content-md-between">
                             <span
-                                class="badge badge-primary badge-pill">{{ $trainingCenter->resources == null ? $trainingCenter->resources()->latest() : '0 item' }}</span>
-                            @if ($trainingCenter->resource == null)
-                                <a class="btn btn-primary" data-toggle="modal" data-target="#assignResource" onclick="getCenterId({{$trainingCenter->id }});"><i
-                                        class="fa fa-plus"></i>Add</a>
+                                class="badge badge-primary badge-pill">{{ count($trainingCenter->resources)>0 ? $trainingCenter->resources()->latest()->first()->pivot->current_balance.' Item' : '0 Item' }}</span>
+                            @if (count($trainingCenter->resources)<1)
+                                <a class="btn btn-primary" data-toggle="modal" data-target="#assignResource"
+                                    onclick="getCenterId({{ $trainingCenter->id }});"><i class="fa fa-plus"></i>Add</a>
                             @else
                                 <a class="btn btn-warning"><i class="fa fa-edit"></i>Edit</a>
                             @endif

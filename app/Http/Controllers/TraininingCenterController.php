@@ -185,11 +185,11 @@ class TraininingCenterController extends Controller
     public function result(Request $request)
     {
 
-        if (true) {
+        if ($request->ajax()) {
             $output = '';
             $query = $request->get('query');
             // ->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',Auth::user()->trainingCheckerOf->id);
-            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id', $query)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', Auth::user()->trainingCheckerOf->id);
+            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id', $query)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',Auth::user()->trainingCheckerOf?->id);
 
 
             if (count($volunteerQuery->get()) > 0) {
@@ -207,14 +207,14 @@ class TraininingCenterController extends Controller
             // echo json_encode($data);
         }
     }
-    public function checkIn($id)
+    public function checkIn($training_session,$id)
     {
         Volunteer::find($id)->status->update(['acceptance_status' => 5]);
         return redirect()->back()->with('message', 'Volunteer Sucessfuily Checked-In');
     }
-    public function indexChecking(Request $request)
+    public function indexChecking($training_session,Request $request)
     {
-        $volunteersChecked = Volunteer::with('woreda.zone.region')->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', Auth::user()?->trainingCheckerOf?->id);
+        $volunteersChecked = Volunteer::with('woreda.zone.region')->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', Auth::user()->trainingCheckerOf?->id);
         if ($request->has('filter')) {
             $status = $request->get('status');
             if (!empty($status)) {
@@ -222,5 +222,11 @@ class TraininingCenterController extends Controller
             }
         }
         return view('training_center.check_in.index', ['volunteersChecked' => $volunteersChecked->paginate(10)]);
+    }
+    public function giveResource($training_session,$training_center_id)
+    {
+        $volunteers=Volunteer::whereRelation('status','acceptance_status',5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',$training_center_id)->get();
+        dd($volunteers);
+        return view('training_center.assign_resource', ['volunteersChecked']);
     }
 }
