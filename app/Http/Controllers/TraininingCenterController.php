@@ -179,7 +179,6 @@ class TraininingCenterController extends Controller
     }
     public function checkInView()
     {
-        // dd('d');
         return view('training_center.check_in.check_in');
     }
     public function result(Request $request)
@@ -189,7 +188,7 @@ class TraininingCenterController extends Controller
             $output = '';
             $query = $request->get('query');
             // ->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',Auth::user()->trainingCheckerOf->id);
-            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id', $query)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',Auth::user()->trainingCheckerOf?->id);
+            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id', $query);
 
 
             if (count($volunteerQuery->get()) > 0) {
