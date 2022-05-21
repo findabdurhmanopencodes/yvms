@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 @section('title', 'All resources')
 @section('breadcrumbList')
     <li class="active">resources</li>
@@ -140,12 +140,13 @@
             <ul class="list-group">
 
                 @foreach ($trainingCenters as $trainingCenter)
+                @dd( $trainingCenter))
                     <li class="h4">
                         {{ $trainingCenter->name }} ({{ $trainingCenter->code }})
                         <div class="list-group-item d-flex justify-content-md-between">
                             <span
-                                class="badge badge-primary badge-pill">{{ count($trainingCenter->resources)>0 ? $trainingCenter->resources()->latest()->first()->pivot->current_balance.' Item' : '0 Item' }}</span>
-                            @if (count($trainingCenter->resources)<1)
+                                class="badge badge-primary badge-pill">{{ count($trainingCenter->resources()->where('id',$resource->id))>0 ? $trainingCenter->resources()->where('id',$resource->id)->latest()->first()->pivot->current_balance.' Item' : '0 Item' }}</span>
+                            @if (count($trainingCenter->resources()->where('id',$resource->id))<1)
                                 <a class="btn btn-primary" data-toggle="modal" data-target="#assignResource"
                                     onclick="getCenterId({{ $trainingCenter->id }});"><i class="fa fa-plus"></i>Add</a>
                             @else
@@ -165,4 +166,4 @@
             $('#training_center_id').val(training_center);
         }
     </script>
-@endpush
+@endpush --}}

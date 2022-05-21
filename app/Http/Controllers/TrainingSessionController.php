@@ -993,14 +993,17 @@ class TrainingSessionController extends Controller
     }
     public function updateResourceAssignToTrainingCenter($training_session ,Request $request)
     {
+        // dd($request);
 
         $training_center_id = $request->get('training_center_id');
         $resource_id = $request->get('resource_id');
         $amount = $request->get('amount');
         $trainingCenter = TraininingCenter::find($training_center_id);
         $trainingCenterResourceCurrentBalance = $trainingCenter->resources()->latest()->first()->pivot->current_balance;
+        DB::table('resource_trainining')->where('resource_id',$resource_id)->where('training_session_id',$training_center_id)->where('trainining_center_id',$training_center_id)->update([
+            'current_balance' => $trainingCenterResourceCurrentBalance+$amount]);
 
-        $trainingCenter->resources()->attach($resource_id, ['current_balance' => (int)$amount+$trainingCenterResourceCurrentBalance, 'initial_balance' => $amount,'training_session_id'=>$training_session]);
+        // $trainingCenter->resources()->sync($resource_id, ['current_balance' => (int)$amount+$trainingCenterResourceCurrentBalance, 'initial_balance' => $amount,'training_session_id'=>$training_session,false]);
 
         return redirect()->back()->with('msg', 'Resource Added Sucessfuily TO Training Center');
     }

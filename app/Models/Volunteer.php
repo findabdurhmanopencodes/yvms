@@ -97,5 +97,9 @@ class Volunteer extends Model
     {
         return $this->hasOne(VerifyVolunteer::class);
     }
+    public function resourceHistories()
+    {
+        return $this->hasMany(VolunteerResourceHistory::class,'volunteer_id','id');
+    }
 
 }

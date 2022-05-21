@@ -14,4 +14,8 @@ class Resource extends Model
     {
         return $this->belongsToMany(TraininingCenter::class,'resource_trainining','trainining_center_id','resource_id')->withPivot('current_balance','initial_balance'   );
     }
+    public function VolunteerHistoryResource()
+    {
+        return $this->hasMany(VolunteerResourceHistory::class,'resource_id');
+    }
 }

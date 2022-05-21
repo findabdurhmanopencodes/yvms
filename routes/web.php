@@ -32,7 +32,7 @@ use App\Http\Controllers\ZoneController;
 
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PayrollSheetController;
-
+use App\Http\Controllers\VolunteerResourceHistoryController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
 use App\Models\Training;
@@ -137,10 +137,11 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('training_center', [TrainingSessionController::class, 'trainingCenterIndex'])->name('training_center.index');
     Route::get('training_center/{training_center}', [TrainingSessionController::class, 'trainingCenterShow'])->name('training_center.show');
     Route::post('resource/assign', [TrainingSessionController::class, 'resourceAssignToTrainingCenter'])->name('resource.assign');
-    Route::post('resource/update', [TrainingSessionController::class, 'updateResourceAssignToTrainingCenter '])->name('resource.update');
+    Route::post('resource/update', [TrainingSessionController::class, 'updateResourceAssignToTrainingCenter'])->name('resource.update');
     Route::get('/resources', [TrainingSessionController::class, 'allResource'])->name('resource.all');
     Route::get('/resource/{resource}', [TrainingSessionController::class, 'showResource'])->name('resource.show');
-    Route::get('/training-center/{training_center_id}/resource-assign', [TraininingCenterController::class, 'giveResource'])->name('resource.assign.volunteer');
+    Route::any('/training-center/{training_center_id}/resource-assign', [TraininingCenterController::class, 'giveResource'])->name('resource.assign.volunteer');
+    Route::any('/training-center/{training_center_id}/resource-assign/volunteer/{volunteer}', [TraininingCenterController::class, 'giveResourceDetail'])->name('resource.assign.volunteer.detail');
     Route::get('check-in/', [TraininingCenterController::class, 'checkInView'])->name('TrainingCenter.CheckIn');
     Route::get('result/', [TraininingCenterController::class, 'result'])->name('result');
     Route::get('/check-in/action/{id}', [TraininingCenterController::class, 'checkIn'])->name('TrainingCenter.checked');
@@ -149,6 +150,8 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('training_center/{training_center}',[TrainingSessionController::class,'trainingCenterShow'])->name('training_center.show');
     Route::post('{training_center}/id/print', [IdGenerateController::class, 'idGenerate'])->name('training_center.generate');
     Route::get('{training_center}/checkedIn/list', [IdGenerateController::class, 'checkedInList'])->name('training_center.checkedIn_list');
+    Route::resource('VolunteerResourceHistory', VolunteerResourceHistoryController::class);
+
 
 });
 
