@@ -229,4 +229,8 @@ class TraininingCenterController extends Controller
         dd($volunteers);
         return view('training_center.assign_resource', ['volunteersChecked']);
     }
+    public function trainingShow()
+    {
+        dd('sd');
+    }
 }

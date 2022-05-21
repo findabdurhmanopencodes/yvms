@@ -230,9 +230,7 @@
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label font-weight-bolder text-dark">Training and trainners</span>
                         <span class="text-muted mt-3 font-weight-bold font-size-sm">Total {{ count($trainings) }}
-                            trainings in
-                            this
-                            session</span>
+                            trainings in this session</span>
                     </h3>
                     <div class="card-toolbar">
                         <a href="#" data-toggle="modal" data-target="#assignMasterModal"
@@ -247,8 +245,8 @@
                     <table width="100%" class="table">
                         <thead>
                             </tr>
-                            <th> # </th>
                             <th> Training </th>
+                            <th> <i class="menu-icon flaticon-list"></i> </th>
                             <th> Trainner </th>
                             </tr>
                         </thead>
@@ -259,9 +257,15 @@
                                     $trainner = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->master->user;
                                 @endphp
                                 <tr style="font-size: 13px;">
-                                    <td>{{ $key + 1 }}</td>
                                     <td>
                                         {{ $training->name }}
+                                    </td>
+                                    <td>
+                                        <a
+                                        class="link"
+                                            href="{{ route('session.training_center.training.show', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'training' => $training->id]) }}">
+                                            <i class="menu-icon flaticon-list"></i>
+                                        </a>
                                     </td>
                                     <td>
                                         <div class="d-flex">
@@ -449,6 +453,7 @@
                 }
             });
         }
+
         function confirmDeleteCoordinator(id) {
             Swal.fire({
                 title: "Are you sure?",
