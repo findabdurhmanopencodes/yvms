@@ -13,7 +13,7 @@ class StoreTrainingCenterBasedPermissionRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class StoreTrainingCenterBasedPermissionRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'user_id' => ['required'],
+            'permission_id' => ['required'],
+            'training_center_id' => ['required'],
+            'training_session_id' => ['required']
         ];
     }
 }

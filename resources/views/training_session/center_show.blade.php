@@ -1,170 +1,19 @@
 @extends('layouts.app')
 @section('title', 'Center base detail')
+@push('css')
+    <style>
+        .select2,
+        .select2-container,
+        .select2-container--default,
+        .select2-container--below {
+            width: 100% !important;
+        }
+
+    </style>
+@endpush
 @section('content')
-<!--begin::Card-->
-<div class="card card-custom gutter-b">
-    <div class="card-body">
-        <div class="d-flex">
-            <!--begin: Pic-->
-            <div class="flex-shrink-0 mr-7 mt-lg-0 mt-3">
-                <div class="symbol symbol-50 symbol-lg-120">
-                    <img alt="Pic" src="{{ $trainingCenter->getLogo() }}" />
-                </div>
-                <div class="symbol symbol-50 symbol-lg-120 symbol-primary d-none">
-                    <span class="font-size-h3 symbol-label font-weight-boldest">{{ $trainingCenter->code }}</span>
-                </div>
-            </div>
-            <!--end: Pic-->
-            <!--begin: Info-->
-            <div class="flex-grow-1">
-                <!--begin: Title-->
-                <div class="d-flex align-items-center justify-content-between flex-wrap">
-                    <div class="mr-3">
-                        <!--begin::Name-->
-                        <a href="#"
-                            class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3">{{ $trainingCenter->name }}
-                            - <span> {{ $trainingCenter->code }}</span>
-                            <i class="flaticon2-correct text-success icon-md ml-2"></i></a>
-                        <!--end::Name-->
-                        <!--begin::Contacts-->
-                        <div class="d-flex flex-wrap my-2">
-
-                            <a href="#" class="text-muted text-hover-primary font-weight-bold">
-                                <span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
-                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Map/Marker2.svg-->
-                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                        width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                            <rect x="0" y="0" width="24" height="24" />
-                                            <path
-                                                d="M9.82829464,16.6565893 C7.02541569,15.7427556 5,13.1079084 5,10 C5,6.13400675 8.13400675,3 12,3 C15.8659932,3 19,6.13400675 19,10 C19,13.1079084 16.9745843,15.7427556 14.1717054,16.6565893 L12,21 L9.82829464,16.6565893 Z M12,12 C13.1045695,12 14,11.1045695 14,10 C14,8.8954305 13.1045695,8 12,8 C10.8954305,8 10,8.8954305 10,10 C10,11.1045695 10.8954305,12 12,12 Z"
-                                                fill="#000000" />
-                                        </g>
-                                    </svg>
-                                    <!--end::Svg Icon-->
-                                </span>{{ $trainingCenter->zone->name . ' / ' . $trainingCenter->zone->region->name . ' / ' }}</a>
-                        </div>
-                        <!--end::Contacts-->
-                    </div>
-                    <div class="my-lg-0 my-1">
-                        <a href="{{ route('session.training_center.checkedIn_list', ['training_session' => Request::route('training_session'),'training_center'=>$trainingCenter->id]) }}"
-                            class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3">Print Badge</a>
-                        <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">New Task</a>
-                    </div>
-                </div>
-                <!--end: Title-->
-                <!--begin: Content-->
-                <div class="d-flex align-items-center flex-wrap justify-content-between">
-                    <div class="flex-grow-1 font-weight-bold text-dark-50 py-5 py-lg-2 mr-5 w-100">
-                        {{ $trainingCenter->description ?? 'There is no description of the center' }}
-                        <br />
-                    </div>
-                    <div class="d-flex flex-wrap align-items-center py-2">
-                        <div class="d-flex align-items-center mr-10">
-                            <div class="mr-6">
-                                <div class="font-weight-bold mb-2">Start Date</div>
-                                <span class="btn btn-sm btn-text btn-light-primary text-uppercase font-weight-bold">07
-                                    May, 2020</span>
-                            </div>
-                            <div class="">
-                                <div class="font-weight-bold mb-2">Due Date</div>
-                                <span class="btn btn-sm btn-text btn-light-danger text-uppercase font-weight-bold">10
-                                    June, 2021</span>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 flex-shrink-0 w-150px w-xl-300px mt-4 mt-sm-0">
-                            <span class="font-weight-bold">Progress</span>
-                            <div class="progress progress-xs mt-2 mb-2">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 63%;"
-                                    aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <span class="font-weight-bolder text-dark">78%</span>
-                        </div>
-                    </div>
-                </div>
-                <!--end: Content-->
-            </div>
-            <!--end: Info-->
-        </div>
-        <div class="separator separator-solid my-7"></div>
-        <!--begin: Items-->
-        <div class="d-flex align-items-center flex-wrap">
-            <!--begin: Item-->
-            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                <span class="mr-4">
-                    <i class="flaticon-piggy-bank icon-2x text-muted font-weight-bold"></i>
-                </span>
-                <div class="d-flex flex-column text-dark-75">
-                    <span class="font-weight-bolder font-size-sm">Total Volunteers</span>
-                    <span class="font-weight-bolder font-size-h5">
-                        <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span>
-                </div>
-            </div>
-            <!--end: Item-->
-            <!--begin: Item-->
-            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                <span class="mr-4">
-                    <i class="flaticon-confetti icon-2x text-muted font-weight-bold"></i>
-                </span>
-                <div class="d-flex flex-column text-dark-75">
-                    <span class="font-weight-bolder font-size-sm">Checked In Volunteer</span>
-                    <span class="font-weight-bolder font-size-h5">
-                        <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span>
-                </div>
-            </div>
-            <!--end: Item-->
-            <!--begin: Item-->
-            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                <span class="mr-4">
-                    <i class="flaticon-pie-chart icon-2x text-muted font-weight-bold"></i>
-                </span>
-                <div class="d-flex flex-column text-dark-75">
-                    <span class="font-weight-bolder font-size-sm">Training Masters</span>
-                    <span class="font-weight-bolder font-size-h5">
-                        <span class="text-dark-50 font-weight-bold"></span>{{$totalTrainingMasters}}</span>
-                </div>
-            </div>
-            <!--end: Item-->
-            <!--begin: Item-->
-            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                <span class="mr-4">
-                    <i class="flaticon-file-2 icon-2x text-muted font-weight-bold"></i>
-                </span>
-                <div class="d-flex flex-column flex-lg-fill">
-                    <span class="text-dark-75 font-weight-bolder font-size-sm">Total Resource</span>
-                    <a href="#" class="text-primary font-weight-bolder">{{$trainingCenter->resources()->count()}}</a>
-                </div>
-            </div>
-            <!--end: Item-->
-        </div>
-        <!--begin: Items-->
-    </div>
-</div>
-<!--end::Card-->
-
-
     <!--begin::Card-->
     <div class="card card-custom gutter-b">
-        <div class="card-header border-0 py-5">
-            <h3 class="card-title align-items-start flex-column">
-                <span class="card-label font-weight-bolder text-dark">Training and trainners</span>
-                <span class="text-muted mt-3 font-weight-bold font-size-sm">More than 400+ new members</span>
-            </h3>
-            <div class="card-toolbar">
-                <a href="#" class="btn btn-success font-weight-bolder font-size-sm">
-                <span class="svg-icon svg-icon-md svg-icon-white">
-                    <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Add-user.svg-->
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <polygon points="0 0 24 0 24 24 0 24"></polygon>
-                            <path d="M18,8 L16,8 C15.4477153,8 15,7.55228475 15,7 C15,6.44771525 15.4477153,6 16,6 L18,6 L18,4 C18,3.44771525 18.4477153,3 19,3 C19.5522847,3 20,3.44771525 20,4 L20,6 L22,6 C22.5522847,6 23,6.44771525 23,7 C23,7.55228475 22.5522847,8 22,8 L20,8 L20,10 C20,10.5522847 19.5522847,11 19,11 C18.4477153,11 18,10.5522847 18,10 L18,8 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
-                            <path d="M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z" fill="#000000" fill-rule="nonzero"></path>
-                        </g>
-                    </svg>
-                    <!--end::Svg Icon-->
-                </span>Add New Member</a>
-            </div>
-        </div>
         <div class="card-body">
             <div class="d-flex">
                 <!--begin: Pic-->
@@ -209,9 +58,12 @@
                             <!--end::Contacts-->
                         </div>
                         <div class="my-lg-0 my-1">
-                            <a href="#"
-                                class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3">Print Badge</a>
-                            <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">New Task</a>
+                            <a href="{{ route('session.training_center.checkedIn_list', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+                                class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3">
+                                <i class="fa fa-users"></i>
+                                Checked In Volunteers List
+                            </a>
+                            <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">Checked In</a>
                         </div>
                     </div>
                     <!--end: Title-->
@@ -225,23 +77,23 @@
                             <div class="d-flex align-items-center mr-10">
                                 <div class="mr-6">
                                     <div class="font-weight-bold mb-2">Start Date</div>
-                                    <span class="btn btn-sm btn-text btn-light-primary text-uppercase font-weight-bold">07
-                                        May, 2020</span>
+                                    <span
+                                        class="btn btn-sm btn-text btn-light-primary text-uppercase font-weight-bold">{{ Request::route('training_session')->startDateET() }}</span>
                                 </div>
                                 <div class="">
                                     <div class="font-weight-bold mb-2">Due Date</div>
-                                    <span class="btn btn-sm btn-text btn-light-danger text-uppercase font-weight-bold">10
-                                        June, 2021</span>
+                                    <span
+                                        class="btn btn-sm btn-text btn-light-primary text-uppercase font-weight-bold">{{ Request::route('training_session')->endDateET() }}</span>
                                 </div>
                             </div>
-                            <div class="flex-grow-1 flex-shrink-0 w-150px w-xl-300px mt-4 mt-sm-0">
+                            {{-- <div class="flex-grow-1 flex-shrink-0 w-150px w-xl-300px mt-4 mt-sm-0">
                                 <span class="font-weight-bold">Progress</span>
                                 <div class="progress progress-xs mt-2 mb-2">
                                     <div class="progress-bar bg-success" role="progressbar" style="width: 63%;"
                                         aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                                 <span class="font-weight-bolder text-dark">78%</span>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <!--end: Content-->
@@ -259,7 +111,7 @@
                     <div class="d-flex flex-column text-dark-75">
                         <span class="font-weight-bolder font-size-sm">Total Volunteers</span>
                         <span class="font-weight-bolder font-size-h5">
-                            <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span>
+                            {{-- <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span> --}}
                     </div>
                 </div>
                 <!--end: Item-->
@@ -269,10 +121,15 @@
                         <i class="flaticon-confetti icon-2x text-muted font-weight-bold"></i>
                     </span>
                     <div class="d-flex flex-column text-dark-75">
-                        <span class="font-weight-bolder font-size-sm">Checked In Volunteer</span>
+                        <span class="font-weight-bolder font-size-sm">Checked In Volunteers</span>
                         <span class="font-weight-bolder font-size-h5">
-                            <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span>
+<<<<<<< HEAD
+                            {{-- <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span> --}}
+=======
+                            <span class="text-dark-50 font-weight-bold"></span>{{ count($checkedInVolunteers) }}</span>
+>>>>>>> ad444c92230563bdd9f8fa6cf4ed131c286c2a86
                     </div>
+
                 </div>
                 <!--end: Item-->
                 <!--begin: Item-->
@@ -283,7 +140,11 @@
                     <div class="d-flex flex-column text-dark-75">
                         <span class="font-weight-bolder font-size-sm">Training Masters</span>
                         <span class="font-weight-bolder font-size-h5">
-                            <span class="text-dark-50 font-weight-bold"></span>{{$totalTrainingMasters}}</span>
+<<<<<<< HEAD
+                            {{-- <span class="text-dark-50 font-weight-bold"></span>{{$totalTrainingMasters}}</span> --}}
+=======
+                            <span class="text-dark-50 font-weight-bold"></span>{{ $totalTrainingMasters }}</span>
+>>>>>>> ad444c92230563bdd9f8fa6cf4ed131c286c2a86
                     </div>
                 </div>
                 <!--end: Item-->
@@ -294,7 +155,8 @@
                     </span>
                     <div class="d-flex flex-column flex-lg-fill">
                         <span class="text-dark-75 font-weight-bolder font-size-sm">Total Resource</span>
-                        <a href="#" class="text-primary font-weight-bolder">{{$trainingCenter->resources()->count()}}</a>
+                        <a href="#"
+                            class="text-primary font-weight-bolder">{{ $trainingCenter->resources()->count() }}</a>
                     </div>
                 </div>
                 <!--end: Item-->
@@ -304,4 +166,330 @@
     </div>
     <!--end::Card-->
 
+    <div class="modal fade" id="assignMasterModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="POST"
+                    action="{{ route('session.training_master_placement.store', ['training_session' => Request::route('training_session')]) }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="height: 200px;">
+                        @csrf
+                        <div class="form-group">
+                            <select name="training" id="training" required
+                                class=" @error('training') is-invalid @enderror select2 form-control  form-control select2">
+                                @foreach ($trainings as $training)
+                                    <option
+                                        {{ old('training') != null ? (old('training') == $training->id ? 'selected' : '') : '' }}
+                                        value="{{ $training->id }}">
+                                        {{ $training->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('training')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <span class="form-text text-muted">Please select training center.</span>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="training_center" value="{{ $trainingCenter->id }}">
+                        </div>
+                        <div class="form-group">
+                            <select name="trainner" id="trainner"
+                                class=" @error('trainner') is-invalid @enderror select2 form-control  form-control select2">
+                                <option value="">Select Trainner</option>
+                                @foreach ($freeTrainners as $freeTrainner)
+                                    <option
+                                        {{ old('trainner') != null ? (old('trainner') == $freeTrainner->id ? 'selected' : '') : '' }}
+                                        value="{{ $freeTrainner->id }}">{{ $freeTrainner->user->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('trainner')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <span class="form-text text-muted">Please select trainner.</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold"
+                            data-dismiss="modal">Close</button>
+                        {{-- <button type="button" class="btn btn-primary font-weight-bold">Save changes</button> --}}
+                        <input type="submit" value="Assign Master Trainer" class="btn btn-sm btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <form method="POST" id="deleteForm">
+        @csrf
+        @method('DELETE')
+    </form>
+    <!--begin::Card-->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-custom gutter-b">
+                <div class="card-header border-0 py-5">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label font-weight-bolder text-dark">Training and trainners</span>
+                        <span class="text-muted mt-3 font-weight-bold font-size-sm">Total {{ count($trainings) }}
+                            trainings in this session</span>
+                    </h3>
+                    <div class="card-toolbar">
+                        <a href="#" data-toggle="modal" data-target="#assignMasterModal"
+                            class="btn btn-success font-weight-bolder font-size-sm">
+                            <span class="svg-icon svg-icon-md svg-icon-white">
+                            </span>
+                            Assign master trainners
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <table width="100%" class="table">
+                        <thead>
+                            </tr>
+                            <th> Training </th>
+                            <th> <i class="menu-icon flaticon-list"></i> </th>
+                            <th> Trainner </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($trainings as $key => $training)
+                                @php
+                                    $masterId = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->id;
+                                    $trainner = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->master->user;
+                                @endphp
+                                <tr style="font-size: 13px;">
+                                    <td>
+                                        {{ $training->name }}
+                                    </td>
+                                    <td>
+                                        <a
+                                        class="link"
+                                            href="{{ route('session.training_center.training.show', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'training' => $training->id]) }}">
+                                            <i class="menu-icon flaticon-list"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <span
+                                                class="btn {{ $trainner ? 'btn-light-primary' : 'btn-light-danger' }} btn-sm font-weight-bold btn-upper btn-text">
+                                                {{ $trainner?->name() == null ? 'Assign Trainner' : '' }}
+                                                @if ($trainner)
+                                                    <a href="#" onclick="confirmDeleteMasterPlacement({{ $masterId }})"
+                                                        style="display: flex;align-items: center;justify-content: space-between;width: 185px;">
+                                                        {{ $trainner?->name() }}
+                                                        <i class="fa fa-times fa-sm"></i>
+                                                    </a>
+                                                @endif
+
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            @if (count($trainings) <= 0)
+                                <tr style="font-size: 13px;" class="text-center">
+                                    <td colspan="3" style="">No training assigned</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                    <!--begin: Items-->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card card-custom gutter-b">
+                <div class="card-header border-0 py-5">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label font-weight-bolder text-dark">Assign Other users</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-1">
+                    <form id="checkerForm"
+                        action="{{ route('session.training_center.assign_checker', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+                        method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="form-group col-md-8">
+                                <select name="checkerUser" id="checkerUser" required
+                                    class=" @error('checkerUser') is-invalid @enderror select2 form-control  form-control select2">
+                                    @foreach ($checkerUsers as $checkerUser)
+                                        <option
+                                            {{ old('checkerUser') != null ? (old('checkerUser') == $checkerUser->id ? 'selected' : '') : '' }}
+                                            value="{{ $checkerUser->id }}">
+                                            {{ $checkerUser->name }}
+                                        </option>
+                                    @endforeach
+
+                                    @if (count($checkerUsers) <= 0)
+                                        <option>
+                                            Please add checker users
+                                        </option>
+                                    @endif
+                                </select>
+                                @error('checkerUser')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <span class="form-text text-muted">Please select Checker User center.</span>
+                            </div>
+                            <div class="form-group col-md-3 ml-auto">
+                                <input type="submit" value="Assign checkers"
+                                    class="btn btn-success float-right font-weight-bolder font-size-sm">
+                            </div>
+                        </div>
+                    </form>
+                    <form id="centerCoordinatorForm"
+                        action="{{ route('session.training_center_based_permission.store', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+                        method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="form-group col-md-8">
+                                <input type="hidden" name="permission_id"
+                                    value="{{ Spatie\Permission\Models\Permission::findOrCreate('centerCooridnator')->id }}">
+                                <input type="hidden" name="training_center_id" value="{{ $trainingCenter->id }}">
+                                <input type="hidden" name="training_session_id"
+                                    value="{{ Request::route('training_session')->id }}">
+                                <select name="user_id" id="centerCoordinator" required
+                                    class=" @error('centerCoordinator') is-invalid @enderror select2 form-control  form-control select2">
+                                    @foreach ($centerCoordinatorUsers as $centerCoordinatorUser)
+                                        <option
+                                            {{ old('centerCoordinatorUser') != null ? (old('centerCoordinatorUser') == $centerCoordinatorUser->id ? 'selected' : '') : '' }}
+                                            value="{{ $centerCoordinatorUser->id }}">
+                                            {{ $centerCoordinatorUser->name }}
+                                        </option>
+                                    @endforeach
+
+                                    @if (count($centerCoordinatorUsers) <= 0)
+                                        <option>
+                                            Please add center coordinator
+                                        </option>
+                                    @endif
+                                </select>
+                                @error('centercenterCoordinator')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <span class="form-text text-muted">Please select Checker User center.</span>
+                            </div>
+                            <div class="form-group col-md-3 ml-auto">
+                                <input type="submit" value="Assign Coordinator"
+                                    class="btn btn-success float-right font-weight-bolder font-size-sm">
+                            </div>
+                        </div>
+                    </form>
+                    <table width="100%" class="table">
+                        <thead>
+                            </tr>
+                            <th> Name </th>
+                            <th> Role </th>
+                            <th> Action </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($centerCoordinators as $centerCoordinator)
+                                <tr style="font-size: 13px;">
+                                    <td>{{ $centerCoordinator->name }}</td>
+                                    <td>
+                                        <span class="btn btn-light-info btn-sm font-weight-bold btn-upper btn-text">
+                                            Coordinator
+                                        </span>
+                                    </td>
+                                    <td><a href="#" onclick="confirmDeleteCoordinator({{ $centerCoordinator->id }})"><i
+                                                class="fa fa-times"></i></a></td>
+                                </tr>
+                            @endforeach
+                            @foreach ($centerCheckers as $centerChecker)
+                                <tr style="font-size: 13px;">
+                                    <td>{{ $centerChecker->name }}</td>
+                                    <td>
+                                        <span class="btn btn-light-info btn-sm font-weight-bold btn-upper btn-text">
+                                            Checker
+                                        </span>
+                                    </td>
+                                    <td><a href="#" onclick="confirmDeleteChecker({{ $centerChecker->id }})"><i
+                                                class="fa fa-times"></i></a></td>
+                                </tr>
+                            @endforeach
+                            @if (count($centerCheckers) <= 0 && count($centerCoordinators) <= 0)
+                                <tr>
+                                    <td colspan="2" class="text-center">
+                                        Please add coordinator & checker
+                                    </td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Card-->
+    <form id="removeCheckerForm"
+        action="{{ route('session.training_center.assign_checker', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+        method="POST">
+        @csrf
+        <input type="hidden" name="checkerUser" id="checkerUserRemove">
+    </form>
 @endsection
+@push('js')
+    <script>
+        $('.select2').select2({
+            allowClear: true
+        });
+        @if (old('training') != null)
+            $('#assignMasterModal').modal().show()
+        @endif
+
+        function confirmDeleteMasterPlacement(masterId) {
+            var sessionId = '{{ Request::route('training_session')->id }}';
+            $('#deleteForm').attr('action', '/' + sessionId + '/training_master_placement/' + masterId);
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $('#deleteForm').submit();
+                }
+            });
+        }
+
+        function confirmDeleteCoordinator(id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $("#centerCoordinator").html(`<option value="${id}"></option>`);
+                    $('#centerCoordinatorForm').submit();
+                }
+            });
+        }
+
+        function confirmDeleteChecker(checkerId) {
+            $('#checkerUserRemove').val(checkerId);
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $('#removeCheckerForm').submit();
+                }
+            });
+        }
+    </script>
+@endpush

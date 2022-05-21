@@ -11,10 +11,14 @@ use App\Models\Region;
 use App\Models\Resource;
 use App\Models\Status;
 use App\Models\Training;
+use App\Models\TrainingCenterBasedPermission;
 use App\Models\TrainingCenterCapacity;
+use App\Models\TrainingMaster;
 use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingSession;
+use App\Models\TrainingSessionTraining;
 use App\Models\TraininingCenter;
+use App\Models\User;
 use App\Models\Volunteer;
 use App\Models\Woreda;
 use App\Models\Zone;
@@ -28,6 +32,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use League\CommonMark\Extension\SmartPunct\Quote;
+use Spatie\Permission\Models\Permission;
 
 class TrainingSessionController extends Controller
 {
@@ -322,11 +327,11 @@ class TrainingSessionController extends Controller
     public function update(UpdateTrainingSessionRequest $request, TrainingSession $trainingSession, Qouta $qouta)
     {
         $date_now = Carbon::now();
-        $date_now_et = DateTimeFactory::fromDateTime($date_now)->format('d/m/y');
+        $date_now_et = DateTimeFactory::fromDateTime($trainingSession->start_date)->format('d/m/y');
 
         $data = $request->validate([
             'name' => 'required',
-            'start_date' => ['date_format:d/m/y', 'after:' . $date_now_et],
+            'start_date' => ['date_format:d/m/y', 'after_or_equal:' . $date_now_et],
             'end_date' => ['date_format:d/m/y', 'after_or_equal:start_date'],
             'registration_start_date' => ['required', 'date_format:d/m/y', 'after_or_equal:start_date', 'before_or_equal:end_date'],
             'registration_dead_line' => ['required', 'date_format:d/m/y', 'after_or_equal:registration_start_date', 'before_or_equal:end_date'],
@@ -369,7 +374,7 @@ class TrainingSessionController extends Controller
 
             $d_r_d_t_g = DateTimeFactory::of($date_end_reg_gc->format('Y'), $date_end_reg_gc->format('m'), $date_end_reg_gc->format('d'))->toGregorian();
 
-            $trainingSession->update(['moto' => $data['name'], 'start_date' => $d_s_t_g, 'end_date' => $d_e_t_g, 'registration_start_date' => $d_r_s_t_g, 'registration_dead_line' => $d_r_d_t_g]);
+            $trainingSession->update(['moto' => $data['name'], 'start_date' => $d_s_t_g, 'end_date' => $d_e_t_g, 'registration_start_date' => $d_r_s_t_g, 'registration_dead_line' => $d_r_d_t_g, 'quantity' => $data['quantity']]);
 
             $qouta_all = $qouta->all();
             foreach ($qouta_all as $key => $qou) {
@@ -631,15 +636,6 @@ class TrainingSessionController extends Controller
                 }
             }
 
-            // $ss = [];
-
-            // foreach ($accepted_arr as $key => $value) {
-            //     if ($value->woreda->zone->region->id == 4) {
-            //         array_push($ss, $value->woreda->zone->region->id);
-            //     }
-            // }
-            // dd($ss);
-
             $a = [];
             $b = [];
             $left_arr = [];
@@ -706,97 +702,6 @@ class TrainingSessionController extends Controller
                     }
                 }
             }
-
-
-            // if (sizeof($accepted_arr) > $train_session) {
-            // sort($accepted_arr);
-            // $new_slice_arr = array_slice($accepted_arr, 0, $train_session, true);
-            // foreach ($new_slice_arr as $key => $value) {
-            //     array_push($a, $value);
-            // }
-            // } else if (sizeof($accepted_arr) < $train_session) {
-            //     sort($accepted_arr);
-            //     foreach ($accepted_arr as $key => $value) {
-            //         $group_reg[$value['woreda_id']][] = $value;
-            //     }
-
-            //     foreach ($group_reg as $key => $val) {
-            //         $wore_quantity = Qouta::where('training_session_id', $id)->where('quotable_type',Woreda::class)->where('quotable_id',$key)->get()[0]->quantity;
-
-            //         if (sizeof($val) < $wore_quantity) {
-            //             foreach (Woreda::where('id',$key)->get()[0]->zone->woredas as $key => $zone) {
-            //                 foreach ($zone->applicants as $key => $zon_app) {
-
-            //                     if (!in_array($zon_app, $accepted_arr)) {
-            //                         array_push($accepted_arr, $zon_app);
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     }
-
-            //     foreach ($accepted_arr as $key => $value) {
-            //         $group_zon[$value['woreda_id']][] = $value;
-            //     }
-
-            //     foreach ($group_zon as $key => $val) {
-            //         $wore_quantity = Qouta::where('training_session_id', $id)->where('quotable_type',Woreda::class)->where('quotable_id',$key)->get()[0]->quantity;
-
-            //         if (sizeof($val) < $wore_quantity) {
-            //             foreach (Woreda::where('id',$key)->get()[0]->zone->region->zones as $key => $zone) {
-            //                 foreach ($zone->woredas as $key => $wore) {
-            //                     foreach ($wore->applicants as $key => $wor_app) {
-
-            //                         if (!in_array($wor_app, $accepted_arr)) {
-            //                             array_push($accepted_arr, $wor_app);
-            //                         }
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     }
-
-
-            //     if (sizeof($accepted_arr) < $train_session) {
-            //         $no_volunteer = Volunteer::all();
-            //         if ($train_session <= count($no_volunteer)) {
-            //             $dif_arr = $train_session - sizeof($accepted_arr);
-            //             $merge_arr = array_diff($arr, $accepted_arr);
-
-            //             foreach ($merge_arr as $value) {
-            //                 array_push($b, $value);
-            //             }
-            //             sort($b);
-            //             $new_slice_merge_arr = array_slice($b, 0, $dif_arr);
-            //             $merged_array = array_merge($accepted_arr, $new_slice_merge_arr);
-
-            //             foreach ($merged_array as $key => $value) {
-            //                 array_push($a, $value);
-            //             }
-            //         }else{
-            //             foreach ($accepted_arr as $key => $value) {
-            //                 array_push($a, $value);
-            //             }
-            //         }
-            //     }
-
-            //     elseif(sizeof($accepted_arr) == $train_session){
-            //         foreach ($accepted_arr as $key => $value) {
-            //             array_push($a, $value);
-            //         }
-            //     }else{
-            //         sort($accepted_arr);
-            //         $new_slice_arr = array_slice($accepted_arr, 0, $train_session);
-            //         foreach ($new_slice_arr as $key => $value) {
-            //             array_push($a, $value);
-            //         }
-            //     }
-
-            // } else {
-            //     foreach ($accepted_arr as $key => $value) {
-            //         array_push($a, $accepted_arr);
-            //     }
-            // }
             $approved_applicants = ApprovedApplicant::where('training_session_id', $id)->get();
 
             foreach ($approved_applicants as $key => $app_vol) {
@@ -966,32 +871,33 @@ class TrainingSessionController extends Controller
     public function trainingCenterShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
         $miniSide = 'aside-minimize';
-        $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',$trainingCenter->id)->get();
+        $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->get();
+        $checkedInVolunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->whereRelation('status', 'acceptance_status', 5)->get();
         $totalVolunteers = count($volunteers);
-        $totalTrainingMasters = TrainingMasterPlacement::where('training_session_id',$trainingSession->id)->where('trainining_center_id',$trainingCenter->id)->count();
-        // $totalCheckedInVolunteers = ;
-        /*
-            cordinators
-            checker assign
-        attendance
-        Coordinators
-        Checkers
-        Mater Trainner
-        Resource
-        Volunteers
-        */
-        return view('training_session.center_show', compact('trainingSession', 'trainingCenter', 'miniSide'));
+        $totalTrainingMasters = TrainingMasterPlacement::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->count();
+        $trainings = Training::whereIn('id', TrainingSessionTraining::where('training_session_id', $trainingSession->id)->pluck('id'))->get();
+        $coordinatorPermission = Permission::findOrCreate('centerCooridnator');
+        $centerCoordinatorQuery = User::whereIn('id', TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $coordinatorPermission->id)->pluck('user_id'));
+        $centerCoordinators = $centerCoordinatorQuery->get();
+        $centerCoordinatorUsers =  User::doesntHave('volunteer')->doesntHave('trainner')->permission($coordinatorPermission->id)->whereNotIn('id', $centerCoordinatorQuery->pluck('id'))->get();
+        $freeTrainners = TrainingMaster::all();
+        $checkerPermission = Permission::findOrCreate('checker');
+        $centerCheckerQuery = User::whereIn('id', TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $checkerPermission->id)->pluck('user_id'));
+        $centerCheckers = $centerCheckerQuery->get();
+
+        $checkerUsers = User::doesntHave('volunteer')->doesntHave('trainner')->role('checker')->whereNotIn('id', $centerCheckerQuery->pluck('id'))->get();
+        return view('training_session.center_show', compact('centerCoordinators', 'centerCoordinatorUsers', 'checkedInVolunteers', 'centerCheckers', 'checkerUsers', 'freeTrainners', 'trainings', 'trainingSession', 'totalTrainingMasters', 'totalVolunteers', 'trainingCenter', 'miniSide'));
     }
-    public function resourceAssignToTrainingCenter($training_session , Request $request)
+    public function resourceAssignToTrainingCenter($training_session, Request $request)
     {
         $training_center_id = $request->get('training_center_id');
         $resource_id = $request->get('resource_id');
         $amount = $request->get('amount');
         $trainingCenter = TraininingCenter::find($training_center_id);
-        $trainingCenter->resources()->attach($resource_id, ['current_balance' => $amount, 'initial_balance' => $amount,'training_session_id'=>$training_session]);
+        $trainingCenter->resources()->attach($resource_id, ['current_balance' => $amount, 'initial_balance' => $amount, 'training_session_id' => $training_session]);
         return redirect()->back()->with('msg', 'Resource Added Sucessfuily TO Training Center');
     }
-    public function updateResourceAssignToTrainingCenter($training_session ,Request $request)
+    public function updateResourceAssignToTrainingCenter($training_session, Request $request)
     {
         // dd($request);
 
@@ -1000,22 +906,23 @@ class TrainingSessionController extends Controller
         $amount = $request->get('amount');
         $trainingCenter = TraininingCenter::find($training_center_id);
         $trainingCenterResourceCurrentBalance = $trainingCenter->resources()->latest()->first()->pivot->current_balance;
-        DB::table('resource_trainining')->where('resource_id',$resource_id)->where('training_session_id',$training_center_id)->where('trainining_center_id',$training_center_id)->update([
-            'current_balance' => $trainingCenterResourceCurrentBalance+$amount]);
+        DB::table('resource_trainining')->where('resource_id', $resource_id)->where('training_session_id', $training_center_id)->where('trainining_center_id', $training_center_id)->update([
+            'current_balance' => $trainingCenterResourceCurrentBalance + $amount
+        ]);
 
-        // $trainingCenter->resources()->sync($resource_id, ['current_balance' => (int)$amount+$trainingCenterResourceCurrentBalance, 'initial_balance' => $amount,'training_session_id'=>$training_session,false]);
+        $trainingCenter->resources()->attach($resource_id, ['current_balance' => (int)$amount + $trainingCenterResourceCurrentBalance, 'initial_balance' => $amount, 'training_session_id' => $training_session]);
 
         return redirect()->back()->with('msg', 'Resource Added Sucessfuily TO Training Center');
     }
-    public function showResource($training_session,$resource){
+    public function showResource($training_session, $resource)
+    {
 
 
-        return view('training_session.resource.show',['resource'=>Resource::find($resource),'trainingCenters'=>TraininingCenter::all()]);
+        return view('training_session.resource.show', ['resource' => Resource::find($resource), 'trainingCenters' => TraininingCenter::all()]);
+    }
+    public function allResource()
+    {
 
-}
-    public function allResource(){
-
-            return view('training_session.resource.index',['resources'=>Resource::all()]);
-
+        return view('training_session.resource.index', ['resources' => Resource::all()]);
     }
 }

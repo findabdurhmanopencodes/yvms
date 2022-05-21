@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class TraininingCenter extends Model
 {
@@ -20,16 +22,25 @@ class TraininingCenter extends Model
     {
         return $this->zone->region;
     }
+    /**
+     * Get the photo that owns the TraininingCenter
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function photo(): BelongsTo
+    {
+        return $this->belongsTo(File::class, 'logo', 'id');
+    }
+
 
     public function getLogo()
     {
-
-        return asset('/storage/'. $this->logo) ?? asset('user.png');
+        return $this->photo?->file_path ?? asset('user.png');
     }
 
     public function capacities()
     {
-        return $this->hasMany(TrainingCenterCapacity::class,'trainining_center_id', 'id');
+        return $this->hasMany(TrainingCenterCapacity::class, 'trainining_center_id', 'id');
     }
     public function checkers()
     {
@@ -37,6 +48,6 @@ class TraininingCenter extends Model
     }
     public function resources()
     {
-        return $this->belongsToMany(Resource::class,'resource_trainining','trainining_center_id','resource_id')->withPivot('current_balance','initial_balance');
+        return $this->belongsToMany(Resource::class, 'resource_trainining', 'trainining_center_id', 'resource_id')->withPivot('current_balance', 'initial_balance');
     }
 }

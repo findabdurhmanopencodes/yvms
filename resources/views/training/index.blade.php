@@ -107,6 +107,9 @@
                                     <span class="fa fa-edit"></span>
                                 </a>
 
+                                <a href="{{ route('training.show', ['training'=>$training->id]) }}" class="btn btn-icon" >
+                                    <span class="fa fa-eye"></span>
+                                </a>
                                 <a href="#" class="btn btn-icon" onclick="deleteTraining('{{ $training->id }}')">
                                     <span class="fa fa-trash"></span>
                                 </a>

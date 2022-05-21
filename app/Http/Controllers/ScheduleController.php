@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateScheduleRequest;
 use App\Models\Training;
 use App\Models\TrainingSchedule;
 use App\Models\TrainingSession;
+use App\Models\TrainingSessionTraining;
 use Carbon\Carbon;
 use DateTime;
 use Exception;
@@ -32,20 +33,22 @@ class ScheduleController extends Controller
             $className = ($now >= $trainingSchedule->schedule->date) ? 'fc-event-light fc-event-solid-danger' : 'fc-event-light fc-event-solid-primary';
             $start = $trainingSchedule->schedule->date;
             $shift = $trainingSchedule->schedule->shift;
-            if($shift ==0 ){
+            if ($shift == 0) {
                 $start = Carbon::createFromDate($start)->setHour(2);
-            }else{
+            } else {
                 $start = Carbon::createFromDate($start)->setHour(8);
             }
             $event = [
                 'url' => $trainingSchedule->id,
-                'title' => $trainingSchedule->training->name,
+                'title' => $trainingSchedule->trainingSessionTraining->training->name,
                 'start' => $start->format('Y-m-d H:i:s'),
                 'description' => $trainingSchedule->training?->description,
                 'className' => $className,
             ];
             array_push($events, $event);
         }
+
+
         $trainings = Training::all();
         return view('schedule.index', compact('trainingSession', 'trainings', 'trainingSchedules', 'events'));
     }
@@ -111,12 +114,13 @@ class ScheduleController extends Controller
      * @param  \App\Models\Schedule  $schedule
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TrainingSession $trainingSession,Schedule $schedule)
+    public function destroy(TrainingSession $trainingSession, Schedule $schedule)
     {
     }
 
     public function addSchedule(Request $request, TrainingSession $trainingSession)
     {
+
         $request->validate([
             'schedule_start_date' => ['required'],
             'schedule_end_date' => ['required'],
@@ -195,10 +199,17 @@ class ScheduleController extends Controller
                     ]);
                 }
             }
-            $trainingSchedule = TrainingSchedule::where('training_id', '=', $training->id)->where('schedule_id', '=', $schedule->id)->first();
+            $trainingSessionTraining = TrainingSessionTraining::where('training_id', $training->id)->where('training_session_id', $trainingSession->id)->latest()->first();
+            if (!$trainingSessionTraining) {
+                $trainingSessionTraining = TrainingSessionTraining::create([
+                    'training_session_id' => $trainingSession->id,
+                    'training_id' => $training->id,
+                ]);
+            }
+            $trainingSchedule = TrainingSchedule::where('training_session_training_id', $trainingSessionTraining->id)->where('schedule_id', $schedule->id)->latest()->first();
             if ($trainingSchedule == null) {
                 TrainingSchedule::create([
-                    'training_id' => $training->id,
+                    'training_session_training_id' => $trainingSessionTraining->id,
                     'schedule_id' => $schedule->id,
                 ]);
             }

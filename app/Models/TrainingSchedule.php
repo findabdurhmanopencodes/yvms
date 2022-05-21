@@ -12,13 +12,13 @@ class TrainingSchedule extends Model
     protected $guarded = [];
 
     /**
-     * Get the training that owns the TrainingSchedule
+     * Get the trainingSessionTraining that owns the TrainingSchedule
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function training(): BelongsTo
+    public function trainingSessionTraining(): BelongsTo
     {
-        return $this->belongsTo(Training::class);
+        return $this->belongsTo(TrainingSessionTraining::class);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Training;
 use App\Http\Requests\StoreTrainingRequest;
 use App\Http\Requests\UpdateTrainingRequest;
+use App\Models\TrainingDocument;
 use Illuminate\Validation\ValidationException;
 
 class TrainingController extends Controller
@@ -50,7 +51,8 @@ class TrainingController extends Controller
      */
     public function show(Training $training)
     {
-        //
+        $trainingDocuments = TrainingDocument::where('training_id',$training->id)->get();
+        return view('training.show',compact('training','trainingDocuments'));
     }
 
     /**

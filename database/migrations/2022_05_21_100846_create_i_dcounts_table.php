@@ -1,8 +1,7 @@
 <?php
 
-use App\Models\Schedule;
-use App\Models\Training;
-use App\Models\TrainingSessionTraining;
+use App\Models\TrainingSession;
+use App\Models\Volunteer;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,10 +15,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('training_schedules', function (Blueprint $table) {
+        Schema::create('i_dcounts', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(TrainingSessionTraining::class)->constrained();
-            $table->foreignIdFor(Schedule::class)->constrained();
+            $table->foreignIdFor(Volunteer::class)->constrained();
+            $table->foreignIdFor(TrainingSession::class)->constrained();
+            $table->integer('count');
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('training_schedules');
+        Schema::dropIfExists('i_dcounts');
     }
 };
