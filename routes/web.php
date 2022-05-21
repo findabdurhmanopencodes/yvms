@@ -32,6 +32,7 @@ use App\Http\Controllers\ZoneController;
 
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PayrollSheetController;
+use App\Http\Controllers\TrainingCenterBasedPermissionController;
 use App\Http\Controllers\TrainingDocumentController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
@@ -137,6 +138,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::resource('training_master_placement', TrainingMasterPlacementController::class);
     Route::get('training_center', [TrainingSessionController::class, 'trainingCenterIndex'])->name('training_center.index');
     Route::get('training_center/{training_center}', [TrainingSessionController::class, 'trainingCenterShow'])->name('training_center.show');
+    Route::resource('training_center_based_permission',TrainingCenterBasedPermissionController::class);
     Route::post('training_center/{training_center}/assign_checker', [TraininingCenterController::class, 'assignChecker'])->name('training_center.assign_checker');
     Route::post('resource/assign', [TrainingSessionController::class, 'resourceAssignToTrainingCenter'])->name('resource.assign');
     Route::post('resource/update', [TrainingSessionController::class, 'updateResourceAssignToTrainingCenter '])->name('resource.update');

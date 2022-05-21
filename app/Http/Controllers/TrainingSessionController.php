@@ -876,12 +876,17 @@ class TrainingSessionController extends Controller
         $totalVolunteers = count($volunteers);
         $totalTrainingMasters = TrainingMasterPlacement::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->count();
         $trainings = Training::whereIn('id', TrainingSessionTraining::where('training_session_id', $trainingSession->id)->pluck('id'))->get();
+        $coordinatorPermission = Permission::findOrCreate('centerCooridnator');
+        $centerCoordinatorQuery = User::whereIn('id', TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $coordinatorPermission->id)->pluck('user_id'));
+        $centerCoordinators = $centerCoordinatorQuery->get();
+        $centerCoordinatorUsers =  User::doesntHave('volunteer')->doesntHave('trainner')->permission($coordinatorPermission->id)->whereNotIn('id', $centerCoordinatorQuery->pluck('id'))->get();
         $freeTrainners = TrainingMaster::all();
         $checkerPermission = Permission::findOrCreate('checker');
         $centerCheckerQuery = User::whereIn('id', TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $checkerPermission->id)->pluck('user_id'));
         $centerCheckers = $centerCheckerQuery->get();
+
         $checkerUsers = User::doesntHave('volunteer')->doesntHave('trainner')->role('checker')->whereNotIn('id', $centerCheckerQuery->pluck('id'))->get();
-        return view('training_session.center_show', compact('checkedInVolunteers','centerCheckers', 'checkerUsers', 'freeTrainners', 'trainings', 'trainingSession', 'totalTrainingMasters', 'totalVolunteers', 'trainingCenter', 'miniSide'));
+        return view('training_session.center_show', compact('centerCoordinators','centerCoordinatorUsers','checkedInVolunteers', 'centerCheckers', 'checkerUsers', 'freeTrainners', 'trainings', 'trainingSession', 'totalTrainingMasters', 'totalVolunteers', 'trainingCenter', 'miniSide'));
     }
     public function resourceAssignToTrainingCenter($training_session, Request $request)
     {

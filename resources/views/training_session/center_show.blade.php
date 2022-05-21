@@ -258,7 +258,7 @@
                                     $masterId = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->id;
                                     $trainner = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->master->user;
                                 @endphp
-                                <tr>
+                                <tr style="font-size: 13px;">
                                     <td>{{ $key + 1 }}</td>
                                     <td>
                                         {{ $training->name }}
@@ -282,7 +282,7 @@
                                 </tr>
                             @endforeach
                             @if (count($trainings) <= 0)
-                                <tr class="text-center">
+                                <tr style="font-size: 13px;" class="text-center">
                                     <td colspan="3" style="">No training assigned</td>
                                 </tr>
                             @endif
@@ -298,8 +298,6 @@
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label font-weight-bolder text-dark">Assign Other users</span>
                     </h3>
-                    <div class="card-toolbar">
-                    </div>
                 </div>
                 <div class="card-body pt-1">
                     <form id="checkerForm"
@@ -336,22 +334,27 @@
                         </div>
                     </form>
                     <form id="centerCoordinatorForm"
-                        action="{{ route('session.training_center.assign_checker', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+                        action="{{ route('session.training_center_based_permission.store', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
                         method="POST">
                         @csrf
                         <div class="row">
                             <div class="form-group col-md-8">
-                                <select name="centerCoordinator" id="centerCoordinator" required
+                                <input type="hidden" name="permission_id"
+                                    value="{{ Spatie\Permission\Models\Permission::findOrCreate('centerCooridnator')->id }}">
+                                <input type="hidden" name="training_center_id" value="{{ $trainingCenter->id }}">
+                                <input type="hidden" name="training_session_id"
+                                    value="{{ Request::route('training_session')->id }}">
+                                <select name="user_id" id="centerCoordinator" required
                                     class=" @error('centerCoordinator') is-invalid @enderror select2 form-control  form-control select2">
-                                    @foreach ($centerCoordinators as $centerCoordinator)
+                                    @foreach ($centerCoordinatorUsers as $centerCoordinatorUser)
                                         <option
-                                            {{ old('centerCoordinator') != null ? (old('centerCoordinator') == $centerCoordinator->id ? 'selected' : '') : '' }}
-                                            value="{{ $centerCoordinator->id }}">
-                                            {{ $centerCoordinator->name }}
+                                            {{ old('centerCoordinatorUser') != null ? (old('centerCoordinatorUser') == $centerCoordinatorUser->id ? 'selected' : '') : '' }}
+                                            value="{{ $centerCoordinatorUser->id }}">
+                                            {{ $centerCoordinatorUser->name }}
                                         </option>
                                     @endforeach
 
-                                    @if (count($centerCoordinators) <= 0)
+                                    @if (count($centerCoordinatorUsers) <= 0)
                                         <option>
                                             Please add center coordinator
                                         </option>
@@ -377,17 +380,34 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($centerCoordinators as $centerCoordinator)
+                                <tr style="font-size: 13px;">
+                                    <td>{{ $centerCoordinator->name }}</td>
+                                    <td>
+                                        <span class="btn btn-light-info btn-sm font-weight-bold btn-upper btn-text">
+                                            Coordinator
+                                        </span>
+                                    </td>
+                                    <td><a href="#" onclick="confirmDeleteCoordinator({{ $centerCoordinator->id }})"><i
+                                                class="fa fa-times"></i></a></td>
+                                </tr>
+                            @endforeach
                             @foreach ($centerCheckers as $centerChecker)
-                                <tr>
+                                <tr style="font-size: 13px;">
                                     <td>{{ $centerChecker->name }}</td>
+                                    <td>
+                                        <span class="btn btn-light-info btn-sm font-weight-bold btn-upper btn-text">
+                                            Checker
+                                        </span>
+                                    </td>
                                     <td><a href="#" onclick="confirmDeleteChecker({{ $centerChecker->id }})"><i
                                                 class="fa fa-times"></i></a></td>
                                 </tr>
                             @endforeach
-                            @if (count($centerCheckers) <= 0)
+                            @if (count($centerCheckers) <= 0 && count($centerCoordinators) <= 0)
                                 <tr>
                                     <td colspan="2" class="text-center">
-                                        Please add checker users
+                                        Please add coordinator & checker
                                     </td>
                                 </tr>
                             @endif
@@ -426,6 +446,20 @@
             }).then(function(result) {
                 if (result.value) {
                     $('#deleteForm').submit();
+                }
+            });
+        }
+        function confirmDeleteCoordinator(id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $("#centerCoordinator").html(`<option value="${id}"></option>`);
+                    $('#centerCoordinatorForm').submit();
                 }
             });
         }
