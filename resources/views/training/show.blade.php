@@ -78,6 +78,9 @@
                                     {{ $trainingDocument->name }}
                                 </td>
                                 <td>
+                                    <a href="{{ asset($trainingDocument->file->file_path) }}">Download File</a>
+                                </td>
+                                <td>
                                     <div class="d-flex">
                                         <a href="#" onclick="confirmDeleteTrainingDocument({{ $trainingDocument->id }})">
                                             <i class="fa fa-trash fa-sm"></i>
