@@ -253,8 +253,7 @@
                         <tbody>
                             @foreach ($trainings as $key => $training)
                                 @php
-
-                                    $masterId = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->master->id;
+                                    $masterId = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->id;
                                     $trainner = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->master->user;
                                 @endphp
                                 <tr>

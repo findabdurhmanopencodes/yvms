@@ -154,18 +154,18 @@ class TraininingCenterController extends Controller
         $checkerPermission = Permission::findOrCreate('checker');
         $trainingCenterBasedPermissionQuery = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', $data['checkerUser'])->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $checkerPermission->id);
         $trainingCenterBasedPermissionCount = $trainingCenterBasedPermissionQuery->count();
-        if($trainingCenterBasedPermissionCount == 0 ){
+        if ($trainingCenterBasedPermissionCount == 0) {
             TrainingCenterBasedPermission::create([
-                'training_session_id'=> $trainingSession->id,
-                'user_id'=> $data['checkerUser'],
-                'trainining_center_id'=> $trainingCenter->id,
-                'permission_id'=> $checkerPermission->id
+                'training_session_id' => $trainingSession->id,
+                'user_id' => $data['checkerUser'],
+                'trainining_center_id' => $trainingCenter->id,
+                'permission_id' => $checkerPermission->id
             ]);
-        }else{
+        } else {
             $trainingCenterBasedPermissionQuery->latest()->first()->delete();
-            return redirect()->back()->with(['message'=>'Checker removed successfully']);
+            return redirect()->back()->with(['message' => 'Checker removed successfully']);
         }
-        return redirect()->back()->with(['message'=>'Checker added successfully']);
+        return redirect()->back()->with(['message' => 'Checker added successfully']);
     }
     public function RemoveChecker($checker_id)
     {
