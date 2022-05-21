@@ -58,7 +58,7 @@
                             <!--end::Contacts-->
                         </div>
                         <div class="my-lg-0 my-1">
-                            <a href="{{ route('session.training_center.checkedIn_list', ['training_session'=>Request::route('training_session')->id,'training_center'=>$trainingCenter->id]) }}"
+                            <a href="{{ route('session.training_center.checkedIn_list', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
                                 class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3">
                                 <i class="fa fa-users"></i>
                                 Checked In Volunteers List

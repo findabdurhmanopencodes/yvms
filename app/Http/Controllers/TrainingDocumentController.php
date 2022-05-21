@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\TrainingDocument;
 use App\Http\Requests\StoreTrainingDocumentRequest;
 use App\Http\Requests\UpdateTrainingDocumentRequest;
+use App\Models\Training;
+use Illuminate\Validation\ValidationException;
 
 class TrainingDocumentController extends Controller
 {
@@ -34,9 +36,18 @@ class TrainingDocumentController extends Controller
      * @param  \App\Http\Requests\StoreTrainingDocumentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTrainingDocumentRequest $request)
+    public function store(StoreTrainingDocumentRequest $request,Training $training)
     {
-        //
+        $validDatas = $request->validated();
+        $data['name'] = $validDatas['name'];
+        if (!$request->document->isValid()) {
+            throw ValidationException::withMessages(['document' => 'Unable to upload document please retry']);
+        } else {
+            $data['file_id'] = FileController::fileUpload($request->document,'training documents')->id;
+        }
+        $data['training_id'] = $training->id;
+        TrainingDocument::create($data);
+        return redirect()->back()->with('message','Training document uploaded successfully');
     }
 
     /**
@@ -79,8 +90,15 @@ class TrainingDocumentController extends Controller
      * @param  \App\Models\TrainingDocument  $trainingDocument
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TrainingDocument $trainingDocument)
+    public function destroy(Training $training,TrainingDocument $trainingDocument)
     {
-        //
+        $deleteFileStatus = FileController::deleteFile($trainingDocument?->file);
+        $trainingDocument->delete();
+        if($deleteFileStatus == 200){
+            $message = 'Training document deleted successfully';
+        }else{
+            $message = 'Training document deleted successfully but document file not find';
+        }
+        return redirect()->back()->with('message',$message);
     }
 }

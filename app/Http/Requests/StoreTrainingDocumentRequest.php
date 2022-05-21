@@ -13,7 +13,7 @@ class StoreTrainingDocumentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class StoreTrainingDocumentRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'string', 'min:2', 'max:50'],
+            'document' => ['required', 'file', 'max:4096', 'mimes:ppt,doc,pdf,png,jpg,jpeg,bmp,tiff',],
         ];
     }
 }
