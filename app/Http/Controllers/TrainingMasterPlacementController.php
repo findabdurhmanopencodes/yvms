@@ -8,6 +8,7 @@ use App\Models\Training;
 use App\Models\TrainingMaster;
 use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingSession;
+use App\Models\TrainingSessionTraining;
 use App\Models\TraininingCenter;
 use Illuminate\Validation\ValidationException;
 
@@ -20,13 +21,13 @@ class TrainingMasterPlacementController extends Controller
      */
     public function index(TrainingSession $trainingSession)
     {
-        $trainingMasterPlacementQuery = TrainingMasterPlacement::where('training_session_id',$trainingSession->id);
+        $trainingMasterPlacementQuery = TrainingMasterPlacement::where('training_session_id', $trainingSession->id);
         // $freeTrainners = TrainingMaster::select()->whereNotIn('id',$trainingMasterPlacementQuery->pluck('training_master_id'))->get();
         $freeTrainners = TrainingMaster::all();
         $trainingCenters = TraininingCenter::all();
         $trainingMasterPlacements = $trainingMasterPlacementQuery->get();
-        $trainings = Training::all();
-        return view('training_session.trainners', compact('trainings','trainingSession','trainingMasterPlacements','freeTrainners','trainingCenters'));
+        $trainings = Training::whereIn('id',TrainingSessionTraining::where('training_session_id', $trainingSession->id)->pluck('id'))->get();
+        return view('training_session.trainners', compact('trainings', 'trainingSession', 'trainingMasterPlacements', 'freeTrainners', 'trainingCenters'));
     }
 
     /**
@@ -45,19 +46,20 @@ class TrainingMasterPlacementController extends Controller
      * @param  \App\Http\Requests\StoreTrainingMasterPlacementRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTrainingMasterPlacementRequest $request,TrainingSession $trainingSession)
+    public function store(StoreTrainingMasterPlacementRequest $request, TrainingSession $trainingSession)
     {
         $data = $request->validated();
         $trainingCenter = $data['training_center'];
         $trainner = $data['trainner'];
         $training = $data['training'];
-        $trainingMasterPlacement = TrainingMasterPlacement::where('trainining_center_id',$trainingCenter)->where('training_id',$training)->first();
-        if($trainingMasterPlacement){
-            throw ValidationException::withMessages(['training'=>'Please two trainners can\'t give the same training']);
+
+        $trainingMasterPlacement = TrainingMasterPlacement::where('training_session_id', $trainingCenter)->where('trainining_center_id', $trainingCenter)->where('training_id', $training)->first();
+        if ($trainingMasterPlacement) {
+            throw ValidationException::withMessages(['training' => 'Please two trainners can\'t give the same training']);
         }
-        $trainingMasterPlacement = TrainingMasterPlacement::where('training_master_id',$trainner)->where('trainining_center_id','!=',$trainingCenter)->first();
-        if($trainingMasterPlacement){
-            throw ValidationException::withMessages(['trainner'=>'Trainner can\'t give two different centers']);
+        $trainingMasterPlacement = TrainingMasterPlacement::where('training_master_id', $trainner)->where('trainining_center_id', '!=', $trainingCenter)->first();
+        if ($trainingMasterPlacement) {
+            throw ValidationException::withMessages(['trainner' => 'Trainner can\'t give two different centers']);
         }
         TrainingMasterPlacement::create([
             'training_session_id' => $trainingSession->id,
@@ -65,7 +67,7 @@ class TrainingMasterPlacementController extends Controller
             'training_master_id' => $data['trainner'],
             'training_id' => $data['training'],
         ]);
-        return redirect()->back()->with('message','Training master assigned successfully    ');
+        return redirect()->back()->with('message', 'Training master assigned successfully    ');
     }
 
     /**
@@ -108,9 +110,9 @@ class TrainingMasterPlacementController extends Controller
      * @param  \App\Models\TrainingMasterPlacement  $trainingMasterPlacement
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TrainingSession $trainingSession,TrainingMasterPlacement $trainingMasterPlacement)
+    public function destroy(TrainingSession $trainingSession, TrainingMasterPlacement $trainingMasterPlacement)
     {
         $trainingMasterPlacement->delete();
-        return redirect()->back()->with('message','Training master removed');
+        return redirect()->back()->with('message', 'Training master removed');
     }
 }

@@ -9,10 +9,12 @@ use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingSession;
 use App\Models\Zone;
 use App\Models\Region;
+use App\Models\TrainingCenterBasedPermission;
 use App\Models\User;
 use App\Models\Volunteer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class TraininingCenterController extends Controller
@@ -72,8 +74,8 @@ class TraininingCenterController extends Controller
             'name' => 'min:2|required|string|unique:trainining_centers,name',
             'code' => 'required|string|unique:trainining_centers,code',
         ]);
-        $path = $request->file('logo')->store('Training Centers');
-        $TrainingCenter = TraininingCenter::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'logo' => $path, 'zone_id' => $request->get('zone_id')]);
+        $logoFile = FileController::fileUpload($request->logo, 'training center logos/')->id;
+        $TrainingCenter = TraininingCenter::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'logo' => $logoFile, 'zone_id' => $request->get('zone_id')]);
 
         return redirect()->route('TrainingCenter.index')->with('message', 'Training Center created successfully');
     }
@@ -128,6 +130,7 @@ class TraininingCenterController extends Controller
             'name' => 'min:2|required|string|unique:trainining_centers,name,' . $traininingCenter,
             'code' => 'required|string|unique:trainining_centers,code,' . $traininingCenter
         ]);
+
         $TrainingCenter->update($data);
         return redirect()->route('TrainingCenter.index')->with('message', 'Training Center updated successfully');
     }
@@ -145,15 +148,24 @@ class TraininingCenterController extends Controller
             return response()->json(array('msg' => 'deleted successfully'), 200);
         }
     }
-    public function assignChecker(Request $request,)
+    public function assignChecker(Request $request, TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
-        // dd($request->all());
-
-        foreach ($request->get('user_id') as $user_id) {
-            $user = User::find($user_id);
-            $user->update(['trainining_center_id' => $request->get('trainingCenterId')]);
+        $data = $request->validate(['checkerUser' => 'required']);
+        $checkerPermission = Permission::findOrCreate('checker');
+        $trainingCenterBasedPermissionQuery = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', $data['checkerUser'])->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $checkerPermission->id);
+        $trainingCenterBasedPermissionCount = $trainingCenterBasedPermissionQuery->count();
+        if ($trainingCenterBasedPermissionCount == 0) {
+            TrainingCenterBasedPermission::create([
+                'training_session_id' => $trainingSession->id,
+                'user_id' => $data['checkerUser'],
+                'trainining_center_id' => $trainingCenter->id,
+                'permission_id' => $checkerPermission->id
+            ]);
+        } else {
+            $trainingCenterBasedPermissionQuery->latest()->first()->delete();
+            return redirect()->back()->with(['message' => 'Checker removed successfully']);
         }
-        return redirect()->back();
+        return redirect()->back()->with(['message' => 'Checker added successfully']);
     }
     public function RemoveChecker($checker_id)
     {
@@ -216,5 +228,9 @@ class TraininingCenterController extends Controller
         $volunteers=Volunteer::whereRelation('status','acceptance_status',5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',$training_center_id)->get();
         dd($volunteers);
         return view('training_center.assign_resource', ['volunteersChecked']);
+    }
+    public function trainingShow()
+    {
+        dd('sd');
     }
 }

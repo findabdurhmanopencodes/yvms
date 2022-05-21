@@ -52,10 +52,10 @@ class DatabaseSeeder extends Seeder
 
         TrainingSession::create([
             'start_date' => '2022-05-06',
-            'end_date' => '2022-06-07',
+            'end_date' => '2022-07-07',
             'moto' => 'Kindness for living together',
             'registration_start_date' => '2022-05-01',
-            'registration_dead_line' => '2022-06-25',
+            'registration_dead_line' => '2022-06-29',
             'quantity' => 800,
             'status' => 0,
         ]);

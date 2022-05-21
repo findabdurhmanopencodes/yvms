@@ -11,10 +11,14 @@ use App\Models\Region;
 use App\Models\Resource;
 use App\Models\Status;
 use App\Models\Training;
+use App\Models\TrainingCenterBasedPermission;
 use App\Models\TrainingCenterCapacity;
+use App\Models\TrainingMaster;
 use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingSession;
+use App\Models\TrainingSessionTraining;
 use App\Models\TraininingCenter;
+use App\Models\User;
 use App\Models\Volunteer;
 use App\Models\Woreda;
 use App\Models\Zone;
@@ -28,6 +32,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use League\CommonMark\Extension\SmartPunct\Quote;
+use Spatie\Permission\Models\Permission;
 
 class TrainingSessionController extends Controller
 {
@@ -866,32 +871,33 @@ class TrainingSessionController extends Controller
     public function trainingCenterShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
         $miniSide = 'aside-minimize';
-        $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',$trainingCenter->id)->get();
+        $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->get();
+        $checkedInVolunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->whereRelation('status', 'acceptance_status', 5)->get();
         $totalVolunteers = count($volunteers);
-        $totalTrainingMasters = TrainingMasterPlacement::where('training_session_id',$trainingSession->id)->where('trainining_center_id',$trainingCenter->id)->count();
-        // $totalCheckedInVolunteers = ;
-        /*
-            cordinators
-            checker assign
-        attendance
-        Coordinators
-        Checkers
-        Mater Trainner
-        Resource
-        Volunteers
-        */
-        return view('training_session.center_show', compact('trainingSession', 'trainingCenter', 'miniSide'));
+        $totalTrainingMasters = TrainingMasterPlacement::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->count();
+        $trainings = Training::whereIn('id', TrainingSessionTraining::where('training_session_id', $trainingSession->id)->pluck('id'))->get();
+        $coordinatorPermission = Permission::findOrCreate('centerCooridnator');
+        $centerCoordinatorQuery = User::whereIn('id', TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $coordinatorPermission->id)->pluck('user_id'));
+        $centerCoordinators = $centerCoordinatorQuery->get();
+        $centerCoordinatorUsers =  User::doesntHave('volunteer')->doesntHave('trainner')->permission($coordinatorPermission->id)->whereNotIn('id', $centerCoordinatorQuery->pluck('id'))->get();
+        $freeTrainners = TrainingMaster::all();
+        $checkerPermission = Permission::findOrCreate('checker');
+        $centerCheckerQuery = User::whereIn('id', TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $checkerPermission->id)->pluck('user_id'));
+        $centerCheckers = $centerCheckerQuery->get();
+
+        $checkerUsers = User::doesntHave('volunteer')->doesntHave('trainner')->role('checker')->whereNotIn('id', $centerCheckerQuery->pluck('id'))->get();
+        return view('training_session.center_show', compact('centerCoordinators','centerCoordinatorUsers','checkedInVolunteers', 'centerCheckers', 'checkerUsers', 'freeTrainners', 'trainings', 'trainingSession', 'totalTrainingMasters', 'totalVolunteers', 'trainingCenter', 'miniSide'));
     }
-    public function resourceAssignToTrainingCenter($training_session , Request $request)
+    public function resourceAssignToTrainingCenter($training_session, Request $request)
     {
         $training_center_id = $request->get('training_center_id');
         $resource_id = $request->get('resource_id');
         $amount = $request->get('amount');
         $trainingCenter = TraininingCenter::find($training_center_id);
-        $trainingCenter->resources()->attach($resource_id, ['current_balance' => $amount, 'initial_balance' => $amount,'training_session_id'=>$training_session]);
+        $trainingCenter->resources()->attach($resource_id, ['current_balance' => $amount, 'initial_balance' => $amount, 'training_session_id' => $training_session]);
         return redirect()->back()->with('msg', 'Resource Added Sucessfuily TO Training Center');
     }
-    public function updateResourceAssignToTrainingCenter($training_session ,Request $request)
+    public function updateResourceAssignToTrainingCenter($training_session, Request $request)
     {
 
         $training_center_id = $request->get('training_center_id');
@@ -900,19 +906,19 @@ class TrainingSessionController extends Controller
         $trainingCenter = TraininingCenter::find($training_center_id);
         $trainingCenterResourceCurrentBalance = $trainingCenter->resources()->latest()->first()->pivot->current_balance;
 
-        $trainingCenter->resources()->attach($resource_id, ['current_balance' => (int)$amount+$trainingCenterResourceCurrentBalance, 'initial_balance' => $amount,'training_session_id'=>$training_session]);
+        $trainingCenter->resources()->attach($resource_id, ['current_balance' => (int)$amount + $trainingCenterResourceCurrentBalance, 'initial_balance' => $amount, 'training_session_id' => $training_session]);
 
         return redirect()->back()->with('msg', 'Resource Added Sucessfuily TO Training Center');
     }
-    public function showResource($training_session,$resource){
+    public function showResource($training_session, $resource)
+    {
 
 
-        return view('training_session.resource.show',['resource'=>Resource::find($resource),'trainingCenters'=>TraininingCenter::all()]);
+        return view('training_session.resource.show', ['resource' => Resource::find($resource), 'trainingCenters' => TraininingCenter::all()]);
+    }
+    public function allResource()
+    {
 
-}
-    public function allResource(){
-
-            return view('training_session.resource.index',['resources'=>Resource::all()]);
-
+        return view('training_session.resource.index', ['resources' => Resource::all()]);
     }
 }
