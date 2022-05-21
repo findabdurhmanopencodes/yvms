@@ -111,7 +111,6 @@
         var myDesign;
         $('#print_btn').on('click', function(event){
             var applicants = @json($applicants);
-            console.log(applicants);
             applicants.forEach((applicant, key) => {
                 myDesign = document.createElement("div");
                 myDesign.setAttribute('id', 'myDesign'+key);
@@ -180,10 +179,10 @@
                 DATAS.push(div);
             });
 
-            generatePDF(DATAS);
+            generatePDF(DATAS, applicants);
         })
 
-        function generatePDF(abc){
+        function generatePDF(abc, applicants){
             var mywindow = window.open('', 'PRINT', 'height=100%,width=100%');
 
             mywindow.document.write('<html><head>');
@@ -207,7 +206,20 @@
             toastr.success('ID printed');
 
             document.getElementById('print_btn').style.visibility = 'hidden';
-            // location.reload();
+            setTimeout(() => {
+                $.ajax({
+                    type: "POST",
+                    url: '/'+{{ $training_center_id }}+"/id/count",
+                    data: {
+                        'applicants': applicants,
+                        'training_session_id': {{ $training_session_id }},
+                        "_token": $('meta[name="csrf-token"]').attr('content'),
+                    },
+                    success: function(result){
+                        console.log(result.applicants);
+                    },
+                });
+            }, 200);
             return true;
         }
 

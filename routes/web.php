@@ -206,6 +206,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('training-center/remove-checker{checker_id}', [TraininingCenterController::class, 'removeChecker'])->name('TrainingCenter.removeChecker');
     Route::resource('TrainingCenter', TraininingCenterController::class);
     Route::post('{training_center}/search/applicant', [IdGenerateController::class, 'searchApplciant'])->name('search.applicant');
+    Route::post('{training_center}/id/count', [IdGenerateController::class, 'idCount'])->name('id.count');
 
     Route::get('/dashboard', function () {
         if (count(TrainingSession::availableSession()) > 0) {
