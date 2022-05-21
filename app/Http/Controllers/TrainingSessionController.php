@@ -977,15 +977,11 @@ class TrainingSessionController extends Controller
         $checkerUsers = User::doesntHave('volunteer')->doesntHave('trainner')->role('checker')->whereNotIn('id', $centerCheckerQuery->pluck('id'))->get();
         // $totalCheckedInVolunteers = ;
         /*
-            cordinators
-            checker assign
-        attendance
-        Coordinators
-        Checkers
-        Mater Trainner
-        Resource
-        Volunteers
+            attendance
+            Coordinators
+            Resource
+            Volunteers
         */
-        return view('training_session.center_show', compact('centerCheckers','checkerUsers', 'freeTrainners', 'trainings', 'trainingSession', 'totalTrainingMasters', 'totalVolunteers', 'trainingCenter', 'miniSide'));
+        return view('training_session.center_show', compact('centerCheckers', 'checkerUsers', 'freeTrainners', 'trainings', 'trainingSession', 'totalTrainingMasters', 'totalVolunteers', 'trainingCenter', 'miniSide'));
     }
 }

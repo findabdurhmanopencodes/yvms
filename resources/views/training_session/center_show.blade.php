@@ -58,9 +58,11 @@
                             <!--end::Contacts-->
                         </div>
                         <div class="my-lg-0 my-1">
-                            <a href="#" class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3">Print
-                                Badge</a>
-                            <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">New Task</a>
+                            <a href="#" class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3">
+                                <i class="fa fa-users"></i>
+                                Checked In Volunteers
+                            </a>
+                            {{-- <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">New Task</a> --}}
                         </div>
                     </div>
                     <!--end: Title-->
@@ -83,14 +85,14 @@
                                         class="btn btn-sm btn-text btn-light-primary text-uppercase font-weight-bold">{{ Request::route('training_session')->endDateET() }}</span>
                                 </div>
                             </div>
-                            <div class="flex-grow-1 flex-shrink-0 w-150px w-xl-300px mt-4 mt-sm-0">
+                            {{-- <div class="flex-grow-1 flex-shrink-0 w-150px w-xl-300px mt-4 mt-sm-0">
                                 <span class="font-weight-bold">Progress</span>
                                 <div class="progress progress-xs mt-2 mb-2">
                                     <div class="progress-bar bg-success" role="progressbar" style="width: 63%;"
                                         aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                                 <span class="font-weight-bolder text-dark">78%</span>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <!--end: Content-->
@@ -118,7 +120,7 @@
                         <i class="flaticon-confetti icon-2x text-muted font-weight-bold"></i>
                     </span>
                     <div class="d-flex flex-column text-dark-75">
-                        <span class="font-weight-bolder font-size-sm">Checked In Volunteer</span>
+                        <span class="font-weight-bolder font-size-sm">Checked In Volunteers</span>
                         <span class="font-weight-bolder font-size-h5">
                             <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span>
                     </div>
