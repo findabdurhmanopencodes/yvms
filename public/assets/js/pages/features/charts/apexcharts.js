@@ -69,8 +69,8 @@ var KTApexChartsDemo = (function () {
                 },
             },
             noData: {
-                text: 'Loading...'
-              },
+                text: "No Volunteers has been Placed to any Training Center",
+            },
             // xaxis: {
             //     categories: [
             //         "Jan",
@@ -146,12 +146,10 @@ var KTApexChartsDemo = (function () {
                 {
                     name: "Allowed Quota",
                     data: regionalQoutaAppliedPlaced.quota,
-
                 },
                 {
                     name: "Applied Volenter",
                     data: regionalQoutaAppliedPlaced.applied,
-
                 },
                 {
                     name: "Placed Volunteers",
@@ -193,6 +191,7 @@ var KTApexChartsDemo = (function () {
                 },
             },
             colors: [primary, success, warning],
+            noData:{text:'No Regional Contribution Data for the Selected Session '}
         };
 
         var chart = new ApexCharts(document.querySelector(apexChart), options);
@@ -279,6 +278,7 @@ var KTApexChartsDemo = (function () {
     var _demo5 = function () {
         const apexChart = "#chart_5";
         var options = {
+            noData:{text:'No Intake Capacity Data Found'},
             series: [
                 {
                     name: "Intake Capacity",
@@ -1097,7 +1097,7 @@ var KTApexChartsDemo = (function () {
                 width: 450,
                 type: "donut",
             },
-            labels:regionalContribution.code,
+            labels: regionalContribution.code,
             responsive: [
                 {
                     breakpoint: 480,
@@ -1112,6 +1112,9 @@ var KTApexChartsDemo = (function () {
                 },
             ],
             colors: [primary, success, warning, danger, info],
+            noData: {
+                text: "No Volunteers has been placed in the seleted session",
+            },
         };
 
         var chart = new ApexCharts(document.querySelector(apexChart), options);
@@ -1141,6 +1144,7 @@ var KTApexChartsDemo = (function () {
                 },
             ],
             colors: [primary, success, warning, danger, info],
+            noData: { text: "No Regional Quotas Found" },
         };
 
         var chart = new ApexCharts(document.querySelector(apexChart), options);
