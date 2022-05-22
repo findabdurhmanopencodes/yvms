@@ -33,6 +33,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use League\CommonMark\Extension\SmartPunct\Quote;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class TrainingSessionController extends Controller
 {
@@ -884,7 +885,7 @@ class TrainingSessionController extends Controller
         $checkerPermission = Permission::findOrCreate('checker');
         $centerCheckerQuery = User::whereIn('id', TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $checkerPermission->id)->pluck('user_id'));
         $centerCheckers = $centerCheckerQuery->get();
-
+        Role::findOrCreate('checker');
         $checkerUsers = User::doesntHave('volunteer')->doesntHave('trainner')->role('checker')->whereNotIn('id', $centerCheckerQuery->pluck('id'))->get();
         return view('training_session.center_show', compact('centerCoordinators','centerCoordinatorUsers','checkedInVolunteers', 'centerCheckers', 'checkerUsers', 'freeTrainners', 'trainings', 'trainingSession', 'totalTrainingMasters', 'totalVolunteers', 'trainingCenter', 'miniSide'));
     }

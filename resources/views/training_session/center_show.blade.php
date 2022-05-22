@@ -123,11 +123,8 @@
                     <div class="d-flex flex-column text-dark-75">
                         <span class="font-weight-bolder font-size-sm">Checked In Volunteers</span>
                         <span class="font-weight-bolder font-size-h5">
-<<<<<<< HEAD
                             {{-- <span class="text-dark-50 font-weight-bold"></span>{{ $totalVolunteers }}</span> --}}
-=======
                             <span class="text-dark-50 font-weight-bold"></span>{{ count($checkedInVolunteers) }}</span>
->>>>>>> ad444c92230563bdd9f8fa6cf4ed131c286c2a86
                     </div>
 
                 </div>
@@ -140,11 +137,7 @@
                     <div class="d-flex flex-column text-dark-75">
                         <span class="font-weight-bolder font-size-sm">Training Masters</span>
                         <span class="font-weight-bolder font-size-h5">
-<<<<<<< HEAD
-                            {{-- <span class="text-dark-50 font-weight-bold"></span>{{$totalTrainingMasters}}</span> --}}
-=======
                             <span class="text-dark-50 font-weight-bold"></span>{{ $totalTrainingMasters }}</span>
->>>>>>> ad444c92230563bdd9f8fa6cf4ed131c286c2a86
                     </div>
                 </div>
                 <!--end: Item-->
