@@ -162,8 +162,9 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
 });
 
 
+
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified','role'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
     // Route::middleware(['guest'])->group(function () {
     Route::resource('training_master', TrainingMasterController::class);
@@ -216,6 +217,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('TrainingCenter', TraininingCenterController::class);
     Route::post('{training_center}/search/applicant', [IdGenerateController::class, 'searchApplciant'])->name('search.applicant');
     Route::post('{training_center}/id/count', [IdGenerateController::class, 'idCount'])->name('id.count');
+    Route::post('{training}/training/schedule', [TraininingCenterController::class, 'trainingSchedule'])->name('training.attendance');
+    Route::post('{training}/training/schedule/remove', [TraininingCenterController::class, 'trainingScheduleRemove'])->name('training.remove');
 
     Route::resource('training/{training}/training_document', TrainingDocumentController::class);
     Route::get('/dashboard', function () {

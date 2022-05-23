@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Attendance;
+use App\Models\TrainingSchedule;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,8 +18,8 @@ return new class extends Migration
     {
         Schema::create('user_attendances', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Attendance::class);
+            $table->foreignIdFor(User::class)->constrained();
+            $table->foreignIdFor(TrainingSchedule::class)->constrained();
             $table->timestamps();
         });
     }
