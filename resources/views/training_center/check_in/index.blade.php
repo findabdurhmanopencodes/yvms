@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'checkin report')
+@section('title', 'Resource Asign')
 
 @section('breadcrumbTitle', 'checkin report')
 @section('breadcrumbList')
@@ -52,17 +52,19 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($volunteersChecked as $key => $volunteerChecked)
+
                     <tr>
-                        @foreach ($volunteersChecked as $key => $volunteerChecked)
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $volunteerChecked->name() }}</td>
                             <td>{{ $volunteerChecked->phone }}</td>
-                            <td>{{ $volunteerChecked->woreda->zone->region->name }}</td>
+                            <td>{{ $volunteerChecked->woreda?->zone?->region?->name }}</td>
                             <td><span
                                     class="badge badge-pill badge-{{ $volunteerChecked->status->acceptance_status == 5 ? 'info' : 'warning' }}">{{ $volunteerChecked->status->acceptance_status == 5 ? 'Checked-In' : 'Not Checked-In' }}</span>
                             </td>
-                        @endforeach
                     </tr>
+                    @endforeach
+
                     @if (count($volunteersChecked) < 1)
                         <tr>
                             <td class="text-capitalize text-danger font-size-h4">No Applicants Found</td>

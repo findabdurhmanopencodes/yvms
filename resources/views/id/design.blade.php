@@ -58,7 +58,7 @@
                                                 {{$applicant->first_name}}
                                             </td>
                                             <td>
-                                                {{ $applicant->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->code }}
+                                                {{ $applicant->approvedApplicant?->trainingPlacement?->trainingCenterCapacity?->trainingCenter?->code }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -191,7 +191,7 @@
             abc.forEach(element => {
                 mywindow.document.write(element.innerHTML);
             });
-            
+
             mywindow.document.write('</div>');
             mywindow.document.write('</body></html>');
 

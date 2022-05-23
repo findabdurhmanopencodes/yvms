@@ -54,14 +54,18 @@ class TrainingSession extends Model
      */
     public function trainingScheduless(): HasManyThrough
     {
-        return $this->hasManyThrough(TrainingSchedule::class, Schedule::class,'training_session_id','schedule_id');
+        return $this->hasManyThrough(TrainingSchedule::class, Schedule::class, 'training_session_id', 'schedule_id');
     }
 
 
     static public function availableSession()
     {
         $today = Carbon::today();
-        return TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
+        $ts =  TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
+        if ($ts->isEmpty())
+            $ts = TrainingSession::latest()->limit(1)->get();
+
+        return $ts;
     }
     public function startDateET()
     {

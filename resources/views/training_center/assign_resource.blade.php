@@ -1,7 +1,7 @@
 @extends('layouts.app')
-@section('title', 'checkin report')
+@section('title', 'Resource Assignment')
 
-@section('breadcrumbTitle', 'checkin report')
+@section('breadcrumbTitle', 'Resource Assignment')
 @section('breadcrumbList')
     <li class="breadcrumb-item">
         <a href="" class="text-muted"></a>
@@ -10,23 +10,31 @@
 @section('content')
     <!--begin::Card-->
     <div class="card card-custom card-body mb-3">
-        <form action="{{ route('session.TrainingCenter.index.checked',['training_session'=>Request::route('training_session')]) }}" method="post">
+        <form
+            action="{{ route('session.resource.assign.volunteer', ['training_session' => Request::route('training_session'), 'training_center_id' => $training_center_id]) }}"
+            method="post">
             @csrf
             <div class=" ml-0 col-12 p-0">
                 <div class="row ">
 
                     <div class="form-group col-6">
-                        <select name="status" id="" class="form-control select2">
-                            <option value="">Select status</option>
-                            <option value="5">CheckedIn</option>
-                            <option value="4">Not-Checked In</option>
+                        <label for="gender" class=" col-sm-12 col-form-label">Id Number</label>
+                        <input class="form-control " placeholder="search by Id Number" name="id">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="gender" class=" col-sm-12 col-form-label">Gender</label>
+                        <br>
+                        <select class="form-control select2" id="gender" name="gender">
+                            <option value="">Select Gender</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
                         </select>
                     </div>
-                    <div>
-                        <button class="btn btn-primary btn-block" name="filter" type="filter" value="filter">
-                            Filter</button>
-                    </div>
                 </div>
+            </div>
+            <div>
+                <button class="btn btn-primary btn-block col-sm-2   " name="filter" type="filter" value="filter">
+                   <i class="fa fa-search"></i> Find</button>
             </div>
         </form>
     </div>
@@ -40,32 +48,33 @@
 
         </div>
         <div class="card-body">
-            <table class="table " width="100">
+            <table class="table" width="100">
                 <thead>
                     <tr>
                         <th>No.</th>
                         <th>Name</th>
                         <th>Phone</th>
-                        <th>region</th>
-                        <th>status</th>
+                        <th>Gender</th>
+                        <th>action</th>
 
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        @foreach ($volunteersChecked as $key => $volunteerChecked)
-                            <td>{{ $key + 1 }}</td>
-                            <td>{{ $volunteerChecked->name() }}</td>
-                            <td>{{ $volunteerChecked->phone }}</td>
-                            <td>{{ $volunteerChecked->woreda->zone->region->name }}</td>
-                            <td><span
-                                    class="badge badge-pill badge-{{ $volunteerChecked->status->acceptance_status == 5 ? 'info' : 'warning' }}">{{ $volunteerChecked->status->acceptance_status == 5 ? 'Checked-In' : 'Not Checked-In' }}</span>
-                            </td>
-                        @endforeach
-                    </tr>
-                    @if (count($volunteersChecked) < 1)
+                    @foreach ($volunteers as $key => $volunteer)
                         <tr>
-                            <td class="text-capitalize text-danger font-size-h4">No Applicants Found</td>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $volunteer->name() }}</td>
+                            <td>{{ $volunteer->phone }}</td>
+                            <td>{{ $volunteer->gender }}</td>
+                            <td><a class="btn btn-primary"
+                                    href="{{ route('session.resource.assign.volunteer.detail', ['training_session' => Request::route('training_session'), 'training_center_id' => $training_center_id, 'volunteer' => $volunteer->id]) }}">Give
+                                    Resource</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    @if (count($volunteers) < 1)
+                        <tr>
+                            <td class="text-capitalize text-danger font-size-h4">No Volunteers Found</td>
                         </tr>
                     @endif
                 </tbody>

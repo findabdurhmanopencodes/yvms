@@ -32,7 +32,7 @@
                 </button>
             </div>
         @endif
-        
+
     </div>
         <div class="card-body" id="search_card">
             <table width="100%" class="table table-striped" id="search_table">
@@ -56,7 +56,7 @@
                                     {{$applicant->first_name}}
                                 </td>
                                 <td>
-                                    {{ $applicant->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->code }}
+                                    {{ $applicant->approvedApplicant?->trainingPlacement?->trainingCenterCapacity?->trainingCenter?->code }}
                                 </td>
                             </tr>
                         @endforeach
@@ -83,13 +83,13 @@
         var table = $("#search_card").html();
         var i = document.createElement('i');
         i.classList.add("flaticon2-print");
-        
+
         function getTableCell(c){
             return `<td>${c}</td>`;
         }
         $('#search').on('keyup keypress', function(e) {
             var keyCode = e.keyCode || e.which;
-            if (keyCode === 13) { 
+            if (keyCode === 13) {
                 e.preventDefault();
                 return false;
             }

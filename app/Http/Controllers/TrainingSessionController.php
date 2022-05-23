@@ -375,7 +375,7 @@ class TrainingSessionController extends Controller
 
             $d_r_d_t_g = DateTimeFactory::of($date_end_reg_gc->format('Y'), $date_end_reg_gc->format('m'), $date_end_reg_gc->format('d'))->toGregorian();
 
-            $trainingSession->update(['moto' => $data['name'], 'start_date' => $d_s_t_g, 'end_date' => $d_e_t_g, 'registration_start_date' => $d_r_s_t_g, 'registration_dead_line' => $d_r_d_t_g, 'quantity'=>$data['quantity']]);
+            $trainingSession->update(['moto' => $data['name'], 'start_date' => $d_s_t_g, 'end_date' => $d_e_t_g, 'registration_start_date' => $d_r_s_t_g, 'registration_dead_line' => $d_r_d_t_g, 'quantity' => $data['quantity']]);
 
             $qouta_all = $qouta->all();
             foreach ($qouta_all as $key => $qou) {
@@ -887,7 +887,7 @@ class TrainingSessionController extends Controller
         $centerCheckers = $centerCheckerQuery->get();
         Role::findOrCreate('checker');
         $checkerUsers = User::doesntHave('volunteer')->doesntHave('trainner')->role('checker')->whereNotIn('id', $centerCheckerQuery->pluck('id'))->get();
-        return view('training_session.center_show', compact('centerCoordinators','centerCoordinatorUsers','checkedInVolunteers', 'centerCheckers', 'checkerUsers', 'freeTrainners', 'trainings', 'trainingSession', 'totalTrainingMasters', 'totalVolunteers', 'trainingCenter', 'miniSide'));
+        return view('training_session.center_show', compact('centerCoordinators', 'centerCoordinatorUsers', 'checkedInVolunteers', 'centerCheckers', 'checkerUsers', 'freeTrainners', 'trainings', 'trainingSession', 'totalTrainingMasters', 'totalVolunteers', 'trainingCenter', 'miniSide'));
     }
     public function resourceAssignToTrainingCenter($training_session, Request $request)
     {
@@ -900,12 +900,16 @@ class TrainingSessionController extends Controller
     }
     public function updateResourceAssignToTrainingCenter($training_session, Request $request)
     {
+        // dd($request);
 
         $training_center_id = $request->get('training_center_id');
         $resource_id = $request->get('resource_id');
         $amount = $request->get('amount');
         $trainingCenter = TraininingCenter::find($training_center_id);
         $trainingCenterResourceCurrentBalance = $trainingCenter->resources()->latest()->first()->pivot->current_balance;
+        DB::table('resource_trainining')->where('resource_id', $resource_id)->where('training_session_id', $training_center_id)->where('trainining_center_id', $training_center_id)->update([
+            'current_balance' => $trainingCenterResourceCurrentBalance + $amount
+        ]);
 
         $trainingCenter->resources()->attach($resource_id, ['current_balance' => (int)$amount + $trainingCenterResourceCurrentBalance, 'initial_balance' => $amount, 'training_session_id' => $training_session]);
 
