@@ -9,9 +9,15 @@ use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingSession;
 use App\Models\Zone;
 use App\Models\Region;
+use App\Models\Schedule;
+use App\Models\Training;
 use App\Models\TrainingCenterBasedPermission;
+use App\Models\TrainingSchedule;
+use App\Models\TrainingSessionTraining;
 use App\Models\User;
+use App\Models\UserAttendance;
 use App\Models\Volunteer;
+use Database\Seeders\UserAttendanceSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
@@ -183,7 +189,6 @@ class TraininingCenterController extends Controller
     }
     public function result(Request $request)
     {
-
         if ($request->ajax()) {
             $output = '';
             $query = $request->get('query');
@@ -251,8 +256,39 @@ class TraininingCenterController extends Controller
         return view('training_center.assign_resource_voluteer',['training_center'=>$training_center,'volunteer'=>Volunteer::find($volunter)]);
     }
 
-    public function trainingShow()
+    public function trainingShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter, Training $training)
     {
-        dd('sd');
+        $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingSession->id)->paginate(10);
+        $att_history = [];
+
+        foreach (UserAttendance::all() as $key => $value) {
+            array_push($att_history, $value->training_schedule_id.','.User::where('id', $value->user_id)->get()->first()->volunteer->id);
+        }
+        
+        $trainingSchedules = TrainingSchedule::whereIn('training_session_training_id',TrainingSessionTraining::where('training_session_id', $trainingSession->id)->where('training_id', $training->id)->pluck('id'))->get();
+        
+        return view('training_center.training_center_attendance', compact('trainingSession', 'trainingCenter', 'training', 'applicants', 'trainingSchedules', 'att_history'));
+    }
+
+    public function trainingSchedule(Request $request){
+        $id_arr =  explode(",",$request->check);
+
+        $user_id = Volunteer::where('id', $id_arr[1])->get()->first()->user->id;
+
+        UserAttendance::create(['user_id' => $user_id, 'training_schedule_id'=> $id_arr[0]]);
+        
+        return response()->json(['check'=> 'success']);
+    }
+
+    public function trainingScheduleRemove(Request $request){
+        $id_arr =  explode(",",$request->check);
+
+        foreach (UserAttendance::all() as $key => $value) {
+            if ($value->training_schedule_id == $id_arr[0] && User::where('id', $value->user_id)->get()->first()->volunteer->id == $id_arr[1]) {
+                $value->delete();
+            }
+        }
+
+        return response()->json(['check'=> 'sucess']);
     }
 }

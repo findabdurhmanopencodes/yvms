@@ -22,6 +22,15 @@ class Schedule extends Model
     }
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'date' => 'date',
+    ];
+
+    /**
      * Get all of the trainings for the Schedule
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
