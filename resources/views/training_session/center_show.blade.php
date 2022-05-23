@@ -65,6 +65,13 @@
                             </a>
                             <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">Checked In</a>
                         </div>
+                        <div class="my-lg-0 my-1">
+                            <a href="{{ route('session.resource.assign.volunteer', ['training_session' => Request::route('training_session')->id, 'training_center_id' => $trainingCenter->id]) }}"
+                                class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3">
+                                <i class="fa fa-users"></i>
+                                Resources
+                            </a>
+                        </div>
                     </div>
                     <!--end: Title-->
                     <!--begin: Content-->

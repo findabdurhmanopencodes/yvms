@@ -179,7 +179,6 @@ class TraininingCenterController extends Controller
     }
     public function checkInView()
     {
-        // dd('d');
         return view('training_center.check_in.check_in');
     }
     public function result(Request $request)
@@ -189,7 +188,7 @@ class TraininingCenterController extends Controller
             $output = '';
             $query = $request->get('query');
             // ->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',Auth::user()->trainingCheckerOf->id);
-            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id', $query)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',Auth::user()->trainingCheckerOf?->id);
+            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id', $query);
 
 
             if (count($volunteerQuery->get()) > 0) {
@@ -223,12 +222,35 @@ class TraininingCenterController extends Controller
         }
         return view('training_center.check_in.index', ['volunteersChecked' => $volunteersChecked->paginate(10)]);
     }
-    public function giveResource($training_session,$training_center_id)
+    public function giveResource(Request $request ,$training_session,$training_center_id)
     {
-        $volunteers=Volunteer::whereRelation('status','acceptance_status',5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',$training_center_id)->get();
-        dd($volunteers);
-        return view('training_center.assign_resource', ['volunteersChecked']);
+
+        $volunteers=Volunteer::whereRelation('status','acceptance_status',5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',$training_center_id);
+        $id=$request->get('id');
+        $gender=$request->get('gender');
+        if($request->has('filter')){
+            // dd($id);
+            if (!empty($id)) {
+              $volunteers=$volunteers->where('id',$id);
+            }
+            if (!empty($gender)) {
+                $volunteers = $volunteers->where('gender', '=', $gender);
+            }
+        }
+
+        return view('training_center.assign_resource', ['volunteers'=>$volunteers->paginate(10),'training_center_id'=>$training_center_id]);
     }
+    public function giveResourceDetail(Request $request ,$training_session,$training_center_id,$volunter)
+    {
+        $training_center=TraininingCenter::with('resources')->find($training_center_id);
+        return view('training_center.assign_resource_voluteer',['training_center'=>$training_center,'volunteer'=>Volunteer::find($volunter)]);
+    }
+    public function storeResourceToVolunteer($training_session,$training_center_id,$volunter,$resourceId)
+    {
+        $training_center=TraininingCenter::with('resources')->find($training_center_id);
+        return view('training_center.assign_resource_voluteer',['training_center'=>$training_center,'volunteer'=>Volunteer::find($volunter)]);
+    }
+
     public function trainingShow()
     {
         dd('sd');

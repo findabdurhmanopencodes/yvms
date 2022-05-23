@@ -17,20 +17,22 @@
     <input type="hidden" value="{{ $training_center_id }}" id="training_center_id">
     <div class="card-header flex-wrap  pt-6 ">
         <div class="card-title mr-0">
-            {{-- <h3 class="card-label">Checked In Applicant List</h3> --}}
             <div class="form-group">
                 <h3 class="card-label">Checked In Applicant List</h3>
                 <br>
                 <input type="text" id="search" class="form-control" placeholder="search by ID..." />
             </div>
         </div>
-        <div class="card-toolbar">
-            <button type="submit" class="btn btn-primary font-weight-bolder" >
-                <span class="svg-icon svg-icon-md" id="print_all">
-                    <i class="flaticon2-print" id="i_text"></i>Print All ID
-                </span>
-            </button>
-        </div>
+        @if ($applicants)
+            <div class="card-toolbar">
+                <button type="submit" class="btn btn-primary font-weight-bolder" >
+                    <span class="svg-icon svg-icon-md" id="print_all">
+                        <i class="flaticon2-print" id="i_text"></i>Print All ID
+                    </span>
+                </button>
+            </div>
+        @endif
+
     </div>
         <div class="card-body" id="search_card">
             <table width="100%" class="table table-striped" id="search_table">
@@ -54,7 +56,7 @@
                                     {{$applicant->first_name}}
                                 </td>
                                 <td>
-                                    {{ $applicant->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->code }}
+                                    {{ $applicant->approvedApplicant?->trainingPlacement?->trainingCenterCapacity?->trainingCenter?->code }}
                                 </td>
                             </tr>
                         @endforeach
@@ -81,10 +83,17 @@
         var table = $("#search_card").html();
         var i = document.createElement('i');
         i.classList.add("flaticon2-print");
-        
+
         function getTableCell(c){
             return `<td>${c}</td>`;
         }
+        $('#search').on('keyup keypress', function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                e.preventDefault();
+                return false;
+            }
+        });
         $('#search').on('input', function(){
             if ($('#search').val()) {
                 $.ajax({

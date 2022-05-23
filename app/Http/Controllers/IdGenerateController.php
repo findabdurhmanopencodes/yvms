@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ApprovedApplicant;
+use App\Models\IDcount;
+use App\Models\Status;
 use App\Models\TrainingSession;
 use App\Models\Volunteer;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -36,5 +38,18 @@ class IdGenerateController extends Controller
         $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->training_center_id)->where('id', 'like', '%' . $search_var . '%')->paginate(10);
         
         return response()->json(['applicants'=>$applicants]);
+    }
+
+    public function idCount(Request $request){
+        foreach ($request->applicants as $key => $value) {
+            $check_val = IDcount::where('training_session_id', $request->training_session_id)->where('volunteer_id',$value['id'])->get();
+            if (count($check_val) > 0) {
+                $count = $check_val[0]['count'] + 1;
+                IDcount::where('training_session_id', $request->training_session_id)->where('volunteer_id', $value['id'])->update(['count'=> $count]);
+            }else{
+                IDcount::create(['volunteer_id' => $value['id'], 'training_session_id' => $request->training_session_id, 'count'=> 1]);
+            }
+        }
+        return response()->json(['applicants' => 'success']);
     }
 }

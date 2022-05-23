@@ -32,6 +32,7 @@ use App\Http\Controllers\ZoneController;
 
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PayrollSheetController;
+use App\Http\Controllers\VolunteerResourceHistoryController;
 use App\Http\Controllers\TrainingCenterBasedPermissionController;
 use App\Http\Controllers\TrainingDocumentController;
 use App\Mail\VerifyMail;
@@ -141,10 +142,11 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::resource('training_center_based_permission',TrainingCenterBasedPermissionController::class);
     Route::post('training_center/{training_center}/assign_checker', [TraininingCenterController::class, 'assignChecker'])->name('training_center.assign_checker');
     Route::post('resource/assign', [TrainingSessionController::class, 'resourceAssignToTrainingCenter'])->name('resource.assign');
-    Route::post('resource/update', [TrainingSessionController::class, 'updateResourceAssignToTrainingCenter '])->name('resource.update');
+    Route::post('resource/update', [TrainingSessionController::class, 'updateResourceAssignToTrainingCenter'])->name('resource.update');
     Route::get('/resources', [TrainingSessionController::class, 'allResource'])->name('resource.all');
     Route::get('/resource/{resource}', [TrainingSessionController::class, 'showResource'])->name('resource.show');
-    Route::get('/training-center/{training_center_id}/resource-assign', [TraininingCenterController::class, 'giveResource'])->name('resource.assign.volunteer');
+    Route::any('/training-center/{training_center_id}/resource-assign', [TraininingCenterController::class, 'giveResource'])->name('resource.assign.volunteer');
+    Route::any('/training-center/{training_center_id}/resource-assign/volunteer/{volunteer}', [TraininingCenterController::class, 'giveResourceDetail'])->name('resource.assign.volunteer.detail');
     Route::get('check-in/', [TraininingCenterController::class, 'checkInView'])->name('TrainingCenter.CheckIn');
     Route::get('result/', [TraininingCenterController::class, 'result'])->name('result');
     Route::get('/check-in/action/{id}', [TraininingCenterController::class, 'checkIn'])->name('TrainingCenter.checked');
@@ -154,6 +156,9 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('training_center/{training_center}/training/{training}',[TraininingCenterController::class, 'trainingShow'])->name('training_center.training.show');
     Route::post('{training_center}/id/print', [IdGenerateController::class, 'idGenerate'])->name('training_center.generate');
     Route::get('{training_center}/checkedIn/list', [IdGenerateController::class, 'checkedInList'])->name('training_center.checkedIn_list');
+    Route::resource('VolunteerResourceHistory', VolunteerResourceHistoryController::class);
+
+
 });
 
 
@@ -211,6 +216,8 @@ Route::middleware(['auth', 'verified','role'])->group(function () {
     Route::get('training-center/remove-checker{checker_id}', [TraininingCenterController::class, 'removeChecker'])->name('TrainingCenter.removeChecker');
     Route::resource('TrainingCenter', TraininingCenterController::class);
     Route::post('{training_center}/search/applicant', [IdGenerateController::class, 'searchApplciant'])->name('search.applicant');
+    Route::post('{training_center}/id/count', [IdGenerateController::class, 'idCount'])->name('id.count');
+
     Route::resource('training/{training}/training_document', TrainingDocumentController::class);
     Route::get('/dashboard', function () {
         if (count(TrainingSession::availableSession()) > 0) {
