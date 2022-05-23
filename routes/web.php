@@ -112,9 +112,6 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::resource('/attendance', AttendanceController::class);
     Route::get('volunteer/{volunteer}/attendances', [VolunteerController::class, 'atendance'])->name('volunteer.attendance');
 
-
-
-
     Route::post('applicant/place', [TrainingPlacementController::class, 'place'])->name('applicant.place');
     Route::get('applicants/email/unverified', [VolunteerController::class, 'emailUnverified'])->name('applicant.email.unVerified');
     Route::get('/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');
@@ -133,7 +130,12 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::resource('training_master_placement', TrainingMasterPlacementController::class);
     Route::get('training_center',[TrainingSessionController::class,'trainingCenterIndex'])->name('training_center.index');
     Route::get('training_center/{training_center}',[TrainingSessionController::class,'trainingCenterShow'])->name('training_center.show');
+
 });
+
+  //////////////////////////////////////////////////////////////
+Route::resource('payroll', PayrollController::class);
+Route::resource('payrollSheet', PayrollSheetController::class);
 
 Route::get('check-in/', [TraininingCenterController::class, 'checkInView'])->name('TrainingCenter.CheckIn');
 Route::get('result/', [TraininingCenterController::class, 'result'])->name('result');
@@ -172,9 +174,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('qouta', QoutaController::class);
     Route::resource('user', UserController::class);
 
-    Route::resource('payroll', PayrollController::class);
-    Route::resource('payrollSheet', PayrollSheetController::class);
-    
     Route::resource('region', RegionController::class);
     Route::resource('zone', ZoneController::class);
     Route::resource('woreda', WoredaController::class);

@@ -36,7 +36,7 @@
                             $(parent).closest('tr')[0].remove();
                             Swal.fire(
                                 "Deleted!",
-                                "Field of study has been deleted.",
+                                "Payroll has been deleted.",
                                 "success"
                             )
                         },
@@ -50,6 +50,8 @@
             });
         }
     </script>
+
+
     <script>
         $( document ).ready(function() {
 
@@ -59,7 +61,7 @@
                 field: 'id',
                 title: '#',
                 sortable: 'asc',
-                width: 30,
+                width: 40,
                 type: 'number',
                 selector: false,
                 textAlign: 'center',
@@ -72,22 +74,22 @@
                 field: 'name',
                 title: 'Code',
             },
-              
+
             {
-                field: 'training_session',
+                field: 'training_session_id',
                 title: 'training Session',
-             
+
             },
             {
                 field: 'user_id',
                 title: 'Creted by',
-             
+
             },
             {
                 field: 'created_at',
                 title: 'Created at',
                 sortable: 'desc',
-             
+
             },
 
             {
@@ -105,11 +107,11 @@
                                 <i class="far fa-trash"></i>\
                             </a>\
                             \
-                            <a href="/fieldofstudy/' + payroll + '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                            <a href="/payroll/' + payroll + '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                 <i class="far fa-pen"></i>\
                             </a>\
                             \
-                            <a href="/fieldofstudy/' +payroll+ '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                            <a href="/payroll/' +payroll+ '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                 <i class="far fa-list"></i>\
                             </a>\
                             \
@@ -127,7 +129,7 @@
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
                 <h3 class="card-label">List of Payrolls
-                    <span class="text-muted pt-2 font-size-sm d-block">Payrools</span>
+                    <span class="text-muted pt-2 font-size-sm d-block">Payroll </span>
                 </h3>
             </div>
             <div class="card-toolbar">
@@ -139,33 +141,29 @@
                         <i class="fal fa-plus"></i>
                         <!--end::Svg Icon-->
                  </span>
-                 Create new payroll </a>
+              <i class="fa fa-usd"> </i>   Create new payroll </a>
                 <form method="POST" action="{{ route('payroll.store', []) }}">
                         @csrf
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg"  role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Add new Field of study</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Create payroll </h5>
                                         <button type="button" class="close" data-dismiss="modal" -label="Close">
                                             <i aria-hidden="true" class="ki ki-close"></i>
                                         </button>
                                     </div>
+
                                     <div class="modal-body">
                                         <div class="card-body">
-                                            <div class="card-body">
-                                                <div class="form-group row">
-                                                    <div class="col-lg-6">
-                                                        <label>Name:</label>
-                                                        <input type="text" class="form-control" placeholder="name" name="name"/>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                  <span style="font-size:16px;">
+                                    Here you have to create payroll for a specific training session in order to create payroll sheet for each training center!
+                                   </span>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary font-weight-bold">Save changes</button>
+                                        <button type="submit" class="btn btn-primary font-weight-bold">Create</button>
                                     </div>
                                 </div>
                             </div>

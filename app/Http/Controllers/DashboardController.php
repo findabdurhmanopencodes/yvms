@@ -11,10 +11,10 @@ use App\Models\Volunteer;
 use App\Models\Zone;
 use App\Models\Woreda;
 use App\Models\Volunteers;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-
-
-
+use DateTime;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -25,10 +25,13 @@ class DashboardController extends Controller
      */
     public function index()
     {
+
         $users = DB::table('users')->count();
         $regions = DB::table('regions')->count();
         $zones = DB::table('zones')->count();
         $woredas = DB::table('woredas')->count();
+
+     //   Woreda::count();
         $volunteers = DB::table('volunteers')->count();
         $traininingCenters = DB::table('trainining_centers')->count();
 

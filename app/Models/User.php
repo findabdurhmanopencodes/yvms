@@ -105,7 +105,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->gender == 'M' ? 'Male' : 'Female';
     }
-
     /**
      * Get the volunteer associated with the User
      *
@@ -116,6 +115,24 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Volunteer::class, 'user_id', 'id');
     }
 
+    // public function payroll()
+    //      {
+    // return $this->hasMany('App\Payroll');
+    //      }
+    public function payrollsheets(){
+
+    return $this->hasMany(PayrollSheet::class);
+    }
+
+    public function payrolls(){
+        return $this->hasMany(Payroll::class);
+    }
+
+    // public function payrollsheet()
+    //      {
+    // return $this->hasMany('App\PayrollSheet');
+    //      }
+         
     public function getProfilePhoto()
     {
         return $this->photo ?? asset('user.png');
