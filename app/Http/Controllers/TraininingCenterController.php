@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use \Maatwebsite\Excel\Facades\Excel;
 
 class TraininingCenterController extends Controller
 {
@@ -290,5 +291,10 @@ class TraininingCenterController extends Controller
         }
 
         return response()->json(['check'=> 'sucess']);
+    }
+
+    public function get_attendance_data()
+    {
+        return Excel::download(new UserAttendance(), 'attendance.xlsx');
     }
 }

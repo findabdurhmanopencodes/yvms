@@ -35,17 +35,18 @@
 
     </div>
         <div class="card-body" id="search_card">
-            <table width="100%" class="table table-striped" id="search_table">
+            <table width="100%" class="table table" id="search_table">
                 <thead>
                     </tr>
                         <th>#   </th>
                         <th> ID </th>
                         <th> Name </th>
+                        <th>ID count</th>
                         <th> Training Center </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (count($applicants) > 1)
+                    @if (count($applicants) > 0)
                         @foreach ($applicants as $key => $applicant)
                             <tr>
                                 <td><input type="checkbox" name="applicant[]" value="{{ $applicant->id }}" id="checkbox"/></td>
@@ -56,13 +57,16 @@
                                     {{$applicant->first_name}}
                                 </td>
                                 <td>
+                                    {{ $applicant->idCount->count }}
+                                </td>
+                                <td>
                                     {{ $applicant->approvedApplicant?->trainingPlacement?->trainingCenterCapacity?->trainingCenter?->code }}
                                 </td>
                             </tr>
                         @endforeach
                     @else
                     <tr>
-                        <td class="text text-danger text-center" colspan="4">
+                        <td class="text text-danger text-center" colspan="5">
                             Volunteer not found
                         </td>
                     </tr>
