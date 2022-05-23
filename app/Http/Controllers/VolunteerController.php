@@ -214,10 +214,10 @@ class VolunteerController extends Controller
     public function apply(StoreVolunteerRequest $request)
     {
         $availableSession = TrainingSession::availableSession();
-        $baseFilePath = 'training session/'.$availableSession->id.'/';
         if (count($availableSession) <= 0) {
             return view('application.no-open-form');
         }
+        $baseFilePath = 'training session/'.$availableSession[0]->id.'/';
         $date =  DateTime::createFromFormat('d/m/Y', $request->get('dob'));
         $year = $date->format('Y');
         $month = $date->format('m');

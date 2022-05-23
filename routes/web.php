@@ -162,8 +162,9 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
 });
 
 
+
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified','role'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
     // Route::middleware(['guest'])->group(function () {
     Route::resource('training_master', TrainingMasterController::class);
