@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CindicationRoom;
 use App\Models\Training;
 use App\Models\TrainingMaster;
 use App\Models\TrainingSession;
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->foreignIdFor(TrainingSession::class);
             $table->foreignIdFor(TrainingMaster::class);
             $table->foreignIdFor(TraininingCenter::class);
+            $table->foreignIdFor(CindicationRoom::class);
             $table->foreignIdFor(Training::class);
             $table->timestamps();
         });

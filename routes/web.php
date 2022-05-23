@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\CindicationRoomController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DisablityController;
 use App\Http\Controllers\FeildOfStudyController;
@@ -137,6 +138,8 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('training_center',[TrainingSessionController::class,'trainingCenterIndex'])->name('training_center.index');
     Route::get('training_center/{training_center}',[TrainingSessionController::class,'trainingCenterShow'])->name('training_center.show');
 
+    Route::resource('{training_center}/cindication_room',CindicationRoomController::class);
+
 });
 
   //////////////////////////////////////////////////////////////
@@ -203,6 +206,7 @@ Route::middleware(['auth', 'verified','role'])->group(function () {
     Route::post('{training_center}/id/count', [IdGenerateController::class, 'idCount'])->name('id.count');
     Route::post('{training}/training/schedule', [TraininingCenterController::class, 'trainingSchedule'])->name('training.attendance');
     Route::post('{training}/training/schedule/remove', [TraininingCenterController::class, 'trainingScheduleRemove'])->name('training.remove');
+
 
     Route::resource('training/{training}/training_document', TrainingDocumentController::class);
     Route::get('/dashboard', function () {
