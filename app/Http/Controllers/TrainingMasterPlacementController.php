@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTrainingMasterPlacementRequest;
 use App\Http\Requests\UpdateTrainingMasterPlacementRequest;
+use App\Models\CindicationRoom;
 use App\Models\Training;
 use App\Models\TrainingMaster;
 use App\Models\TrainingMasterPlacement;
@@ -26,7 +27,7 @@ class TrainingMasterPlacementController extends Controller
         $freeTrainners = TrainingMaster::all();
         $trainingCenters = TraininingCenter::all();
         $trainingMasterPlacements = $trainingMasterPlacementQuery->get();
-        $trainings = Training::whereIn('id',TrainingSessionTraining::where('training_session_id', $trainingSession->id)->pluck('id'))->get();
+        $trainings = Training::whereIn('id', TrainingSessionTraining::where('training_session_id', $trainingSession->id)->pluck('id'))->get();
         return view('training_session.trainners', compact('trainings', 'trainingSession', 'trainingMasterPlacements', 'freeTrainners', 'trainingCenters'));
     }
 
@@ -51,13 +52,14 @@ class TrainingMasterPlacementController extends Controller
         $data = $request->validated();
         $trainingCenter = $data['training_center'];
         $trainner = $data['trainner'];
+        $cindicationRoom = $data['cindication_room'];
         $training = $data['training'];
 
-        $trainingMasterPlacement = TrainingMasterPlacement::where('training_session_id', $trainingCenter)->where('trainining_center_id', $trainingCenter)->where('training_id', $training)->first();
+        $trainingMasterPlacement = TrainingMasterPlacement::where('training_session_id', $trainingCenter)->where('cindication_room_id', $cindicationRoom)->where('training_id', $training)->first();
         if ($trainingMasterPlacement) {
             throw ValidationException::withMessages(['training' => 'Please two trainners can\'t give the same training']);
         }
-        $trainingMasterPlacement = TrainingMasterPlacement::where('training_master_id', $trainner)->where('trainining_center_id', '!=', $trainingCenter)->first();
+        $trainingMasterPlacement = TrainingMasterPlacement::where('training_master_id', $trainner)->where('cindication_room_id', '!=', $cindicationRoom)->first();
         if ($trainingMasterPlacement) {
             throw ValidationException::withMessages(['trainner' => 'Trainner can\'t give two different centers']);
         }
@@ -66,6 +68,7 @@ class TrainingMasterPlacementController extends Controller
             'trainining_center_id' => $data['training_center'],
             'training_master_id' => $data['trainner'],
             'training_id' => $data['training'],
+            'cindication_room_id' => $cindicationRoom,
         ]);
         return redirect()->back()->with('message', 'Training master assigned successfully    ');
     }

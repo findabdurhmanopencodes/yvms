@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\CindicationRoomController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DisablityController;
 use App\Http\Controllers\FeildOfStudyController;
@@ -136,7 +137,6 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::post('/schedules', [TrainingSessionController::class, 'setSchedule'])->name('schedule.set');
     Route::post('/addSchedule', [ScheduleController::class, 'addSchedule'])->name('schedule.add');
     Route::delete('/training_schedule/{training_schedule}', [TrainingScheduleController::class, 'destroy'])->name('trainingschedule.destroy');
-    Route::resource('training_master_placement', TrainingMasterPlacementController::class);
     Route::get('training_center', [TrainingSessionController::class, 'trainingCenterIndex'])->name('training_center.index');
     Route::get('training_center/{training_center}', [TrainingSessionController::class, 'trainingCenterShow'])->name('training_center.show');
     Route::resource('training_center_based_permission', TrainingCenterBasedPermissionController::class);
@@ -158,13 +158,14 @@ Route::get('training_center/{training_center}', [TrainingSessionController::clas
     Route::get('{training_center}/checkedIn/list', [IdGenerateController::class, 'checkedInList'])->name('training_center.checkedIn_list');
     Route::resource('VolunteerResourceHistory', VolunteerResourceHistoryController::class);
     Route::resource('{training_center}/cindication_room',CindicationRoomController::class);
+    Route::resource('training_master_placement', TrainingMasterPlacementController::class);
 
 });
 
 
 
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
-Route::middleware(['auth', 'verified',])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
     // Route::middleware(['guest'])->group(function () {
     Route::resource('training_master', TrainingMasterController::class);
