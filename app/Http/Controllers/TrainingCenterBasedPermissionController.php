@@ -52,8 +52,11 @@ class TrainingCenterBasedPermissionController extends Controller
                 'trainining_center_id' => $data['training_center_id'],
                 'permission_id' => $data['permission_id'],
             ];
+            if(isset($data['cindication_room_id'])){
+
             if($data['cindication_room_id']!=null){
                 $validData['cindication_room_id'] = $data['cindication_room_id'];
+            }
             }
             TrainingCenterBasedPermission::create($validData);
         } else {

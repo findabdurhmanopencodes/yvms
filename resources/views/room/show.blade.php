@@ -2,6 +2,17 @@
 @section('title', 'Detail of syindication room')
 @section('content')
     <div class="row">
+        <div class="col-md-12">
+            <div class="card card-custom gutter-b">
+                <div class="py-5 border-0 card-header">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label font-weight-bolder text-dark">Syndication Room {{ $cindicationRoom->number }}</span>
+                        <span class="mt-3 text-muted font-weight-bold font-size-sm">Total capacity of {{ ($cindicationRoom->number_of_volunteer) }}
+                            volunteers</span>
+                    </h3>
+                </div>
+            </div>
+        </div>
         <div class="col-md-6">
             <div class="card card-custom gutter-b">
                 <div class="py-5 border-0 card-header">
@@ -31,8 +42,8 @@
                         <tbody>
                             @foreach ($trainings as $key => $training)
                                 @php
-                                    $masterId = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->id;
-                                    $trainner = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->master->user;
+                                    $masterId = $training->trainner(Request::route('training_session'), $trainingCenter,$cindicationRoom)?->id;
+                                    $trainner = $training->trainner(Request::route('training_session'), $trainingCenter,$cindicationRoom)?->master->user;
                                 @endphp
                                 <tr style="font-size: 13px;">
                                     <td>

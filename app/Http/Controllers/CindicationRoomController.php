@@ -65,7 +65,7 @@ class CindicationRoomController extends Controller
 
         $trainings = Training::whereIn('id', TrainingSessionTraining::where('training_session_id', $trainingSession->id)->pluck('id'))->get();
 
-        $coFacilitatorQuery = User::whereIn('id', TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $coFacilitatorPermission->id)->pluck('user_id'));
+        $coFacilitatorQuery = User::whereIn('id', TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $coFacilitatorPermission->id)->where('cindication_room_id', $cindicationRoom->id)->pluck('user_id'));
         $coFacilitators = $coFacilitatorQuery->get();
         $coFacilitatorUsers = User::doesntHave('volunteer')->doesntHave('trainner')->permission($coFacilitatorPermission->id)->whereNotIn('id', $coFacilitatorQuery->pluck('id'))->get();
         $freeTrainners = TrainingMaster::all();

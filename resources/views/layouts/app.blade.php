@@ -85,7 +85,7 @@
             <!--begin::Aside-->
             <div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
                 <!--begin::Brand-->
-                <div class="brand flex-column-auto mt-4" id="kt_brand">
+                <div class="mt-4 brand flex-column-auto" id="kt_brand">
                     <!--begin::Logo-->
                     <a href="#" class="text-center brand-logo w-100 d-block">
                         <img alt="Logo" src="{{ asset('img/peace_logo_max.png') }}" width="70" />
@@ -118,7 +118,7 @@
                 <!--begin::Aside Menu-->
                 <div class="aside-menu-wrapper flex-column-fluid " style="padding: 5px;" id="kt_aside_menu_wrapper">
                     <!--begin::Menu Container-->
-                    <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1"
+                    <div id="kt_aside_menu" class="my-4 aside-menu" data-menu-vertical="1" data-menu-scroll="1"
                         data-menu-dropdown-timeout="500">
                         <!--begin::Menu Nav-->
                         <ul class="menu-nav">
@@ -129,8 +129,6 @@
                                     <span class="menu-text">Dashboard</span>
                                 </a>
                             </li>
-
-
                             @if (Request::route('training_session'))
                                 <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'session.applicant') === 0 ? 'menu-item-open' : '' }}"
                                     aria-haspopup="true" data-menu-toggle="hover">
@@ -227,7 +225,6 @@
                                         <span class="menu-text">Placment Result</span>
                                     </a>
                                 </li>
-
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.schedule') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.schedule', ['training_session' => Request::route('training_session')]) }}"
@@ -377,7 +374,7 @@
                             @include('aside.placement')
                             @include('aside.payroll')
 
-                            <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 ||strpos(Route::currentRouteName(), 'feild_of_study') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
+                            <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'feild_of_study') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
                                 aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <i class="menu-icon flaticon-settings"></i>
@@ -424,7 +421,7 @@
 
                 <!--end::Subheader-->
                 <!--begin::Entry-->
-                <div class=" flex-column-fluid p-5">
+                <div class="p-5 flex-column-fluid">
                     <!--begin::Container-->
                     <div class="container mt-6">
 
