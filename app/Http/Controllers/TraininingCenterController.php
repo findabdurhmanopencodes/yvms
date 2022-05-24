@@ -212,12 +212,12 @@ class TraininingCenterController extends Controller
             // echo json_encode($data);
         }
     }
-    public function checkIn($training_session,$id)
+    public function checkIn($training_session, $id)
     {
         Volunteer::find($id)->status->update(['acceptance_status' => 5]);
         return redirect()->back()->with('message', 'Volunteer Sucessfuily Checked-In');
     }
-    public function indexChecking($training_session,Request $request)
+    public function indexChecking($training_session, Request $request)
     {
         $volunteersChecked = Volunteer::with('woreda.zone.region')->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', Auth::user()->trainingCheckerOf?->id);
         if ($request->has('filter')) {
@@ -228,33 +228,33 @@ class TraininingCenterController extends Controller
         }
         return view('training_center.check_in.index', ['volunteersChecked' => $volunteersChecked->paginate(10)]);
     }
-    public function giveResource(Request $request ,$training_session,$training_center_id)
+    public function giveResource(Request $request, $training_session, $training_center_id)
     {
 
-        $volunteers=Volunteer::whereRelation('status','acceptance_status',5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',$training_center_id);
-        $id=$request->get('id');
-        $gender=$request->get('gender');
-        if($request->has('filter')){
+        $volunteers = Volunteer::whereRelation('status', 'acceptance_status', 5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $training_center_id);
+        $id = $request->get('id');
+        $gender = $request->get('gender');
+        if ($request->has('filter')) {
             // dd($id);
             if (!empty($id)) {
-              $volunteers=$volunteers->where('id',$id);
+                $volunteers = $volunteers->where('id', $id);
             }
             if (!empty($gender)) {
                 $volunteers = $volunteers->where('gender', '=', $gender);
             }
         }
 
-        return view('training_center.assign_resource', ['volunteers'=>$volunteers->paginate(10),'training_center_id'=>$training_center_id]);
+        return view('training_center.assign_resource', ['volunteers' => $volunteers->paginate(10), 'training_center_id' => $training_center_id]);
     }
-    public function giveResourceDetail(Request $request ,$training_session,$training_center_id,$volunter)
+    public function giveResourceDetail(Request $request, $training_session, $training_center_id, $volunter)
     {
-        $training_center=TraininingCenter::with('resources')->find($training_center_id);
-        return view('training_center.assign_resource_voluteer',['training_center'=>$training_center,'volunteer'=>Volunteer::find($volunter)]);
+        $training_center = TraininingCenter::with('resources')->find($training_center_id);
+        return view('training_center.assign_resource_voluteer', ['training_center' => $training_center, 'volunteer' => Volunteer::find($volunter)]);
     }
-    public function storeResourceToVolunteer($training_session,$training_center_id,$volunter,$resourceId)
+    public function storeResourceToVolunteer($training_session, $training_center_id, $volunter, $resourceId)
     {
-        $training_center=TraininingCenter::with('resources')->find($training_center_id);
-        return view('training_center.assign_resource_voluteer',['training_center'=>$training_center,'volunteer'=>Volunteer::find($volunter)]);
+        $training_center = TraininingCenter::with('resources')->find($training_center_id);
+        return view('training_center.assign_resource_voluteer', ['training_center' => $training_center, 'volunteer' => Volunteer::find($volunter)]);
     }
 
     public function trainingShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter, Training $training)
@@ -263,26 +263,28 @@ class TraininingCenterController extends Controller
         $att_history = [];
 
         foreach (UserAttendance::all() as $key => $value) {
-            array_push($att_history, $value->training_schedule_id.','.User::where('id', $value->user_id)->get()->first()->volunteer->id);
+            array_push($att_history, $value->training_schedule_id . ',' . User::where('id', $value->user_id)->get()->first()->volunteer->id);
         }
-        
-        $trainingSchedules = TrainingSchedule::whereIn('training_session_training_id',TrainingSessionTraining::where('training_session_id', $trainingSession->id)->where('training_id', $training->id)->pluck('id'))->get();
-        
+
+        $trainingSchedules = TrainingSchedule::whereIn('training_session_training_id', TrainingSessionTraining::where('training_session_id', $trainingSession->id)->where('training_id', $training->id)->pluck('id'))->get();
+
         return view('training_center.training_center_attendance', compact('trainingSession', 'trainingCenter', 'training', 'applicants', 'trainingSchedules', 'att_history'));
     }
 
-    public function trainingSchedule(Request $request){
-        $id_arr =  explode(",",$request->check);
+    public function trainingSchedule(Request $request)
+    {
+        $id_arr =  explode(",", $request->check);
 
         $user_id = Volunteer::where('id', $id_arr[1])->get()->first()->user->id;
 
-        UserAttendance::create(['user_id' => $user_id, 'training_schedule_id'=> $id_arr[0]]);
-        
-        return response()->json(['check'=> 'success']);
+        UserAttendance::create(['user_id' => $user_id, 'training_schedule_id' => $id_arr[0]]);
+
+        return response()->json(['check' => 'success']);
     }
 
-    public function trainingScheduleRemove(Request $request){
-        $id_arr =  explode(",",$request->check);
+    public function trainingScheduleRemove(Request $request)
+    {
+        $id_arr =  explode(",", $request->check);
 
         foreach (UserAttendance::all() as $key => $value) {
             if ($value->training_schedule_id == $id_arr[0] && User::where('id', $value->user_id)->get()->first()->volunteer->id == $id_arr[1]) {
@@ -290,7 +292,7 @@ class TraininingCenterController extends Controller
             }
         }
 
-        return response()->json(['check'=> 'sucess']);
+        return response()->json(['check' => 'sucess']);
     }
 
     public function get_attendance_data()
