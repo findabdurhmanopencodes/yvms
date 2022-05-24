@@ -8,7 +8,6 @@ use App\Models\Status;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
-use App\Models\TraininingCenter;
 use App\Constants;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
