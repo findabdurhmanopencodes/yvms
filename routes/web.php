@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DisablityController;
 use App\Http\Controllers\FeildOfStudyController;
 use App\Http\Controllers\EducationalLevelController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\IdGenerateController;
 use App\Http\Controllers\PermissionController;
@@ -165,7 +166,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
 
 
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
-Route::middleware(['auth', 'verified','role'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
     // Route::middleware(['guest'])->group(function () {
     Route::resource('training_master', TrainingMasterController::class);
@@ -234,10 +235,16 @@ Route::middleware(['auth', 'verified','role'])->group(function () {
     Route::resource('TrainingCenterCapacity', TrainingCenterCapacityController::class);
     Route::post('TrainingCenter/Capacity', [TrainingCenterCapacityController::class, 'capacityChange'])->name('TrainingCenterCapacity.capacityChange');
     Route::get('attendance_export',[TraininingCenterController::class, 'get_attendance_data'])->name('attendance.export');
+    Route::resource('Event', EventController    ::class);
+
 });
 require __DIR__ . '/auth.php';
 Route::get('volunteer/verify/{token}', [VolunteerController::class, 'verifyEmail'])->name('volunteer.email.verify');
-Route::get('aj',function(){
+Route::get('id/test',function(){
     $id_number= Helper::IDGenerator(new Volunteer,'id_number',6,TraininingCenter::find(1)->code,TrainingSession::find(1)->id);
     dd($id_number);
+    $volunteer= Volunteer::find(16);
+    $a=$volunteer->update(['id_number'=>$id_number]);
+    dd($a);
+
 });

@@ -107,11 +107,11 @@
     </script>
 @endpush
 @section('content')
-    <form action="{{ route('event.store', []) }}" enctype="multipart/form-data" id="blog-form" method="POST">
+    <form action="{{ route('Event.store', []) }}" enctype="multipart/form-data" id="blog-form" method="POST">
         @csrf
         <div class="card card-custom">
 
-                @if ($errors->any())
+            @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
                         @foreach ($errors->all() as $error)
@@ -119,67 +119,32 @@
                         @endforeach
                     </ul>
                 </div>
-                @endif
+            @endif
 
-                            <div class="card-header">
+            <div class="card-header">
                 <h3 class="card-title">
                     New Event
                 </h3>
             </div>
             <div class="card-body">
-                <div>
-                    <label class="text-right col-form-label ">Event Image</label>
-                    <div class="image-input image-input-empty image-input-outline" id="featured_image"
-                        style="background-image: url('{{ asset('assets/media/bg/bg-5.jpg') }}')">
-                        <div class="image-input-wrapper"></div>
-                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
-                            data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
-                            <i class="fa fa-pen icon-sm text-muted"></i>
-                            <input type="file" name="featured_image" accept=".png, .jpg, .jpeg" />
-                            <input type="hidden" name="featured_image_remove" />
-                        </label>
 
-                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
-                            data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
-                            <i class="ki ki-bold-close icon-xs text-muted"></i>
-                        </span>
-
-                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
-                            data-action="remove" data-toggle="tooltip" title="Remove avatar">
-                            <i class="ki ki-bold-close icon-xs text-muted"></i>
-                        </span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 form-group d-flex">
-                        <div class="col-md-1">
-                            <label class="text-right col-form-label ">Title</label>
+                <form method="POST" action="{{ route('Event.store') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="card card-custom">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                Basic Demo
+                            </h3>
                         </div>
-                        <div class="col-md-11">
-                            <input class="form-control @error('title') is-invalid @enderror" type="text" placeholder="Title"
-                                id="title" name="title" value="{{ old('title') }}" />
-                            @error('title')
-                                <div class="fv-plugins-message-container">
-                                    <div data-field="title" data-validator="stringLength" class="fv-help-block">
-                                        {{ $message }}</div>
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                <div class="">
-                    <label for="">Body</label>
-                    <div id="contentQuill" style="height: 325px">
-                        {!! old('content') !!}
-                    </div>
-                    <textarea name="content" id="content-textarea" class="d-none">{{ old('content') }}</textarea>
-                    @error('content')
-                        <div class="fv-plugins-message-container">
-                            <div data-field="content" data-validator="stringLength" class="fv-help-block">{{ $message }}
+                        <div class="card-body">
+                            <div id="kt_quil_1" style="height: 325px">
+                                Compose a message
                             </div>
                         </div>
-                    @enderror
-                </div>
+                    </div>
+
+
+
             </div>
             <div class="card-footer">
                 <div class="d-flex">
@@ -190,3 +155,47 @@
         </div>
     </form>
 @endsection
+@push('js')
+<script>
+    // Class definition
+    var KTQuilDemos = function() {
+
+        // Private functions
+        var demo1 = function() {
+            var quill = new Quill('#contentQuill', {
+                modules: {
+                    toolbar: [
+                        [{
+                            header: [1, 2, false]
+                        }],
+                        ['bold', 'italic', 'underline'],
+                        ['image', 'code-block']
+                    ]
+                },
+                placeholder: 'Type your text here...',
+                theme: 'snow' // or 'bubble'
+            });
+            var editorId = '#contentQuill';
+            var textAreaId = '#content-textarea'
+            quill.on('text-change', function(delta, oldDelta, source) {
+                if ($(editorId + " .ql-editor").html() != '<p><br></p>') {
+                    var content = $(editorId + " .ql-editor").html();
+                    $(textAreaId).text(content);
+                }
+                if ($(editorId + " .ql-editor").html() == '<p><br></p>')
+                    $(textAreaId).text('');
+            });
+        }
+        return {
+            // public functions
+            init: function() {
+                demo1();
+            }
+        };
+    }();
+
+    jQuery(document).ready(function() {
+        KTQuilDemos.init();
+    });
+</script>
+@endpush

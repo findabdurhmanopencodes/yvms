@@ -81,6 +81,7 @@ class TrainingPlacementCommand extends Command
 
     public function place()
     {
+        // dd('aj');
 
         $activeSession = TrainingSession::availableSession()->first();
         DB::delete('DELETE FROM training_placements where training_session_id = ?;', [$activeSession->id]);
@@ -100,12 +101,11 @@ class TrainingPlacementCommand extends Command
                     $selectedCenter = $this->getRandomTrainingCenterFromRegion($trainingCenters, $regions->first()->id);
 
                    $tp= TrainingPlacement::create(['training_session_id' => $activeSession->id, 'approved_applicant_id' => $applicant->id, 'training_center_capacity_id' => $selectedCenter->id]);
-                    // $id_number= Helper::IDGenerator(new Volunteer,'id_number',5,'mop');
-                    $id_number= Helper::IDGenerator(new Volunteer,'id_number',6,$tp->trainingCenterCapacity->trainingCenter,TrainingSession::find(request()->route('training_session'))->id);
+                    // $id_number= Helper::IDGenerator(new Volunteer,'id_number',6,$tp->trainingCenterCapacity->trainingCenter,TrainingSession::find(request()->route('training_session'))->id);
 
 
-                    $volunteer= Volunteer::find($applicant->id);
-                    $volunteer->update(['id_number'=>$id_number]);
+                    // $volunteer= Volunteer::find($applicant->id);
+                    // $volunteer->update(['id_number'=>$id_number]);
 
 
                     $selectedCenter->capacity =  $selectedCenter->capacity - 1;
@@ -116,6 +116,7 @@ class TrainingPlacementCommand extends Command
                 break;
             }
             foreach ($regions as $currentRegion) {
+
                 foreach ($this->regionsExceptThis(Region::all(), $currentRegion->id, $trainingCenters) as $exRegion) {
                     $selectedApplicant = $this->randomApplicantFromRegion($applicants, $currentRegion->id);
 
@@ -129,9 +130,9 @@ class TrainingPlacementCommand extends Command
 
                     $tp = TrainingPlacement::create(['training_session_id' => $activeSession->id, 'approved_applicant_id' => $selectedApplicant->id, 'training_center_capacity_id' => $selectedCenter->id]);
                     //id must generate here
-                    $id_number= Helper::IDGenerator(new Volunteer,'id_number',6,$tp->trainingCenterCapacity->trainingCenter,TrainingSession::find(request()->route('training_session'))->id);
-                  $volunteer= Volunteer::find($selectedApplicant->id);
-                  $volunteer->update(['id_number'=>$id_number]);
+                //     $id_number= Helper::IDGenerator(new Volunteer,'id_number',6,$tp->trainingCenterCapacity->trainingCenter,TrainingSession::find(request()->route('training_session'))->id);
+                //   $volunteer= Volunteer::find($selectedApplicant->id);
+                //   $volunteer->update(['id_number'=>$id_number]);
 
 
                     $selectedCenter->capacity = $selectedCenter->capacity - 1;
