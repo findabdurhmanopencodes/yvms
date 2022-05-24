@@ -54,10 +54,10 @@
                                     {{ $applicant->id }}
                                 </td>
                                 <td>
-                                    {{$applicant->first_name}}
+                                    {{ $applicant->first_name }}
                                 </td>
                                 <td>
-                                    {{ $applicant->idCount->count }}
+                                    {{ $applicant?->idCount?->count }}
                                 </td>
                                 <td>
                                     {{ $applicant->approvedApplicant?->trainingPlacement?->trainingCenterCapacity?->trainingCenter?->code }}

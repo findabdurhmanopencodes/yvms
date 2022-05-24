@@ -682,8 +682,8 @@ class TrainingSessionController extends Controller
                     }
                 }
                 $b = [];
-
-                if (count($accepted_arr) < $train_session) {
+                $volunteer_count = count(Volunteer::all());
+                if (count($accepted_arr) < $train_session && count($accepted_arr) < $volunteer_count) {
                     $dif_arr = $train_session - count($accepted_arr);
 
                     $merge_acc = array_diff($arr, $accepted_arr);
@@ -704,11 +704,7 @@ class TrainingSessionController extends Controller
                     }
                 }
             }
-            $approved_applicants = ApprovedApplicant::where('training_session_id', $id)->get();
-
-            foreach ($approved_applicants as $key => $app_vol) {
-                $app_vol->delete();
-            }
+            $approved_applicants = ApprovedApplicant::where('training_session_id', $id)->delete();
 
             foreach ($accepted_arr as $key => $accepted) {
                 $approved_applicant = new ApprovedApplicant();

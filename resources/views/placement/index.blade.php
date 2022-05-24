@@ -24,7 +24,10 @@
                         <select name="region" id="" class="form-control select2">
                             <option value="">Select Region</option>
                             @foreach ($regions as $region)
-                                <option value="{{ $region->id }}">{{ $region->name }}</option>
+                                <option value="{{ $region->id }}" @if (Request::get('region') == $region->id )
+                                    selected
+                                @endif>{{ $region->name }}</option>
+
                             @endforeach
                         </select>
                     </div>
@@ -32,7 +35,9 @@
                         <select name="zone" id="" class="form-control select2">
                             <option value="">Select Zone</option>
                             @foreach ($zones as $zone)
-                                <option value="{{ $zone->id }}">{{ $zone->name }}</option>
+                                <option value="{{ $zone->id }}" @if (Request::get('zone') == $zone->id )
+                                    selected
+                                @endif>{{ $zone->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -40,7 +45,9 @@
                         <select name="woreda" id="" class="form-control select2">
                             <option value="">Select Woreda</option>
                             @foreach ($woredas as $woreda)
-                                <option value="{{ $woreda->id }}">{{ $woreda->name }}</option>
+                                <option value="{{ $woreda->id }}" @if (Request::get('woreda') == $woreda->id )
+                                    selected
+                                @endif>{{ $woreda->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -48,7 +55,9 @@
                         <select name="training_center" id="" class="form-control select2">
                             <option value="">Select Training Center</option>
                             @foreach ($training_centers as $training_center)
-                                <option value="{{ $training_center->id }}">{{ $training_center->name }}</option>
+                                <option value="{{ $training_center->id }}" @if (Request::get('training_center') == $training_center->id )
+                                    selected
+                                @endif>{{ $training_center->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -101,8 +110,8 @@
             <span>Page {{ $placedVolunteers->currentPage() > 0 ? $placedVolunteers->currentPage() : 0 }} of
                 {{ ceil($placedVolunteers->total() / $placedVolunteers->perPage()) }}</span>
             <div class="col-2"><a class="btn btn-sm btn-info"
-                href="{{ route('session.placement.reset', [request()->route('training_session')]) }}">
-                <i class="fa fa-recycle"></i> Reset </a></div>
+                    href="{{ route('session.placement.reset', [request()->route('training_session')]) }}">
+                    <i class="fa fa-recycle"></i> Reset </a></div>
         </div>
         <div class="card-body">
             <table width="100%" class="table table-striped ">

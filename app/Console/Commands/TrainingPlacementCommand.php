@@ -4,10 +4,12 @@ namespace App\Console\Commands;
 
 use App\Models\ApprovedApplicant;
 use App\Models\Region;
+use App\Models\Status;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
+use App\Constants;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -90,13 +92,14 @@ class TrainingPlacementCommand extends Command
 
         // if($appl)
 
-        while (!$regions->isEmpty() && (!$applicants->isEmpty())) {
+        while (!$regions->isEmpty() && (!$applicants->isEmpty()) && (!$trainingCenters->isEmpty())) {
             if ($regions->count() == 1 && $this->regionsExceptThis(Region::all(), $regions->first()->id, $trainingCenters)->isEmpty()) {
                 foreach ($applicants as $applicant) {
 
                     $selectedCenter = $this->getRandomTrainingCenterFromRegion($trainingCenters, $regions->first()->id);
 
                     TrainingPlacement::create(['training_session_id' => $activeSession->id, 'approved_applicant_id' => $applicant->id, 'training_center_capacity_id' => $selectedCenter->id]);
+                    Status::where(['volunteer_id' => $applicant->volunteer_id])->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_PLACED]);
                     $selectedCenter->capacity =  $selectedCenter->capacity - 1;
                     $trainingCenters = $trainingCenters->filter(function ($trainingCenter) {
                         return $trainingCenter->capacity > 0;
@@ -117,6 +120,7 @@ class TrainingPlacementCommand extends Command
                     $selectedCenter = $this->getRandomTrainingCenterFromRegion($trainingCenters, $exRegion->id);
 
                     $tp = TrainingPlacement::create(['training_session_id' => $activeSession->id, 'approved_applicant_id' => $selectedApplicant->id, 'training_center_capacity_id' => $selectedCenter->id]);
+                    Status::where(['volunteer_id' => $selectedApplicant->volunteer_id])->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_PLACED]);
 
                     $selectedCenter->capacity = $selectedCenter->capacity - 1;
 
