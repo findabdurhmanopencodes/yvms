@@ -225,7 +225,7 @@
 
 
 {{-- @extends('layouts.app')
-@push('css')  
+@push('css')
 @endpush
 @section('content')
 
@@ -255,7 +255,7 @@
                     </tr>
                 @endif
                 @foreach ($educational_levels as $key => $educational_level)
-               
+
                     <tr>
                         <td>{{ $key + 1 }}</td>
                         <td>
@@ -273,7 +273,7 @@
                                 Delete
                             </a>
 
-     
+
                         </td>
                     </tr>
                 @endforeach
@@ -326,11 +326,11 @@
             });
         }
 
-  
+
     </script>
 @endpush
 @endsection
 
 @push('js')
-    
+
 @endpush --}}

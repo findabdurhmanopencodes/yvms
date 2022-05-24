@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePayrollRequest;
 use App\Http\Requests\UpdatePayrollRequest;
 use App\Models\Payroll;
+use App\Models\TrainingSession;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PayrollController extends Controller
 {
@@ -21,14 +24,13 @@ class PayrollController extends Controller
 
     }
 
-
     public function index(Request $request)
     {
         if ($request->ajax()) {
             return datatables()->of(Payroll::select())->make(true);
         }
+       $payrolls = Payroll::all();
 
-        $payrolls = Payroll::all();
         return view('payroll.index', compact('payrolls'));
     }
 
@@ -41,21 +43,22 @@ class PayrollController extends Controller
     {
           // creating eduycational level setting
           return view('payroll.create');
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StorePayrollRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StorePayrollRequest $request)
+    }
+    public function store()
     {
-        {
-            $request->validate(['name' => 'required|string|unique:educational_levels,name']);
-            Payroll::create(['name' => $request->get('name')]);
-            return redirect()->route('payroll.index')->with('message', 'Payroll created successfully');
-        }
+
+       // dd('hello');
+         //   $request->validate(['name' => 'required|string|unique:payrols,name']);
+             $traingSession     = TrainingSession::availableSession()->last();
+             $prefix ='MoP-YVMS-Payroll';
+             $current_year =now()->year;
+             $code   = $prefix ."-".$traingSession->id."-".$current_year;
+
+             Payroll::create(['name'=>$code, 'training_session_id'=>$traingSession->id,'user_id'=>Auth::user()->id]);
+
+          return redirect()->route('payroll.index')->with('message', 'Payroll created successfully');
+
     }
 
     /**
@@ -81,7 +84,6 @@ class PayrollController extends Controller
     {
         return view('payroll.edit',compact('payroll'));
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -91,13 +93,11 @@ class PayrollController extends Controller
      */
     public function update(UpdatePayrollRequest $request, Payroll $payroll)
     {
-    
         $data = $request->validate(['name' => 'required|string|unique:payrolls,name,'.$payroll->id]);
         $payroll->update($data);
         return redirect()->route('payroll.index')->with('message', 'Payroll updated successfully');
         //
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -108,7 +108,7 @@ class PayrollController extends Controller
     {
         $payroll->delete();
         if ($request->ajax()) {
-            return response()->json(array('msg' => 'deleted successfully'), 200);
+            return response()->json(array('message' => 'deleted successfully'), 200);
         }
     }
 }
