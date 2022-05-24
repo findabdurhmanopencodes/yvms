@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTrainingCenterBasedPermissionRequest;
 use App\Http\Requests\UpdateTrainingCenterBasedPermissionRequest;
+use App\Models\CindicationRoom;
 use App\Models\TrainingCenterBasedPermission;
 use App\Models\TrainingSession;
+use App\Models\TraininingCenter;
+use App\Models\User;
 use Spatie\Permission\Models\Permission;
 
 class TrainingCenterBasedPermissionController extends Controller
@@ -40,15 +43,19 @@ class TrainingCenterBasedPermissionController extends Controller
     {
         $data = $request->validated();
         $permission = Permission::findById($data['permission_id']);
-        $trainingCenterBasedPermissionQuery = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', $data['user_id'])->where('trainining_center_id', $data['training_center_id'])->where('permission_id', $data['permission_id']);
+        $trainingCenterBasedPermissionQuery = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', $data['user_id'])->where('trainining_center_id', $data['training_center_id'])->where('permission_id', $data['permission_id'])->where('permission_id', $data['permission_id']);
         $trainingCenterBasedPermissionCount = $trainingCenterBasedPermissionQuery->count();
         if ($trainingCenterBasedPermissionCount == 0) {
-            TrainingCenterBasedPermission::create([
+            $validData = [
                 'training_session_id' => $trainingSession->id,
                 'user_id' => $data['user_id'],
                 'trainining_center_id' => $data['training_center_id'],
                 'permission_id' => $data['permission_id'],
-            ]);
+            ];
+            if($data['cindication_room_id']!=null){
+                $validData['cindication_room_id'] = $data['cindication_room_id'];
+            }
+            TrainingCenterBasedPermission::create($validData);
         } else {
             $trainingCenterBasedPermissionQuery->latest()->first()->delete();
             return redirect()->back()->with(['message' => 'User role removed successfully']);
@@ -99,5 +106,14 @@ class TrainingCenterBasedPermissionController extends Controller
     public function destroy(TrainingCenterBasedPermission $trainingCenterBasedPermission)
     {
         //
+    }
+
+    public function remove(TrainingSession $trainingSession, TraininingCenter $training_center, CindicationRoom $cindicationRoom, User $user, Permission $permission)
+    {
+        $tcbp = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', $user->id)->where('trainining_center_id', $training_center->id)->where('cindication_room_id', $cindicationRoom->id)->where('permission_id', $permission->id);
+        if($tcbp->first()){
+            $tcbp->first()->delete();
+        }
+        return redirect()->back()->with('message','Removed successfully');
     }
 }

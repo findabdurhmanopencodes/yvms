@@ -61,20 +61,15 @@ class CindicationRoomController extends Controller
     public function show(TrainingSession $trainingSession, TraininingCenter $trainingCenter, CindicationRoom $cindicationRoom)
     {
         $checkerPermission = Permission::findOrCreate('checker');
-        $coordinatorPermission = Permission::findOrCreate('centerCooridnator');
+        $coFacilitatorPermission = Permission::findOrCreate('coFacilitator');
 
         $trainings = Training::whereIn('id', TrainingSessionTraining::where('training_session_id', $trainingSession->id)->pluck('id'))->get();
 
-
-        /*
-$centerCoordinatorQuery = User::whereIn('id', TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $coordinatorPermission->id)->pluck('user_id'));
-        $centerCoordinatorUsers =  User::doesntHave('volunteer')->doesntHave('trainner')->permission($coordinatorPermission->id)->whereNotIn('id', $centerCoordinatorQuery->pluck('id'))->get();
-        */
-        $centerCoordinatorQuery = User::whereIn('id', TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $coordinatorPermission->id)->pluck('user_id'));
-        $centerCoordinators = $centerCoordinatorQuery->get();
+        $coFacilitatorQuery = User::whereIn('id', TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $coFacilitatorPermission->id)->pluck('user_id'));
+        $coFacilitators = $coFacilitatorQuery->get();
+        $coFacilitatorUsers = User::doesntHave('volunteer')->doesntHave('trainner')->permission($coFacilitatorPermission->id)->whereNotIn('id', $coFacilitatorQuery->pluck('id'))->get();
         $freeTrainners = TrainingMaster::all();
-
-        return view('room.show', compact('trainingSession','freeTrainners', 'trainingCenter', 'cindicationRoom', 'trainings' ));
+        return view('room.show', compact('trainingSession','coFacilitators','coFacilitatorPermission','coFacilitatorUsers','freeTrainners', 'trainingCenter', 'cindicationRoom', 'trainings' ));
     }
 
     /**
