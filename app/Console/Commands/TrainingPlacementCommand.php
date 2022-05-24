@@ -2,13 +2,16 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\Helper;
 use App\Models\ApprovedApplicant;
 use App\Models\Region;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
+use App\Models\Volunteer;
 use Illuminate\Console\Command;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -96,7 +99,15 @@ class TrainingPlacementCommand extends Command
 
                     $selectedCenter = $this->getRandomTrainingCenterFromRegion($trainingCenters, $regions->first()->id);
 
-                    TrainingPlacement::create(['training_session_id' => $activeSession->id, 'approved_applicant_id' => $applicant->id, 'training_center_capacity_id' => $selectedCenter->id]);
+                   $tp= TrainingPlacement::create(['training_session_id' => $activeSession->id, 'approved_applicant_id' => $applicant->id, 'training_center_capacity_id' => $selectedCenter->id]);
+                    // $id_number= Helper::IDGenerator(new Volunteer,'id_number',5,'mop');
+                    $id_number= Helper::IDGenerator(new Volunteer,'id_number',6,$tp->trainingCenterCapacity->trainingCenter,TrainingSession::find(request()->route('training_session'))->id);
+
+
+                    $volunteer= Volunteer::find($applicant->id);
+                    $volunteer->update(['id_number'=>$id_number]);
+
+
                     $selectedCenter->capacity =  $selectedCenter->capacity - 1;
                     $trainingCenters = $trainingCenters->filter(function ($trainingCenter) {
                         return $trainingCenter->capacity > 0;
@@ -117,6 +128,11 @@ class TrainingPlacementCommand extends Command
                     $selectedCenter = $this->getRandomTrainingCenterFromRegion($trainingCenters, $exRegion->id);
 
                     $tp = TrainingPlacement::create(['training_session_id' => $activeSession->id, 'approved_applicant_id' => $selectedApplicant->id, 'training_center_capacity_id' => $selectedCenter->id]);
+                    //id must generate here
+                    $id_number= Helper::IDGenerator(new Volunteer,'id_number',6,$tp->trainingCenterCapacity->trainingCenter,TrainingSession::find(request()->route('training_session'))->id);
+                  $volunteer= Volunteer::find($selectedApplicant->id);
+                  $volunteer->update(['id_number'=>$id_number]);
+
 
                     $selectedCenter->capacity = $selectedCenter->capacity - 1;
 

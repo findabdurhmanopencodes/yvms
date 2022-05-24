@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\Helper;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DisablityController;
@@ -220,3 +221,7 @@ Route::middleware(['auth', 'verified','role'])->group(function () {
 });
 require __DIR__ . '/auth.php';
 Route::get('volunteer/verify/{token}', [VolunteerController::class, 'verifyEmail'])->name('volunteer.email.verify');
+Route::get('aj',function(){
+    $id_number= Helper::IDGenerator(new Volunteer,'id_number',6,TraininingCenter::find(1)->code,TrainingSession::find(1)->id);
+    dd($id_number);
+});

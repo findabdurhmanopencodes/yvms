@@ -72,6 +72,7 @@ class TrainingPlacementController extends Controller
             'training_session_id' => $request->route('training_session'), 'approved_applicant_id' => $request->route('approvedApplicant'),
             'training_center_capacity_id' => $request->get('training_center_capacity_id')
         ]);
+        //id must
 
         return  redirect(route('session.placement.index', [$request->route('training_session')]))->with(['message' => 'Successfully Placed']);
     }

@@ -163,8 +163,8 @@
                         $("#region").html('Region:' + data.data.woreda.zone.region.name);
                         $("#center").html('Training Center:' + data.data.woreda.zone.name);
                         $("#profile").attr("src", data.data.profilePhoto);
-                        $("#check").html('<h3><a class="btn btn-primary" href="/check-in/action/' + data.data
-                            .id + '"><i class="fa fa-check"> Check-In</a></h3>');
+                        $("#check").html('<h3><a class="btn btn-primary" href='+{{ Request::route('training_session') }}+'/check-in/action/' + data.data
+                            .id + '><i class="fa fa-check"> Check-In</a></h3>');
 
                     }
                 }
