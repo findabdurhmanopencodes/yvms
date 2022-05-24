@@ -681,8 +681,8 @@ class TrainingSessionController extends Controller
                     }
                 }
                 $b = [];
-
-                if (count($accepted_arr) < $train_session) {
+                $volunteer_count = count(Volunteer::all());
+                if (count($accepted_arr) < $train_session && count($accepted_arr) < $volunteer_count) {
                     $dif_arr = $train_session - count($accepted_arr);
 
                     $merge_acc = array_diff($arr, $accepted_arr);

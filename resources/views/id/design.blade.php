@@ -173,7 +173,32 @@
                 div_img.style.left = '62';
                 div_img.style.top = '54';
                 myDesign.appendChild(div_img);
-                // div.style.flexWrap = 'wrap';
+
+                var blank_img = document.createElement('img');
+                var div_blank = document.createElement('div');
+                blank_img.src = '{{ asset("img/blank.png") }}';
+                blank_img.style.width = '49px';
+                blank_img.style.height = '50.7px';
+
+                div_blank.appendChild(blank_img);
+                div_blank.style.position = "relative";
+                div_blank.style.left = '81';
+                div_blank.style.top = '122.123';
+                myDesign.appendChild(div_blank);
+
+                var e_date = document.createElement("p");
+                var se_date = document.createElement("strong");
+                var setextToAdd = document. createTextNode('Exp. Date');
+                e_date.appendChild(setextToAdd);
+                e_date.appendChild(se_date);
+                e_date.style.position = "relative";
+                e_date.style.left = '126';
+                e_date.style.top = '194';
+                e_date.style.backgroundColor = "inherit";
+                e_date.style.fontSize = '10px';
+                e_date.style.color = 'blue';
+                myDesign.appendChild(e_date);
+
                 div.appendChild(myDesign.cloneNode(true))
 
                 DATAS.push(div);
@@ -183,7 +208,7 @@
         })
 
         function generatePDF(abc, applicants){
-            var mywindow = window.open('', 'PRINT', 'height=100%,width=100%');
+            var mywindow = window.open('', 'PRINT', 'height=1000,width=1000');
 
             mywindow.document.write('<html><head>');
             mywindow.document.write('</head><body >');
