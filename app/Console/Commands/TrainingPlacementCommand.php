@@ -92,14 +92,15 @@ class TrainingPlacementCommand extends Command
 
         // if($appl)
 
-        while (!$regions->isEmpty() && (!$applicants->isEmpty())) {
+        while (!$regions->isEmpty() && (!$applicants->isEmpty()) && (!$trainingCenters->isEmpty())) {
+            echo "wee";
             if ($regions->count() == 1 && $this->regionsExceptThis(Region::all(), $regions->first()->id, $trainingCenters)->isEmpty()) {
                 foreach ($applicants as $applicant) {
 
                     $selectedCenter = $this->getRandomTrainingCenterFromRegion($trainingCenters, $regions->first()->id);
 
                     TrainingPlacement::create(['training_session_id' => $activeSession->id, 'approved_applicant_id' => $applicant->id, 'training_center_capacity_id' => $selectedCenter->id]);
-                    Status::where(['volunteer_id' => $applicant->volunteer_id])->update(['acceptance_status' => 4]);
+                    // Status::where(['volunteer_id' => $applicant->volunteer_id])->update(['acceptance_status' => 4]);
                     $selectedCenter->capacity =  $selectedCenter->capacity - 1;
                     $trainingCenters = $trainingCenters->filter(function ($trainingCenter) {
                         return $trainingCenter->capacity > 0;
@@ -120,7 +121,7 @@ class TrainingPlacementCommand extends Command
                     $selectedCenter = $this->getRandomTrainingCenterFromRegion($trainingCenters, $exRegion->id);
 
                     $tp = TrainingPlacement::create(['training_session_id' => $activeSession->id, 'approved_applicant_id' => $selectedApplicant->id, 'training_center_capacity_id' => $selectedCenter->id]);
-                    Status::where(['volunteer_id' => $selectedApplicant->volunteer_id])->update(['acceptance_status' => 4]);
+                    // Status::where(['volunteer_id' => $selectedApplicant->volunteer_id])->update(['acceptance_status' => 4]);
 
                     $selectedCenter->capacity = $selectedCenter->capacity - 1;
 

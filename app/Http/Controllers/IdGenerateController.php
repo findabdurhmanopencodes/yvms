@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\App;
 class IdGenerateController extends Controller
 {
     public function checkedInList(Request $request, TrainingSession $trainingSession, $training_center_id){
-        $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $training_center_id)->paginate(10);
+        $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $training_center_id)->whereRelation('status','acceptance_status', 5)->paginate(10);
         return view('id.checkedIn', compact('applicants', 'training_center_id'));
     }
     public function idGenerate(TrainingSession $trainingSession , Request $request, $training_center_id){

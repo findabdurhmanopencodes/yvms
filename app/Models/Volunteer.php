@@ -100,4 +100,9 @@ class Volunteer extends Model
         return $this->hasMany(VolunteerResourceHistory::class,'volunteer_id','id');
     }
 
+    public function idCount()
+    {
+        return $this->hasOne(IDcount::class);
+    }
+
 }

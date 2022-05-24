@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Andegna\DateTimeFactory;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -49,5 +52,20 @@ class Schedule extends Model
         ];
     }
 
+    public function dateET()
+    {
+        return DateTimeFactory::fromDateTime(new DateTime($this->date))->format('d/m/Y');
+    }
+    
+    public function checkDateAtt()
+    {
+        $check_date_att = false;
+        $date_now_et = DateTimeFactory::fromDateTime(new DateTime(Carbon::now()))->format('d/m/Y');
+        
+        if ($this->dateET() == $date_now_et) {
+            $check_date_att = true;
+        }
+        return $check_date_att;
+    }
 
 }

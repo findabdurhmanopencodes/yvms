@@ -20,4 +20,9 @@ class IDcount extends Model
         'training_session_id',
         'count',
     ];
+
+    public function volunteer()
+    {
+        return $this->belongsTo(Volunteer::class);
+    }
 }

@@ -222,7 +222,8 @@
                                     aria-haspopup="true">
                                     <a href="{{ route('session.placement.index', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
-                                        <i class="menu-icon flaticon-users"></i>
+                                        <i class="menu-icon fal fa-map-marker-check"></i>
+
                                         <span class="menu-text">Placment Result</span>
                                     </a>
                                 </li>
@@ -239,7 +240,7 @@
                                     aria-haspopup="true">
                                     <a href="{{ route('session.training_master_placement.index', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
-                                        <i class="menu-icon flaticon-check-point"></i>
+                                        <i class="menu-icon fal fa-user-tie"></i>
                                         <span class="menu-text">Assigned Trainner</span>
                                     </a>
                                 </li>
@@ -248,7 +249,7 @@
                                     aria-haspopup="true">
                                     <a href="{{ route('session.training_session.quota', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
-                                        <i class="menu-icon flaticon-users"></i>
+                                        <i class="menu-icon fab fa-quora"></i>
                                         <span class="menu-text">Regional Quota</span>
                                     </a>
                                 </li>
@@ -257,16 +258,8 @@
                                     aria-haspopup="true">
                                     <a href="{{ route('session.training_center.index', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
-                                        <i class="menu-icon flaticon-calendar"></i>
+                                        <i class="menu-icon fal fa-university"></i>
                                         <span class="menu-text">Training Centers</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.attendance') === 0 ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('session.attendance.index', ['training_session' => Request::route('training_session')]) }}"
-                                        class="menu-link">
-                                        <i class="menu-icon flaticon-list"></i>
-                                        <span class="menu-text">Volunteer Attendance</span>
                                     </a>
                                 </li>
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'resources') === 0 ? 'menu-item-active' : '' }}"
@@ -277,58 +270,16 @@
                                         <span class="menu-text">Resource Managment</span>
                                     </a>
                                 </li>
-                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'check-in') === 0 ? 'menu-item-open' : '' }}"
-                                aria-haspopup="true" data-menu-toggle="hover">
 
-                                <a href="javascript:;" class="menu-link menu-toggle">
-                                    <i class="menu-icon flaticon2-check-mark"></i>
-                                    <span class="menu-text">Check-In</span>
-                                    <i class="menu-arrow"></i>
-                                </a>
-                                <div class="menu-submenu">
-                                    <i class="menu-arrow"></i>
-                                    <ul class="menu-subnav">
-                                        <li class="menu-item menu-item-parent" aria-haspopup="true">
-                                            <span class="menu-link">
-                                                <span class="menu-text">Check-In</span>
-                                            </span>
-                                        </li>
-                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.CheckIn.index') === 0 ? 'menu-item-active' : '' }}"
-                                            aria-haspopup="true">
-                                            <a href="{{ route('session.TrainingCenter.CheckIn', ['training_session' => Request::route('training_session')]) }}"
-                                                class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Check-In</span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.CheckIn.index') === 0 ? 'menu-item-active' : '' }}"
-                                            aria-haspopup="true">
-                                            <a href="{{ route('session.TrainingCenter.index.checked', ['training_session' => Request::route('training_session')]) }}"
-                                                class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Reports</span>
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </div>
-
-                            </li>
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.CheckIn.index') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.TrainingCenter.CheckIn', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon flaticon2-check-mark"></i>
+                                        <span class="menu-text">Check-In</span>
+                                    </a>
+                                </li>
                             @endif
-
-                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'training_master') === 0 ? 'menu-item-active' : '' }}"
-                                aria-haspopup="true">
-                                <a href="{{ route('training_master.index', []) }}" class="menu-link">
-                                    <i class="menu-icon flaticon-road"></i>
-                                    <span class="menu-text">Master Trainers</span>
-                                </a>
-                            </li>
-
-
                             <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'user') === 0 ? 'menu-item-open' : '' }}"
                                 aria-haspopup="true" data-menu-toggle="hover">
 
@@ -363,13 +314,23 @@
                                                 <span class="menu-text">Add User</span>
                                             </a>
                                         </li>
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'training_master') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('training_master.index', []) }}"
+                                                class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Master Trainers</span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>
                             <li class="menu-item {{ strpos(Route::currentRouteName(), 'training.') === 0 ? 'menu-item-active' : '' }}"
                                 aria-haspopup="true">
                                 <a href="{{ route('training.index', []) }}" class="menu-link">
-                                    <i class="menu-icon flaticon-home"></i>
+                                    <i class="fal fa-book-open menu-icon"></i>
                                     <span class="menu-text">Training</span>
                                 </a>
                             </li>
@@ -416,7 +377,7 @@
                             @include('aside.placement')
                             @include('aside.payroll')
 
-                            <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
+                            <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 ||strpos(Route::currentRouteName(), 'feild_of_study') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
                                 aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <i class="menu-icon flaticon-settings"></i>
@@ -434,29 +395,6 @@
                                         @include('aside.ms')
                                         @include('aside.seya')
                                         @include('aside.aj')
-                                    
-
-                                       
-                                    </ul>
-                                </div>
-                            </li>
-
-                            <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'resource') === 0 ? 'menu-item-open' : '' }}"
-                                aria-haspopup="true" data-menu-toggle="hover">
-
-                                <a href="javascript:;" class="menu-link menu-toggle">
-                                    <i class="menu-icon flaticon-shopping-basket"></i>
-                                    <span class="menu-text">Resources</span>
-                                    <i class="menu-arrow"></i>
-                                </a>
-                                <div class="menu-submenu">
-                                    <i class="menu-arrow"></i>
-                                    <ul class="menu-subnav">
-                                        <li class="menu-item menu-item-parent" aria-haspopup="true">
-                                            <span class="menu-link">
-                                                <span class="menu-text">Resources</span>
-                                            </span>
-                                        </li>
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'resource.index') === 0 ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
                                             <a href="{{ route('resource.index', []) }}" class="menu-link">
@@ -468,9 +406,7 @@
                                         </li>
                                     </ul>
                                 </div>
-
                             </li>
-
                             {{-- @include('aside.ms') --}}
                         </ul>
                     </div>
