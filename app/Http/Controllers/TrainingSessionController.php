@@ -6,6 +6,7 @@ use Andegna\DateTimeFactory;
 use App\Http\Requests\StoreTrainingSessionRequest;
 use App\Http\Requests\UpdateTrainingSessionRequest;
 use App\Models\ApprovedApplicant;
+use App\Models\CindicationRoom;
 use App\Models\Qouta;
 use App\Models\Region;
 use App\Models\Resource;
@@ -867,6 +868,7 @@ class TrainingSessionController extends Controller
 
     public function trainingCenterShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
+        $cindicationRooms = CindicationRoom::all();
         $miniSide = 'aside-minimize';
         $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->get();
         $checkedInVolunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->whereRelation('status', 'acceptance_status', 5)->get();
@@ -883,7 +885,7 @@ class TrainingSessionController extends Controller
         $centerCheckers = $centerCheckerQuery->get();
         Role::findOrCreate('checker');
         $checkerUsers = User::doesntHave('volunteer')->doesntHave('trainner')->role('checker')->whereNotIn('id', $centerCheckerQuery->pluck('id'))->get();
-        return view('training_session.center_show', compact('centerCoordinators', 'centerCoordinatorUsers', 'checkedInVolunteers', 'centerCheckers', 'checkerUsers', 'freeTrainners', 'trainings', 'trainingSession', 'totalTrainingMasters', 'totalVolunteers', 'trainingCenter', 'miniSide'));
+        return view('training_session.center_show', compact('centerCoordinators', 'centerCoordinatorUsers', 'checkedInVolunteers', 'centerCheckers', 'checkerUsers', 'freeTrainners', 'trainings', 'trainingSession', 'totalTrainingMasters', 'totalVolunteers', 'trainingCenter', 'miniSide','cindicationRooms'));
     }
     public function resourceAssignToTrainingCenter($training_session, Request $request)
     {

@@ -157,6 +157,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::post('{training_center}/id/print', [IdGenerateController::class, 'idGenerate'])->name('training_center.generate');
     Route::get('{training_center}/checkedIn/list', [IdGenerateController::class, 'checkedInList'])->name('training_center.checkedIn_list');
     Route::resource('VolunteerResourceHistory', VolunteerResourceHistoryController::class);
+    Route::resource('{training_center}/cindication_room', CindicationRoomController::class);
 });
 
 
@@ -230,7 +231,7 @@ Route::middleware(['auth', 'verified',])->group(function () {
     Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
     Route::resource('TrainingCenterCapacity', TrainingCenterCapacityController::class);
     Route::post('TrainingCenter/Capacity', [TrainingCenterCapacityController::class, 'capacityChange'])->name('TrainingCenterCapacity.capacityChange');
-    Route::get('attendance_export',[TraininingCenterController::class, 'get_attendance_data'])->name('attendance.export');
+    Route::get('attendance_export', [TraininingCenterController::class, 'get_attendance_data'])->name('attendance.export');
 });
 require __DIR__ . '/auth.php';
 Route::get('volunteer/verify/{token}', [VolunteerController::class, 'verifyEmail'])->name('volunteer.email.verify');

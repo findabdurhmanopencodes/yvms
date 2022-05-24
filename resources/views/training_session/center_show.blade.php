@@ -165,6 +165,99 @@
     </div>
     <!--end::Card-->
 
+
+    <!--begin::Card-->
+    <div class="card card-custom gutter-b">
+        <div class="card-header border-0 py-5">
+            <h3 class="card-title align-items-start flex-column">
+                <span class="card-label font-weight-bolder text-dark">Cindication rooms</span>
+                <span class="text-muted mt-3 font-weight-bold font-size-sm">Total {{ count($cindicationRooms) }}
+                    cindication rooms</span>
+            </h3>
+            <div class="card-toolbar">
+            </div>
+        </div>
+        <div class="card-body pt-0">
+            <form class="row" method="POST" action="{{ route('session.cindication_room.store', []) }}">
+                @csrf
+                <div class="form-group col-md-4">
+                    {{-- <label class="d-block">Room ID</label> --}}
+                    <input type="text" class="@error('number') is-invalid @enderror form-control" name="number"
+                        placeholder="Room ID"
+                        value="{{ old('number') ?? (isset($user) ? $user->number : '') }}" />
+                    @error('number')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <span class="form-text text-muted">Please enter Room ID.</span>
+                </div>
+                <div class="form-group col-md-4">
+                    {{-- <label class="d-block">Number of volunteers</label> --}}
+                    <input type="text" class="@error('number_of_volunteers') is-invalid @enderror form-control" name="number_of_volunteers"
+                        placeholder="Number of volunteers"
+                        value="{{ old('number_of_volunteers') ?? (isset($user) ? $user->number_of_volunteers : '') }}" />
+                    @error('number_of_volunteers')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <span class="form-text text-muted">Please enter Number of volunteers.</span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Add Cindication rooms" class="btn btn-success font-weight-bolder font-size-sm">
+                </div>
+            </form>
+            <table width="100%" class="table">
+                <thead>
+                    </tr>
+                    <th>Cindication Room Id </th>
+                    <th><i class="menu-icon flaticon-list"></i> </th>
+                    <th>Trainner </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{-- @foreach ($trainings as $key => $training)
+                        @php
+                            $masterId = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->id;
+                            $trainner = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->master->user;
+                        @endphp
+                        <tr style="font-size: 13px;">
+                            <td>
+                                {{ $training->name }}
+                            </td>
+                            <td>
+                                <a class="link"
+                                    href="{{ route('session.training_center.training.show', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'training' => $training->id]) }}">
+                                    <i class="menu-icon flaticon-list"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <div class="d-flex">
+                                    <span
+                                        class="btn {{ $trainner ? 'btn-light-primary' : 'btn-light-danger' }} btn-sm font-weight-bold btn-upper btn-text">
+                                        {{ $trainner?->name() == null ? 'Assign Trainner' : '' }}
+                                        @if ($trainner)
+                                            <a href="#" onclick="confirmDeleteMasterPlacement({{ $masterId }})"
+                                                style="display: flex;align-items: center;justify-content: space-between;width: 185px;">
+                                                {{ $trainner?->name() }}
+                                                <i class="fa fa-times fa-sm"></i>
+                                            </a>
+                                        @endif
+
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                    @if (count($trainings) <= 0)
+                        <tr style="font-size: 13px;" class="text-center">
+                            <td colspan="3" style="">No training assigned</td>
+                        </tr>
+                    @endif --}}
+                </tbody>
+            </table>
+            <!--begin: Items-->
+        </div>
+    </div>
+    <!--end::Card-->
+
     <div class="modal fade" id="assignMasterModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -268,8 +361,7 @@
                                         {{ $training->name }}
                                     </td>
                                     <td>
-                                        <a
-                                        class="link"
+                                        <a class="link"
                                             href="{{ route('session.training_center.training.show', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'training' => $training->id]) }}">
                                             <i class="menu-icon flaticon-list"></i>
                                         </a>
