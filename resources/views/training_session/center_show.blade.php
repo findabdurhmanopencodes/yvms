@@ -172,19 +172,19 @@
             <h3 class="card-title align-items-start flex-column">
                 <span class="card-label font-weight-bolder text-dark">Cindication rooms</span>
                 <span class="text-muted mt-3 font-weight-bold font-size-sm">Total {{ count($cindicationRooms) }}
-                    cindication rooms</span>
+                    Cindication Rooms</span>
             </h3>
             <div class="card-toolbar">
             </div>
         </div>
         <div class="card-body pt-0">
-            <form class="row" method="POST" action="{{ route('session.cindication_room.store', []) }}">
+            <form class="row" method="POST"
+                action="{{ route('session.cindication_room.store', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}">
                 @csrf
                 <div class="form-group col-md-4">
                     {{-- <label class="d-block">Room ID</label> --}}
                     <input type="text" class="@error('number') is-invalid @enderror form-control" name="number"
-                        placeholder="Room ID"
-                        value="{{ old('number') ?? (isset($user) ? $user->number : '') }}" />
+                        placeholder="Room ID" value="{{ old('number') ?? (isset($user) ? $user->number : '') }}" />
                     @error('number')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -192,8 +192,8 @@
                 </div>
                 <div class="form-group col-md-4">
                     {{-- <label class="d-block">Number of volunteers</label> --}}
-                    <input type="text" class="@error('number_of_volunteers') is-invalid @enderror form-control" name="number_of_volunteers"
-                        placeholder="Number of volunteers"
+                    <input type="text" class="@error('number_of_volunteers') is-invalid @enderror form-control"
+                        name="number_of_volunteers" placeholder="Number of volunteers"
                         value="{{ old('number_of_volunteers') ?? (isset($user) ? $user->number_of_volunteers : '') }}" />
                     @error('number_of_volunteers')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -201,18 +201,44 @@
                     <span class="form-text text-muted">Please enter Number of volunteers.</span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Add Cindication rooms" class="btn btn-success font-weight-bolder font-size-sm">
+                    <input type="submit" value="Add Cindication rooms"
+                        class="btn btn-success font-weight-bolder font-size-sm">
                 </div>
+            </form>
+            <form action="" method="POST" id="deleteRoomForm">
+                @csrf
+                @method('DELETE')
             </form>
             <table width="100%" class="table">
                 <thead>
                     </tr>
                     <th>Cindication Room Id </th>
-                    <th><i class="menu-icon flaticon-list"></i> </th>
-                    <th>Trainner </th>
+                    <th>Total Volunteer</th>
+                    <th>Action</th>
+                    {{-- <th><i class="menu-icon flaticon-list"></i> </th> --}}
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($cindicationRooms as $cindicationRoom)
+                        <tr>
+                            <td>{{ $cindicationRoom->number }}</td>
+                            <td>{{ $cindicationRoom->number_of_volunteers }}</td>
+                            <td>
+                                <a href="#" onclick="confirmDeleteRoom('{{ route('session.cindication_room.destroy',['training_session'=>Request::route('training_session')->id,'training_center'=>$trainingCenter->id,'cindication_room'=>$cindicationRoom->id]) }}')">
+                                    <i class="fal fa-trash"></i>
+                                </a>
+                                <a href="{{ route('session.cindication_room.show', ['training_session'=> Request::route('training_session')->id,'training_center'=>$trainingCenter->id,'cindication_room'=>$cindicationRoom->id]) }}">
+                                    <i class="fal fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    @if (count($cindicationRooms) <= 0)
+                        <tr style="font-size: 13px;" class="text-center">
+                            <td colspan="3" style="">No cindication room</td>
+                        </tr>
+                    @endif
                     {{-- @foreach ($trainings as $key => $training)
                         @php
                             $masterId = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->id;
@@ -579,6 +605,21 @@
             }).then(function(result) {
                 if (result.value) {
                     $('#removeCheckerForm').submit();
+                }
+            });
+        }
+
+        function confirmDeleteRoom(route) {
+            $('#deleteRoomForm').attr('action',route);
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $('#deleteRoomForm').submit();
                 }
             });
         }
