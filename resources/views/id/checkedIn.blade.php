@@ -54,7 +54,7 @@
                                     {{ $applicant->id }}
                                 </td>
                                 <td>
-                                    {{$applicant->first_name}}
+                                    {{ $applicant->first_name }}
                                 </td>
                                 <td>
                                     {{ $applicant?->idCount?->count }}
