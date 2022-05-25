@@ -10,7 +10,6 @@ use App\Models\Status;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
-use App\Constants;
 use App\Models\TraininingCenter;
 use App\Models\Volunteer;
 use Illuminate\Console\Command;
