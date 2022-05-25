@@ -162,11 +162,6 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::resource('VolunteerResourceHistory', VolunteerResourceHistoryController::class);
     Route::resource('{training_center}/cindication_room', CindicationRoomController::class);
     Route::resource('training_master_placement', TrainingMasterPlacementController::class);
-<<<<<<< HEAD
-    Route::get('{training_center}/trainer/list', [IdGenerateController::class, 'TrainerList'])->name('training_center.trainer_list');
-
-=======
->>>>>>> 52e728deb8c0ab0c7c966f3eba8b693afb34bf44
 });
 
 
