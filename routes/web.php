@@ -1,13 +1,16 @@
 <?php
 
+use App\Helpers\Helper;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CindicationRoomController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DisablityController;
 use App\Http\Controllers\FeildOfStudyController;
 use App\Http\Controllers\EducationalLevelController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\IdGenerateController;
+use App\Http\Controllers\ImportExportController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PrintController;
 use App\Http\Controllers\QoutaController;
@@ -38,6 +41,7 @@ use App\Http\Controllers\TrainingCenterBasedPermissionController;
 use App\Http\Controllers\TrainingDocumentController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
+use App\Models\CindicationRoom;
 use App\Models\Training;
 use App\Models\TrainingMaster;
 use App\Models\TrainingMasterPlacement;
@@ -160,6 +164,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::post('{training_center}/id/print', [IdGenerateController::class, 'idGenerate'])->name('training_center.generate');
     Route::get('{training_center}/checkedIn/list', [IdGenerateController::class, 'checkedInList'])->name('training_center.checkedIn_list');
     Route::resource('VolunteerResourceHistory', VolunteerResourceHistoryController::class);
+    Route::get('{training_center}/{cindication_room}/{training}/volunteers', [CindicationRoomController::class, 'volunteers'])->name('cinidcation_room.training.volunteers');
     Route::resource('{training_center}/cindication_room', CindicationRoomController::class);
     Route::resource('training_master_placement', TrainingMasterPlacementController::class);
     Route::get('{training_center}/trainer/list', [IdGenerateController::class, 'TrainerList'])->name('training_center.trainer_list');
@@ -243,3 +248,15 @@ require __DIR__ . '/auth.php';
 Route::get('volunteer/verify/{token}', [VolunteerController::class, 'verifyEmail'])->name('volunteer.email.verify');
 Route::get('{training_session}/verify-all', [VolunteerController::class, 'verifyAllVolunteers'])->name('verify.all');
 Route::get('{training_session}/reset-verification', [VolunteerController::class, 'resetAll'])->name('resetVerify');
+Route::get('id/test', function () {
+;
+    foreach (TrainingPlacement::all() as $key=>$placement) {
+        $idNumber = 'MOP-' . $placement->trainingCenterCapacity->trainingCenter?->code . '-' . str_pad($key+1, 6, "0", STR_PAD_LEFT) . '/' . TrainingSession::find(1)->id;
+        Volunteer::find($placement->approvedApplicant?->volunteer?->id)->update(['id_number'=>$idNumber]);
+    }
+    dd('stop');
+});
+Route::resource('Events', EventController::class);
+Route::get('bank/test', [ImportExportController::class, 'exportVolunteers'])->name('');
+
+

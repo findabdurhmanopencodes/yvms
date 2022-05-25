@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class EventImage extends Model
 {
     use HasFactory;
-    public function images()
+    protected $fillable=['url','event_id'];
+    public function event()
     {
-        return $this->hasMany(EventImage::class,'event_id','id');
+        return $this->belongsTo(Event::class);
     }
 }
-
