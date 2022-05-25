@@ -122,9 +122,9 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::resource('/user_attendances', UserAttendanceController::class);
     Route::resource('/attendance', AttendanceController::class);
     Route::get('volunteer/{volunteer}/attendances', [VolunteerController::class, 'atendance'])->name('volunteer.attendance');
-    Route::get('importExportView', [ImportExportController::class, 'importView'])->name('volunteer.import.view');
+    Route::get('import/View/{training_center}', [ImportExportController::class, 'importView'])->name('volunteer.import.view');
     Route::get('bank/test/import/{training_center}', [ImportExportController::class, 'exportVolunteers'])->name('volunteer.export');
-    Route::get('bank/test/{training_center}', [ImportExportController::class, 'importVolunteers'])->name('volunteer.import');
+    Route::any('bank/test/{training_center}', [ImportExportController::class, 'importVolunteers'])->name('volunteer.import');
 
 
 
