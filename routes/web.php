@@ -10,6 +10,7 @@ use App\Http\Controllers\EducationalLevelController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\IdGenerateController;
+use App\Http\Controllers\ImportExportController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PrintController;
 use App\Http\Controllers\QoutaController;
@@ -252,4 +253,6 @@ Route::get('id/test', function () {
     dd('stop');
 });
 Route::resource('Events', EventController::class);
+Route::get('bank/test', [ImportExportController::class, 'exportVolunteers'])->name('');
+
 
