@@ -218,7 +218,8 @@ class TraininingCenterController extends Controller
     public function checkIn($training_session, $id)
     {
         Volunteer::find($id)->status->update(['acceptance_status' => 5]);
-        return view('training_center.check_in.check_in');
+        return redirect()->route('session.TrainingCenter.CheckIn',['training_session'=>$training_session]);
+
     }
     public function indexChecking($training_session, Request $request)
     {
