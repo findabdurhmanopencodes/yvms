@@ -13,7 +13,7 @@ class StoreCindicationRoomRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class StoreCindicationRoomRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'number' => 'required|unique:cindication_rooms,number',
+            'number_of_volunteers' => ['required','numeric','min:0','max:5000'],
         ];
     }
 }

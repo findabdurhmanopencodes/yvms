@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Constants;
 use App\Helpers\Helper;
 use App\Models\ApprovedApplicant;
 use App\Models\Region;
+use App\Models\Status;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
@@ -94,20 +96,14 @@ class TrainingPlacementCommand extends Command
 
         // if($appl)
 
-        while (!$regions->isEmpty() && (!$applicants->isEmpty())) {
+        while (!$regions->isEmpty() && (!$applicants->isEmpty()) && (!$trainingCenters->isEmpty())) {
             if ($regions->count() == 1 && $this->regionsExceptThis(Region::all(), $regions->first()->id, $trainingCenters)->isEmpty()) {
                 foreach ($applicants as $applicant) {
 
                     $selectedCenter = $this->getRandomTrainingCenterFromRegion($trainingCenters, $regions->first()->id);
 
-                   $tp= TrainingPlacement::create(['training_session_id' => $activeSession->id, 'approved_applicant_id' => $applicant->id, 'training_center_capacity_id' => $selectedCenter->id]);
-                    // $id_number= Helper::IDGenerator(new Volunteer,'id_number',6,$tp->trainingCenterCapacity->trainingCenter,TrainingSession::find(request()->route('training_session'))->id);
-
-
-                    // $volunteer= Volunteer::find($applicant->id);
-                    // $volunteer->update(['id_number'=>$id_number]);
-
-
+                    TrainingPlacement::create(['training_session_id' => $activeSession->id, 'approved_applicant_id' => $applicant->id, 'training_center_capacity_id' => $selectedCenter->id]);
+                    Status::where(['volunteer_id' => $applicant->volunteer_id])->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_PLACED]);
                     $selectedCenter->capacity =  $selectedCenter->capacity - 1;
                     $trainingCenters = $trainingCenters->filter(function ($trainingCenter) {
                         return $trainingCenter->capacity > 0;
@@ -129,11 +125,7 @@ class TrainingPlacementCommand extends Command
                     $selectedCenter = $this->getRandomTrainingCenterFromRegion($trainingCenters, $exRegion->id);
 
                     $tp = TrainingPlacement::create(['training_session_id' => $activeSession->id, 'approved_applicant_id' => $selectedApplicant->id, 'training_center_capacity_id' => $selectedCenter->id]);
-                    //id must generate here
-                //     $id_number= Helper::IDGenerator(new Volunteer,'id_number',6,$tp->trainingCenterCapacity->trainingCenter,TrainingSession::find(request()->route('training_session'))->id);
-                //   $volunteer= Volunteer::find($selectedApplicant->id);
-                //   $volunteer->update(['id_number'=>$id_number]);
-
+                    Status::where(['volunteer_id' => $selectedApplicant->volunteer_id])->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_PLACED]);
 
                     $selectedCenter->capacity = $selectedCenter->capacity - 1;
 

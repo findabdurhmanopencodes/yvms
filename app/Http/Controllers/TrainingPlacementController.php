@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Console\Commands\TrainingPlacementCommand;
 use App\Models\TrainingPlacement;
 use App\Http\Requests\StoreTrainingPlacementRequest;
 use App\Http\Requests\UpdateTrainingPlacementRequest;
@@ -32,7 +33,6 @@ class TrainingPlacementController extends Controller
         $trainingSession = TrainingSession::availableSession()->first();
         $q = TrainingPlacement::query()->where('training_placements.training_session_id', $trainingSession->id);
 
-
         if ($request->get('training_center') != null) {
             $q->whereHas('trainingCenterCapacity.trainingCenter', function ($query) use ($request) {
                 $query->where('id', $request->get('training_center'));
@@ -53,8 +53,6 @@ class TrainingPlacementController extends Controller
                 $query->where('id', $request->get('woreda'));
             });
         }
-
-
 
         $placedVolunteers = $q->paginate(10);
 
@@ -105,13 +103,16 @@ class TrainingPlacementController extends Controller
 
     public function place(Request $request)
     {
-        $output = shell_exec('php ../artisan training:place');
-        if (!$output)
-            $message = 'Succefully Placed Volunteers';
-        else
-            $message = $output;
+        // $output = shell_exec('php ../artisan training:place');
+        // if (!$output)
+        //     $message = 'Succefully Placed Volunteers';
+        // else
+        //     $message = $output;
 
-        return redirect(route('session.placement.index', [$request->route('training_session')]))->with('message', $message);
+            $tp = new TrainingPlacementCommand();
+            $tp->place();
+
+        return redirect(route('session.placement.index', [$request->route('training_session')]))->with('message', 'Succefully Placed');
     }
 
     public function changePlacement(Request $request)

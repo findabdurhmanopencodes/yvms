@@ -9,10 +9,14 @@ class Helper
 
     public static function IDGenerator($model, $trow, $length = 6, $prefix ,$postfix){
         $ap = TrainingPlacement::where('training_session_id',1);
-        dump($ap->get());
-        dd('sd');
+
+        $count=$ap->count();
+        dd($count);
         $data = $model::orderBy('id','desc')->first();
         // dd($data);
+
+
+
         if(!$data){
             $og_length = $length;
             $last_number = '';

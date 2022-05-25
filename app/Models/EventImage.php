@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class EventImage extends Model
 {
     use HasFactory;
+    protected $fillable=['url','event_id'];
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
 }

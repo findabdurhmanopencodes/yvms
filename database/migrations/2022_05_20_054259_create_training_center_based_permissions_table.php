@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreignIdFor(TrainingSession::class);
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(TraininingCenter::class);
-            $table->foreignIdFor(CindicationRoom::class);
+            $table->foreignIdFor(CindicationRoom::class)->nullable();
             $table->foreignIdFor(Permission::class);
             $table->timestamps();
         });
