@@ -139,7 +139,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::delete('/training_schedule/{training_schedule}', [TrainingScheduleController::class, 'destroy'])->name('trainingschedule.destroy');
     Route::get('training_center', [TrainingSessionController::class, 'trainingCenterIndex'])->name('training_center.index');
     Route::get('training_center/{training_center}', [TrainingSessionController::class, 'trainingCenterShow'])->name('training_center.show');
-    Route::get('center_base/{training_center}/{cindication_room}/{user}/{permission}/remove', [TrainingCenterBasedPermissionController::class,'remove'])->name('training_center_based_permission.remove');
+    Route::get('center_base/{training_center}/{cindication_room}/{user}/{permission}/remove', [TrainingCenterBasedPermissionController::class, 'remove'])->name('training_center_based_permission.remove');
     Route::resource('training_center_based_permission', TrainingCenterBasedPermissionController::class);
     Route::post('training_center/{training_center}/assign_checker', [TraininingCenterController::class, 'assignChecker'])->name('training_center.assign_checker');
     Route::post('resource/assign', [TrainingSessionController::class, 'resourceAssignToTrainingCenter'])->name('resource.assign');
@@ -153,14 +153,15 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('/check-in/action/{id}', [TraininingCenterController::class, 'checkIn'])->name('TrainingCenter.checked');
     Route::any('/check-in/reports/', [TraininingCenterController::class, 'indexChecking'])->name('TrainingCenter.index.checked');
     Route::get('training_center', [TrainingSessionController::class, 'trainingCenterIndex'])->name('training_center.index');
-Route::get('training_center/{training_center}', [TrainingSessionController::class, 'trainingCenterShow'])->name('training_center.show');
-    Route::get('training_center/{training_center}/training/{training}',[TraininingCenterController::class, 'trainingShow'])->name('training_center.training.show');
+    Route::get('training_center/{training_center}', [TrainingSessionController::class, 'trainingCenterShow'])->name('training_center.show');
+    Route::get('training_center/{training_center}/training/{training}', [TraininingCenterController::class, 'trainingShow'])->name('training_center.training.show');
+    Route::post('training_center/{training_center}/place', [TraininingCenterController::class, 'placeVolunteers'])->name('training_center.placement');
+
     Route::post('{training_center}/id/print', [IdGenerateController::class, 'idGenerate'])->name('training_center.generate');
     Route::get('{training_center}/checkedIn/list', [IdGenerateController::class, 'checkedInList'])->name('training_center.checkedIn_list');
     Route::resource('VolunteerResourceHistory', VolunteerResourceHistoryController::class);
-    Route::resource('{training_center}/cindication_room',CindicationRoomController::class);
+    Route::resource('{training_center}/cindication_room', CindicationRoomController::class);
     Route::resource('training_master_placement', TrainingMasterPlacementController::class);
-
 });
 
 

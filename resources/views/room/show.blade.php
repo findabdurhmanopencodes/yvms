@@ -6,8 +6,10 @@
             <div class="card card-custom gutter-b">
                 <div class="py-5 border-0 card-header">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label font-weight-bolder text-dark">Syndication Room {{ $cindicationRoom->number }}</span>
-                        <span class="mt-3 text-muted font-weight-bold font-size-sm">Total capacity of {{ ($cindicationRoom->number_of_volunteer) }}
+                        <span class="card-label font-weight-bolder text-dark">Syndication Room
+                            {{ $cindicationRoom->number }}</span>
+                        <span class="mt-3 text-muted font-weight-bold font-size-sm">Total capacity of
+                            {{ $cindicationRoom->number_of_volunteer }}
                             volunteers</span>
                     </h3>
                 </div>
@@ -42,8 +44,8 @@
                         <tbody>
                             @foreach ($trainings as $key => $training)
                                 @php
-                                    $masterId = $training->trainner(Request::route('training_session'), $trainingCenter,$cindicationRoom)?->id;
-                                    $trainner = $training->trainner(Request::route('training_session'), $trainingCenter,$cindicationRoom)?->master->user;
+                                    $masterId = $training->trainner(Request::route('training_session'), $trainingCenter, $cindicationRoom)?->id;
+                                    $trainner = $training->trainner(Request::route('training_session'), $trainingCenter, $cindicationRoom)?->master->user;
                                 @endphp
                                 <tr style="font-size: 13px;">
                                     <td>
@@ -100,7 +102,7 @@
                             <div class="form-group col-md-12">
                                 <input type="hidden" name="permission_id"
                                     value="{{ Spatie\Permission\Models\Permission::findOrCreate('coFacilitator')->id }}">
-                                    <input type="hidden" name="cindication_room_id" value="{{ $cindicationRoom->id }}">
+                                <input type="hidden" name="cindication_room_id" value="{{ $cindicationRoom->id }}">
                                 <input type="hidden" name="training_center_id" value="{{ $trainingCenter->id }}">
                                 <input type="hidden" name="training_session_id"
                                     value="{{ Request::route('training_session')->id }}">

@@ -14,6 +14,7 @@
 @section('content')
     <!--begin::Card-->
     <div class="card card-custom gutter-b">
+        {{-- <div cl --}}
         <div class="card-body">
             <div class="d-flex">
                 <!--begin: Pic-->
@@ -30,6 +31,7 @@
                 <div class="flex-grow-1">
                     <!--begin: Title-->
                     <div class="flex-wrap d-flex align-items-center justify-content-between">
+
                         <div class="mr-3">
                             <!--begin::Name-->
                             <a href="#"
@@ -58,19 +60,50 @@
                             <!--end::Contacts-->
                         </div>
                         <div class="my-1 my-lg-0">
-                            <a href="{{ route('session.training_center.checkedIn_list', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
-                                class="mr-3 btn btn-sm btn-light-success font-weight-bolder text-uppercase">
-                                <i class="fa fa-users"></i>
-                                Checked In Volunteers List
-                            </a>
-                            <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">Checked In</a>
-                        </div>
-                        <div class="my-1 my-lg-0">
-                            <a href="{{ route('session.resource.assign.volunteer', ['training_session' => Request::route('training_session')->id, 'training_center_id' => $trainingCenter->id]) }}"
-                                class="mr-3 btn btn-sm btn-light-success font-weight-bolder text-uppercase">
-                                <i class="fa fa-users"></i>
-                                Resources
-                            </a>
+                            <div class="dropdown dropdown-inline">
+                                <a href="#" class="px-5 btn btn-sm btn-primary font-weight-bolder dropdown-toggle"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</a>
+                                <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="">
+                                    <!--begin::Navigation-->
+                                    <ul class="navi navi-hover">
+                                        <li class="navi-item">
+                                            <a href="{{ route('session.resource.assign.volunteer', ['training_session' => Request::route('training_session')->id, 'training_center_id' => $trainingCenter->id]) }}"
+                                                class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="flaticon2-shopping-cart-1"></i>
+                                                </span>
+                                                <span class="navi-text">Resources</span>
+                                            </a>
+                                        </li>
+                                        <li class="navi-item">
+                                            <a href="{{ route('session.training_center.checkedIn_list', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+                                                class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="fa fa-users"></i>
+                                                </span>
+                                                <span class="navi-text">Checked In List</span>
+                                            </a>
+                                        </li>
+                                        <li class="navi-item">
+                                            <a href="#" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="flaticon2-shopping-cart-1"></i>
+                                                </span>
+                                                <span class="navi-text">Trainners List</span>
+                                            </a>
+                                        </li>
+                                        <li class="navi-item">
+                                            <a href="#" onclick="confirmPlacment()" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="fal fa-map-marker-check"></i>
+                                                </span>
+                                                <span class="navi-text">Place Volunteers</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <!--end::Navigation-->
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!--end: Title-->
@@ -340,7 +373,6 @@
                                             {{ $checkerUser->name }}
                                         </option>
                                     @endforeach
-
                                     @if (count($checkerUsers) <= 0)
                                         <option>
                                             Please add checker users
@@ -442,6 +474,11 @@
             </div>
         </div>
     </div>
+    <form id="placeVolunteerForm"
+        action="{{ route('session.training_center.placement', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+        method="post">
+        @csrf
+    </form>
     <!--end::Card-->
     <form id="removeCheckerForm"
         action="{{ route('session.training_center.assign_checker', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
@@ -455,9 +492,24 @@
         $('.select2').select2({
             allowClear: true
         });
+
         @if (old('training') != null)
             $('#assignMasterModal').modal().show()
         @endif
+
+        function confirmPlacment(){
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You are able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, place volunteers!"
+            }).then(function(result) {
+                if (result.value) {
+                    $('#placeVolunteerForm').submit();
+                }
+            });
+        }
 
         function confirmDeleteMasterPlacement(masterId) {
             var sessionId = '{{ Request::route('training_session')->id }}';
