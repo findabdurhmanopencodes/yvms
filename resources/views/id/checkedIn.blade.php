@@ -57,8 +57,15 @@
                                     {{ $applicant->first_name }}
                                 </td>
                                 <td>
-                                    {{ $applicant?->idCount?->count }}
+                                    @if ($applicant->idCount)
+                                        {{ $applicant?->idCount?->count }}
+                                    @else
+                                        0
+                                    @endif
                                 </td>
+                                {{-- <td>
+                                    {{ $applicant?->idCount?->count }}
+                                </td> --}}
                                 <td>
                                     {{ $applicant->approvedApplicant?->trainingPlacement?->trainingCenterCapacity?->trainingCenter?->code }}
                                 </td>

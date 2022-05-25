@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UsersExport;
 use App\Models\TraininingCenter;
 use App\Http\Requests\StoreTraininingCenterRequest;
 use App\Http\Requests\UpdateTraininingCenterRequest;
+use App\Models\CindicationRoom;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingSession;
 use App\Models\Zone;
@@ -20,6 +22,7 @@ use App\Models\Volunteer;
 use Database\Seeders\UserAttendanceSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use \Maatwebsite\Excel\Facades\Excel;
@@ -297,6 +300,40 @@ class TraininingCenterController extends Controller
 
     public function get_attendance_data()
     {
-        return Excel::download(new UserAttendance(), 'attendance.xlsx');
+        return Excel::download(new UsersExport( DB::table('user_attendances')->select('user_id')->get(),['User_ID', 'Status']), 'attendance.xlsx');
+        // return Excel::download(new UserAttendance(), 'attendance.xlsx');
+    }
+
+    public function placeVolunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
+    {
+        $volunteerGroups = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->get()->groupBy('woreda.zone.region.id');
+        // foreach($volunteerGroups as $volunteerGroup){
+        //     foreach($volunteerGroup as $volunter){
+        //         dump($volunter->woreda->zone->region->name);
+        //         dump($volunter->name());
+        //     }
+        // }
+        // dd('sd');
+        $regionIds = array_keys($volunteerGroups->toArray());
+        $x = [];
+        $cindicationRooms = CindicationRoom::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->get();
+        foreach ($cindicationRooms as $cindicationRoom) {
+            $capacity = $cindicationRoom->number_of_volunteers;
+            $round = 0;
+            for($a = 0;$a<$capacity;$a++){
+                if($round>=count($volunteerGroups)){
+                    $round = 0;
+                }
+                $group = $volunteerGroups[$regionIds[$round]];
+                $volunteer = $group[count($group)-1];
+                $volunteer->update([
+                    'cindication_room_id' => $cindicationRoom,
+                ]);
+                $volunteer->save();
+                $volunteerGroups[$regionIds[$round]]->pop();
+                $round++;
+            }
+        }
+        return redirect()->back()->with('message','Volunteer placment finnished');
     }
 }

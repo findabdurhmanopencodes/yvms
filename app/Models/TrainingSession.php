@@ -141,4 +141,9 @@ class TrainingSession extends Model
     {
         return $this->hasMany(Schedule::class);
     }
+
+    public function trainingEndDateET()
+    {
+        return DateTimeFactory::fromDateTime(new DateTime($this->training_end_date))->format('d/m/Y');
+    }
 }
