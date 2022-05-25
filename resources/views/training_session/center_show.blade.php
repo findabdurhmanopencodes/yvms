@@ -61,6 +61,36 @@
                         <div class="my-1 my-lg-0">
                             <div class="dropdown dropdown-inline">
                                 <a href="#" class="px-5 btn btn-sm btn-primary font-weight-bolder dropdown-toggle"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Emport/Export Volunteers</a>
+                                <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="">
+                                    <!--begin::Navigation-->
+                                    <ul class="navi navi-hover">
+                                        <li class="navi-item">
+                                            <a href="{{ route('session.resource.assign.volunteer', ['training_session' => Request::route('training_session')->id, 'training_center_id' => $trainingCenter->id]) }}"
+                                                class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="fa fa-file-import"></i>
+                                                </span>
+                                                <span class="navi-text">Import</span>
+                                            </a>
+                                        </li>
+                                        <li class="navi-item">
+                                            <a href="{{ route('session.volunteer.export', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+                                                class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="fa fa-file-export"></i>
+                                                </span>
+                                                <span class="navi-text">Export</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <!--end::Navigation-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="my-1 my-lg-0">
+                            <div class="dropdown dropdown-inline">
+                                <a href="#" class="px-5 btn btn-sm btn-primary font-weight-bolder dropdown-toggle"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</a>
                                 <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="">
                                     <!--begin::Navigation-->
