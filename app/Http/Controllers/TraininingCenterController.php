@@ -300,6 +300,8 @@ class TraininingCenterController extends Controller
 
     public function get_attendance_data()
     {
+        dd(DB::table('user_attendances')->leftJoin('users', 'user_attendances.user_id','=', 'users.id')
+        ->select('first_name')->get());
         return Excel::download(new UsersExport( DB::table('user_attendances')->select('user_id')->get(),['User_ID', 'Status']), 'attendance.xlsx');
         // return Excel::download(new UserAttendance(), 'attendance.xlsx');
     }
