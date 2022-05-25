@@ -84,7 +84,7 @@
                                             </a>
                                         </li>
                                         <li class="navi-item">
-                                            <a href="#" class="navi-link">
+                                            <a href="{{ route('session.training_center.trainer_list', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}" class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="flaticon2-shopping-cart-1"></i>
                                                 </span>

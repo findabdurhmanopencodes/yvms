@@ -13,13 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('events', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('content');;
-            $table->timestamps();
+        Schema::table('volunteers', function (Blueprint $table) {
+            $table->text('id_number')->nullable();
         });
     }
+
 
     /**
      * Reverse the migrations.
@@ -28,6 +26,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('volunteers');
+
     }
 };

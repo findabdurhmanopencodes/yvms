@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Constants;
+use App\Helpers\Helper;
 use App\Models\ApprovedApplicant;
 use App\Models\Region;
 use App\Models\Status;
@@ -9,8 +11,9 @@ use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
-use App\Constants;
+use App\Models\Volunteer;
 use Illuminate\Console\Command;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -80,6 +83,7 @@ class TrainingPlacementCommand extends Command
 
     public function place()
     {
+        // dd('aj');
 
         $activeSession = TrainingSession::availableSession()->first();
         DB::delete('DELETE FROM training_placements where training_session_id = ?;', [$activeSession->id]);
@@ -108,6 +112,7 @@ class TrainingPlacementCommand extends Command
                 break;
             }
             foreach ($regions as $currentRegion) {
+
                 foreach ($this->regionsExceptThis(Region::all(), $currentRegion->id, $trainingCenters) as $exRegion) {
                     $selectedApplicant = $this->randomApplicantFromRegion($applicants, $currentRegion->id);
 

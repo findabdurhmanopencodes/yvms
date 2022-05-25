@@ -31,8 +31,8 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call([
-            // PermissionSeeder::class,
-            // RoleSeeder::class,
+            PermissionSeeder::class,
+            RoleSeeder::class,
             // BaseSeeder::class,
             // FakeDataSeeder::class,
         ]);
@@ -49,6 +49,7 @@ class DatabaseSeeder extends Seeder
                 'remember_token' => Str::random(10),
             ]
         );
+        $superUser->assignRole('super-admin');
         TrainingSession::create([
             'start_date' => '2022-05-06',
             'end_date' => '2022-07-07',

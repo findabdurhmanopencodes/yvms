@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UsersExport;
 use App\Models\TraininingCenter;
 use App\Http\Requests\StoreTraininingCenterRequest;
 use App\Http\Requests\UpdateTraininingCenterRequest;
@@ -21,6 +22,7 @@ use App\Models\Volunteer;
 use Database\Seeders\UserAttendanceSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use \Maatwebsite\Excel\Facades\Excel;
@@ -216,7 +218,7 @@ class TraininingCenterController extends Controller
     public function checkIn($training_session, $id)
     {
         Volunteer::find($id)->status->update(['acceptance_status' => 5]);
-        return redirect()->back()->with('message', 'Volunteer Sucessfuily Checked-In');
+        return view('training_center.check_in.check_in');
     }
     public function indexChecking($training_session, Request $request)
     {
@@ -298,7 +300,8 @@ class TraininingCenterController extends Controller
 
     public function get_attendance_data()
     {
-        return Excel::download(new UserAttendance(), 'attendance.xlsx');
+        return Excel::download(new UsersExport( DB::table('user_attendances')->select('user_id')->get(),['User_ID', 'Status']), 'attendance.xlsx');
+        // return Excel::download(new UserAttendance(), 'attendance.xlsx');
     }
 
     public function placeVolunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
