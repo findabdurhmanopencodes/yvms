@@ -63,7 +63,7 @@
                                 <i class="fa fa-users"></i>
                                 Checked In Volunteers List
                             </a>
-                            <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">Checked In</a>
+                            <a href="{{ route('session.training_center.trainer_list', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}" class="btn btn-sm btn-info font-weight-bolder text-uppercase">Trainer ID</a>
                         </div>
                         <div class="my-lg-0 my-1">
                             <a href="{{ route('session.resource.assign.volunteer', ['training_session' => Request::route('training_session')->id, 'training_center_id' => $trainingCenter->id]) }}"
