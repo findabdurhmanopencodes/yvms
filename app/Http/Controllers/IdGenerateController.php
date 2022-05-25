@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\ApprovedApplicant;
 use App\Models\IDcount;
 use App\Models\Status;
+use App\Models\TrainingMaster;
+use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingSession;
 use App\Models\Volunteer;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -25,10 +27,12 @@ class IdGenerateController extends Controller
             $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $training_center_id)->get();
             $paginate_apps = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $training_center_id)->take(5)->get();
         }
+        // dd(TrainingSession::whereRelation('approvedApplicants.volunteer','id', 1)->get()[0]->start_date);
         
         $training_session_id = $trainingSession->availableSession()[0]->id;
+        $train_end_date = $trainingSession->trainingEndDateET();
         // $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->take(3)->get();
-        return view('id.design', compact('applicants', 'training_session_id', 'paginate_apps', 'training_center_id'));
+        return view('id.design', compact('applicants', 'training_session_id', 'paginate_apps', 'training_center_id', 'train_end_date'));
     }
 
     public function searchApplciant(Request $request){
@@ -51,5 +55,11 @@ class IdGenerateController extends Controller
             }
         }
         return response()->json(['applicants' => 'success']);
+    }
+
+    public function TrainerList(Request $request, TrainingSession $trainingSession, $training_center_id){
+        $totalTrainingMasters = TrainingMasterPlacement::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $training_center_id)->get();
+    
+        return view('id.trainerList', compact('totalTrainingMasters', 'training_center_id'));
     }
 }

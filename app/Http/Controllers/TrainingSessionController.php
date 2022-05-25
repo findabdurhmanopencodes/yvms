@@ -868,7 +868,7 @@ class TrainingSessionController extends Controller
 
     public function trainingCenterShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
-        $cindicationRooms = CindicationRoom::all();
+        $cindicationRooms = CindicationRoom::where('training_session_id',$trainingSession->id)->where('trainining_center_id',$trainingCenter->id)->get();
         $miniSide = 'aside-minimize';
         $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->get();
         $checkedInVolunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->whereRelation('status', 'acceptance_status', 5)->get();
