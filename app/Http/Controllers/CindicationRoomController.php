@@ -113,7 +113,6 @@ class CindicationRoomController extends Controller
     public function volunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter, CindicationRoom $cindicationRoom, Training $training)
     {
         $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingSession->id)->where('cindication_room_id',$cindicationRoom->id)->paginate(10);
-
         $att_history = [];
         foreach (UserAttendance::all() as $key => $value) {
             array_push($att_history, $value->training_schedule_id . ',' . User::where('id', $value->user_id)->get()->first()->volunteer->id);
