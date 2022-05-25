@@ -4,9 +4,11 @@ namespace App\Exports;
 
 use App\Models\UserAttendance;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Events\AfterSheet;
 
-class UsersExport implements FromCollection, WithHeadings
+class UsersExport implements FromCollection, WithHeadings, WithEvents
 {
     protected $data;
     protected $a;
@@ -27,5 +29,22 @@ class UsersExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return $this->a;
+    }
+
+    /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function(AfterSheet $event) {
+   
+                $event->sheet->getDelegate()->getRowDimension('1')->setRowHeight(40);
+                $event->sheet->getDelegate()->getColumnDimension('A')->setWidth(100);
+     
+            },
+        ];
     }
 }
