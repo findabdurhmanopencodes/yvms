@@ -312,22 +312,25 @@ class TraininingCenterController extends Controller
         // }
         // dd('sd');
         $regionIds = array_keys($volunteerGroups->toArray());
-        $x = [];
         $cindicationRooms = CindicationRoom::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->get();
+        $x = 0;
         foreach ($cindicationRooms as $cindicationRoom) {
             $capacity = $cindicationRoom->number_of_volunteers;
             $round = 0;
-            for ($a = 0; $a < $capacity; $a++) {
+            for ($a = 0; $a < $capacity; ) {
                 if ($round >= count($volunteerGroups)) {
                     $round = 0;
                 }
                 $group = $volunteerGroups[$regionIds[$round]];
-                $volunteer = $group[count($group) - 1];
-                $volunteer->update([
-                    'cindication_room_id' => $cindicationRoom->id,
-                ]);
-                $volunteer->save();
-                $volunteerGroups[$regionIds[$round]]->pop();
+                if (count($group) > 0){
+                    $volunteer = $group[count($group)-1];
+                    $volunteer->update([
+                        'cindication_room_id' => $cindicationRoom->id,
+                    ]);
+                    $volunteer->save();
+                    $volunteerGroups[$regionIds[$round]]->pop();
+                    $a++;
+                }
                 $round++;
             }
         }

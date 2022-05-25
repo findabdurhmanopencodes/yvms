@@ -38,6 +38,7 @@ use App\Http\Controllers\TrainingCenterBasedPermissionController;
 use App\Http\Controllers\TrainingDocumentController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
+use App\Models\CindicationRoom;
 use App\Models\Training;
 use App\Models\TrainingMaster;
 use App\Models\TrainingMasterPlacement;
@@ -160,6 +161,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::post('{training_center}/id/print', [IdGenerateController::class, 'idGenerate'])->name('training_center.generate');
     Route::get('{training_center}/checkedIn/list', [IdGenerateController::class, 'checkedInList'])->name('training_center.checkedIn_list');
     Route::resource('VolunteerResourceHistory', VolunteerResourceHistoryController::class);
+    Route::get('{training_center}/{cindication_room}/{training}/volunteers', [CindicationRoomController::class, 'volunteers'])->name('cinidcation_room.training.volunteers');
     Route::resource('{training_center}/cindication_room', CindicationRoomController::class);
     Route::resource('training_master_placement', TrainingMasterPlacementController::class);
 });

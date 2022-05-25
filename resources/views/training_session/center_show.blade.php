@@ -41,7 +41,6 @@
                             <!--end::Name-->
                             <!--begin::Contacts-->
                             <div class="flex-wrap my-2 d-flex">
-
                                 <a href="#" class="text-muted text-hover-primary font-weight-bold">
                                     <span class="mr-1 svg-icon svg-icon-md svg-icon-gray-500">
                                         <!--begin::Svg Icon | path:assets/media/svg/icons/Map/Marker2.svg-->

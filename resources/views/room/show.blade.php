@@ -12,7 +12,40 @@
                             {{ $cindicationRoom->number_of_volunteer }}
                             volunteers</span>
                     </h3>
+                    <div class="card-toolbar">
+                        <div class="dropdown dropdown-inline">
+                            <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i class="ki ki-bold-more-ver"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
+                                <!--begin::Navigation-->
+                                <ul class="navi navi-hover">
+                                    {{-- <li class="navi-separator mb-3 opacity-70"></li> --}}
+                                    {{-- <li class="navi-item">
+                                        <a href=""
+                                            class="navi-link">
+                                            <span class="navi-icon">
+                                                <i class="fa fa-users"></i>
+                                            </span>
+                                            <span class="navi-text">Volunteers</span>
+                                        </a>
+                                    </li> --}}
+
+                                    {{-- <li class="navi-item">
+                                        <a href="#" class="navi-link">
+                                            <span class="navi-text">
+                                                <span class="label label-xl label-inline label-light-success">Customer</span>
+                                            </span>
+                                        </a>
+                                    </li> --}}
+                                </ul>
+                                <!--end::Navigation-->
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
         <div class="col-md-6">
@@ -53,9 +86,13 @@
                                     </td>
                                     <td>
                                         <a class="link"
-                                            href="{{ route('session.training_center.training.show', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'training' => $training->id]) }}">
+                                            href="{{ route('session.cinidcation_room.training.volunteers', ['training_session'=>Request::route('training_session')->id,'training_center'=>$trainingCenter->id,'cindication_room'=>$cindicationRoom->id,'training'=>$training->id]) }}">
                                             <i class="menu-icon flaticon-list"></i>
                                         </a>
+                                        {{-- <a class="link"
+                                            href="{{ route('session.training_center.training.show', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'training' => $training->id]) }}">
+                                            <i class="menu-icon flaticon-list"></i>
+                                        </a> --}}
                                     </td>
                                     <td>
                                         <div class="d-flex">
