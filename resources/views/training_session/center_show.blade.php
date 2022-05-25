@@ -41,7 +41,6 @@
                             <!--end::Name-->
                             <!--begin::Contacts-->
                             <div class="flex-wrap my-2 d-flex">
-
                                 <a href="#" class="text-muted text-hover-primary font-weight-bold">
                                     <span class="mr-1 svg-icon svg-icon-md svg-icon-gray-500">
                                         <!--begin::Svg Icon | path:assets/media/svg/icons/Map/Marker2.svg-->
@@ -315,7 +314,8 @@
                         <thead>
                             </tr>
                             <th>Cindication Room Id </th>
-                            <th>Total Volunteer</th>
+                            <th>Volunteer Capacity</th>
+                            <th>Placed Volunteer</th>
                             <th>Action</th>
                             {{-- <th><i class="menu-icon flaticon-list"></i> </th> --}}
                             </tr>
@@ -325,6 +325,7 @@
                                 <tr>
                                     <td>{{ $cindicationRoom->number }}</td>
                                     <td>{{ $cindicationRoom->number_of_volunteers }}</td>
+                                    <td>{{ count($cindicationRoom->volunteers) }}</td>
                                     <td>
                                         <a href="#"
                                             onclick="confirmDeleteRoom('{{ route('session.cindication_room.destroy', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room' => $cindicationRoom->id]) }}')">

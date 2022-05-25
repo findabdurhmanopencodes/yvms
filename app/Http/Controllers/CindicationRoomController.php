@@ -8,10 +8,13 @@ use App\Models\CindicationRoom;
 use App\Models\Training;
 use App\Models\TrainingCenterBasedPermission;
 use App\Models\TrainingMaster;
+use App\Models\TrainingSchedule;
 use App\Models\TrainingSession;
 use App\Models\TrainingSessionTraining;
 use App\Models\TraininingCenter;
 use App\Models\User;
+use App\Models\UserAttendance;
+use App\Models\Volunteer;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 
@@ -69,7 +72,7 @@ class CindicationRoomController extends Controller
         $coFacilitators = $coFacilitatorQuery->get();
         $coFacilitatorUsers = User::doesntHave('volunteer')->doesntHave('trainner')->permission($coFacilitatorPermission->id)->whereNotIn('id', $coFacilitatorQuery->pluck('id'))->get();
         $freeTrainners = TrainingMaster::all();
-        return view('room.show', compact('trainingSession','coFacilitators','coFacilitatorPermission','coFacilitatorUsers','freeTrainners', 'trainingCenter', 'cindicationRoom', 'trainings' ));
+        return view('room.show', compact('trainingSession', 'coFacilitators', 'coFacilitatorPermission', 'coFacilitatorUsers', 'freeTrainners', 'trainingCenter', 'cindicationRoom', 'trainings'));
     }
 
     /**
@@ -105,5 +108,17 @@ class CindicationRoomController extends Controller
     {
         $cindicationRoom->delete();
         return redirect()->back()->with('message', 'Cindication room removed successfully');
+    }
+
+    public function volunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter, CindicationRoom $cindicationRoom, Training $training)
+    {
+        $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingSession->id)->where('cindication_room_id',$cindicationRoom->id)->paginate(10);
+
+        $att_history = [];
+        foreach (UserAttendance::all() as $key => $value) {
+            array_push($att_history, $value->training_schedule_id . ',' . User::where('id', $value->user_id)->get()->first()->volunteer->id);
+        }
+        $trainingSchedules = TrainingSchedule::whereIn('training_session_training_id', TrainingSessionTraining::where('training_session_id', $trainingSession->id)->where('training_id', $training->id)->pluck('id'))->get();
+        return view('training_center.training_center_attendance', compact('trainingSession', 'trainingCenter', 'training', 'applicants', 'trainingSchedules', 'att_history'));
     }
 }

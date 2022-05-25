@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
+use App\Models\EventImage;
+use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
@@ -15,7 +17,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+
+        return view('event.index',['events'=>Event::with('images')->paginate(10)]);
     }
 
     /**
@@ -26,6 +29,7 @@ class EventController extends Controller
     public function create()
     {
         //
+        return view('event.create');
     }
 
     /**
@@ -34,9 +38,27 @@ class EventController extends Controller
      * @param  \App\Http\Requests\StoreEventRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreEventRequest $request)
+    public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'title' => 'required|string|max:255',
+            'content' => 'required',
+        ]);
+        $event = new Event();
+        $event->title = $request->title;
+        $event->content = $request->content;
+        $event->save();
+        foreach ($request->file('pictures') as $imagefile) {
+            $eventImage = new EventImage();
+            $fileName = time() . '_' . $imagefile->getClientOriginalName();
+            $filePath = $imagefile->storeAs('/events/'.$event->title.'_'.$event->id, $fileName, 'public');
+            // $path = $imagefile->store('/events/' . $event->title.'-'.$event->created_at, ['disk' =>   'public']);
+            $eventImage->url = $filePath;
+            $eventImage->event_id = $event->id;
+            $eventImage->save();
+            return redirect()->route('Events.index');
+        }
     }
 
     /**
@@ -45,9 +67,9 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function show(Event $event)
+    public function show($event)
     {
-        //
+        return view('event.show',['event'=>Event::find($event)]);
     }
 
     /**
@@ -59,6 +81,7 @@ class EventController extends Controller
     public function edit(Event $event)
     {
         //
+
     }
 
     /**

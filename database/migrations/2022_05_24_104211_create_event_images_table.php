@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('event_images', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('content');;
             $table->timestamps();
+            $table->string('url');
+            $table->foreignId('event_id')->nullable()->constrained('events','id')->nullOnDelete();
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('event_images');
     }
 };
