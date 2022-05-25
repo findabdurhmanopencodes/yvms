@@ -2,12 +2,25 @@
 @section('title', 'Detail of syindication room')
 @section('content')
     <div class="row">
+        <div class="col-md-12">
+            <div class="card card-custom gutter-b">
+                <div class="py-5 border-0 card-header">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label font-weight-bolder text-dark">Syndication Room
+                            {{ $cindicationRoom->number }}</span>
+                        <span class="mt-3 text-muted font-weight-bold font-size-sm">Total capacity of
+                            {{ $cindicationRoom->number_of_volunteer }}
+                            volunteers</span>
+                    </h3>
+                </div>
+            </div>
+        </div>
         <div class="col-md-6">
             <div class="card card-custom gutter-b">
-                <div class="card-header border-0 py-5">
+                <div class="py-5 border-0 card-header">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label font-weight-bolder text-dark">Training and trainners</span>
-                        <span class="text-muted mt-3 font-weight-bold font-size-sm">Total {{ count($trainings) }}
+                        <span class="mt-3 text-muted font-weight-bold font-size-sm">Total {{ count($trainings) }}
                             trainings in this session</span>
                     </h3>
                     <div class="card-toolbar">
@@ -19,7 +32,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="card-body pt-0">
+                <div class="pt-0 card-body">
                     <table width="100%" class="table">
                         <thead>
                             </tr>
@@ -31,8 +44,8 @@
                         <tbody>
                             @foreach ($trainings as $key => $training)
                                 @php
-                                    $masterId = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->id;
-                                    $trainner = $training->trainner(Request::route('training_session'), $trainingCenter, $training)?->master->user;
+                                    $masterId = $training->trainner(Request::route('training_session'), $trainingCenter, $cindicationRoom)?->id;
+                                    $trainner = $training->trainner(Request::route('training_session'), $trainingCenter, $cindicationRoom)?->master->user;
                                 @endphp
                                 <tr style="font-size: 13px;">
                                     <td>
@@ -75,42 +88,47 @@
         </div>
         <div class="col-md-6">
             <div class="card card-custom gutter-b">
-                <div class="card-header border-0 py-5">
+                <div class="py-5 border-0 card-header">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label font-weight-bolder text-dark">Assign Coofacilitator</span>
+                        <span class="card-label font-weight-bolder text-dark">Assign Co-facilitator</span>
                     </h3>
                 </div>
-                <div class="card-body pt-1">
-                    <form id="checkerForm"
-                        action="{{ route('session.training_center.assign_checker', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+                <div class="pt-1 card-body">
+                    <form id="coFacilitatorForm"
+                        action="{{ route('session.training_center_based_permission.store', ['training_session' => Request::route('training_session')->id]) }}"
                         method="POST">
                         @csrf
                         <div class="row">
-                            <div class="form-group col-md-8">
-                                <select name="checkerUser" id="checkerUser" required
-                                    class=" @error('checkerUser') is-invalid @enderror select2 form-control  form-control select2">
-                                    {{-- @foreach ($checkerUsers as $checkerUser)
+                            <div class="form-group col-md-12">
+                                <input type="hidden" name="permission_id"
+                                    value="{{ Spatie\Permission\Models\Permission::findOrCreate('coFacilitator')->id }}">
+                                <input type="hidden" name="cindication_room_id" value="{{ $cindicationRoom->id }}">
+                                <input type="hidden" name="training_center_id" value="{{ $trainingCenter->id }}">
+                                <input type="hidden" name="training_session_id"
+                                    value="{{ Request::route('training_session')->id }}">
+                                <select name="user_id" id="user_id" required
+                                    class=" @error('user_id') is-invalid @enderror select2 form-control  form-control select2">
+                                    @foreach ($coFacilitatorUsers as $coFacilitatorUser)
                                         <option
-                                            {{ old('checkerUser') != null ? (old('checkerUser') == $checkerUser->id ? 'selected' : '') : '' }}
-                                            value="{{ $checkerUser->id }}">
-                                            {{ $checkerUser->name }}
+                                            {{ old('coFacilitatorUser') != null ? (old('coFacilitatorUser') == $coFacilitatorUser->id ? 'selected' : '') : '' }}
+                                            value="{{ $coFacilitatorUser->id }}">
+                                            {{ $coFacilitatorUser->name }}
                                         </option>
-                                    @endforeach --}}
-
-                                    {{-- @if (count($checkerUsers) <= 0)
+                                    @endforeach
+                                    @if (count($coFacilitatorUsers) <= 0)
                                         <option>
-                                            Please add coofacilitator users
+                                            Please add co-facilitator
                                         </option>
-                                    @endif --}}
+                                    @endif
                                 </select>
-                                @error('checkerUser')
+                                @error('user_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <span class="form-text text-muted">Please select Checker User center.</span>
                             </div>
-                            <div class="form-group col-md-3 ml-auto">
-                                <input type="submit" value="Assign checkers"
-                                    class="btn btn-success float-right font-weight-bolder font-size-sm">
+                            <div class="ml-auto form-group col-md-12">
+                                <input type="submit" value="Assign Coordinator"
+                                    class="float-right btn btn-success w-100 font-weight-bolder font-size-sm">
                             </div>
                         </div>
                     </form>
@@ -118,33 +136,34 @@
                         <thead>
                             </tr>
                             <th> Name </th>
-                            {{-- <th> Role </th> --}}
+                            <th> Role </th>
                             <th> Action </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @foreach ($centerCheckers as $centerChecker)
+                            @foreach ($coFacilitators as $coFacilitator)
                                 <tr style="font-size: 13px;">
-                                    <td>{{ $centerChecker->name }}</td>
+                                    <td>{{ $coFacilitator->name }}</td>
                                     <td>
                                         <span class="btn btn-light-info btn-sm font-weight-bold btn-upper btn-text">
-                                            Checker
+                                            Co-Facilitator
                                         </span>
                                     </td>
                                     <td>
-                                        <a href="#" onclick="confirmDeleteChecker({{ $centerChecker->id }})">
+                                        <a href="{{ route('session.training_center_based_permission.remove', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter, 'cindication_room' => $cindicationRoom->id, 'user' => $coFacilitator->id, 'permission' => $coFacilitatorPermission->id]) }}"
+                                            id="remover">
                                             <i class="fa fa-times"></i>
                                         </a>
                                     </td>
                                 </tr>
-                            @endforeach --}}
-                            {{-- @if (count($centerCheckers) <= 0 && count($centerCoordinators) <= 0)
+                            @endforeach
+                            @if (count($coFacilitators) <= 0)
                                 <tr>
                                     <td colspan="2" class="text-center">
-                                        Please add coordinator & checker
+                                        Please add Co-Facilitator
                                     </td>
                                 </tr>
-                            @endif --}}
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -217,12 +236,6 @@
         @csrf
         @method('DELETE')
     </form>
-    <form id="removeCheckerForm"
-        action="{{ route('session.training_center.assign_checker', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
-        method="POST">
-        @csrf
-        <input type="hidden" name="checkerUser" id="checkerUserRemove">
-    </form>
 @endsection
 @push('css')
     <style>
@@ -262,7 +275,8 @@
             });
         }
 
-        function confirmDeleteCoordinator(id) {
+        $('#remover').on('click', function() {
+            event.preventDefault();
             Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -271,14 +285,18 @@
                 confirmButtonText: "Yes, delete it!"
             }).then(function(result) {
                 if (result.value) {
-                    $("#centerCoordinator").html(`<option value="${id}"></option>`);
-                    $('#centerCoordinatorForm').submit();
+                    // $('#remover').attr('href',url);
+                    // $('#remover').click();
+                    location.href = $('#remover').attr('href');
+                    // $('#coFacilitatorForm').attr('action', url);
+                    // $('#coFacilitatorForm').submit();
                 }
             });
-        }
+        });
 
-        function confirmDeleteChecker(checkerId) {
-            $('#checkerUserRemove').val(checkerId);
+
+        function confirmDeleteCoFacilitator(url) {
+            event.preventDefault();
             Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -287,7 +305,10 @@
                 confirmButtonText: "Yes, delete it!"
             }).then(function(result) {
                 if (result.value) {
-                    $('#removeCheckerForm').submit();
+                    $('#remover').attr('href', url);
+                    $('#remover').click();
+                    $('#coFacilitatorForm').attr('action', url);
+                    // $('#coFacilitatorForm').submit();
                 }
             });
         }
