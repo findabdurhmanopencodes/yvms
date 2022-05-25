@@ -198,6 +198,9 @@ class VolunteerController extends Controller
 
     public function application_form()
     {
+        $volunteer = Volunteer::find(1);
+        dispatch(new SendEmailJob($volunteer->email, new VerifyMail($volunteer)));
+        dd('sd');
         $availableSession = TrainingSession::availableForRegistration();
         if (count($availableSession) <= 0) {
             return view('application.no-open-form');
