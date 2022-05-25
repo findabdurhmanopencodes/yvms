@@ -122,6 +122,9 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::resource('/user_attendances', UserAttendanceController::class);
     Route::resource('/attendance', AttendanceController::class);
     Route::get('volunteer/{volunteer}/attendances', [VolunteerController::class, 'atendance'])->name('volunteer.attendance');
+    Route::get('importExportView', [ImportExportController::class, 'importView'])->name('volunteer.import.view');
+    Route::get('bank/test/import/{training_center}', [ImportExportController::class, 'exportVolunteers'])->name('volunteer.export');
+    Route::get('bank/test/{training_center}', [ImportExportController::class, 'importVolunteers'])->name('volunteer.import');
 
 
 
@@ -229,7 +232,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('{training_center}/id/count', [IdGenerateController::class, 'idCount'])->name('id.count');
     Route::post('{training}/training/schedule', [TraininingCenterController::class, 'trainingSchedule'])->name('training.attendance');
     Route::post('{training}/training/schedule/remove', [TraininingCenterController::class, 'trainingScheduleRemove'])->name('training.remove');
-
     Route::resource('training/{training}/training_document', TrainingDocumentController::class);
     Route::get('/dashboard', function () {
         if (count(TrainingSession::availableSession()) > 0) {
@@ -257,6 +259,6 @@ Route::get('id/test', function () {
     dd('stop');
 });
 Route::resource('Events', EventController::class);
-Route::get('bank/test', [ImportExportController::class, 'exportVolunteers'])->name('');
+
 
 
