@@ -55,10 +55,12 @@
                                                 {{ $applicant->id }}
                                             </td>
                                             <td>
-                                                {{$applicant->first_name}}
+                                                {{($applicant->getTable() == 'volunteers')?$applicant->first_name:$applicant->master->user->first_name}}
                                             </td>
                                             <td>
-                                                {{ $applicant->approvedApplicant?->trainingPlacement?->trainingCenterCapacity?->trainingCenter?->code }}
+                                                {{($applicant->getTable() == 'volunteers')?$applicant->approvedApplicant?->trainingPlacement?->trainingCenterCapacity?->trainingCenter?->code:$trainingCenter->code}}
+
+                                                {{-- {{ $applicant->approvedApplicant?->trainingPlacement?->trainingCenterCapacity?->trainingCenter?->code }} --}}
                                             </td>
                                         </tr>
                                     @endforeach
