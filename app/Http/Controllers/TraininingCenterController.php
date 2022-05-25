@@ -317,20 +317,20 @@ class TraininingCenterController extends Controller
         foreach ($cindicationRooms as $cindicationRoom) {
             $capacity = $cindicationRoom->number_of_volunteers;
             $round = 0;
-            for($a = 0;$a<$capacity;$a++){
-                if($round>=count($volunteerGroups)){
+            for ($a = 0; $a < $capacity; $a++) {
+                if ($round >= count($volunteerGroups)) {
                     $round = 0;
                 }
                 $group = $volunteerGroups[$regionIds[$round]];
-                $volunteer = $group[count($group)-1];
+                $volunteer = $group[count($group) - 1];
                 $volunteer->update([
-                    'cindication_room_id' => $cindicationRoom,
+                    'cindication_room_id' => $cindicationRoom->id,
                 ]);
                 $volunteer->save();
                 $volunteerGroups[$regionIds[$round]]->pop();
                 $round++;
             }
         }
-        return redirect()->back()->with('message','Volunteer placment finnished');
+        return redirect()->back()->with('message', 'Volunteer placment finnished');
     }
 }

@@ -315,7 +315,8 @@
                         <thead>
                             </tr>
                             <th>Cindication Room Id </th>
-                            <th>Total Volunteer</th>
+                            <th>Volunteer Capacity</th>
+                            <th>Placed Volunteer</th>
                             <th>Action</th>
                             {{-- <th><i class="menu-icon flaticon-list"></i> </th> --}}
                             </tr>
@@ -325,6 +326,7 @@
                                 <tr>
                                     <td>{{ $cindicationRoom->number }}</td>
                                     <td>{{ $cindicationRoom->number_of_volunteers }}</td>
+                                    <td>{{ count($cindicationRoom->volunteers) }}</td>
                                     <td>
                                         <a href="#"
                                             onclick="confirmDeleteRoom('{{ route('session.cindication_room.destroy', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room' => $cindicationRoom->id]) }}')">
