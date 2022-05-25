@@ -66,7 +66,7 @@
                                     <!--begin::Navigation-->
                                     <ul class="navi navi-hover">
                                         <li class="navi-item">
-                                            <a href="{{ route('session.resource.assign.volunteer', ['training_session' => Request::route('training_session')->id, 'training_center_id' => $trainingCenter->id]) }}"
+                                            <a data-toggle="modal" data-target="#import"
                                                 class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="fa fa-file-import"></i>
@@ -517,6 +517,53 @@
         @csrf
         <input type="hidden" name="checkerUser" id="checkerUserRemove">
     </form>
+
+
+
+
+    <div class="modal fade" id="import" tabindex="-1" role="dialog" aria-labelledby="addCapacityLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <form method="POST" action="{{  route('session.volunteer.import',['training_session' => Request::route('training_session')->id, 'training_center'=> $trainingCenter])}}" enctype="multipart/form-data">
+            <input type="hidden" name="trainingCenterId" value="{{ $trainingCenter->id }}">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCapacityLabel">importing Excell for Bank Account </h5>
+                    <button type="button" class="close" data-dismiss="modal" -label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 form-group d-flex">
+                            <div class="col-md-11">
+                                <div class="form-group">
+                                    <label class="d-block">Select file</label>
+                                    <div class="custom-file">
+                                        <input type="file"
+                                            class=" custom-file-input"
+                                            name="file" id="ministry_document"  multiple/>
+                                        <label class="custom-file-label" for="customFile">Choose
+                                            file</label>
+                                        @error('file')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-danger font-weight-bold"
+                        data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
 @push('js')
     <script>
