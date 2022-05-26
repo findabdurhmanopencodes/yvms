@@ -37,6 +37,7 @@ use App\Http\Controllers\TrainingCenterBasedPermissionController;
 use App\Http\Controllers\TrainingDocumentController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
+use App\Models\PaymentType;
 use App\Models\Training;
 use App\Models\TrainingMaster;
 use App\Models\TrainingMasterPlacement;
@@ -119,8 +120,6 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('volunteer/{volunteer}/attendances', [VolunteerController::class, 'atendance'])->name('volunteer.attendance');
 
 
-
-
     Route::post('applicant/place', [TrainingPlacementController::class, 'place'])->name('applicant.place');
     Route::get('applicants/email/unverified', [VolunteerController::class, 'emailUnverified'])->name('applicant.email.unVerified');
     Route::get('/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');
@@ -164,7 +163,7 @@ Route::get('training_center/{training_center}', [TrainingSessionController::clas
 
 
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
-Route::middleware(['auth', 'verified','role'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
     // Route::middleware(['guest'])->group(function () {
     Route::resource('training_master', TrainingMasterController::class);
@@ -195,10 +194,13 @@ Route::middleware(['auth', 'verified','role'])->group(function () {
     Route::resource('training_session', TrainingSessionController::class);
     Route::resource('qouta', QoutaController::class);
     Route::resource('user', UserController::class);
-
+    /////////////////////////////////////////////////////////////////
+    Route::resource('payment_type', PaymentType::class);
     Route::resource('payroll', PayrollController::class);
     Route::resource('payrollSheet', PayrollSheetController::class);
-
+    Route::get('payee_list', [PayrollSheetController::class, 'payee'])->name('payrollSheet.payee');
+    //Route::get('/payroll/{id}/payroll_sheet', [PayrollSheetController::class, 'payrollSheet'])->name('payrollSheet.dispaly');
+    ////////////////////////////////////////////////////////////////////
     Route::resource('region', RegionController::class);
     Route::resource('zone', ZoneController::class);
     Route::resource('woreda', WoredaController::class);
