@@ -14,20 +14,21 @@ return new class extends Migration{
      *
      * @return void
      */
-    public function up()
-  {
+    public function up(){
             Schema::create('payroll_sheets', function (Blueprint $table) {
             $table->id();
-           // $table->string('payrollId');
+            // $table->string('payrollId');
             $table->foreignIdFor(Payroll::class)->constrained();
-            $table->text('fullName')->nullable();
+            //$table->text('fullName')->nullable();
             $table->foreignIdFor(TraininingCenter::class)->constrained();
-            $table->text('phone')->nullable();
-            $table->decimal('account',10,2)->nullable();
-            //$table->float('amount', 10, 2);
-            //$table->double('column', 10, 2); 
-            $table->foreignIdFor(Zone::class)->constrained();
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(TrainingSession::class)->constrained();
+            // $table->text('phone')->nullable();
+            // $table->string('account');
+            // $table->decimal('amount',10,2)->nullable();
+            // $table->float('amount', 10, 2);
+            // $table->double('column', 10, 2);
+            // $table->foreignIdFor(Zone::class)->constrained();
+            $table->foreignIdFor(User::class)->constrained();
             $table->timestamps();
         });
     }

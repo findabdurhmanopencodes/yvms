@@ -11,6 +11,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\IdGenerateController;
 use App\Http\Controllers\ImportExportController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PrintController;
 use App\Http\Controllers\QoutaController;
@@ -41,6 +42,7 @@ use App\Http\Controllers\TrainingCenterBasedPermissionController;
 use App\Http\Controllers\TrainingDocumentController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
+use App\Models\PaymentType;
 use App\Models\CindicationRoom;
 use App\Models\Training;
 use App\Models\TrainingMaster;
@@ -102,7 +104,7 @@ Route::get('/placement', function () {
 
 
 Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
-
+Route::get('/send-notification', [NotificationController::class, 'sendWelcomeNotification']);
 //Role & Permission
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
@@ -125,8 +127,6 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('import/View/{training_center}', [ImportExportController::class, 'importView'])->name('volunteer.import.view');
     Route::get('bank/test/import/{training_center}', [ImportExportController::class, 'exportVolunteers'])->name('volunteer.export');
     Route::any('bank/test/{training_center}', [ImportExportController::class, 'importVolunteers'])->name('volunteer.import');
-
-
 
 
     Route::post('applicant/place', [TrainingPlacementController::class, 'place'])->name('applicant.place');
@@ -171,7 +171,8 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::resource('{training_center}/cindication_room', CindicationRoomController::class);
     Route::resource('training_master_placement', TrainingMasterPlacementController::class);
     Route::get('{training_center}/trainer/list', [IdGenerateController::class, 'TrainerList'])->name('training_center.trainer_list');
-
+    Route::get('{training_center}/{cindication_room}/attendance_export', [TraininingCenterController::class, 'get_attendance_data'])->name('attendance.export');
+    Route::post('{training_center}/{cindication_room}/attendance_import', [TraininingCenterController::class, 'fileImport'])->name('attendance.import');
 });
 
 
@@ -208,10 +209,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('training_session', TrainingSessionController::class);
     Route::resource('qouta', QoutaController::class);
     Route::resource('user', UserController::class);
-
+    /////////////////////////////////////////////////////////////////
+    Route::resource('payment_type', PaymentType::class);
     Route::resource('payroll', PayrollController::class);
     Route::resource('payrollSheet', PayrollSheetController::class);
-
+    Route::get('payee_list', [PayrollSheetController::class, 'payee'])->name('payrollSheet.payee');
+    //Route::get('/payroll/{id}/payroll_sheet', [PayrollSheetController::class, 'payrollSheet'])->name('payrollSheet.dispaly');
+    ////////////////////////////////////////////////////////////////////
     Route::resource('region', RegionController::class);
     Route::resource('zone', ZoneController::class);
     Route::resource('woreda', WoredaController::class);
@@ -244,7 +248,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');
     Route::resource('TrainingCenterCapacity', TrainingCenterCapacityController::class);
     Route::post('TrainingCenter/Capacity', [TrainingCenterCapacityController::class, 'capacityChange'])->name('TrainingCenterCapacity.capacityChange');
-    Route::get('attendance_export', [TraininingCenterController::class, 'get_attendance_data'])->name('attendance.export');
 });
 require __DIR__ . '/auth.php';
 Route::get('volunteer/verify/{token}', [VolunteerController::class, 'verifyEmail'])->name('volunteer.email.verify');

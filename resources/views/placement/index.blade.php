@@ -135,8 +135,7 @@
                             <td> {{ $placedVolunteer->approvedApplicant->volunteer->woreda->zone->region->name }} </td>
                             <td> {{ $placedVolunteer->trainingCenterCapacity->trainingCenter->name }} </td>
                             <td>
-                                <a href="#"
-                                    data-action="{{ route('session.placement.change', [request()->route('training_session'), $placedVolunteer->id]) }}"
+                                <a href="#" data-action="{{ route('session.placement.change', [request()->route('training_session'), $placedVolunteer->id]) }}"
                                     class="btn btn-icon"
                                     onclick="$('#changePlacementForm').attr('action',this.dataset.action);onSubmit();">
                                     <span class="fa fa-edit"></span>

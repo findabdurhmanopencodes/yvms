@@ -73,7 +73,8 @@ class RegionController extends Controller
     public function store(StoreRegionRequest $request)
     {
         $regionInquota = $request->get('region_quota')/100;
-        $request->validate(['name' => 'required|string|unique:permissions,name', 'code' => 'required|string|unique:permissions,name']);
+        $request->validate(['name' => 'required|string|unique:permissions,name',
+        'code' => 'required|string|unique:permissions,name']);
         Region::create(['name' => $request->get('name'), 'code'=>$request->get('code'), 'qoutaInpercent'=> $regionInquota, 'status'=>1]);
         return redirect()->route('region.index')->with('message', 'Region created successfully');
     }

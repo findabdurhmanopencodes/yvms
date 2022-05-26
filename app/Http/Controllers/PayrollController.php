@@ -29,7 +29,8 @@ class PayrollController extends Controller
         if ($request->ajax()) {
             return datatables()->of(Payroll::select())->make(true);
         }
-       $payrolls = Payroll::all();
+
+       $payrolls = Payroll::orderBy('id', 'Desc')->Paginate(1);
 
         return view('payroll.index', compact('payrolls'));
     }

@@ -13,14 +13,12 @@
 @section('content')
 <form method="POST" action="{{ route('session.training_center.generate', ['training_session' => Request::route('training_session'),'training_center'=>Request::route('training_center')]) }}">
     @csrf
+    <input type="hidden" value="trainer" name="trainer_list_all">
     <div class="card card-custom">
-    <input type="hidden" value="{{ $training_center_id }}" id="training_center_id">
     <div class="card-header flex-wrap  pt-6 ">
         <div class="card-title mr-0">
             <div class="form-group">
-                <h3 class="card-label">Checked In Applicant List</h3>
-                <br>
-                <input type="text" id="search" class="form-control" placeholder="search by ID..." />
+                <h3 class="card-label">Trainer List</h3>
             </div>
         </div>
             <div class="card-toolbar">
@@ -35,7 +33,7 @@
             <table width="100%" class="table table" id="search_table">
                 <thead>
                     </tr>
-                        <th>#   </th>
+                        <th>#</th>
                         <th> ID </th>
                         <th> Name </th>
                         {{-- <th>ID count</th>
@@ -43,10 +41,11 @@
                     </tr>
                 </thead>
                 <tbody>
+                    
                     @if (count($totalTrainingMasters) > 0)
                         @foreach ($totalTrainingMasters as $key => $applicant)
                             <tr>
-                                <td><input type="checkbox" name="applicant[]" value="{{ $applicant->id }}" id="checkbox"/></td>
+                                <td><input type="checkbox" name="trainer_list[]" value="{{ $applicant->id }}" id="checkbox"/></td>
                                 <td>
                                     {{ $applicant->id }}
                                 </td>
@@ -71,7 +70,7 @@
                     @else
                     <tr>
                         <td class="text text-danger text-center" colspan="5">
-                            Volunteer not found
+                            Trainer not found
                         </td>
                     </tr>
                     @endif
