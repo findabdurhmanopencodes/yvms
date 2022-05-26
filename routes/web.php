@@ -42,6 +42,7 @@ use App\Http\Controllers\TrainingCenterBasedPermissionController;
 use App\Http\Controllers\TrainingDocumentController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
+use App\Models\PaymentType;
 use App\Models\CindicationRoom;
 use App\Models\Training;
 use App\Models\TrainingMaster;
@@ -136,8 +137,6 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::any('bank/test/{training_center}', [ImportExportController::class, 'importVolunteers'])->name('volunteer.import');
 
 
-
-
     Route::post('applicant/place', [TrainingPlacementController::class, 'place'])->name('applicant.place');
     Route::get('applicants/email/unverified', [VolunteerController::class, 'emailUnverified'])->name('applicant.email.unVerified');
     Route::get('/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');
@@ -218,10 +217,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('training_session', TrainingSessionController::class);
     Route::resource('qouta', QoutaController::class);
     Route::resource('user', UserController::class);
-
+    /////////////////////////////////////////////////////////////////
+    Route::resource('payment_type', PaymentType::class);
     Route::resource('payroll', PayrollController::class);
     Route::resource('payrollSheet', PayrollSheetController::class);
-
+    Route::get('payee_list', [PayrollSheetController::class, 'payee'])->name('payrollSheet.payee');
+    //Route::get('/payroll/{id}/payroll_sheet', [PayrollSheetController::class, 'payrollSheet'])->name('payrollSheet.dispaly');
+    ////////////////////////////////////////////////////////////////////
     Route::resource('region', RegionController::class);
     Route::resource('zone', ZoneController::class);
     Route::resource('woreda', WoredaController::class);
