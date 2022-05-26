@@ -219,7 +219,8 @@ class TraininingCenterController extends Controller
     public function checkIn($training_session, $id)
     {
         Volunteer::find($id)->status->update(['acceptance_status' => 5]);
-        return redirect()->back()->with('message', 'Volunteer Sucessfuily Checked-In');
+        return redirect()->route('session.TrainingCenter.CheckIn',['training_session'=>$training_session]);
+
     }
     public function indexChecking($training_session, Request $request)
     {
