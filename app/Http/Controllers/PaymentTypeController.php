@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class PaymentTypeController extends Controller
 {
+
+
+    public function __construct()
+    {
+
+        $this->authorizeResource(PaymentType::class,'paymentType');
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -21,11 +29,9 @@ class PaymentTypeController extends Controller
             return datatables()->of(PaymentType::select())->make(true);
         }
 
-       $paymentTypes = PaymentType::orderBy('id', 'Desc')->Paginate(10);
-
+       $paymentTypes = PaymentType::all();
         return view('paymentType.index', compact('paymentTypes'));
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -48,7 +54,10 @@ class PaymentTypeController extends Controller
 
         $request->validate(['name' => 'required|string|unique:payment_types,name']);
 
-        PaymentType::create(['name' => $request->get('name'),'amount'=>$request->get('amount')]);
+        PaymentType::create([
+
+            'name' => $request->get('name'),
+            'amount'=>$request->get('amount')]);
 
       return redirect()->route('paymentType.index')->with('message', 'payment type created successfully');
     }

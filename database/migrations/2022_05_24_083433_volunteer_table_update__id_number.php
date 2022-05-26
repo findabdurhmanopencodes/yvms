@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('volunteers', function (Blueprint $table) {
-            $table->text('id_number')->nullable()->unique();
+           Schema::table('volunteers', function (Blueprint $table) {
+           // $table->text('id_number')->nullable()->unique();
         });
     }
 

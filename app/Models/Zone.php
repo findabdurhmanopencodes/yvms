@@ -38,6 +38,9 @@ class Zone extends Model
     public function quotas(){
         return $this->morphMany(Qouta::class, 'quotable');
     }
+    public function distances(){
+        return $this->hasMany(Distance::class);
+    }
 
     public function level(){
         return $this->morphOne(UserRegion::class, 'levelable');

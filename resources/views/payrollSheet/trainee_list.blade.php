@@ -17,27 +17,33 @@
 @section('content')
     <!--begin::Card-->
     <div class="card card-custom card-body mb-3">
-        <form action="" method="GET">
+        <form action="{{ route('payrollSheet.generatePDF',[]) }}" method="GET">
             <div class=" ml-0 col-12 p-0">
                 <div class="row ">
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
 
 
-                        <select name="payment_type" id="" class="form-control select2">
+                        <select name="payment_type" id="" class="form-control select2" required>
                             <option value="">Select payment type </option>
                             @foreach ($payment_types as $payment_type)
                                 <option value="{{ $payment_type->id }}">{{ $payment_type->name }}</option>
                             @endforeach
                         </select>
                     </div>
+                    <div class="form-group col-4">
+                                <select name="format" id="" class="form-control select2" required>
+                                 <option value=""> Select output format </option>
+                                <option value="pdf"> PDF </option>
+                                <option value="excel"> Ms Exceel </option>
 
 
-
-                    <div class="form-group col-6">
-                        <button class="btn btn-primary btn-sm"> Print out</button>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <button class="btn btn-primary btn-sm"><i class="fa fa-print"> </i> Print out</button>
                     </div>
 
-
+              <span> Total Trainee :0  &nbsp;  Training Session ID :0    &nbsp;    Training Center: JU</span>
                 </div>
             </div>
         </form>
