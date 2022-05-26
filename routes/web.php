@@ -111,7 +111,7 @@ Route::get('/placement', function () {
 //     $markdown = new \Illuminate\Mail\Markdown(view(), config('mail.markdown'));
 //     return $markdown->render($notification->markdown, $notification->data());
 // });
-
+Route::get('send',[NotificationController::class,'sendApplicantPlacmentEmail']);
 Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
 //Role & Permission
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
@@ -131,7 +131,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     // Route::get('/training',[TrainingSessionController::class,'trainings'])->name('training.index');
     Route::resource('/user_attendances', UserAttendanceController::class);
     Route::resource('/attendance', AttendanceController::class);
-    Route::get('volunteer/{volunteer}/attendances', [VolunteerController::class, 'atendance'])->name('volunteer.attendance');
+    Route::get('volunteer/{volunteer}/attendances', [VolunteerController::class, 'atend     ance'])->name('volunteer.attendance');
     Route::get('import/View/{training_center}', [ImportExportController::class, 'importView'])->name('volunteer.import.view');
     Route::get('bank/test/import/{training_center}', [ImportExportController::class, 'exportVolunteers'])->name('volunteer.export');
     Route::any('bank/test/{training_center}', [ImportExportController::class, 'importVolunteers'])->name('volunteer.import');
