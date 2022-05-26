@@ -4,7 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -40,9 +40,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
 
     {
-
-        $schedule->command('database:backup')->daily();
-
+        //* * * * * cd /var/www/html/mop-yvms/ && php artisan schedule:run >> /dev/null 2>&1
+        // $schedule->command('database:backup')->daily();
+        $schedule->command('backup:clean')->weekly()->at('01:00');
+        $schedule->command('backup:run')->daily()->at('01:30');
+        // $schedule->command('queue:listen')->daily()->very
+        Log::info('Cron Job Started');
     }
 
     /**

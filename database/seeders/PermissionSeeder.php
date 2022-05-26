@@ -184,8 +184,5 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'Zone.destroy']);
         Permission::create(['name'=>'Zone.fetch']);
         Permission::create(['name'=>'Zone.validate.form']);
-
-
-        Permission::create(['name'=>'center-coordinator']);
     }
 }

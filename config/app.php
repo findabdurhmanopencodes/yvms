@@ -184,6 +184,8 @@ return [
         RichanFongdasen\EloquentBlameable\ServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Spatie\Backup\BackupServiceProvider::class,
+
 
 
         /*

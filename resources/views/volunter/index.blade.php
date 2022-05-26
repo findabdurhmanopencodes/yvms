@@ -164,7 +164,7 @@
     <div class="card card-custom">
         @if ($errors->any())
             <div class="alert alert-danger">
-                <p><strong>Opps Something went wrong</strong></p>
+                <p><strong>Oops Something went wrong</strong></p>
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -177,13 +177,13 @@
             <div class="card-title">
                 <h3 class="card-label">
                     <span>Total: {{ $volunters->total() }}</span>
-                     Applicants
+                    Applicants
                     <span class="d-block text-muted pt-2 font-size-sm">All Applicants In
                         {{ $trainingSession?->moto }}</span>
-                        <div class="">
+                    <div class="">
 
 
-                        </div>
+                    </div>
                 </h3>
 
 
@@ -193,6 +193,14 @@
         <div class="card-body">
             <!--begin: Datatable-->
             <div class="datatable datatable-default datatable-bordered datatable-loaded">
+                <div class="btn-group float-right mb-4">
+                    <a class="btn btn-primary"
+                        href="{{ route('verify.all', ['training_session' => Request::route('training_session')]) }}">Verify
+                        All</a>
+                    <a class="btn btn-info"
+                        href="{{ route('resetVerify', ['training_session' => Request::route('training_session')]) }}">Reset
+                        Verification </a>
+                </div>
                 <table class="table table-bordered">
                     <thead>
                         <tr>

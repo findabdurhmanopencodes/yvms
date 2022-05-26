@@ -682,8 +682,9 @@ class TrainingSessionController extends Controller
                     }
                 }
                 $b = [];
-
-                if (count($accepted_arr) < $train_session) {
+                $volunteer_count = count(Volunteer::all());
+                if (count($accepted_arr) < $train_session && count($accepted_arr) < $volunteer_count) {
+                    // dd($accepted_arr);
                     $dif_arr = $train_session - count($accepted_arr);
 
                     $merge_acc = array_diff($arr, $accepted_arr);
@@ -693,6 +694,7 @@ class TrainingSessionController extends Controller
                     sort($b);
                     $new_slice_merge_arr = array_slice($b, 0, $dif_arr);
                     $merged_array = array_merge($accepted_arr, $new_slice_merge_arr);
+                    $accepted_arr = [];
                     foreach ($merged_array as $key => $value) {
                         array_push($accepted_arr, $value);
                     }
@@ -704,11 +706,7 @@ class TrainingSessionController extends Controller
                     }
                 }
             }
-            $approved_applicants = ApprovedApplicant::where('training_session_id', $id)->get();
-
-            foreach ($approved_applicants as $key => $app_vol) {
-                $app_vol->delete();
-            }
+            $approved_applicants = ApprovedApplicant::where('training_session_id', $id)->delete();
 
             foreach ($accepted_arr as $key => $accepted) {
                 $approved_applicant = new ApprovedApplicant();
@@ -872,7 +870,7 @@ class TrainingSessionController extends Controller
 
     public function trainingCenterShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
-        $cindicationRooms = CindicationRoom::all();
+        $cindicationRooms = CindicationRoom::where('training_session_id',$trainingSession->id)->where('trainining_center_id',$trainingCenter->id)->get();
         $miniSide = 'aside-minimize';
         $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->get();
         $checkedInVolunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->whereRelation('status', 'acceptance_status', 5)->get();
@@ -887,8 +885,8 @@ class TrainingSessionController extends Controller
         $checkerPermission = Permission::findOrCreate('checker');
         $centerCheckerQuery = User::whereIn('id', TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $checkerPermission->id)->pluck('user_id'));
         $centerCheckers = $centerCheckerQuery->get();
-        Role::findOrCreate('checker');
-        $checkerUsers = User::doesntHave('volunteer')->doesntHave('trainner')->role('checker')->whereNotIn('id', $centerCheckerQuery->pluck('id'))->get();
+        Permission::findOrCreate('checker');
+        $checkerUsers = User::doesntHave('volunteer')->doesntHave('trainner')->permission('checker')->whereNotIn('id', $centerCheckerQuery->pluck('id'))->get();
         return view('training_session.center_show', compact('centerCoordinators', 'centerCoordinatorUsers', 'checkedInVolunteers', 'centerCheckers', 'checkerUsers', 'freeTrainners', 'trainings', 'trainingSession', 'totalTrainingMasters', 'totalVolunteers', 'trainingCenter', 'miniSide','cindicationRooms'));
     }
     public function resourceAssignToTrainingCenter($training_session, Request $request)

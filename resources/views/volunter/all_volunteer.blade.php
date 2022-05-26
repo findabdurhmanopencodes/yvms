@@ -210,7 +210,7 @@
 
                         @foreach ($volunters as $volunter)
                         @php
-                            $volStatus = $volunter->status->acceptance_status;
+                            $volStatus = $volunter->status?->acceptance_status;
                             $volName = \App\Models\Status::$status[$volStatus];
                         @endphp
                             <tr data-row="0" class="datatable-row" style="left: 0px;">

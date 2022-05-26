@@ -11,8 +11,39 @@
 @endsection
 
 @section('content')
-{{-- <form method="POST" action="{{ route('session.training.attendance', ['training_session' => $trainingSession->id,'training_center'=>$trainingCenter->id, 'training'=>$training->id]) }}"> --}}
+<form method="POST" action="{{ route('session.attendance.import', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room'=>Request::route('cindication_room')]) }}" enctype="multipart/form-data">
     @csrf
+    <div style="z-index: 9999999;" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg"  role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Import File</h5>
+                    <button type="button" class="close" data-dismiss="modal" -label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-lg-6">
+                                    <label>Attendance File: </label>
+                                    <input type="file" name="attendance"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{{-- <form method="POST" action="{{ route('session.training.attendance', ['training_session' => $trainingSession->id,'training_center'=>$trainingCenter->id, 'training'=>$training->id]) }}"> --}}
+    {{-- @csrf --}}
     <div class="card card-custom">
     <div class="card-header flex-wrap  pt-6 ">
         <div class="card-title mr-0">
@@ -35,7 +66,7 @@
                         <span class="text-primary text-uppercase font-weight-bold font-size-sm">Import/Export:</span>
                     </li>
                     <li class="navi-item">
-                        <a href="{{ route('attendance.export') }}" class="navi-link">
+                        <a href="{{ route('session.attendance.export', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room'=>Request::route('cindication_room')]) }}" class="navi-link">
                             <span class="navi-icon">
                                 <i class="flaticon2-shopping-cart-1"></i>
                             </span>
@@ -43,7 +74,7 @@
                         </a>
                     </li>
                     <li class="navi-item">
-                        <a href="#" class="navi-link">
+                        <a href="#" class="navi-link" data-toggle="modal" data-target="#exampleModal">
                             <span class="navi-icon">
                                 <i class="flaticon2-calendar-8"></i>
                             </span>
@@ -55,6 +86,8 @@
                 <!--end::Navigation-->
             </div>
         </div>
+
+        
         
     </div>
         <div class="card-body pl-0" id="search_card" style="overflow: scroll;">

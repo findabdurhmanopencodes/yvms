@@ -55,10 +55,12 @@
                                                 {{ $applicant->id }}
                                             </td>
                                             <td>
-                                                {{$applicant->first_name}}
+                                                {{($applicant->getTable() == 'volunteers')?$applicant->first_name:$applicant->master->user->first_name}}
                                             </td>
                                             <td>
-                                                {{ $applicant->approvedApplicant?->trainingPlacement?->trainingCenterCapacity?->trainingCenter?->code }}
+                                                {{($applicant->getTable() == 'volunteers')?$applicant->approvedApplicant?->trainingPlacement?->trainingCenterCapacity?->trainingCenter?->code:$trainingCenter->code}}
+
+                                                {{-- {{ $applicant->approvedApplicant?->trainingPlacement?->trainingCenterCapacity?->trainingCenter?->code }} --}}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -83,6 +85,7 @@
                             </div>
                             <div class="card-body pt-2">
                                 <div>
+                                    {{-- <div id="qrcode"></div> --}}
                                     <div id="myDesign" style="width: 220px; height:339px;background-size:cover;background-image: url({{ asset('img/id_page_1.jpg') }});">
                                         {{-- <img src="{{ asset('img/id_page_1.jpg') }}" alt="background image" style="width: 100%;"> --}}
                                     </div>
@@ -105,11 +108,17 @@
 @endsection
 
 @push('js')
+    <script src="{{ asset('js/qrcode.min.js') }}"></script>
     <script>
+        // var qrcode = document.getElementById("qrcode");
         var DATAS = [];
         var div = document.createElement('div');
         var myDesign;
+        var x =0;
         $('#print_btn').on('click', function(event){
+            if(x!=0)
+                return;
+            x=1;
             var applicants = @json($applicants);
             applicants.forEach((applicant, key) => {
                 myDesign = document.createElement("div");
@@ -173,17 +182,114 @@
                 div_img.style.left = '62';
                 div_img.style.top = '54';
                 myDesign.appendChild(div_img);
-                // div.style.flexWrap = 'wrap';
+
+                var blank_img = document.createElement('img');
+                var div_blank = document.createElement('div');
+                blank_img.src = '{{ asset("img/blank.png") }}';
+                blank_img.style.width = '49px';
+                blank_img.style.height = '50.7px';
+
+                div_blank.appendChild(blank_img);
+                div_blank.style.position = "relative";
+                div_blank.style.left = '81';
+                div_blank.style.top = '122.123';
+                myDesign.appendChild(div_blank);
+
+                var e_date = document.createElement("p");
+                var se_date = document.createElement("strong");
+                var setextToAdd = document. createTextNode('Exp. Date: ');
+                se_date.appendChild(setextToAdd);
+                e_date.appendChild(se_date);
+                e_date.style.position = "relative";
+                e_date.style.left = '12';
+                e_date.style.top = '68';
+                e_date.style.backgroundColor = "inherit";
+                e_date.style.fontSize = '10px';
+                e_date.style.color = 'blue';
+                myDesign.appendChild(e_date);
+
+                var e_date_text = document.createElement("p");
+                var se_date_text = document.createElement("strong");
+                var setextToAddText = document. createTextNode('{{ $train_end_date }}');
+                se_date_text.appendChild(setextToAddText);
+                e_date_text.appendChild(se_date_text);
+                e_date_text.style.position = "relative";
+                e_date_text.style.left = '59';
+                e_date_text.style.top = '47';
+                e_date_text.style.backgroundColor = "inherit";
+                e_date_text.style.fontSize = '10px';
+                e_date_text.style.color = 'blue';
+                myDesign.appendChild(e_date_text);
+
+                var r_date = document.createElement("p");
+                var sr_date = document.createElement("strong");
+                var srtextToAdd = document. createTextNode('Role: ');
+                sr_date.appendChild(srtextToAdd);
+                r_date.appendChild(sr_date);
+                r_date.style.position = "relative";
+                r_date.style.left = '12';
+                r_date.style.top = '42';
+                r_date.style.backgroundColor = "inherit";
+                r_date.style.fontSize = '10px';
+                r_date.style.color = 'blue';
+                myDesign.appendChild(r_date);
+
+                var r_date_text = document.createElement("p");
+                var sr_date_text = document.createElement("strong");
+                var srtextToAddText = document. createTextNode('Volunteer');
+                sr_date_text.appendChild(srtextToAddText);
+                r_date_text.appendChild(sr_date_text);
+                r_date_text.style.position = "relative";
+                r_date_text.style.left = '38';
+                r_date_text.style.top = '21';
+                r_date_text.style.backgroundColor = "inherit";
+                r_date_text.style.fontSize = '10px';
+                r_date_text.style.color = 'blue';
+                myDesign.appendChild(r_date_text);
+
+                // generateQR(applicant);
+                var div__qr_img = document.createElement("div");
+
+                var div__qr_img_2 = document.createElement("div");
+
+                div__qr_img.setAttribute('id', 'qrcode'+key);
+                
+                // myDesign.appendChild(div__qr_img);
+
+                var qrcode = new QRCode(div__qr_img, {
+                    text: applicant.email,
+                    width: 50,
+                    height: 44.7,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H,
+                });
+                
+                var img = qrcode._el.children[1];
+                var src = div__qr_img.children[0].toDataURL("image/png");
+                var qrf_img = document.createElement('img');
+
+                qrf_img.src = src;
+                div__qr_img_2.style.position = "relative";
+                div__qr_img_2.style.left = '140';
+                div__qr_img_2.style.top = '-20';
+                div__qr_img_2.appendChild(qrf_img.cloneNode(true));
+                myDesign.appendChild(div__qr_img_2.cloneNode(true));
                 div.appendChild(myDesign.cloneNode(true))
 
                 DATAS.push(div);
+
             });
 
             generatePDF(DATAS, applicants);
         })
 
+        function generateQR(applicant){
+
+        }
+
         function generatePDF(abc, applicants){
-            var mywindow = window.open('', 'PRINT', 'height=100%,width=100%');
+            var mywindow = window.open('', 'PRINT', 'height=1000,width=1000');
 
             mywindow.document.write('<html><head>');
             mywindow.document.write('</head><body >');

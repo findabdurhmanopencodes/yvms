@@ -248,46 +248,46 @@ class VolunteerController extends Controller
         if (!$request->photo->isValid()) {
             throw ValidationException::withMessages(['photo' => 'Unable to upload photo please retry']);
         } else {
-            $volunteerData['photo'] = FileController::fileUpload($request->photo,$baseFilePath.'profile pictures/')->id;
+            $volunteerData['photo'] = FileController::fileUpload($request->photo, $baseFilePath . 'profile pictures/')->id;
         }
 
         if (!$request->bsc_document->isValid()) {
             throw ValidationException::withMessages(['bsc_document' => 'Unable to upload BSC document please retry']);
         } else {
-            $volunteerData['bsc_document'] = FileController::fileUpload($request->bsc_document,$baseFilePath.'bsc documents/')->id;
+            $volunteerData['bsc_document'] = FileController::fileUpload($request->bsc_document, $baseFilePath . 'bsc documents/')->id;
         }
         if (!$request->ministry_document->isValid()) {
             throw ValidationException::withMessages(['ministry_document' => 'Unable to upload Ministry document please retry']);
         } else {
-            $volunteerData['ministry_document'] = FileController::fileUpload($request->ministry_document,$baseFilePath.'ministry documents/')->id;
+            $volunteerData['ministry_document'] = FileController::fileUpload($request->ministry_document, $baseFilePath . 'ministry documents/')->id;
         }
         if (!$request->kebele_id->isValid()) {
             throw ValidationException::withMessages(['kebele_id' => 'Unable to upload Kebele Id please retry']);
         } else {
-            $volunteerData['kebele_id'] = FileController::fileUpload($request->kebele_id,$baseFilePath.'kebele identifications/')->id;
+            $volunteerData['kebele_id'] = FileController::fileUpload($request->kebele_id, $baseFilePath . 'kebele identifications/')->id;
         }
         if (!$request->ethical_license->isValid()) {
             throw ValidationException::withMessages(['ethical_license' => 'Unable to upload Ethical LIcense Id please retry']);
         } else {
-            $volunteerData['ethical_license'] = FileController::fileUpload($request->ethical_license,$baseFilePath.'ethical licenses/')->id;
+            $volunteerData['ethical_license'] = FileController::fileUpload($request->ethical_license, $baseFilePath . 'ethical licenses/')->id;
         }
         if ($request->hasFile('msc_document')) {
             if (!$request->msc_document->isValid()) {
                 throw ValidationException::withMessages(['msc_document' => 'Unable to upload MSC document please retry']);
             }
-            $volunteerData['msc_document'] = FileController::fileUpload($request->msc_document,$baseFilePath.'msc documents/')->id;
+            $volunteerData['msc_document'] = FileController::fileUpload($request->msc_document, $baseFilePath . 'msc documents/')->id;
         }
         if ($request->hasFile('phd_document')) {
             if (!$request->phd_document->isValid()) {
                 throw ValidationException::withMessages(['phd_document' => 'Unable to upload PHD document please retry']);
             }
-            $volunteerData['phd_document'] = FileController::fileUpload($request->phd_document,$baseFilePath.'phd documents/')->id;
+            $volunteerData['phd_document'] = FileController::fileUpload($request->phd_document, $baseFilePath . 'phd documents/')->id;
         }
         if ($request->hasFile('non_pregnant_validation_document')) {
             if (!$request->non_pregnant_validation_document->isValid()) {
                 throw ValidationException::withMessages(['non_pregnant_validation_document' => 'Unable to upload Non Pregnant Validation document please retry']);
             }
-            $volunteerData['non_pregnant_validation_document'] = FileController::fileUpload($request->non_pregnant_validation_document,$baseFilePath.'pregenancy test documents/')->id;
+            $volunteerData['non_pregnant_validation_document'] = FileController::fileUpload($request->non_pregnant_validation_document, $baseFilePath . 'pregenancy test documents/')->id;
         }
         // if (!isset($volunteerData['disability'])) {
         //     unset($volunteerData['disability']);
@@ -313,6 +313,25 @@ class VolunteerController extends Controller
             return redirect()->route('session.volunteer.index', ['training_session' => $volunteer->training_session_id])->with('message', 'Volunter document  unverified');
         }
     }
+    public function verifyAllVolunteers($training_session)
+    {
+        Volunteer::query()->whereRelation('status', 'acceptance_status', '=', 0)->get()->map(function ($q) {
+            $q->status->acceptance_status = 1;
+            $q->status->save();
+        });
+        return redirect(route('session.applicant.verified', ['training_session' => $training_session]))->with('message','Verification Successful');
+    }
+
+    public function resetAll(){
+        Volunteer::all()->map(function ($q) {
+            $q->status->acceptance_status = 0;
+            $q->status->save();
+        });
+
+        return redirect(route('session.volunteer.index', ['training_session' => request()->route('training_session')]))->with('message','Reset Successful');
+
+    }
+
     public function emailUnverified($training_session)
     {
         $volunters = Volunteer::whereRelation('User', 'email_verified_at', null)->where('training_session_id', $training_session)->paginate(6);
@@ -375,9 +394,9 @@ class VolunteerController extends Controller
     }
 
 
-    public function atendance(TrainingSession $trainingSession,Volunteer $volunteer)
+    public function atendance(TrainingSession $trainingSession, Volunteer $volunteer)
     {
-        return view('volunter.',compact('volunteer'));
+        return view('volunter.', compact('volunteer'));
     }
     public function volunteerAll(Request $request, $training_session)
     {
@@ -433,15 +452,12 @@ class VolunteerController extends Controller
             if (!empty($status)) {
                 $applicants = $applicants->whereRelation('status', 'acceptance_status', $status);
             }
-
         }
         return view('volunter.all_volunteer', ['volunters' => $applicants->paginate(10), 'trainingSession' => TrainingSession::find($training_session), 'regions' => Region::all(), 'woredas' => Woreda::all(), 'zones' => Zone::all(), 'disabilities' => Disablity::all()]);
     }
-    public function volunteerDetail($training_session,Volunteer $volunteer)
+    public function volunteerDetail($training_session, Volunteer $volunteer)
     {
 
-        return view('volunter.detail',['volunteer'=>$volunteer]);
+        return view('volunter.detail', ['volunteer' => $volunteer]);
     }
-
-
 }

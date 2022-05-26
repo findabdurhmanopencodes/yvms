@@ -7,7 +7,7 @@
         <a href="" class="text-muted">Training Centers</a>
     </li>
     <li class="breadcrumb-item">
-        <a href="" class="text-muted">{{ $trainingCenter->name }}</a>
+        <a href="" class="text-muted">{{ $trainingCenter->name }} </a>
     </li>
 @endsection
 @push('css')
@@ -35,16 +35,16 @@
     <div class="card">
 
         <div class="card-header">
-            <div class="col-xl-10">
+            {{-- <div class="col-xl-10">
                 <!--begin::List Widget 13-->
                 <div class="card card-custom card-stretch gutter-b">
                     <!--begin::Header-->
                     <div class="card-header border-0">
                         <h3 class="card-title font-weight-bolder text-dark">Training Center Checker </h3>
                         <a data-toggle="modal" data-target="#assignChecker"
-                        class="btn btn-sm btn-clean btn-primary float-lg-right my-4 mx-4">
-                        <i class="fa fa-user-plus">Adding Checker</i>
-                    </a>
+                            class="btn btn-sm btn-clean btn-primary float-lg-right my-4 mx-4">
+                            <i class="fa fa-user-plus">Adding Checker</i>
+                        </a>
                     </div>
                     <!--end::Header-->
                     <!--begin::Body-->
@@ -52,27 +52,26 @@
                         <!--begin::Item-->
                         <div class="d-flex flex-wrap align-items-center mb-10">
 
-                                @foreach ($trainingCenter->checkers as $checker)
+                            @foreach ($trainingCenter->checkers as $checker)
                                 <div class="d-flex justify-around">
-                                <h4>
-                                    {{ $checker->name }} <a class="btn btn-icon btn-danger  ml-4"
-                                        onclick="confirm('Are You Sure Removing This User');"
-                                        href="{{ route('TrainingCenter.removeChecker', ['checker_id' => $checker->id]) }}"><i
-                                            class="fa fa-trash"></i></a>
-                                </h4>
-                            </div>
-
+                                    <h4>
+                                        {{ $checker->name }} <a class="btn btn-icon btn-danger  ml-4"
+                                            onclick="confirm('Are You Sure Removing This User');"
+                                            href="{{ route('TrainingCenter.removeChecker', ['checker_id' => $checker->id]) }}"><i
+                                                class="fa fa-trash"></i></a>
+                                    </h4>
+                                </div>
                             @endforeach
                             @if (count($trainingCenter->checkers) < 1)
-                        <p class="text text-danger">No Checker Assigned Yet!!</p>
-                    @endif
+                                <p class="text text-danger">No Checker Assigned Yet!!</p>
+                            @endif
                         </div>
                         <!--end::Item-->
                     </div>
                     <!--end::Body-->
                 </div>
                 <!--end::List Widget 13-->
-            </div>
+            </div> --}}
 
         </div>
 
@@ -85,7 +84,7 @@
         @endif
 
         <div class="card-body">
-            <h5 class="card-title">{{ $trainingCenter->name }}</h5>
+            <h5 class="card-title">{{ $trainingCenter->name }} Training Center</h5>
 
             <table class="table table-light">
                 <thead>
@@ -181,8 +180,7 @@
             </form>
         </div>
     </div>
-
-    <div class="modal fade" id="assignChecker" data-backdrop="static" tabindex="-1" role="dialog"
+    {{-- <div class="modal fade" id="assignChecker" data-backdrop="static" tabindex="-1" role="dialog"
         aria-labelledby="assignLeader" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <form name="new_store" method="post" action="{{ route('TrainingCenter.assignChecker') }}">
@@ -220,7 +218,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> --}}
 
 @endsection
 @push('js')

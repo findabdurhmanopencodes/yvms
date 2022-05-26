@@ -27,6 +27,7 @@ class StoreTrainingCenterBasedPermissionRequest extends FormRequest
             'user_id' => ['required'],
             'permission_id' => ['required'],
             'training_center_id' => ['required'],
+            'cindication_room_id' => ['nullable'],
             'training_session_id' => ['required']
         ];
     }
