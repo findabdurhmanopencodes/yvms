@@ -15,7 +15,7 @@ class NotificationController extends Controller
     public function sendWelcomeNotification()
     {
         $user = User::find(10);
-        Notification::send($user, new Welcome());
+        $user->notify(new Welcome());
         dd('sd');
     }
 }

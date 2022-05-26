@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class Welcome extends Notification
+class Welcome extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -41,8 +41,8 @@ class Welcome extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
+                    ->line('Welcome brother')
+                    ->action('Your id is', url('/'))
                     ->line('Thank you for using our application!');
     }
 
