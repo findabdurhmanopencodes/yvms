@@ -6,7 +6,9 @@ use App\Models\Zone;
 use App\Http\Requests\StoreZoneRequest;
 use App\Http\Requests\UpdateZoneRequest;
 use App\Models\Region;
+use App\Models\TrainingSession;
 use App\Models\Woreda;
+use App\Models\ZoneIntake;
 use Illuminate\Http\Request;
 
 class ZoneController extends Controller
@@ -22,6 +24,7 @@ class ZoneController extends Controller
      */
     public function index(Region $region, Request $request)
     {
+        $trainingSession_id = TrainingSession::availableSession()[0]->id;
         if ($request->ajax()) {
             return datatables()->of(Zone::select())->addColumn('region', function (Zone $zone){
                 return $zone->region->name;
@@ -33,7 +36,7 @@ class ZoneController extends Controller
         // }
         $zones = Zone::all();
         $regions = Region::all();
-        return view('zone.index', compact(['zones', 'regions']));
+        return view('zone.index', compact(['zones', 'regions', 'trainingSession_id']));
     }
 
     /**
@@ -162,5 +165,17 @@ class ZoneController extends Controller
         }
 
         return response()->json(['limit'=>$limit]);
+    }
+
+    public function zoneIntake(TrainingSession $trainingSession, $zone_id)
+    {
+        $intake_exist = ZoneIntake::where('training_session_id', $trainingSession->id)->where('zone_id', $zone_id)->get();
+        $zone = Zone::where('id', $zone_id)?->get()[0];
+        return view('zone.zone_capacity', compact('zone', 'trainingSession', 'intake_exist'));
+    }
+
+    public function zoneIntakeStore(Request $request, TrainingSession $trainingSession, $zone_id){
+        ZoneIntake::create(['training_session_id' => $trainingSession->id, 'zone_id'=>$zone_id, 'intake'=> $request->get('capacity')]);
+        return redirect()->route('session.zone.intake', ['training_session'=>$trainingSession->id, 'zone_id'=>$zone_id])->with('message', 'Zone Intake created successfully');
     }
 }

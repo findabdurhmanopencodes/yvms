@@ -115,6 +115,9 @@
                                                 <a href="/region/' + regionId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-pen"></i>\
                                                 </a>\
+                                                <a href="'+{{ $trainingSession_id }}+'/'+regionId+'/region/capacity" class="btn btn-sm btn-clean btn-icon" >\
+                                                    <i class="far fa-eye"></i>\
+                                                </a>\
                                                 \
                                             </div>\
                                             ';

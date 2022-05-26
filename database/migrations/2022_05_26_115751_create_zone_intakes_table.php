@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\CindicationRoom;
+use App\Models\TrainingSession;
+use App\Models\Zone;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,10 +15,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('volunteers', function (Blueprint $table) {
-            //
-            $table->foreignIdFor(CindicationRoom::class)->nullable();
-            $table->string('account_number');
+        Schema::create('zone_intakes', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(TrainingSession::class)->constrained();
+            $table->foreignIdFor(Zone::class)->constrained();
+            $table->integer('intake');
+            $table->timestamps();
         });
     }
 
@@ -28,8 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('volunteers', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('zone_intakes');
     }
 };

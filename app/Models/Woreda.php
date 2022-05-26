@@ -53,4 +53,8 @@ class Woreda extends Model
     public function sessionWoredas(){
         return $this->hasMany(SessionWoreda::class);
     }
+
+    public function woredaIntakes(){
+        return $this->hasMany(WoredaIntake::class);
+    }
 }

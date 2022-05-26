@@ -54,6 +54,7 @@ use App\Models\TrainingDocument;
 use App\Models\TraininingCenter;
 use App\Models\User;
 use App\Models\Volunteer;
+use App\Models\Woreda;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
@@ -173,6 +174,15 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('{training_center}/trainer/list', [IdGenerateController::class, 'TrainerList'])->name('training_center.trainer_list');
     Route::get('{training_center}/{cindication_room}/attendance_export', [TraininingCenterController::class, 'get_attendance_data'])->name('attendance.export');
     Route::post('{training_center}/{cindication_room}/attendance_import', [TraininingCenterController::class, 'fileImport'])->name('attendance.import');
+
+    Route::get('{region_id}/region/capacity', [RegionController::class, 'regionIntake'])->name('region.intake');
+    Route::post('{region_id}/capacity/store', [RegionController::class, 'regionIntakeStore'])->name('intake.store');
+
+    Route::get('{zone_id}/zone/capacity', [ZoneController::class, 'zoneIntake'])->name('zone.intake');
+    Route::post('zone/{zone_id}/capacity/store', [ZoneController::class, 'zoneIntakeStore'])->name('zone.intake_store');
+
+    Route::get('{woreda_id}/woreda/capacity', [WoredaController::class, 'woredaIntake'])->name('woreda.intake');
+    Route::post('woreda/{woreda_id}/capacity/store', [WoredaController::class, 'woredaIntakeStore'])->name('woreda.intake_store');
 });
 
 
