@@ -101,9 +101,17 @@ Route::get('/placement', function () {
     return view('placement.index');
 })->name('placement');
 
+// Route::get('adb', function () {
+//     // dd('sd');
+//     $level = 'asdb';
+//     $introLines = 'adsbi';
+//     $volunteer = Volunteer::find(1);
+//     $notification = (new \App\Notifications\VolunteerPlaced($volunteer))->toMail('findabdurhman@gmail.com');
+//     $markdown = new \Illuminate\Mail\Markdown(view(), config('mail.markdown'));
+//     return $markdown->render($notification->markdown, $notification->data());
+// });
 
 Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
-Route::get('/send-notification', [NotificationController::class, 'sendWelcomeNotification']);
 //Role & Permission
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
@@ -251,15 +259,11 @@ require __DIR__ . '/auth.php';
 Route::get('volunteer/verify/{token}', [VolunteerController::class, 'verifyEmail'])->name('volunteer.email.verify');
 Route::get('{training_session}/verify-all', [VolunteerController::class, 'verifyAllVolunteers'])->name('verify.all');
 Route::get('{training_session}/reset-verification', [VolunteerController::class, 'resetAll'])->name('resetVerify');
-Route::get('id/test', function () {
-;
-    foreach (TrainingPlacement::all() as $key=>$placement) {
-        $idNumber = 'MOP-' . $placement->trainingCenterCapacity->trainingCenter?->code . '-' . str_pad($key+1, 6, "0", STR_PAD_LEFT) . '/' . TrainingSession::find(1)->id;
-        Volunteer::find($placement->approvedApplicant?->volunteer?->id)->update(['id_number'=>$idNumber]);
+Route::get('id/test', function () {;
+    foreach (TrainingPlacement::all() as $key => $placement) {
+        $idNumber = 'MOP-' . $placement->trainingCenterCapacity->trainingCenter?->code . '-' . str_pad($key + 1, 6, "0", STR_PAD_LEFT) . '/' . TrainingSession::find(1)->id;
+        Volunteer::find($placement->approvedApplicant?->volunteer?->id)->update(['id_number' => $idNumber]);
     }
     dd('stop');
 });
 Route::resource('Events', EventController::class);
-
-
-
