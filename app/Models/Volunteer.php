@@ -96,7 +96,8 @@ class Volunteer extends Model
 
     public function placment()
     {
-        $tp = TrainingPlacement::where('approved_applicant_id',$this->id)->first();
+//dd($this->id);
+        $tp = TrainingPlacement::whereRelation('approvedApplicant','volunteer_id',$this->id)->first();
         return $tp->trainingCenterCapacity->trainingCenter;
     }
 
