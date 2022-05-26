@@ -41,7 +41,7 @@ return new class extends Migration
             $table->foreignIdFor(File::class,'kebele_id')->nullable();
             $table->foreignIdFor(CindicationRoom::class)->nullable();
             $table->string('account_number')->unique();
-            $table->text('id_number')->nullable()->unique();
+            $table->string('id_number')->nullable()->unique();
             $table->smallInteger('educational_level')->default(0);
             $table->foreignIdFor(User::class)->nullable()->constrained()->nullOnDelete()->cascadeOnUpdate();
             $table->foreignId('training_session_id')->nullable()->constrained('training_sessions','id')->nullOnDelete()->cascadeOnUpdate();
