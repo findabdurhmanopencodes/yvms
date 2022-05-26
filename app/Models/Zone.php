@@ -50,4 +50,8 @@ class Zone extends Model
         return $this->hasMany(SessionZone::class);
     }
 
+    public function zoneIntakes(){
+        return $this->hasMany(ZoneIntake::class);
+    }
+
 }

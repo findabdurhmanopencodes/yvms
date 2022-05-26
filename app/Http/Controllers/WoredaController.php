@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Woreda;
 use App\Http\Requests\StoreWoredaRequest;
 use App\Http\Requests\UpdateWoredaRequest;
+use App\Models\TrainingSession;
+use App\Models\WoredaIntake;
 use App\Models\Zone;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class WoredaController extends Controller
@@ -21,6 +24,7 @@ class WoredaController extends Controller
      */
     public function index(Request $request)
     {
+        $trainingSession_id = TrainingSession::availableSession()[0]->id;
         if ($request->ajax()) {
             return datatables()->of(Woreda::select())->addColumn('zone', function (Woreda $woreda){
                 return $woreda->zone->name;
@@ -32,7 +36,7 @@ class WoredaController extends Controller
         // }
         $woredas = Woreda::all();
         $zones = Zone::all();
-        return view('woreda.index', compact(['zones', 'woredas']));
+        return view('woreda.index', compact(['zones', 'woredas', 'trainingSession_id']));
     }
 
     /**
@@ -149,5 +153,19 @@ class WoredaController extends Controller
         }
 
         return response()->json(['limit'=>$limit]);
+    }
+
+    public function woredaIntake(TrainingSession $trainingSession, $woreda_id)
+    {
+        $today = Carbon::today();
+        $curr_sess = TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
+        $intake_exist = WoredaIntake::where('training_session_id', $trainingSession->id)->where('woreda_id', $woreda_id)->get();
+        $woreda = Woreda::where('id', $woreda_id)?->get()[0];
+        return view('woreda.woreda_capacity', compact('woreda', 'trainingSession', 'intake_exist','curr_sess'));
+    }
+
+    public function woredaIntakeStore(Request $request, TrainingSession $trainingSession, $woreda_id){
+        WoredaIntake::create(['training_session_id' => $trainingSession->id, 'woreda_id'=>$woreda_id, 'intake'=> $request->get('capacity')]);
+        return redirect()->route('session.woreda.intake', ['training_session'=>$trainingSession->id, 'woreda_id'=>$woreda_id])->with('message', 'Woreda Intake created successfully');
     }
 }

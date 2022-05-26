@@ -15,13 +15,14 @@ use App\Models\Woreda;
 use App\Models\Zone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Console\Input\Input;
 
 class TrainingPlacementController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(TrainingPlacement::class,'trainingPlacement');
+        $this->authorizeResource(TrainingPlacement::class, 'trainingPlacement');
     }
     /**
      * Display a listing of the resource.
@@ -109,9 +110,9 @@ class TrainingPlacementController extends Controller
         // else
         //     $message = $output;
 
-            $tp = new TrainingPlacementCommand();
-            $tp->place();
-
+        $tp = new TrainingPlacementCommand();
+        $tp->place();
+        Artisan::call('volunteer:placment:notify:all');
         return redirect(route('session.placement.index', [$request->route('training_session')]))->with('message', 'Succefully Placed');
     }
 

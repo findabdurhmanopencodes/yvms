@@ -23,11 +23,13 @@ class IdGenerateController extends Controller
         return view('id.checkedIn', compact('applicants', 'training_center_id'));
     }
     public function idGenerate(TrainingSession $trainingSession , Request $request, $training_center_id){
+        $trainer = '';
         if ( $request->get('applicant')) {
             $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()[0];
             $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->whereRelation('status','acceptance_status', 5)->find($request->get('applicant'));
             $paginate_apps = Volunteer::whereIn('id', $request->get('applicant'))->whereRelation('status','acceptance_status', 5)->take(5)->get();
         }elseif($request->get('trainer_list') && $request->get('trainer_list_all')){
+            $trainer = 'trainer';
             // dd($request->get('trainer_list'));
             $applicants = TrainingMasterPlacement::with('master.user')->where('training_session_id', $trainingSession->id)->where('trainining_center_id', $training_center_id)->find($request->get('trainer_list'));
 
@@ -35,6 +37,7 @@ class IdGenerateController extends Controller
 
             $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()[0];
         } elseif($request->get('trainer_list_all')){
+            $trainer = 'trainer';
             $applicants = TrainingMasterPlacement::with('master.user')->where('training_session_id', $trainingSession->id)->where('trainining_center_id', $training_center_id)->get();
 
             $paginate_apps = TrainingMasterPlacement::with('master.user')->where('training_session_id', $trainingSession->id)->where('trainining_center_id', $training_center_id)->take(5)->get();
@@ -44,14 +47,16 @@ class IdGenerateController extends Controller
         else {
             $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()[0];
             $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $training_center_id)->whereRelation('status','acceptance_status', 5)->get();
+
             $paginate_apps = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $training_center_id)->whereRelation('status','acceptance_status', 5)->take(5)->get();
         }
+        $center_code = $trainingCenter->code;
         // dd(TrainingSession::whereRelation('approvedApplicants.volunteer','id', 1)->get()[0]->start_date);
         
         $training_session_id = $trainingSession->availableSession()[0]->id;
         $train_end_date = $trainingSession->trainingEndDateET();
         // $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->take(3)->get();
-        return view('id.design', compact('applicants', 'training_session_id', 'paginate_apps', 'training_center_id', 'train_end_date', 'trainingCenter'));
+        return view('id.design', compact('applicants', 'training_session_id', 'paginate_apps', 'training_center_id', 'train_end_date', 'trainingCenter', 'trainer', 'trainingSession', 'center_code'));
     }
 
     public function searchApplciant(Request $request){

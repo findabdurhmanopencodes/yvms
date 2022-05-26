@@ -1,5 +1,6 @@
 @extends('layouts.app')
-@push('css')
+@section('title','Chek-in')
+{{-- @push('css')
     <style>
         #myTable {
             border-collapse: collapse;
@@ -24,7 +25,7 @@
         }
 
     </style>
-@endpush
+@endpush --}}
 @section('content')
     <div id="notAccept" class="modal fade" tabindex="-1">
         <div class="modal-dialog">
@@ -80,8 +81,8 @@
         </div>
         <div class="card-body">
             <h5 class="card-title">Search</h5>
-            <input type="number" id="search" placeholder="Search Volunteer Using Id Number .." title="Type in a name"
-                class="typeahead form-control col-12 mb-6" style="background-color: #e9dddd">
+            <input type="text" id="search" placeholder="Search Volunteer Using Id Number .."
+                class="typeahead form-control col-12 mb-6" style="background-color: #fdfbfb" value="MOP-">
 
 
             <div class="card card-custom md-6">
