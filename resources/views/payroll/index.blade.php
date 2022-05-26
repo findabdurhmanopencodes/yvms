@@ -3,7 +3,7 @@
 @section('breadcrumb-list')
     <li class="active"> Trainne Payroll</li>
 @endsection
-@section('breadcrumbTitle', 'Field of study')
+@section('breadcrumbTitle', 'Payroll')
 @section('breadcrumbList')
     <li class="breadcrumb-item">
         <a href="" class="text-muted"> Payroll List</a>
@@ -13,10 +13,10 @@
     <script>
         var HOST_URL = "{{ route('payroll.index') }}";
 
-        function deleteRegion(fieldofStudyId, parent) {
+        function deletePayroll(payrollId, parent) {
             event.preventDefault();
             Swal.fire({
-                title: "Are you sure?",
+                title: "Are you sure to delete this payroll?",
                 text: "You won't be able to revert this!",
                 type: "warning",
                 showCancelButton: true,
@@ -25,9 +25,9 @@
                 if (result.value) {
                     $.ajax({
                         type: "POST",
-                        url: '/feild_of_study/' + fieldofStudyId,
+                        url: '/payroll/' +payrollId,
                         data: {
-                            "id": fieldofStudyId,
+                            "id": payrollId,
                             "_method": 'DELETE',
                             "_token": $('meta[name="csrf-token"]').attr('content'),
                         },
@@ -52,75 +52,7 @@
     </script>
 
 
-    <script>
-        $( document ).ready(function() {
 
-        });
-
-        var COLUMNS = [{
-                field: 'id',
-                title: '#',
-                sortable: 'asc',
-                width: 40,
-                type: 'number',
-                selector: false,
-                textAlign: 'center',
-                template: function(row, index) {
-                    return index + 1;
-                }
-            },
-
-            {
-                field: 'name',
-                title: 'Code',
-            },
-
-            {
-                field: 'training_session_id',
-                title: 'training Session',
-
-            },
-            {
-                field: 'user_id',
-                title: 'Creted by',
-
-            },
-            {
-                field: 'created_at',
-                title: 'Created at',
-                sortable: 'desc',
-
-            },
-
-            {
-                field: 'Actions',
-                title: 'Actions',
-                sortable: false,
-                width: 100,
-                overflow: 'visible',
-                autoHide: false,
-                template: function(row) {
-                    var payroll = row.id;
-                    return '\
-                <div class="d-flex">\
-                            <a href="javascript:;" onclick="deleteRegion(' + payroll + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
-                                <i class="far fa-trash"></i>\
-                            </a>\
-                            \
-                            <a href="/payroll/' + payroll + '/edit" class="btn btn-sm btn-clean btn-icon" >\
-                                <i class="far fa-pen"></i>\
-                            </a>\
-                            \
-                            <a href="/payroll/' +payroll+ '/edit" class="btn btn-sm btn-clean btn-icon" >\
-                                <i class="far fa-list"></i>\
-                            </a>\
-                            \
-                </div>\
-                                            ';
-                },
-            }
-        ]
-    </script>
     <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
 @endpush
 @section('content')
@@ -173,9 +105,44 @@
             </div>
         </div>
         <div class="card-body">
-            <!--begin: Datatable-->
-            <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
-            <!--end: Datatable-->
+            <table width="100%" class="table table-striped ">
+                <thead>
+                    </tr>
+                    <th> #</th>
+                    <th> Code </th>
+                    <th> Training Session </th>
+                    <th> Created by </th>
+                    <th>  Created at</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($payrolls as $key => $payroll)
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $payroll->name }}</td>
+                            <td>{{ $payroll->training_session_id }} </td>
+                            <td>{{ $payroll->user_id }} </td>
+                            <td>{{ $payroll->created_at }}</td>
+                            <td>
+                            <a href=" {{ route('payrollSheet.index', ['payroll_id'=>$payroll->id]) }}"
+
+
+                                class="btn btn-icon">
+                                <span class="fa fa-list"></span>
+                            </a>
+                            <a href="javascript:;" onclick="deletePayroll(' +payroll+ ',$(this))" class="btn btn-sm btn-clean btn-icon"
+                                class="btn btn-icon">
+                                <span class="fa fa-trash"></span>
+                            </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <div class="m-auto col-6 mt-3">
+         {{ $payrolls->withQueryString()->links() }}
         </div>
     </div>
 @endsection

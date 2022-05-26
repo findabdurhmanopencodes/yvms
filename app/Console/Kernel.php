@@ -40,9 +40,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
 
     {
+        //* * * * * cd /var/www/html/mop-yvms/ && php artisan schedule:run >> /dev/null 2>&1
         // $schedule->command('database:backup')->daily();
         $schedule->command('backup:clean')->weekly()->at('01:00');
         $schedule->command('backup:run')->daily()->at('01:30');
+        // $schedule->command('queue:listen')->daily()->very
         Log::info('Cron Job Started');
     }
 

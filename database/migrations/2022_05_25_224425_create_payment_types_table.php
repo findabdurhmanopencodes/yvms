@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('volunteers', function (Blueprint $table) {
-            $table->text('id_number')->nullable()->unique();
+        Schema::create('payment_types', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->decimal('amount',10,2)->nullable();
+            $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.
@@ -26,7 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('volunteers');
-
+        Schema::dropIfExists('payment_types');
     }
 };

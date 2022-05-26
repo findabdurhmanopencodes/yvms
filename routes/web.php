@@ -11,6 +11,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\IdGenerateController;
 use App\Http\Controllers\ImportExportController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PrintController;
 use App\Http\Controllers\QoutaController;
@@ -41,6 +42,7 @@ use App\Http\Controllers\TrainingCenterBasedPermissionController;
 use App\Http\Controllers\TrainingDocumentController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
+use App\Models\PaymentType;
 use App\Models\CindicationRoom;
 use App\Models\Training;
 use App\Models\TrainingMaster;
@@ -101,9 +103,17 @@ Route::get('/placement', function () {
     return view('placement.index');
 })->name('placement');
 
-
+// Route::get('adb', function () {
+//     // dd('sd');
+//     $level = 'asdb';
+//     $introLines = 'adsbi';
+//     $volunteer = Volunteer::find(1);
+//     $notification = (new \App\Notifications\VolunteerPlaced($volunteer))->toMail('findabdurhman@gmail.com');
+//     $markdown = new \Illuminate\Mail\Markdown(view(), config('mail.markdown'));
+//     return $markdown->render($notification->markdown, $notification->data());
+// });
+Route::get('send',[NotificationController::class,'sendApplicantPlacmentEmail']);
 Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
-
 //Role & Permission
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
@@ -122,12 +132,10 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     // Route::get('/training',[TrainingSessionController::class,'trainings'])->name('training.index');
     Route::resource('/user_attendances', UserAttendanceController::class);
     Route::resource('/attendance', AttendanceController::class);
-    Route::get('volunteer/{volunteer}/attendances', [VolunteerController::class, 'atendance'])->name('volunteer.attendance');
+    Route::get('volunteer/{volunteer}/attendances', [VolunteerController::class, 'atend     ance'])->name('volunteer.attendance');
     Route::get('import/View/{training_center}', [ImportExportController::class, 'importView'])->name('volunteer.import.view');
     Route::get('bank/test/import/{training_center}', [ImportExportController::class, 'exportVolunteers'])->name('volunteer.export');
     Route::any('bank/test/{training_center}', [ImportExportController::class, 'importVolunteers'])->name('volunteer.import');
-
-
 
 
     Route::post('applicant/place', [TrainingPlacementController::class, 'place'])->name('applicant.place');
@@ -219,10 +227,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('training_session', TrainingSessionController::class);
     Route::resource('qouta', QoutaController::class);
     Route::resource('user', UserController::class);
-
+    /////////////////////////////////////////////////////////////////
+    Route::resource('payment_type', PaymentType::class);
     Route::resource('payroll', PayrollController::class);
     Route::resource('payrollSheet', PayrollSheetController::class);
-
+    Route::get('payee_list', [PayrollSheetController::class, 'payee'])->name('payrollSheet.payee');
+    //Route::get('/payroll/{id}/payroll_sheet', [PayrollSheetController::class, 'payrollSheet'])->name('payrollSheet.dispaly');
+    ////////////////////////////////////////////////////////////////////
     Route::resource('region', RegionController::class);
     Route::resource('zone', ZoneController::class);
     Route::resource('woreda', WoredaController::class);
@@ -260,15 +271,11 @@ require __DIR__ . '/auth.php';
 Route::get('volunteer/verify/{token}', [VolunteerController::class, 'verifyEmail'])->name('volunteer.email.verify');
 Route::get('{training_session}/verify-all', [VolunteerController::class, 'verifyAllVolunteers'])->name('verify.all');
 Route::get('{training_session}/reset-verification', [VolunteerController::class, 'resetAll'])->name('resetVerify');
-Route::get('id/test', function () {
-;
-    foreach (TrainingPlacement::all() as $key=>$placement) {
-        $idNumber = 'MOP-' . $placement->trainingCenterCapacity->trainingCenter?->code . '-' . str_pad($key+1, 6, "0", STR_PAD_LEFT) . '/' . TrainingSession::find(1)->id;
-        Volunteer::find($placement->approvedApplicant?->volunteer?->id)->update(['id_number'=>$idNumber]);
+Route::get('id/test', function () {;
+    foreach (TrainingPlacement::all() as $key => $placement) {
+        $idNumber = 'MOP-' . $placement->trainingCenterCapacity->trainingCenter?->code . '-' . str_pad($key + 1, 6, "0", STR_PAD_LEFT) . '/' . TrainingSession::find(1)->id;
+        Volunteer::find($placement->approvedApplicant?->volunteer?->id)->update(['id_number' => $idNumber]);
     }
     dd('stop');
 });
 Route::resource('Events', EventController::class);
-
-
-
