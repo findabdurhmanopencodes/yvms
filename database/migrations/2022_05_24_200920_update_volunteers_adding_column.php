@@ -17,6 +17,7 @@ return new class extends Migration
         Schema::table('volunteers', function (Blueprint $table) {
             //
             $table->foreignIdFor(CindicationRoom::class)->nullable();
+            $table->string('account_number')->unique();
         });
     }
 

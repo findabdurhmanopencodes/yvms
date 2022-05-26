@@ -684,6 +684,7 @@ class TrainingSessionController extends Controller
                 $b = [];
                 $volunteer_count = count(Volunteer::all());
                 if (count($accepted_arr) < $train_session && count($accepted_arr) < $volunteer_count) {
+                    // dd($accepted_arr);
                     $dif_arr = $train_session - count($accepted_arr);
 
                     $merge_acc = array_diff($arr, $accepted_arr);
@@ -693,6 +694,7 @@ class TrainingSessionController extends Controller
                     sort($b);
                     $new_slice_merge_arr = array_slice($b, 0, $dif_arr);
                     $merged_array = array_merge($accepted_arr, $new_slice_merge_arr);
+                    $accepted_arr = [];
                     foreach ($merged_array as $key => $value) {
                         array_push($accepted_arr, $value);
                     }
