@@ -10,6 +10,7 @@ use App\Models\Qouta;
 use App\Models\RegionIntake;
 use App\Models\TrainingSession;
 use App\Models\Woreda;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RegionController extends Controller
@@ -183,9 +184,11 @@ class RegionController extends Controller
 
     public function regionIntake(TrainingSession $trainingSession, $region_id)
     {
+        $today = Carbon::today();
+        $curr_sess = TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
         $intake_exist = RegionIntake::where('training_session_id', $trainingSession->id)->where('region_id', $region_id)->get();
         $region = Region::where('id', $region_id)?->get()[0];
-        return view('region.region_capacity', compact('region', 'trainingSession', 'intake_exist'));
+        return view('region.region_capacity', compact('region', 'trainingSession', 'intake_exist','curr_sess'));
     }
 
     public function regionIntakeStore(Request $request, TrainingSession $trainingSession, $region_id){

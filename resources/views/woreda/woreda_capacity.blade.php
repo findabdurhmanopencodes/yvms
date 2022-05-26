@@ -76,7 +76,7 @@
         </div>
 
 
-        @if (count($intake_exist) < 1)
+        @if (count($intake_exist) < 1 && count($curr_sess) > 0)
             <div>
                 <a class="btn btn-primary btn-sm float-right mx-2 my-2" data-toggle="modal" data-target="#addCapacity"><i class="fa  fa-plus"></i>Add woreda Intake</a>
             </div>

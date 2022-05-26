@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateWoredaRequest;
 use App\Models\TrainingSession;
 use App\Models\WoredaIntake;
 use App\Models\Zone;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class WoredaController extends Controller
@@ -156,9 +157,11 @@ class WoredaController extends Controller
 
     public function woredaIntake(TrainingSession $trainingSession, $woreda_id)
     {
+        $today = Carbon::today();
+        $curr_sess = TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
         $intake_exist = WoredaIntake::where('training_session_id', $trainingSession->id)->where('woreda_id', $woreda_id)->get();
         $woreda = Woreda::where('id', $woreda_id)?->get()[0];
-        return view('woreda.woreda_capacity', compact('woreda', 'trainingSession', 'intake_exist'));
+        return view('woreda.woreda_capacity', compact('woreda', 'trainingSession', 'intake_exist','curr_sess'));
     }
 
     public function woredaIntakeStore(Request $request, TrainingSession $trainingSession, $woreda_id){

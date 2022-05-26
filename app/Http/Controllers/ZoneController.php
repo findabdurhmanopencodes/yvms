@@ -9,6 +9,7 @@ use App\Models\Region;
 use App\Models\TrainingSession;
 use App\Models\Woreda;
 use App\Models\ZoneIntake;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ZoneController extends Controller
@@ -169,9 +170,11 @@ class ZoneController extends Controller
 
     public function zoneIntake(TrainingSession $trainingSession, $zone_id)
     {
+        $today = Carbon::today();
+        $curr_sess = TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
         $intake_exist = ZoneIntake::where('training_session_id', $trainingSession->id)->where('zone_id', $zone_id)->get();
         $zone = Zone::where('id', $zone_id)?->get()[0];
-        return view('zone.zone_capacity', compact('zone', 'trainingSession', 'intake_exist'));
+        return view('zone.zone_capacity', compact('zone', 'trainingSession', 'intake_exist','curr_sess'));
     }
 
     public function zoneIntakeStore(Request $request, TrainingSession $trainingSession, $zone_id){
