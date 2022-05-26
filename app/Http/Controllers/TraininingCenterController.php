@@ -197,7 +197,7 @@ class TraininingCenterController extends Controller
             $output = '';
             $query = $request->get('query');
             // ->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',Auth::user()->trainingCheckerOf->id);
-            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id', $query);
+            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', $query);
 
 
             if (count($volunteerQuery->get()) > 0) {
