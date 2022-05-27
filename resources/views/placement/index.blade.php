@@ -109,13 +109,22 @@
             </div>
             <div class="card-toolbar">
                 <div class="d-flex">
-                    <a class="btn btn-sm btn-info"
-                        href="{{ route('session.placement.reset', [request()->route('training_session')]) }}">
-                        <i class="fal fa-recycle"></i> Reset
-                    </a>
-                    <a class="btn ml-4 btn-sm btn-success" onclick="approvePlacment()" href="#">
-                        <i class="fal fa-stamp"></i> Approve placment
-                    </a>
+                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
+                        <a class="btn btn-sm btn-info"
+                            href="{{ route('session.placement.reset', [request()->route('training_session')]) }}">
+                            <i class="fal fa-recycle"></i> Reset
+                        </a>
+                        <a class="btn ml-4 btn-sm btn-success" onclick="approvePlacment()" href="#">
+                            <i class="fal fa-stamp"></i> Approve placment
+                        </a>
+                    @endif
+                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_PLACEMENT_APPROVE)
+                        <a href="#">
+                            <span class="label label-xl label-light-success label-inline">Training Placment Approved</span>
+                        </a>
+                    @endif
+
+
                 </div>
             </div>
         </div>

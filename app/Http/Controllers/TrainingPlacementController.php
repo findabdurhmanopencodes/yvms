@@ -54,10 +54,9 @@ class TrainingPlacementController extends Controller
                 $query->where('id', $request->get('woreda'));
             });
         }
-
         $placedVolunteers = $q->paginate(10);
 
-        return view('placement.index', ['placedVolunteers' => $placedVolunteers, 'trainingCenterCapacities' =>  TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->get(), 'zones' => Zone::all(), 'woredas' => Woreda::all(), 'regions' => Region::all(), 'training_centers' => TraininingCenter::all()]);
+        return view('placement.index', ['trainingSession'=>$trainingSession,'placedVolunteers' => $placedVolunteers, 'trainingCenterCapacities' =>  TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->get(), 'zones' => Zone::all(), 'woredas' => Woreda::all(), 'regions' => Region::all(), 'training_centers' => TraininingCenter::all()]);
     }
 
     public function placeManually(Request $request)
