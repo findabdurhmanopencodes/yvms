@@ -285,3 +285,6 @@ Route::get('{training_session}/reset-verification', [VolunteerController::class,
 //     dd('stop');
 // });
 Route::resource('Events', EventController::class);
+Route::get('/aj' ,function(){
+  return view('auth.verify-email');
+});
