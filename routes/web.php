@@ -12,6 +12,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\IdGenerateController;
 use App\Http\Controllers\ImportExportController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PrintController;
 use App\Http\Controllers\QoutaController;
@@ -34,7 +35,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\ZoneController;
-
+use App\Http\Controllers\DistanceController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PayrollSheetController;
 use App\Http\Controllers\VolunteerResourceHistoryController;
@@ -45,6 +46,7 @@ use App\Models\ApprovedApplicant;
 use App\Models\PaymentType;
 use App\Models\CindicationRoom;
 use App\Models\Training;
+use App\Models\Distance;
 use App\Models\TrainingMaster;
 use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingPlacement;
@@ -228,9 +230,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('qouta', QoutaController::class);
     Route::resource('user', UserController::class);
     /////////////////////////////////////////////////////////////////
-    Route::resource('payment_type', PaymentType::class);
+    Route::resource('distance', DistanceController::class);
+    Route::resource('paymentType', PaymentTypeController::class);
     Route::resource('payroll', PayrollController::class);
     Route::resource('payrollSheet', PayrollSheetController::class);
+    Route::get('generatePDF', [PayrollSheetController::class, 'generatePDF'])->name('payrollSheet.generatePDF');
     Route::get('payee_list', [PayrollSheetController::class, 'payee'])->name('payrollSheet.payee');
     //Route::get('/payroll/{id}/payroll_sheet', [PayrollSheetController::class, 'payrollSheet'])->name('payrollSheet.dispaly');
     ////////////////////////////////////////////////////////////////////
@@ -256,6 +260,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('{training}/training/schedule/remove', [TraininingCenterController::class, 'trainingScheduleRemove'])->name('training.remove');
     Route::resource('training/{training}/training_document', TrainingDocumentController::class);
     Route::get('/dashboard', function () {
+
         if (count(TrainingSession::availableSession()) > 0) {
             $trainingSession = TrainingSession::availableSession()[0];
             return redirect(route('session.dashboard', ['training_session' => $trainingSession->id]));
@@ -271,11 +276,12 @@ require __DIR__ . '/auth.php';
 Route::get('volunteer/verify/{token}', [VolunteerController::class, 'verifyEmail'])->name('volunteer.email.verify');
 Route::get('{training_session}/verify-all', [VolunteerController::class, 'verifyAllVolunteers'])->name('verify.all');
 Route::get('{training_session}/reset-verification', [VolunteerController::class, 'resetAll'])->name('resetVerify');
-Route::get('id/test', function () {;
-    foreach (TrainingPlacement::all() as $key => $placement) {
-        $idNumber = 'MOP-' . $placement->trainingCenterCapacity->trainingCenter?->code . '-' . str_pad($key + 1, 6, "0", STR_PAD_LEFT) . '/' . TrainingSession::find(1)->id;
-        Volunteer::find($placement->approvedApplicant?->volunteer?->id)->update(['id_number' => $idNumber]);
-    }
-    dd('stop');
-});
+// Route::get('id/test', function () {
+// ;
+//     foreach (TrainingPlacement::all() as $key=>$placement) {
+//         $idNumber = 'MOP-' . $placement->trainingCenterCapacity->trainingCenter?->code . '-' . str_pad($key+1, 6, "0", STR_PAD_LEFT) . '/' . TrainingSession::find(1)->id;
+//         Volunteer::find($placement->approvedApplicant?->volunteer?->id)->update(['id_number'=>$idNumber]);
+//     }
+//     dd('stop');
+// });
 Route::resource('Events', EventController::class);

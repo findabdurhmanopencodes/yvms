@@ -112,7 +112,7 @@ class TrainingPlacementController extends Controller
 
         $tp = new TrainingPlacementCommand();
         $tp->place();
-        Artisan::call('volunteer:placment:notify:all');
+        // Artisan::call('volunteer:placment:notify:all');
         return redirect(route('session.placement.index', [$request->route('training_session')]))->with('message', 'Succefully Placed');
     }
 

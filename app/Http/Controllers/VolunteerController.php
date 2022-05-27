@@ -92,6 +92,8 @@ class VolunteerController extends Controller
             $phone = $request->get('phone');
             $woreda_id = $request->get('woreda_id');
             $gpa = $request->get('gpa');
+            $graduation_date = $request->get('graduation_date');
+
             if (!empty($first_name)) {
                 $applicants = $applicants->where('first_name', 'like', '%' . $first_name . '%');
             }
@@ -125,6 +127,10 @@ class VolunteerController extends Controller
             if (!empty($gpa)) {
                 $applicants = $applicants->where('gpa', '=', $gpa);
             }
+            if (!empty($graduation_date)) {
+                $applicants = $applicants->where('graduation_date', '=', $graduation_date);
+            }
+
         }
 
         return view('volunter.index', ['volunters' => $applicants->paginate(10), 'trainingSession' => TrainingSession::find($session_id), 'regions' => Region::all(), 'woredas' => Woreda::all(), 'zones' => Zone::all(), 'disabilities' => Disablity::all()]);
@@ -416,7 +422,7 @@ class VolunteerController extends Controller
             $woreda_id = $request->get('woreda_id');
             $gpa = $request->get('gpa');
             $status = $request->get('acceptance_status');
-
+            $graduation_date = $request->get('graduation_date');
             if (!empty($first_name)) {
                 $applicants = $applicants->where('first_name', 'like', '%' . $first_name . '%');
             }
@@ -452,6 +458,9 @@ class VolunteerController extends Controller
             }
             if (!empty($status)) {
                 $applicants = $applicants->whereRelation('status', 'acceptance_status', $status);
+            }
+            if (!empty($graduation_date)) {
+                $applicants = $applicants->where('graduation_date', '=', $graduation_date);
             }
         }
         return view('volunter.all_volunteer', ['volunters' => $applicants->paginate(10), 'trainingSession' => TrainingSession::find($training_session), 'regions' => Region::all(), 'woredas' => Woreda::all(), 'zones' => Zone::all(), 'disabilities' => Disablity::all()]);

@@ -130,7 +130,7 @@
                                 </a>
                             </li>
                             @if (Request::route('training_session'))
-                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'session.applicant') === 0 ? 'menu-item-open' : '' }}"
+                                <li class="menu-item menu-item-submenu {{(( strpos(Route::currentRouteName(), 'session.volunteer.index') === 0 )||( strpos(Route::currentRouteName(), 'session.volunteer.all') === 0 ))? 'menu-item-open' : '' }}"
                                     aria-haspopup="true" data-menu-toggle="hover">
 
                                     <a href="javascript:;" class="menu-link menu-toggle">
@@ -146,7 +146,8 @@
                                                     <span class="menu-text">Applicants</span>
                                                 </span>
                                             </li>
-                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.volunteer.index') === 0 ? 'menu-item-active' : '' }}"
+                                            {{-- /*(strpos(Route::currentRouteName(), 'session.volunteer.all') === 0 || strpos(Route::currentRouteName(), 'session.volunteer') === 0) ? 'menu-item-active' : '' */ --}}
+                                            <li class="menu-item {{ (strpos(Route::currentRouteName(), 'session.volunteer.index') === 0)?'menu-item-active':'' }}"
                                                 aria-haspopup="true">
                                                 <a href="{{ route('session.volunteer.index', ['training_session' => Request::route('training_session')]) }}"
                                                     class="menu-link">
@@ -155,6 +156,10 @@
                                                     </i>
                                                     <span class="menu-text">Applicants</span>
                                                 </a>
+                                            </li>
+                                            <li class="menu-item {{ (strpos(Route::currentRouteName(), 'session.volunteer.all') === 0)?'menu-item-active':'' }}"
+                                                aria-haspopup="true">
+
                                                 <a href="{{ route('session.volunteer.all', ['training_session' => Request::route('training_session')]) }}"
                                                     class="menu-link">
                                                     <i class="menu-bullet menu-bullet-dot">
@@ -162,6 +167,13 @@
                                                     </i>
                                                     <span class="menu-text">Applicants all</span>
                                                 </a>
+                                                {{-- <a href="{{ route('session.volunteer.index', ['training_session' => Request::route('training_session')]) }}"
+                                                    class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Applicants</span>
+                                                </a> --}}
                                             </li>
                                             <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.applicant.verified') === 0 ? 'menu-item-active' : '' }}"
                                                 aria-haspopup="true">
