@@ -180,7 +180,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::resource('{training_center}/cindication_room', CindicationRoomController::class);
     Route::resource('training_master_placement', TrainingMasterPlacementController::class);
     Route::get('{training_center}/trainer/list', [IdGenerateController::class, 'TrainerList'])->name('training_center.trainer_list');
-    Route::get('{training_center}/{cindication_room}/attendance_export', [TraininingCenterController::class, 'get_attendance_data'])->name('attendance.export');
+    Route::get('{training_center}/{cindication_room}/attendance_export/{schedule_id}', [TraininingCenterController::class, 'get_attendance_data'])->name('attendance.export');
     Route::post('{training_center}/{cindication_room}/attendance_import', [TraininingCenterController::class, 'fileImport'])->name('attendance.import');
 
     Route::get('{region_id}/region/capacity', [RegionController::class, 'regionIntake'])->name('region.intake');

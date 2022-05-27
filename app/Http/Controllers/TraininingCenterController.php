@@ -300,12 +300,12 @@ class TraininingCenterController extends Controller
         return response()->json(['check' => 'sucess']);
     }
 
-    public function get_attendance_data(TrainingSession $trainingSession, TraininingCenter $trainingCenter, CindicationRoom $cindicationRoom)
+    public function get_attendance_data(Request $request,TrainingSession $trainingSession, TraininingCenter $trainingCenter, CindicationRoom $cindicationRoom)
     {
-        // $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingSession->id)->where('cindication_room_id',$cindicationRoom->id)->paginate(10);
-        // ->select('first_name')
-        $users = DB::table('volunteers')->leftJoin('approved_applicants', 'volunteers.id','=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id','=', 'training_placements.approved_applicant_id')->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id','=', 'training_center_capacities.id')->where('training_center_capacities.trainining_center_id',$trainingSession->id)->where('cindication_room_id', $cindicationRoom->id)->select(['user_id','first_name'])->get();
-        return Excel::download(new UsersExport( $users,['User_ID','Volunteer Name', 'Status']), 'attendance.xlsx');
+        $schedule_id = $request->get('schedule_id');
+        $users = DB::table('volunteers')->leftJoin('approved_applicants', 'volunteers.id','=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id','=', 'training_placements.approved_applicant_id')->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id','=', 'training_center_capacities.id')->where('training_center_capacities.trainining_center_id',$trainingSession->id)->where('cindication_room_id', $cindicationRoom->id)->select(['id_number','first_name','father_name', 'grand_father_name'])->get();
+        
+        return Excel::download(new UsersExport( $users,[ 'ID Number','First Name','Father Name','Grand Father Name', 'Status', $schedule_id]), 'attendance.xlsx');
         // return Excel::download(new UserAttendance(), 'attendance.xlsx');
     }
 
