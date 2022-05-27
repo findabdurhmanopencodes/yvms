@@ -105,16 +105,17 @@ Route::get('/placement', function () {
     return view('placement.index');
 })->name('placement');
 
-// Route::get('adb', function () {
-//     // dd('sd');
-//     $level = 'asdb';
-//     $introLines = 'adsbi';
-//     $volunteer = Volunteer::find(1);
-//     $notification = (new \App\Notifications\VolunteerPlaced($volunteer))->toMail('findabdurhman@gmail.com');
-//     $markdown = new \Illuminate\Mail\Markdown(view(), config('mail.markdown'));
-//     return $markdown->render($notification->markdown, $notification->data());
-// });
-Route::get('send',[NotificationController::class,'sendApplicantPlacmentEmail']);
+Route::get('adb', function () {
+    // dd('sd');
+    $level = 'asdb';
+    $introLines = 'adsbi';
+    $volunteer = Volunteer::find(33);
+    // return /
+    // $notification = (new \App\Notifications\VolunteerPlaced($volunteer))->toMail('findabdurhman@gmail.com');
+    // $markdown = new \Illuminate\Mail\Markdown(view(), config('mail.markdown'));
+    // return $markdown->render($notification->markdown, $notification->data());
+});
+// Route::get('send',[NotificationController::class,'sendApplicantPlacmentEmail']);
 Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
 //Role & Permission
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
@@ -138,8 +139,6 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('import/View/{training_center}', [ImportExportController::class, 'importView'])->name('volunteer.import.view');
     Route::get('bank/test/import/{training_center}', [ImportExportController::class, 'exportVolunteers'])->name('volunteer.export');
     Route::any('bank/test/{training_center}', [ImportExportController::class, 'importVolunteers'])->name('volunteer.import');
-
-
     Route::post('applicant/place', [TrainingPlacementController::class, 'place'])->name('applicant.place');
     Route::get('applicants/email/unverified', [VolunteerController::class, 'emailUnverified'])->name('applicant.email.unVerified');
     Route::get('/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');
@@ -193,6 +192,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
 
     Route::get('{woreda_id}/woreda/capacity', [WoredaController::class, 'woredaIntake'])->name('woreda.intake');
     Route::post('woreda/{woreda_id}/capacity/store', [WoredaController::class, 'woredaIntakeStore'])->name('woreda.intake_store');
+    Route::post('/approve_placment',[TrainingSessionController::class,'approvePlacment'])->name('placment.approve');
 });
 
 

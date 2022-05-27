@@ -353,7 +353,7 @@ class VolunteerController extends Controller
      */
     public function verifiedApplicant(Request $request, $training_session)
     {
-        $applicants =  Volunteer::whereRelation('status', 'acceptance_status', 1)->where('training_session_id', $training_session);
+        $applicants =  Volunteer::whereRelation('status', 'acceptance_status', 1);
 
         $approved = ApprovedApplicant::where('training_session_id', $training_session)->get();
 
@@ -361,7 +361,8 @@ class VolunteerController extends Controller
     }
     public function selected(Request $request, $training_session)
     {
-        $applicants =  Volunteer::has('approvedApplicant')->where('training_session_id', $training_session);
+        $applicants =  Volunteer::whereRelation('approvedApplicant','training_session_id', $training_session);
+        // dd($applicants->get());
         return view('volunter.selected_volunter', ['volunters' => $applicants->paginate(10), 'trainingSession' => TrainingSession::find($training_session), 'trainingCenterCapacities' => TrainingCenterCapacity::where('training_session_id', $training_session)->get()]);
     }
     protected function verifyEmail($token)
