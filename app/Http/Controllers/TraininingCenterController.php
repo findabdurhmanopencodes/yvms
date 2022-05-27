@@ -237,12 +237,12 @@ class TraininingCenterController extends Controller
     {
 
         $volunteers = Volunteer::whereRelation('status', 'acceptance_status', 5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $training_center_id);
-        $id = $request->get('id');
+        $id = $request->get('id_number');
         $gender = $request->get('gender');
         if ($request->has('filter')) {
             // dd($id);
             if (!empty($id)) {
-                $volunteers = $volunteers->where('id', $id);
+                $volunteers = $volunteers->where('id_number', 'like', '%' . $id . '%');
             }
             if (!empty($gender)) {
                 $volunteers = $volunteers->where('gender', '=', $gender);
