@@ -1,7 +1,7 @@
 @extends('layouts.app')
-@section('title', 'All Feild of study')
+@section('title', 'Payment type')
 @section('breadcrumb-list')
-    <li class="active">Field of study</li>
+    <li class="active"> Payment type </li>
 @endsection
 @section('breadcrumbTitle','Payment type ')
 @section('breadcrumbList')
@@ -13,7 +13,7 @@
     <script>
         var HOST_URL = "{{ route('paymentType.index') }}";
 
-        function deleteRegion(fieldofStudyId, parent) {
+        function deletepaymentType(paymentTypeId, parent) {
             event.preventDefault();
             Swal.fire({
                 title: "Are you sure?",
@@ -25,9 +25,9 @@
                 if (result.value) {
                     $.ajax({
                         type: "POST",
-                        url: '/feild_of_study/' + fieldofStudyId,
+                        url: '/paymentType/' + paymentTypeId,
                         data: {
-                            "id": fieldofStudyId,
+                            "id": paymentType,
                             "_method": 'DELETE',
                             "_token": $('meta[name="csrf-token"]').attr('content'),
                         },
@@ -36,13 +36,13 @@
                             $(parent).closest('tr')[0].remove();
                             Swal.fire(
                                 "Deleted!",
-                                "Field of study has been deleted.",
+                                "Payment type has been deleted.",
                                 "success"
                             )
                         },
                         error: function(data) {
                             if (data.status) {
-                                Swal.fire("Forbidden!", "You can't delete this field of study!", "error");
+                                Swal.fire("Forbidden!", "You can't delete this payment type!", "error");
                             }
                         }
                     });
@@ -58,7 +58,7 @@
         var COLUMNS = [{
                 field: 'id',
                 title: '#',
-                sortable: 'asc',
+                sortable: 'desc',
                 width: 30,
                 type: 'number',
                 selector: false,
@@ -70,12 +70,11 @@
             {
                 field: 'name',
                 title: 'Name',
-                sortable: 'asc',
             },
 
             {
                 field: 'amount',
-                title: 'amount',
+                title: 'Amount',
              ,
             },
             {
@@ -86,14 +85,14 @@
                 overflow: 'visible',
                 autoHide: false,
                 template: function(row) {
-                    var fieldofStudy = row.id;
+                    var paymentType= row.id;
                     return '\
                                                <div class="d-flex">\
-                                                <a href="javascript:;" onclick="deleteRegion(' + fieldofStudy + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
+                                                <a href="javascript:;" onclick="deletepaymentType(' +paymentType + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-trash"></i>\
                                                 </a>\
                                                 \
-                                                <a href="/fieldofstudy/' + fieldofStudy + '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                                                <a href="/paymentType/' + paymentType+ '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-pen"></i>\
                                                 </a>\
                                                 \
@@ -123,14 +122,14 @@
                         <i class="fal fa-plus"></i>
                         <!--end::Svg Icon-->
                  </span>
-                 Add New payment type</a>
+                 New payment type</a>
                 <form method="POST" action="{{ route('paymentType.store', []) }}">
                         @csrf
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg"  role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Add new paymentType</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Add payment Type</h5>
                                         <button type="button" class="close" data-dismiss="modal" -label="Close">
                                             <i aria-hidden="true" class="ki ki-close"></i>
                                         </button>
@@ -140,8 +139,13 @@
                                             <div class="card-body">
                                                 <div class="form-group row">
                                                     <div class="col-lg-6">
-                                                        <label>Name:</label>
+                                                        <label>Name type:</label>
                                                         <input type="text" class="form-control" placeholder="name" name="name"/>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <label>Amount:</label>
+                                                        <input type="text" class="form-control" placeholder="Leave for transportation" name="amount"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -159,8 +163,46 @@
             </div>
         </div>
         <div class="card-body">
+
+            <table width="100%" class="table table-striped ">
+                <thead>
+                    </tr>
+                    <th> #</th>
+
+                    <th> Payment type</th>
+                    <th> Amount </th>
+                    <th> Description </th>
+                  <th>Action </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach($paymentTypes  as $key =>  $paymentType )
+                        <tr>
+                                 <td> {{ $key + 1 }}</td>
+                                 <td> {{ $paymentType->name }} </td>
+                                 <td> {{ $paymentType->amount }} </td>
+                                 <td> - </td>
+                            </td>
+                            <td>
+
+                                <a href="javascript:;" onclick="deletepaymentType(' +paymentType + ',$(this))" class="btn btn-sm btn-clean btn-icon" >
+                                    <i class="far fa-trash"></i>
+                                </a>
+
+
+                                 <a href="#"
+                                    class="btn btn-icon">
+                                    <span class="fa fa-edit"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
             <!--begin: Datatable-->
-            <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+            {{-- <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div> --}}
             <!--end: Datatable-->
         </div>
     </div>

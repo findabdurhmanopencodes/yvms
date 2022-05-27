@@ -15,13 +15,16 @@ use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\Woreda;
 use App\Models\PaymentType;
+use Andegna\DateTimeFactory;
 use App\Models\Volunteer;
 use App\Models\Zone;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use LDAP\Result;
-
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use DateTime;
 class PayrollSheetController extends Controller
 {
     /**
@@ -51,6 +54,45 @@ class PayrollSheetController extends Controller
         //return view('payrollSheet.index', compact('payroll_sheets'));
     }
 
+    // public function generateTeamPDF(PDF $pdfCreator, Team $team)
+    // {
+    //     $team = $team::find(Input::get('team'));
+    //     $membersOfTeam = $team->users()->get();
+    //     $pdf = $pdfCreator->loadView('pdf.teamHours', compact('membersOfTeam'));
+    //     return $pdf->stream('Arbeitsstunden');
+    // }
+    public function generatePDF( Request $request) {
+
+             $placedVolunteers = Volunteer::all();
+             $year = '2014';
+             $date = DateTimeFactory::fromDateTime(new Carbon('now'))->format('d/m/Y h:i:s');
+             $title = 'Trainee  payroll Payment report';
+             $session = 'MoP-YVMS-01-2014';
+             $center ='Jimma University';
+
+             if ( $request->get('payment_type')=='fixed') {
+
+                // write here code to generate  pocket meoney for trainee
+              }
+
+             elseif ($request->get('payment_type')=='transport') {
+                  // write here location based payment betwwen zone and training center in kemeter
+             }
+               else{
+
+                 }
+
+            if ($request->get('format') != null and $request->get('format')=='pdf') {
+            $pdf = PDF::loadView('payrollSheet.myPDF', compact('placedVolunteers','title','session','center'))->setPaper('a4', 'landscape');
+            return $pdf->download('payroll'.$year.'pdf');
+              }
+           else{
+            return redirect()->route('payrollSheet.index')->with('message', 'Sorry currently We have no Ms exceel file');
+
+        }
+
+
+    }
 
     public function payee(Request $request)
     {

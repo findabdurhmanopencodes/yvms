@@ -138,11 +138,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Payroll::class);
     }
 
+    public function distances(){
+        return $this->hasMany(Distance::class);
+    }
+
     // public function payrollsheet()
     //      {
     // return $this->hasMany('App\PayrollSheet');
     //      }
-         
+
     public function getProfilePhoto()
     {
         return $this->photo ?? asset('user.png');

@@ -11,11 +11,22 @@
 
 <li class="menu-item {{ strpos(Route::currentRouteName(), 'payment_type') === 0 ? 'menu-item-active' : '' }}"
     aria-haspopup="true">
-    <a href="{{ route('payment_type.index') }}" class="menu-link">
+    <a href="{{ route('paymentType.index',[]) }}" class="menu-link">
         <i class="menu-bullet menu-bullet-dot">
             <span></span>
         </i>
         <span class="menu-text"> Payment type</span>
+    </a>
+</li>
+
+
+<li class="menu-item {{ strpos(Route::currentRouteName(), 'distance') === 0 ? 'menu-item-active' : '' }}"
+    aria-haspopup="true">
+    <a href="{{ route('distance.index',[]) }}" class="menu-link">
+        <i class="menu-bullet menu-bullet-dot">
+            <span></span>
+        </i>
+        <span class="menu-text"> Distance setting</span>
     </a>
 </li>
 

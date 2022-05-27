@@ -142,6 +142,9 @@
                                                 <a href="/zone/' + zoneId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-pen"></i>\
                                                 </a>\
+                                                <a href="'+{{ $trainingSession_id }}+'/'+zoneId+'/zone/capacity" class="btn btn-sm btn-clean btn-icon" >\
+                                                    <i class="far fa-eye"></i>\
+                                                </a>\
                                                 \
                                             </div>\
                                             ';
