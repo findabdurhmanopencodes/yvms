@@ -578,6 +578,7 @@ class TrainingSessionController extends Controller
         $sum = 0;
         $a = [];
         $status_table = Status::where('acceptance_status', 1)->orderBy('id', 'asc')->get();
+        // dd($status_table);
         if ($status_table) {
             foreach ($status_table as $key => $stat) {
                 array_push($arr, Volunteer::where('id', $stat->volunteer_id)->get()[0]);
