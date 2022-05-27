@@ -938,7 +938,7 @@ class TrainingSessionController extends Controller
     {
         $trainingSession->update(['status' => Constants::TRAINING_SESSION_PLACEMENT_APPROVE]);
         $trainingSession->save();
-        // Artisan::call('volunteer:placment:notify:all');
+        Artisan::call('id:generate');
         return redirect()->back()->with('message','Placment approved successfully');
     }
 }

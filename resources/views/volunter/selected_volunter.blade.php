@@ -76,16 +76,18 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-3 ml-auto">
-                    <form method="POST"
-                        action="{{ route('session.applicant.place', [request()->route('training_session')]) }}">
-                        @csrf
-                        <button class="btn btn-primary">Place All Volunteers</button>
-                    </form>
+                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
+                        <form method="POST"
+                            action="{{ route('session.applicant.place', [request()->route('training_session')]) }}">
+                            @csrf
+                            <button class="btn btn-primary">Place All Volunteers</button>
+                        </form>
+                    @endif
                 </div>
             </div>
             <!--begin: Datatable-->
             <div class="datatable datatable-default datatable-bordered datatable-loaded">
-                <table class="table table-responsive">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>No.</th>
@@ -94,14 +96,15 @@
                             <th>Phone</th>
                             <th>Woreda</th>
                             <th>status</th>
-                            <th>Action</th>
-
+                            @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
+                                <th>Action</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody style="" class="datatable-body">
 
                         @foreach ($volunters as $volunter)
-                            <tr data-row="0" class="datatable-row" style="left: 0px;">
+                            <tr data-row="0" style="font-size: 13px;" class="datatable-row" style="left: 0px;">
                                 <td>
                                     {{ $volunters->perPage() * $volunters->currentPage() - ($volunters->perPage() - ($loop->index + 1)) }}
                                 </td>
@@ -122,15 +125,16 @@
                                     <span
                                         class="badge badge-success badge-pill">{{ $volunter->status?->acceptance_status == 3 ? 'Accepted' : 'pending' }}</span>
                                 </td>
-                                <td>
-                                    <a href="#"
-                                        data-action="{{ route('session.placement.manual', [request()->route('training_session'), $volunter->approvedApplicant->id]) }}"
-                                        class="btn btn-icon"
-                                        onclick="$('#changePlacementForm').attr('action',this.dataset.action);onSubmit();">
-                                        <span class="fa fa-edit"></span>
-                                    </a>
-                                </td>
-
+                                @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
+                                    <td>
+                                        <a href="#"
+                                            data-action="{{ route('session.placement.manual', [request()->route('training_session'), $volunter->approvedApplicant->id]) }}"
+                                            class="btn btn-icon"
+                                            onclick="$('#changePlacementForm').attr('action',this.dataset.action);onSubmit();">
+                                            <span class="fa fa-edit"></span>
+                                        </a>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                         @if (count($volunters) < 1)

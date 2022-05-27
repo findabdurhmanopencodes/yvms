@@ -218,12 +218,15 @@
             <!--begin: Datatable-->
             <div class="datatable datatable-default datatable-bordered datatable-loaded">
                 <div class="btn-group float-right mb-4">
+                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
+
                     <a class="btn btn-primary"
                         href="{{ route('verify.all', ['training_session' => Request::route('training_session')]) }}">Verify
                         All</a>
                     <a class="btn btn-info"
                         href="{{ route('resetVerify', ['training_session' => Request::route('training_session')]) }}">Reset
                         Verification </a>
+                    @endif
                 </div>
                 <table class="table table-bordered">
                     <thead>
