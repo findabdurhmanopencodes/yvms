@@ -152,6 +152,10 @@ class TrainingSessionController extends Controller
         // $session = TrainingSession::create($trainingSession);
         $trainingSession->save();
 
+        foreach (Status::where('acceptance_status',1)->get() as $key => $stat) {
+            Volunteer::where('id', $stat->volunteer_id)->update(['training_session_id'=>$trainingSession->id]);
+        }
+
         $regions = Region::all();
         $sum = 0;
         $arr = [];
@@ -730,14 +734,14 @@ class TrainingSessionController extends Controller
 
             return redirect()->back()->withErrors('Reseting Screening Is Not Allowed Because Training Placement is Already Done!!  Reset Training Placement To do this Task ');
         } else {
-            foreach (Volunteer::where('training_session_id', $training_session_id)->get() as $volunteer) {
+            foreach (Volunteer::whereRelation('approvedApplicant','training_session_id', $training_session_id)->get() as $volunteer) {
                 foreach (Status::all() as $status) {
                     if ($volunteer->id == $status->volunteer_id) {
                         Status::find($status->id)->update(['acceptance_status' => 1]);
                     }
                 }
             }
-            ApprovedApplicant::truncate();
+            ApprovedApplicant::where('training_session_id', $training_session_id)->delete();
         }
         return redirect()->back();
     }

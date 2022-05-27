@@ -6,6 +6,7 @@ use App\Models\ApprovedApplicant;
 use App\Models\IDcount;
 use App\Models\Status;
 use App\Models\Training;
+use App\Models\TrainingCenterBasedPermission;
 use App\Models\TrainingMaster;
 use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingSession;
@@ -24,6 +25,7 @@ class IdGenerateController extends Controller
     }
     public function idGenerate(TrainingSession $trainingSession , Request $request, $training_center_id){
         $trainer = '';
+        $userType ='';
         if ( $request->get('applicant')) {
             $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()[0];
             $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->whereRelation('status','acceptance_status', 5)->find($request->get('applicant'));
@@ -43,8 +45,24 @@ class IdGenerateController extends Controller
             $paginate_apps = TrainingMasterPlacement::with('master.user')->where('training_session_id', $trainingSession->id)->where('trainining_center_id', $training_center_id)->take(5)->get();
 
             $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()[0];
-        } 
-        else {
+        }elseif($request->get('mop_list') && $request->get('user_list_all')){
+            $trainer = 'trainer';
+            $userType = 'mop user';
+            // dd($request->get('trainer_list'));
+            $applicants = TrainingCenterBasedPermission::with('user')->where('training_session_id', $trainingSession->id)->where('trainining_center_id', $training_center_id)->find($request->get('mop_list'));
+
+            $paginate_apps = TrainingCenterBasedPermission::whereIn('id', $request->get('mop_list'))->where('training_session_id', $trainingSession->id)->where('trainining_center_id', $training_center_id)->take(5)->get();
+
+            $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()[0];
+        } elseif($request->get('user_list_all')){
+            $trainer = 'trainer';
+            $userType = 'mop user';
+            $applicants = TrainingCenterBasedPermission::with('user')->where('training_session_id', $trainingSession->id)->where('trainining_center_id', $training_center_id)->get();
+
+            $paginate_apps = TrainingCenterBasedPermission::with('user')->where('training_session_id', $trainingSession->id)->where('trainining_center_id', $training_center_id)->take(5)->get();
+
+            $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()[0];
+        } else {
             $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()[0];
             $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $training_center_id)->whereRelation('status','acceptance_status', 5)->get();
 
@@ -56,7 +74,7 @@ class IdGenerateController extends Controller
         $training_session_id = $trainingSession->availableSession()[0]->id;
         $train_end_date = $trainingSession->trainingEndDateET();
         // $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->take(3)->get();
-        return view('id.design', compact('applicants', 'training_session_id', 'paginate_apps', 'training_center_id', 'train_end_date', 'trainingCenter', 'trainer', 'trainingSession', 'center_code'));
+        return view('id.design', compact('applicants', 'training_session_id', 'paginate_apps', 'training_center_id', 'train_end_date', 'trainingCenter', 'trainer', 'trainingSession', 'center_code', 'userType'));
     }
 
     public function searchApplciant(Request $request){
@@ -82,8 +100,9 @@ class IdGenerateController extends Controller
     }
 
     public function TrainerList(Request $request, TrainingSession $trainingSession, $training_center_id){
+        $mopUsers = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $training_center_id)->get();
+
         $totalTrainingMasters = TrainingMasterPlacement::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $training_center_id)->get();
-    
-        return view('id.trainerList', compact('totalTrainingMasters', 'training_center_id'));
+        return view('id.trainerList', compact('totalTrainingMasters', 'training_center_id', 'mopUsers'));
     }
 }
