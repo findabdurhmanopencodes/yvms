@@ -6,16 +6,29 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 
 class Volunteer extends Model
 {
     use HasFactory;
+    use Notifiable;
+
     protected $guarded = [];
     protected $appends = ["profilePhoto"];
 
     public function getProfilePhotoAttribute() {
          return asset($this->picture()->file_path);
+    }
+
+    /**
+     * Get the session that owns the Volunteer
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function session(): BelongsTo
+    {
+        return $this->belongsTo(TrainingSession::class, 'training_session_id', 'id');
     }
 
     /**
@@ -79,6 +92,12 @@ class Volunteer extends Model
         // dd($this->id);
         return $this->hasOne(Status::class,'volunteer_id','id');
         // return Status::where('volunteer_id',$this->id)->get();
+    }
+
+    public function placment()
+    {
+        $tp = TrainingPlacement::whereRelation('approvedApplicant','volunteer_id',$this->id)->first();
+        return $tp->trainingCenterCapacity->trainingCenter;
     }
 
     public function approvedApplicant()

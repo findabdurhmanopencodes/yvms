@@ -107,6 +107,7 @@ class TrainingSession extends Model
     {
         return $this->hasMany(ApprovedApplicant::class);
     }
+
     public function capacities()
     {
         return $this->hasMany(TrainingCenterCapacity::class);

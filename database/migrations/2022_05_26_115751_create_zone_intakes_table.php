@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\TrainingSession;
+use App\Models\Zone;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,11 +15,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('volunteers', function (Blueprint $table) {
-            $table->text('id_number')->nullable()->unique();
+        Schema::create('zone_intakes', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(TrainingSession::class)->constrained();
+            $table->foreignIdFor(Zone::class)->constrained();
+            $table->integer('intake');
+            $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.
@@ -26,7 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('volunteers');
-
+        Schema::dropIfExists('zone_intakes');
     }
 };

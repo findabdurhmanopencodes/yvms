@@ -39,4 +39,8 @@ class Region extends Model
         return $this->hasMany(SessionRegion::class);
     }
 
+    public function regionIntakes(){
+        return $this->hasMany(RegionIntake::class);
+    }
+
 }

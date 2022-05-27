@@ -1,11 +1,9 @@
 <tr>
-<td class="header">
-<a href="{{ $url }}" style="display: inline-block;">
-@if (trim($slot) === 'Laravel')
-<img src="{{ asset('/img/logo_peace.png') }}" class="logo" alt="National Youth Volunteerism">
-@else
-{{ $slot }}
-@endif
-</a>
-</td>
+    <td class="header" width="570" cellpadding="0" cellspacing="0" style="">
+        <a href="{{ $url }}"  style="display: inline-block;" >
+            <img src="{{ asset('img/peace_logo_max.png') }}" class="logo"  alt="National Youth Volunteerism">
+            <br>
+            {{ $slot }}
+        </a>
+    </td>
 </tr>

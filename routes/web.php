@@ -12,6 +12,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\IdGenerateController;
 use App\Http\Controllers\ImportExportController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PrintController;
 use App\Http\Controllers\QoutaController;
@@ -34,7 +35,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\ZoneController;
-
+use App\Http\Controllers\DistanceController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PayrollSheetController;
 use App\Http\Controllers\VolunteerResourceHistoryController;
@@ -45,6 +46,7 @@ use App\Models\ApprovedApplicant;
 use App\Models\PaymentType;
 use App\Models\CindicationRoom;
 use App\Models\Training;
+use App\Models\Distance;
 use App\Models\TrainingMaster;
 use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingPlacement;
@@ -56,6 +58,7 @@ use App\Models\TrainingDocument;
 use App\Models\TraininingCenter;
 use App\Models\User;
 use App\Models\Volunteer;
+use App\Models\Woreda;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
@@ -102,9 +105,17 @@ Route::get('/placement', function () {
     return view('placement.index');
 })->name('placement');
 
-
+// Route::get('adb', function () {
+//     // dd('sd');
+//     $level = 'asdb';
+//     $introLines = 'adsbi';
+//     $volunteer = Volunteer::find(1);
+//     $notification = (new \App\Notifications\VolunteerPlaced($volunteer))->toMail('findabdurhman@gmail.com');
+//     $markdown = new \Illuminate\Mail\Markdown(view(), config('mail.markdown'));
+//     return $markdown->render($notification->markdown, $notification->data());
+// });
+Route::get('send',[NotificationController::class,'sendApplicantPlacmentEmail']);
 Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
-Route::get('/send-notification', [NotificationController::class, 'sendWelcomeNotification']);
 //Role & Permission
 Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
 Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
@@ -123,7 +134,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     // Route::get('/training',[TrainingSessionController::class,'trainings'])->name('training.index');
     Route::resource('/user_attendances', UserAttendanceController::class);
     Route::resource('/attendance', AttendanceController::class);
-    Route::get('volunteer/{volunteer}/attendances', [VolunteerController::class, 'atendance'])->name('volunteer.attendance');
+    Route::get('volunteer/{volunteer}/attendances', [VolunteerController::class, 'atend     ance'])->name('volunteer.attendance');
     Route::get('import/View/{training_center}', [ImportExportController::class, 'importView'])->name('volunteer.import.view');
     Route::get('bank/test/import/{training_center}', [ImportExportController::class, 'exportVolunteers'])->name('volunteer.export');
     Route::any('bank/test/{training_center}', [ImportExportController::class, 'importVolunteers'])->name('volunteer.import');
@@ -173,6 +184,15 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('{training_center}/trainer/list', [IdGenerateController::class, 'TrainerList'])->name('training_center.trainer_list');
     Route::get('{training_center}/{cindication_room}/attendance_export', [TraininingCenterController::class, 'get_attendance_data'])->name('attendance.export');
     Route::post('{training_center}/{cindication_room}/attendance_import', [TraininingCenterController::class, 'fileImport'])->name('attendance.import');
+
+    Route::get('{region_id}/region/capacity', [RegionController::class, 'regionIntake'])->name('region.intake');
+    Route::post('{region_id}/capacity/store', [RegionController::class, 'regionIntakeStore'])->name('intake.store');
+
+    Route::get('{zone_id}/zone/capacity', [ZoneController::class, 'zoneIntake'])->name('zone.intake');
+    Route::post('zone/{zone_id}/capacity/store', [ZoneController::class, 'zoneIntakeStore'])->name('zone.intake_store');
+
+    Route::get('{woreda_id}/woreda/capacity', [WoredaController::class, 'woredaIntake'])->name('woreda.intake');
+    Route::post('woreda/{woreda_id}/capacity/store', [WoredaController::class, 'woredaIntakeStore'])->name('woreda.intake_store');
 });
 
 
@@ -210,9 +230,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('qouta', QoutaController::class);
     Route::resource('user', UserController::class);
     /////////////////////////////////////////////////////////////////
-    Route::resource('payment_type', PaymentType::class);
+    Route::resource('distance', DistanceController::class);
+    Route::resource('paymentType', PaymentTypeController::class);
     Route::resource('payroll', PayrollController::class);
     Route::resource('payrollSheet', PayrollSheetController::class);
+    Route::get('generatePDF', [PayrollSheetController::class, 'generatePDF'])->name('payrollSheet.generatePDF');
     Route::get('payee_list', [PayrollSheetController::class, 'payee'])->name('payrollSheet.payee');
     //Route::get('/payroll/{id}/payroll_sheet', [PayrollSheetController::class, 'payrollSheet'])->name('payrollSheet.dispaly');
     ////////////////////////////////////////////////////////////////////
@@ -238,6 +260,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('{training}/training/schedule/remove', [TraininingCenterController::class, 'trainingScheduleRemove'])->name('training.remove');
     Route::resource('training/{training}/training_document', TrainingDocumentController::class);
     Route::get('/dashboard', function () {
+
         if (count(TrainingSession::availableSession()) > 0) {
             $trainingSession = TrainingSession::availableSession()[0];
             return redirect(route('session.dashboard', ['training_session' => $trainingSession->id]));
@@ -262,6 +285,3 @@ Route::get('{training_session}/reset-verification', [VolunteerController::class,
 //     dd('stop');
 // });
 Route::resource('Events', EventController::class);
-
-
-

@@ -42,6 +42,11 @@ class TraininingCenter extends Model
     {
         return $this->hasMany(TrainingCenterCapacity::class, 'trainining_center_id', 'id');
     }
+
+    public function distances(){
+        return $this->hasMany(Distance::class);
+    }
+
     public function checkers()
     {
         return $this->hasMany(User::class);
