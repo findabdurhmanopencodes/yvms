@@ -83,9 +83,11 @@
                 </div>
             @else
                 <div>
-                    <a class="btn btn-sm btn-info"
-                        href="{{ route('session.aplication.resetScreen', ['training_session' => $trainingSession->id]) }}">
-                        <i class="fa fa-recycle"></i> Reset </a>
+                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
+                        <a class="btn btn-sm btn-info"
+                            href="{{ route('session.aplication.resetScreen', ['training_session' => $trainingSession->id]) }}">
+                            <i class="fa fa-recycle"></i> Reset </a>
+                    @endif
                 </div>
             @endif
         </div>

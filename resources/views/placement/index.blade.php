@@ -24,10 +24,8 @@
                         <select name="region" id="" class="form-control select2">
                             <option value="">Select Region</option>
                             @foreach ($regions as $region)
-                                <option value="{{ $region->id }}" @if (Request::get('region') == $region->id )
-                                    selected
-                                @endif>{{ $region->name }}</option>
-
+                                <option value="{{ $region->id }}" @if (Request::get('region') == $region->id) selected @endif>
+                                    {{ $region->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -35,9 +33,8 @@
                         <select name="zone" id="" class="form-control select2">
                             <option value="">Select Zone</option>
                             @foreach ($zones as $zone)
-                                <option value="{{ $zone->id }}" @if (Request::get('zone') == $zone->id )
-                                    selected
-                                @endif>{{ $zone->name }}</option>
+                                <option value="{{ $zone->id }}" @if (Request::get('zone') == $zone->id) selected @endif>
+                                    {{ $zone->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -45,9 +42,8 @@
                         <select name="woreda" id="" class="form-control select2">
                             <option value="">Select Woreda</option>
                             @foreach ($woredas as $woreda)
-                                <option value="{{ $woreda->id }}" @if (Request::get('woreda') == $woreda->id )
-                                    selected
-                                @endif>{{ $woreda->name }}</option>
+                                <option value="{{ $woreda->id }}" @if (Request::get('woreda') == $woreda->id) selected @endif>
+                                    {{ $woreda->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -55,9 +51,9 @@
                         <select name="training_center" id="" class="form-control select2">
                             <option value="">Select Training Center</option>
                             @foreach ($training_centers as $training_center)
-                                <option value="{{ $training_center->id }}" @if (Request::get('training_center') == $training_center->id )
-                                    selected
-                                @endif>{{ $training_center->name }}</option>
+                                <option value="{{ $training_center->id }}"
+                                    @if (Request::get('training_center') == $training_center->id) selected @endif>{{ $training_center->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -101,17 +97,36 @@
         </div>
     </div>
 
+    <form id="approvePlacmentForm"
+        action="{{ route('session.placment.approve', [request()->route('training_session')]) }}" method="POST">
+        @csrf
+    </form>
+
     <div class="card card-custom">
         <div class="card-header flex-wrap  pt-6 ">
             <div class="card-title mr-0">
                 <h3 class="card-label"> Volunteer Placement </h3>
             </div>
-            <span>Total: {{ $placedVolunteers->total() }}</span>
-            <span>Page {{ $placedVolunteers->currentPage() > 0 ? $placedVolunteers->currentPage() : 0 }} of
-                {{ ceil($placedVolunteers->total() / $placedVolunteers->perPage()) }}</span>
-            <div class="col-2"><a class="btn btn-sm btn-info"
-                    href="{{ route('session.placement.reset', [request()->route('training_session')]) }}">
-                    <i class="fa fa-recycle"></i> Reset </a></div>
+            <div class="card-toolbar">
+                <div class="d-flex">
+                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
+                        <a class="btn btn-sm btn-info"
+                            href="{{ route('session.placement.reset', [request()->route('training_session')]) }}">
+                            <i class="fal fa-recycle"></i> Reset
+                        </a>
+                        <a class="btn ml-4 btn-sm btn-success" onclick="approvePlacment()" href="#">
+                            <i class="fal fa-stamp"></i> Approve placment
+                        </a>
+                    @endif
+                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_PLACEMENT_APPROVE)
+                        <a href="#">
+                            <span class="label label-xl label-light-success label-inline">Training Placment Approved</span>
+                        </a>
+                    @endif
+
+
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <table width="100%" class="table table-striped ">
@@ -135,7 +150,8 @@
                             <td> {{ $placedVolunteer->approvedApplicant->volunteer->woreda->zone->region->name }} </td>
                             <td> {{ $placedVolunteer->trainingCenterCapacity->trainingCenter->name }} </td>
                             <td>
-                                <a href="#" data-action="{{ route('session.placement.change', [request()->route('training_session'), $placedVolunteer->id]) }}"
+                                <a href="#"
+                                    data-action="{{ route('session.placement.change', [request()->route('training_session'), $placedVolunteer->id]) }}"
                                     class="btn btn-icon"
                                     onclick="$('#changePlacementForm').attr('action',this.dataset.action);onSubmit();">
                                     <span class="fa fa-edit"></span>
@@ -146,9 +162,17 @@
                 </tbody>
             </table>
         </div>
-        <div class="m-auto col-6 mt-3">
-            {{ $placedVolunteers->withQueryString()->links() }}
+        <div class="card-footer d-flex" style="justify-content: space-between;">
+            <div class="">
+                <span class="mr-5">Total: {{ $placedVolunteers->total() }}</span>
+                <span>Page {{ $placedVolunteers->currentPage() > 0 ? $placedVolunteers->currentPage() : 0 }} of
+                    {{ ceil($placedVolunteers->total() / $placedVolunteers->perPage()) }}</span>
+            </div>
+            <div class="">
+                {{ $placedVolunteers->withQueryString()->links() }}
+            </div>
         </div>
+
     </div>
 
 @endsection
@@ -161,7 +185,6 @@
         function onSubmit() {
 
             // require false;
-
             event.preventDefault();
             Swal.fire({
                 title: "Are you sure?",
@@ -172,6 +195,21 @@
             }).then(function(result) {
                 if (result.value) {
                     $('#trainingCenterEdit').modal();
+                }
+            });
+        }
+
+        function approvePlacment() {
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This action will not be reverted!",
+                type: "danger",
+                showCancelButton: true,
+                confirmButtonText: "Yes, Approve!"
+            }).then(function(result) {
+                if (result.value) {
+                    $('#approvePlacmentForm').submit();
                 }
             });
         }
