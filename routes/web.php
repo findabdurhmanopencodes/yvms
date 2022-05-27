@@ -105,15 +105,16 @@ Route::get('/placement', function () {
     return view('placement.index');
 })->name('placement');
 
-// Route::get('adb', function () {
-//     // dd('sd');
-//     $level = 'asdb';
-//     $introLines = 'adsbi';
-//     $volunteer = Volunteer::find(1);
-//     $notification = (new \App\Notifications\VolunteerPlaced($volunteer))->toMail('findabdurhman@gmail.com');
-//     $markdown = new \Illuminate\Mail\Markdown(view(), config('mail.markdown'));
-//     return $markdown->render($notification->markdown, $notification->data());
-// });
+Route::get('adb', function () {
+    // dd('sd');
+    $level = 'asdb';
+    $introLines = 'adsbi';
+    $volunteer = Volunteer::find(33);
+    // return /
+    // $notification = (new \App\Notifications\VolunteerPlaced($volunteer))->toMail('findabdurhman@gmail.com');
+    // $markdown = new \Illuminate\Mail\Markdown(view(), config('mail.markdown'));
+    // return $markdown->render($notification->markdown, $notification->data());
+});
 // Route::get('send',[NotificationController::class,'sendApplicantPlacmentEmail']);
 Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
 //Role & Permission
