@@ -130,7 +130,7 @@
                                 </a>
                             </li>
                             @if (Request::route('training_session'))
-                                <li class="menu-item menu-item-submenu {{(( strpos(Route::currentRouteName(), 'session.volunteer.index') === 0 )||( strpos(Route::currentRouteName(), 'session.volunteer.all') === 0 ))? 'menu-item-open' : '' }}"
+                                <li class="menu-item menu-item-submenu {{(( strpos(Route::currentRouteName(), 'session.volunteer.index') === 0 )||( strpos(Route::currentRouteName(), 'session.volunteer.all') === 0 )||( strpos(Route::currentRouteName(), 'session.applicant.verified') === 0 )||( strpos(Route::currentRouteName(), 'session.applicant.selected') === 0 )||( strpos(Route::currentRouteName(), 'session.applicant.email.unVerified') === 0 ))? 'menu-item-open' : '' }}"
                                     aria-haspopup="true" data-menu-toggle="hover">
 
                                     <a href="javascript:;" class="menu-link menu-toggle">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Andegna\DateTimeFactory;
+use App\Constants;
 use App\Http\Requests\StoreTrainingSessionRequest;
 use App\Http\Requests\UpdateTrainingSessionRequest;
 use App\Models\ApprovedApplicant;
@@ -26,6 +27,7 @@ use App\Models\Zone;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -925,5 +927,13 @@ class TrainingSessionController extends Controller
     {
 
         return view('training_session.resource.index', ['resources' => Resource::all()]);
+    }
+
+    public function approvePlacment(TrainingSession $trainingSession)
+    {
+        $trainingSession->update(['status' => Constants::TRAINING_SESSION_PLACED]);
+        $trainingSession->save();
+        Artisan::call('volunteer:placment:notify:all');
+        return redirect()->back()->with('message','Placment approved successfully');
     }
 }
