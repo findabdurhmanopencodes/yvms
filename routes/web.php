@@ -77,8 +77,7 @@ use Symfony\Component\Console\Input\Input;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
+Route::get('importRegion',[RegionController::class,'import']);
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
