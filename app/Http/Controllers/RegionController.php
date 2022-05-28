@@ -6,6 +6,7 @@ use App\Models\Region;
 use App\Models\Zone;
 use App\Http\Requests\StoreRegionRequest;
 use App\Http\Requests\UpdateRegionRequest;
+use App\ImporterFiles;
 use App\Models\Qouta;
 use App\Models\RegionIntake;
 use App\Models\TrainingSession;
@@ -201,45 +202,7 @@ class RegionController extends Controller
     }
     public function import()
     {
-        $binRegions = [
-            [
-                "Addis Ababa"
-            ],
-            [
-                "አማራ ክልል"
-            ],
-            [
-                "Oromia kelele"
-            ],
-            [
-                "Somalie kelele"
-            ],
-            [
-                "Sidama kelele"
-            ],
-            [
-                "Benishangul Gumuz kelele"
-            ],
-            [
-                "Gambella kelele"
-            ],
-            [
-                "Harari kelel"
-            ],
-            [
-                "South West Ethiopian Peoples'"
-            ],
-            [
-                "Southern N/,N/ and Peoples'"
-            ],
-            [
-                "Dire Dawa kelel"
-            ],
-
-            [
-                "Afar kelel"
-            ],
-        ];
+        $binRegions = ImporterFiles::REGION_IMPORTS;
         function filter($var)
         {
             return $var !== NULL && $var !== FALSE && $var !== '' && $var !== "";
