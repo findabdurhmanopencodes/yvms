@@ -29,7 +29,7 @@ table {
     <h1 style="margin-top:10px; color:#01afee;text-align:center; font-size:20px;">
         <span style="text-align:center;">
             <p style="font-size: 19px"> <b>  Ministery of Peace </b> </p>
-            <p style="font-size: 14px"><b>  Youth Volunterism Managment System </b></p>
+            <p style="font-size: 14px"><b>   Youth Volunterism Managment System </b></p>
             <p style="font-size: 12px"><b>   Trainee payroll Sheet</b></p>
 
         </span>
@@ -46,9 +46,9 @@ table {
             <th style="text-align:left;"> Phone </th>
             <th style="text-align:left;"> Sex </th>
             <th style="text-align:left;"> Zone </th>
-            <th style="text-align:left;"> CBE Acc </th>
+            <th style="text-align:left;"> CBE Account </th>
             <th style="text-align:left;"> Amount </th>
-            <th style="text-align:left; width:10%"> Sign</th>
+            <th style="text-align:left; width:10%">Remark</th>
 
             </tr>
         </thead>
@@ -60,8 +60,8 @@ table {
                      <td> {{ $placedVolunteer->phone }} </td>
                      <td> {{ $placedVolunteer->gender }} </td>
                      <td>  {{ $placedVolunteer->woreda->zone->name }}  </td>
-                     <td> 1000259685471 </td>
-                     <td style="text-align:right;"> 785.00 </td>
+                     <td> {{ $placedVolunteer->account_number }} </td>
+                     <td style="text-align:right;"> {{ $paymentTypes->amount }}</td>
 
 
                      <td>  &nbsp; &nbsp; &nbsp; </td>
@@ -71,12 +71,16 @@ table {
 
             @endforeach
             <tr style="text-align:right;">
-                <td colspan="7">Grand total: ETB 785.00 </td>
+                <td colspan="7">
+
+                    Grand total: ETB  xxxxxxx
+
+                </td>
                 <td colspan="1"></td>
             </tr>
         </tbody>
     </table>
-    <div class="float-right"> Session :01  Training center :Jimma University   Total Amount: 15,656    Total payee:122 </div> <br>
+    <div class="float-right"> Session/Round :01  Training center :Jimma University    Total payee:122 </div> <br>
 
 
 

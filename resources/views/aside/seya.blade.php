@@ -30,6 +30,17 @@
     </a>
 </li>
 
+
+<li class="menu-item {{ strpos(Route::currentRouteName(), 'transportTarif') === 0 ? 'menu-item-active' : '' }}"
+    aria-haspopup="true">
+    <a href="{{ route('transportTarif.index',[]) }}" class="menu-link">
+        <i class="menu-bullet menu-bullet-dot">
+            <span></span>
+        </i>
+        <span class="menu-text"> Transport Tarif</span>
+    </a>
+</li>
+
 {{-- <li class="menu-item {{ strpos(Route::currentRouteName(), 'disablity.index') === 0 ? 'menu-item-active' : '' }}"
     aria-haspopup="true">
     <a href="{{ route('disablity.index', []) }}" class="menu-link">
