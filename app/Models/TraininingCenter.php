@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class TraininingCenter extends Model
@@ -54,5 +55,15 @@ class TraininingCenter extends Model
     public function resources()
     {
         return $this->belongsToMany(Resource::class, 'resource_trainining', 'trainining_center_id', 'resource_id')->withPivot('current_balance', 'initial_balance');
+    }
+
+    /**
+     * Get all of the rooms for the TraininingCenter
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function rooms(): HasMany
+    {
+        return $this->hasMany(CindicationRoom::class);
     }
 }

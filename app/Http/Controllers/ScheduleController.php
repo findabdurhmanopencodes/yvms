@@ -178,27 +178,41 @@ class ScheduleController extends Controller
             throw ValidationException::withMessages(['training' => 'Please select correct training']);
         }
         for ($i = $startDateGC; $i <= $endDateGC; $i->modify('+1 day')) {
-            $schedule = Schedule::where('training_session_id', '=', $trainingSession->id)->where('date', '=', $i)->where('shift', '=', $shift)->first();
-            if ($schedule == null) {
-                if ($shift != 2) {
-                    $schedule = Schedule::create([
-                        'training_session_id' => $trainingSession->id,
-                        'date' => $i,
-                        'shift' => $shift,
-                    ]);
-                } else {
-                    $schedule = Schedule::create([
+
+            $scheduleShift1 = null;
+            $scheduleShift2 = null;
+            if ($shift == 2) {
+                $scheduleShift1 = Schedule::where('training_session_id', '=', $trainingSession->id)->where('date', '=', $i)->where('shift', '=', 0)->first();
+                $scheduleShift2 = Schedule::where('training_session_id', '=', $trainingSession->id)->where('date', '=', $i)->where('shift', '=', 1)->first();
+            } else {
+                $scheduleShift1 = Schedule::where('training_session_id', '=', $trainingSession->id)->where('date', '=', $i)->where('shift', '=', $shift)->first();
+            }
+
+            if ($shift == 2) {
+                if ($scheduleShift1 == null) {
+                    $scheduleShift1 = Schedule::create([
                         'training_session_id' => $trainingSession->id,
                         'date' => $i,
                         'shift' => 0,
                     ]);
-                    $schedule = Schedule::create([
+                }
+                if ($scheduleShift2 == null) {
+                    $scheduleShift2 = Schedule::create([
                         'training_session_id' => $trainingSession->id,
                         'date' => $i,
                         'shift' => 1,
                     ]);
                 }
+            } else {
+                if ($scheduleShift1 == null) {
+                    $scheduleShift1 = Schedule::create([
+                        'training_session_id' => $trainingSession->id,
+                        'date' => $i,
+                        'shift' => $shift,
+                    ]);
+                }
             }
+
             $trainingSessionTraining = TrainingSessionTraining::where('training_id', $training->id)->where('training_session_id', $trainingSession->id)->latest()->first();
             if (!$trainingSessionTraining) {
                 $trainingSessionTraining = TrainingSessionTraining::create([
@@ -206,11 +220,23 @@ class ScheduleController extends Controller
                     'training_id' => $training->id,
                 ]);
             }
-            $trainingSchedule = TrainingSchedule::where('training_session_training_id', $trainingSessionTraining->id)->where('schedule_id', $schedule->id)->latest()->first();
-            if ($trainingSchedule == null) {
+
+            $trainingSchedule1 = TrainingSchedule::where('training_session_training_id', $trainingSessionTraining->id)->where('schedule_id', $scheduleShift1->id)->latest()->first();
+            if($scheduleShift2 != null){
+                $trainingSchedule2 = TrainingSchedule::where('training_session_training_id', $trainingSessionTraining->id)->where('schedule_id', $scheduleShift2->id)->latest()->first();
+
+                if($trainingSchedule2==null){
+                    TrainingSchedule::create([
+                        'training_session_training_id' => $trainingSessionTraining->id,
+                        'schedule_id' => $scheduleShift2->id,
+                    ]);
+                }
+            }
+
+            if ($trainingSchedule1 == null) {
                 TrainingSchedule::create([
                     'training_session_training_id' => $trainingSessionTraining->id,
-                    'schedule_id' => $schedule->id,
+                    'schedule_id' => $scheduleShift1->id,
                 ]);
             }
         }

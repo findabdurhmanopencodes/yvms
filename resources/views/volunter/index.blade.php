@@ -29,6 +29,16 @@
             $('#woreda_id').select2({
                 placeholder: "Select Woreda "
             });
+            $("#graduation_date").datepicker({
+                format: "yyyy",
+                orientation: "bottom right",
+                todayHighlight: true,
+                viewMode: "years",
+                minViewMode: "years",
+                startDate: '{{ Andegna\DateTimeFactory::fromDateTime(Carbon\Carbon::now()->subYear(35))->format('Y') }}',
+                endDate: '{{ Andegna\DateTimeFactory::fromDateTime(Carbon\Carbon::now()->subYear(0))->format('Y') }}',
+                autoclose: true //to close picker once year is selected
+            });
 
         });
     </script>
@@ -151,7 +161,21 @@
                                 <label for="gpa" class=" col-sm-12 col-form-label">G.p.A</label>
                                 <input class="form-control" type="number" name="gpa" id="gpa" min="2" max="4">
                             </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label  for="graduation_date" class=" col-sm-12 col-form-label">Year Of Gruduation</label>
+                                    <input name="graduation_date" id="graduation_date"
+                                        class="@error('graduation_date') is-invalid @enderror form-control"
+                                        type="text" value="{{ old('graduation_date') }}" max="4"
+                                        min="1" />
+
+                                    @error('graduation_date')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
+
                         <button type="submit" class="btn btn-primary  mx-4 my-4" name="filter" value="filter"><i
                                 class="fa fa-search"></i> Search</button>
                     </form>
@@ -194,12 +218,15 @@
             <!--begin: Datatable-->
             <div class="datatable datatable-default datatable-bordered datatable-loaded">
                 <div class="btn-group float-right mb-4">
+                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
+
                     <a class="btn btn-primary"
                         href="{{ route('verify.all', ['training_session' => Request::route('training_session')]) }}">Verify
                         All</a>
                     <a class="btn btn-info"
                         href="{{ route('resetVerify', ['training_session' => Request::route('training_session')]) }}">Reset
                         Verification </a>
+                    @endif
                 </div>
                 <table class="table table-bordered">
                     <thead>

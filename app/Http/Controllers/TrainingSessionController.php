@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Andegna\DateTimeFactory;
+use App\Constants;
 use App\Http\Requests\StoreTrainingSessionRequest;
 use App\Http\Requests\UpdateTrainingSessionRequest;
 use App\Models\ApprovedApplicant;
@@ -16,6 +17,7 @@ use App\Models\TrainingCenterBasedPermission;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingMaster;
 use App\Models\TrainingMasterPlacement;
+use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
 use App\Models\TrainingSessionTraining;
 use App\Models\TraininingCenter;
@@ -26,6 +28,7 @@ use App\Models\Zone;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -578,6 +581,7 @@ class TrainingSessionController extends Controller
         $sum = 0;
         $a = [];
         $status_table = Status::where('acceptance_status', 1)->orderBy('id', 'asc')->get();
+        // dd($status_table);
         if ($status_table) {
             foreach ($status_table as $key => $stat) {
                 array_push($arr, Volunteer::where('id', $stat->volunteer_id)->get()[0]);
@@ -723,17 +727,20 @@ class TrainingSessionController extends Controller
     }
     public function resetScreen($training_session_id)
     {
-        foreach (Volunteer::where('training_session_id', $training_session_id)->get() as $volunteer) {
 
-            foreach (Status::all() as $status)
+        if (count(TrainingPlacement::where(['training_session_id' => request()->route('training_session')])->get()) > 0) {
 
-                if ($volunteer->id == $status->volunteer_id) {
-
-                    Status::find($status->id)->update(['acceptance_status' => 1]);
+            return redirect()->back()->withErrors('Reseting Screening Is Not Allowed Because Training Placement is Already Done!!  Reset Training Placement To do this Task ');
+        } else {
+            foreach (Volunteer::where('training_session_id', $training_session_id)->get() as $volunteer) {
+                foreach (Status::all() as $status) {
+                    if ($volunteer->id == $status->volunteer_id) {
+                        Status::find($status->id)->update(['acceptance_status' => 1]);
+                    }
                 }
+            }
+            ApprovedApplicant::truncate();
         }
-        ApprovedApplicant::truncate();
-
         return redirect()->back();
     }
 
@@ -870,7 +877,7 @@ class TrainingSessionController extends Controller
 
     public function trainingCenterShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
-        $cindicationRooms = CindicationRoom::where('training_session_id',$trainingSession->id)->where('trainining_center_id',$trainingCenter->id)->get();
+        $cindicationRooms = CindicationRoom::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->get();
         $miniSide = 'aside-minimize';
         $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->get();
         $checkedInVolunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->whereRelation('status', 'acceptance_status', 5)->get();
@@ -887,7 +894,7 @@ class TrainingSessionController extends Controller
         $centerCheckers = $centerCheckerQuery->get();
         Permission::findOrCreate('checker');
         $checkerUsers = User::doesntHave('volunteer')->doesntHave('trainner')->permission('checker')->whereNotIn('id', $centerCheckerQuery->pluck('id'))->get();
-        return view('training_session.center_show', compact('centerCoordinators', 'centerCoordinatorUsers', 'checkedInVolunteers', 'centerCheckers', 'checkerUsers', 'freeTrainners', 'trainings', 'trainingSession', 'totalTrainingMasters', 'totalVolunteers', 'trainingCenter', 'miniSide','cindicationRooms'));
+        return view('training_session.center_show', compact('centerCoordinators', 'centerCoordinatorUsers', 'checkedInVolunteers', 'centerCheckers', 'checkerUsers', 'freeTrainners', 'trainings', 'trainingSession', 'totalTrainingMasters', 'totalVolunteers', 'trainingCenter', 'miniSide', 'cindicationRooms'));
     }
     public function resourceAssignToTrainingCenter($training_session, Request $request)
     {
@@ -925,5 +932,13 @@ class TrainingSessionController extends Controller
     {
 
         return view('training_session.resource.index', ['resources' => Resource::all()]);
+    }
+
+    public function approvePlacment(TrainingSession $trainingSession)
+    {
+        $trainingSession->update(['status' => Constants::TRAINING_SESSION_PLACEMENT_APPROVE]);
+        $trainingSession->save();
+        Artisan::call('id:generate');
+        return redirect()->back()->with('message','Placment approved successfully');
     }
 }

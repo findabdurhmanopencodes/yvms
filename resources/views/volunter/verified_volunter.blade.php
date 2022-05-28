@@ -16,7 +16,7 @@
 @endpush
 
 @section('content')
-<div class="modal fade" id="trainingCenterEdit" tabindex="-1" role="dialog" aria-labelledby="trainingCenterEdit"
+    <div class="modal fade" id="trainingCenterEdit" tabindex="-1" role="dialog" aria-labelledby="trainingCenterEdit"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -31,18 +31,18 @@
                     @csrf
                     <div class="modal-body">
                         <div class="font-weight-bolder mb-3">Applicant Info:</div>
-                            <div class="line-height-xl">
-                                <strong>Applicant Full Name:</strong> <span id="applicant_full_name"></span>
-                                <br />
-                                <strong>Applicant E-mail:</strong>
-                                <span id="applicant_email"></span>
-                                <br />
-                                <strong>Applicant Phone no.:</strong> <span id="applicant_phone"></span>
-                                <br />
-                                <strong>Applicant Woreda:</strong> <span id="applicant_woreda"></span>
-                            </div>
+                        <div class="line-height-xl">
+                            <strong>Applicant Full Name:</strong> <span id="applicant_full_name"></span>
+                            <br />
+                            <strong>Applicant E-mail:</strong>
+                            <span id="applicant_email"></span>
+                            <br />
+                            <strong>Applicant Phone no.:</strong> <span id="applicant_phone"></span>
+                            <br />
+                            <strong>Applicant Woreda:</strong> <span id="applicant_woreda"></span>
+                        </div>
                         {{-- <div class="border-bottom mb-5 pb-5">
-                            
+
                         </div> --}}
                     </div>
                     <div class="modal-footer">
@@ -83,9 +83,11 @@
                 </div>
             @else
                 <div>
-                    <a class="btn btn-sm btn-info"
-                        href="{{ route('session.aplication.resetScreen', ['training_session' => $trainingSession->id]) }}">
-                        <i class="fa fa-recycle"></i> Reset </a>
+                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
+                        <a class="btn btn-sm btn-info"
+                            href="{{ route('session.aplication.resetScreen', ['training_session' => $trainingSession->id]) }}">
+                            <i class="fa fa-recycle"></i> Reset </a>
+                    @endif
                 </div>
             @endif
         </div>
@@ -132,14 +134,14 @@
                                         class="badge badge-warning badge-pill">{{ $volunter->status?->acceptance_status == 0 ? 'pending' : 'Document Verified' }}</span>
                                 </td>
                                 @if (count($approve) > 0)
-                                <td>
-                                    <a href="#"
-                                        data-action="{{ route('session.screen.manual', [request()->route('training_session'), $volunter->id]) }}"
-                                        class="btn btn-icon"
-                                        onclick="$('#changePlacementForm').attr('action',this.dataset.action);onSubmit({{ $volunter->id }}, {{ $traininig_session }});">
-                                        <span class="fa fa-edit"></span>
-                                    </a>
-                                </td>
+                                    <td>
+                                        <a href="#"
+                                            data-action="{{ route('session.screen.manual', [request()->route('training_session'), $volunter->id]) }}"
+                                            class="btn btn-icon"
+                                            onclick="$('#changePlacementForm').attr('action',this.dataset.action);onSubmit({{ $volunter->id }}, {{ $traininig_session }});">
+                                            <span class="fa fa-edit"></span>
+                                        </a>
+                                    </td>
                                 @endif
 
                             </tr>
@@ -161,36 +163,37 @@
 
 @endsection
 @push('js')
-<script>
-    function onSubmit(volunter, traininig_session_id) {
-        event.preventDefault();
-        Swal.fire({
-            title: "Are you sure?",
-            text: "This applicant will replace other applicant!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, replace it!"
-        }).then(function(result) {
-            if (result.value) {
-                $('#trainingCenterEdit').modal();
-                $.ajax({
-                    type: "POST",
-                    url: "/applicant/infromation",
-                    //   method: 'post',
-                    data: {
-                        'applicant_id': volunter,
-                        'training_session_id': traininig_session_id,
-                        "_token": $('meta[name="csrf-token"]').attr('content'),
-                    },
-                    success: function(result){
-                        $('#applicant_full_name').html('  '+result.applicant.first_name+' '+result.applicant.father_name);
-                        $('#applicant_email').html(result.applicant.email);
-                        $('#applicant_phone').html(result.applicant.phone);
-                        $('#applicant_woreda').html(result.applicant_woreda);
-                    },
-                });
-            }
-        });
-    }
-</script>
+    <script>
+        function onSubmit(volunter, traininig_session_id) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This applicant will replace other applicant!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, replace it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $('#trainingCenterEdit').modal();
+                    $.ajax({
+                        type: "POST",
+                        url: "/applicant/infromation",
+                        //   method: 'post',
+                        data: {
+                            'applicant_id': volunter,
+                            'training_session_id': traininig_session_id,
+                            "_token": $('meta[name="csrf-token"]').attr('content'),
+                        },
+                        success: function(result) {
+                            $('#applicant_full_name').html('  ' + result.applicant.first_name + ' ' +
+                                result.applicant.father_name);
+                            $('#applicant_email').html(result.applicant.email);
+                            $('#applicant_phone').html(result.applicant.phone);
+                            $('#applicant_woreda').html(result.applicant_woreda);
+                        },
+                    });
+                }
+            });
+        }
+    </script>
 @endpush

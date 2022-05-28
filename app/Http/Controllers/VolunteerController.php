@@ -92,6 +92,8 @@ class VolunteerController extends Controller
             $phone = $request->get('phone');
             $woreda_id = $request->get('woreda_id');
             $gpa = $request->get('gpa');
+            $graduation_date = $request->get('graduation_date');
+
             if (!empty($first_name)) {
                 $applicants = $applicants->where('first_name', 'like', '%' . $first_name . '%');
             }
@@ -125,6 +127,10 @@ class VolunteerController extends Controller
             if (!empty($gpa)) {
                 $applicants = $applicants->where('gpa', '=', $gpa);
             }
+            if (!empty($graduation_date)) {
+                $applicants = $applicants->where('graduation_date', '=', $graduation_date);
+            }
+
         }
 
         return view('volunter.index', ['volunters' => $applicants->paginate(10), 'trainingSession' => TrainingSession::find($session_id), 'regions' => Region::all(), 'woredas' => Woreda::all(), 'zones' => Zone::all(), 'disabilities' => Disablity::all()]);
@@ -344,7 +350,7 @@ class VolunteerController extends Controller
      */
     public function verifiedApplicant(Request $request, $training_session)
     {
-        $applicants =  Volunteer::whereRelation('status', 'acceptance_status', 1)->where('training_session_id', $training_session);
+        $applicants =  Volunteer::whereRelation('status', 'acceptance_status', 1);
 
         $approved = ApprovedApplicant::where('training_session_id', $training_session)->get();
 
@@ -352,7 +358,8 @@ class VolunteerController extends Controller
     }
     public function selected(Request $request, $training_session)
     {
-        $applicants =  Volunteer::has('approvedApplicant')->where('training_session_id', $training_session);
+        $applicants =  Volunteer::whereRelation('approvedApplicant','training_session_id', $training_session);
+        // dd($applicants->get());
         return view('volunter.selected_volunter', ['volunters' => $applicants->paginate(10), 'trainingSession' => TrainingSession::find($training_session), 'trainingCenterCapacities' => TrainingCenterCapacity::where('training_session_id', $training_session)->get()]);
     }
     protected function verifyEmail($token)
@@ -415,7 +422,7 @@ class VolunteerController extends Controller
             $woreda_id = $request->get('woreda_id');
             $gpa = $request->get('gpa');
             $status = $request->get('acceptance_status');
-
+            $graduation_date = $request->get('graduation_date');
             if (!empty($first_name)) {
                 $applicants = $applicants->where('first_name', 'like', '%' . $first_name . '%');
             }
@@ -451,6 +458,9 @@ class VolunteerController extends Controller
             }
             if (!empty($status)) {
                 $applicants = $applicants->whereRelation('status', 'acceptance_status', $status);
+            }
+            if (!empty($graduation_date)) {
+                $applicants = $applicants->where('graduation_date', '=', $graduation_date);
             }
         }
         return view('volunter.all_volunteer', ['volunters' => $applicants->paginate(10), 'trainingSession' => TrainingSession::find($training_session), 'regions' => Region::all(), 'woredas' => Woreda::all(), 'zones' => Zone::all(), 'disabilities' => Disablity::all()]);

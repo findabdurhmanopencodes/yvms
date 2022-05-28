@@ -19,7 +19,7 @@
 
                     <div class="form-group col-6">
                         <label for="gender" class=" col-sm-12 col-form-label">Id Number</label>
-                        <input class="form-control " placeholder="search by Id Number" name="id">
+                        <input class="form-control " placeholder="search by Id Number" name="id_number">
                     </div>
                     <div class="form-group col-6">
                         <label for="gender" class=" col-sm-12 col-form-label">Gender</label>
