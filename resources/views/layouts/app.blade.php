@@ -130,7 +130,7 @@
                                 </a>
                             </li>
                             @if (Request::route('training_session'))
-                                <li class="menu-item menu-item-submenu {{(( strpos(Route::currentRouteName(), 'session.volunteer.index') === 0 )||( strpos(Route::currentRouteName(), 'session.volunteer.all') === 0 )||( strpos(Route::currentRouteName(), 'session.applicant.verified') === 0 )||( strpos(Route::currentRouteName(), 'session.applicant.selected') === 0 )||( strpos(Route::currentRouteName(), 'session.applicant.email.unVerified') === 0 ))? 'menu-item-open' : '' }}"
+                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'session.volunteer.index') === 0 || strpos(Route::currentRouteName(), 'session.volunteer.all') === 0 || strpos(Route::currentRouteName(), 'session.applicant.verified') === 0 || strpos(Route::currentRouteName(), 'session.applicant.selected') === 0 || strpos(Route::currentRouteName(), 'session.applicant.email.unVerified') === 0 ? 'menu-item-open' : '' }}"
                                     aria-haspopup="true" data-menu-toggle="hover">
 
                                     <a href="javascript:;" class="menu-link menu-toggle">
@@ -147,7 +147,7 @@
                                                 </span>
                                             </li>
                                             {{-- /*(strpos(Route::currentRouteName(), 'session.volunteer.all') === 0 || strpos(Route::currentRouteName(), 'session.volunteer') === 0) ? 'menu-item-active' : '' */ --}}
-                                            <li class="menu-item {{ (strpos(Route::currentRouteName(), 'session.volunteer.index') === 0)?'menu-item-active':'' }}"
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.volunteer.index') === 0 ? 'menu-item-active' : '' }}"
                                                 aria-haspopup="true">
                                                 <a href="{{ route('session.volunteer.index', ['training_session' => Request::route('training_session')]) }}"
                                                     class="menu-link">
@@ -157,7 +157,7 @@
                                                     <span class="menu-text">Applicants</span>
                                                 </a>
                                             </li>
-                                            <li class="menu-item {{ (strpos(Route::currentRouteName(), 'session.volunteer.all') === 0)?'menu-item-active':'' }}"
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.volunteer.all') === 0 ? 'menu-item-active' : '' }}"
                                                 aria-haspopup="true">
 
                                                 <a href="{{ route('session.volunteer.all', ['training_session' => Request::route('training_session')]) }}"
@@ -648,9 +648,23 @@
     @stack('js')
     <!--end::Page Scripts-->
     <script>
-        @if (Session::has('message'))
+
+
+        @if (Session::has('message') && !Session::has('error'))
             $(function() {
                 toastr.success('{{ Session::get('message') }}');
+            })
+            @endif
+
+        @if (session('warning'))
+            $(function() {
+                swal.fire("Error!", "{{session('warning')}}", "warning");
+            })
+        @endif
+
+        @if (session('error'))
+            $(function() {
+                swal.fire("Error!", "{{session('error')}}", "error");
             })
         @endif
     </script>
