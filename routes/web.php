@@ -8,6 +8,7 @@ use App\Http\Controllers\DisablityController;
 use App\Http\Controllers\FeildOfStudyController;
 use App\Http\Controllers\EducationalLevelController;
 use App\Http\Controllers\EventController;
+
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\IdGenerateController;
 use App\Http\Controllers\ImportExportController;
@@ -34,6 +35,7 @@ use App\Http\Controllers\UserAttendanceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\WoredaController;
+use App\Http\Controllers\TransportTarifController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\DistanceController;
 use App\Http\Controllers\PayrollController;
@@ -57,6 +59,7 @@ use App\Models\Payroll;
 use App\Models\PayrollSheet;
 use App\Models\TrainingDocument;
 use App\Models\TraininingCenter;
+use App\Models\TransportTarif;
 use App\Models\User;
 use App\Models\Volunteer;
 use App\Models\Woreda;
@@ -222,15 +225,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('feild_of_study', FeildOfStudyController::class);
     Route::resource('disablity', DisablityController::class);
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
-    ////////////////////////////////////////////////////////////////////////////////
     Route::get('training_sessions', [RegionController::class, 'place'])->name('region.place');
-
     //Route::get('training_',[RegionController::class,'place'])->name('region.place');
     ///////////////////////////////////////////////////////////////////////////////////
     Route::resource('training_session', TrainingSessionController::class);
     Route::resource('qouta', QoutaController::class);
     Route::resource('user', UserController::class);
     /////////////////////////////////////////////////////////////////
+    Route::resource('transportTarif', TransportTarifController::class);
     Route::resource('distance', DistanceController::class);
     Route::resource('paymentType', PaymentTypeController::class);
     Route::resource('payroll', PayrollController::class);

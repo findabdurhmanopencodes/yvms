@@ -43,7 +43,7 @@
                         <button class="btn btn-primary btn-sm"><i class="fa fa-print"> </i> Print out</button>
                     </div>
 
-              <span> Total Trainee :0  &nbsp;  Training Session ID :0    &nbsp;    Training Center: JU</span>
+              <span> Total Trainee :{{ $total_vol }}  &nbsp;  Training Session ID :0    &nbsp;    Training Center: JU</span>
                 </div>
             </div>
         </form>
@@ -69,12 +69,12 @@
                 <tbody>
                     @foreach ($placedVolunteers as $key => $placedVolunteer)
                         <tr>
-                            <td>{{ $key + 1 }}</td>
-                            <td>{{ $placedVolunteer->first_name}} {{ $placedVolunteer->father_name}}  {{ $placedVolunteer->grand_father_name}}  </td>
+                            <td> {{ $key + 1 }}</td>
+                            <td> {{ $placedVolunteer->first_name}} {{ $placedVolunteer->father_name}}  {{ $placedVolunteer->grand_father_name}}  </td>
                              <td> {{ $placedVolunteer->phone }} </td>
                              <td> {{ $placedVolunteer->gender }} </td>
-                             <td> 1000259685471 </td>
-                             <td> 3,785.00 </td>
+                             <td> {{ $placedVolunteer->account_number }} </td>
+                             <td>  {{ $PaymentType->amount }} </td>
                              <td>  {{ $placedVolunteer->woreda->zone->name }}  </td>
 
 

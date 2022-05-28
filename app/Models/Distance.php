@@ -14,7 +14,7 @@ class Distance extends Model
 
 
     protected $fillable = [
-       // 'training_session_id','training_center_id','km','user_id'
+        'zone_id','trainining_center_id','km','user_id'
     ];
 
     public function user(): BelongsTo
@@ -28,7 +28,7 @@ class Distance extends Model
         return $this->belongsTo(Zone::class);
     }
 
-    public function trainingCenter(): BelongsTo
+    public function traininingCenter(): BelongsTo
     {
         return $this->belongsTo(TraininingCenter::class);
     }
