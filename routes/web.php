@@ -47,6 +47,7 @@ use App\Models\PaymentType;
 use App\Models\CindicationRoom;
 use App\Models\Training;
 use App\Models\Distance;
+use App\Models\Event;
 use App\Models\TrainingMaster;
 use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingPlacement;
@@ -285,6 +286,5 @@ Route::get('{training_session}/reset-verification', [VolunteerController::class,
 //     dd('stop');
 // });
 Route::resource('Events', EventController::class);
-Route::get('/aj' ,function(){
-  return view('auth.verify-email');
-});
+Route::get('/All-Events' ,[EventController::class,'allEvents'])->name('event.all');
+Route::get('/Event/{event}' ,[EventController::class,'detailEvent'])->name('event.detail');

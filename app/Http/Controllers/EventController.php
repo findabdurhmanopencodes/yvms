@@ -106,4 +106,12 @@ class EventController extends Controller
     {
         //
     }
+    public function allEvents()
+    {
+        return view('event.all_events',['events'=>Event::paginate(10)]);
+    }
+    public function detailEvent($event)
+    {
+        return view('event\event_detail',['event'=>Event::find($event),'featuredEvents'=>Event::all()]);
+    }
 }
