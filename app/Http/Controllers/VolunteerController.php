@@ -65,6 +65,7 @@ class VolunteerController extends Controller
      */
     public function index(Request $request, $session_id)
     {
+        // dd(Auth::user()->hasRole('regional-coordinator'));
 
         // foreach(Volunteer::all() as $applicant){
         //     Status::create(['acceptance_status'=>1,'volunteer_id'=>$applicant->id]);
@@ -74,6 +75,7 @@ class VolunteerController extends Controller
         $user = Auth::user();
         if ($user->hasRole('regional-coordinator')) {
             $region = UserRegion::where('user_id', $user->id)->where('levelable_type', Region::class)->first();
+            dd($region->levelable);
             $applicants = $applicants->whereRelation('woreda.zone.region', 'id', $region->levelable_id);
         }
         if ($user->hasRole('zone-coordinator')) {
@@ -116,7 +118,8 @@ class VolunteerController extends Controller
                 $applicants = $applicants->whereRelation('woreda.zone.region', 'id', $region_id);
             }
             if (!empty($zone_id)) {
-                $applicants = $applicants->where('zone_id', '=', $zone_id);
+                $applicants = $applicants->whereRelation('woreda.zone', 'id', $zone_id);
+
             }
             if (!empty($phone)) {
                 $applicants = $applicants->where('phone', 'like', '%' . $phone . '%');
@@ -445,7 +448,7 @@ class VolunteerController extends Controller
                 $applicants = $applicants->whereRelation('woreda.zone.region', 'id', $region_id);
             }
             if (!empty($zone_id)) {
-                $applicants = $applicants->where('zone_id', '=', $zone_id);
+                $applicants = $applicants->whereRelation('woreda.zone', 'id', $zone_id);
             }
             if (!empty($phone)) {
                 $applicants = $applicants->where('phone', 'like', '%' . $phone . '%');
