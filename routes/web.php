@@ -78,6 +78,7 @@ use Symfony\Component\Console\Input\Input;
 |
 */
 Route::get('importRegion',[RegionController::class,'import']);
+Route::get('importZone',[ZoneController::class,'import']);
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
