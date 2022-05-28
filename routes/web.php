@@ -41,6 +41,7 @@ use App\Http\Controllers\PayrollSheetController;
 use App\Http\Controllers\VolunteerResourceHistoryController;
 use App\Http\Controllers\TrainingCenterBasedPermissionController;
 use App\Http\Controllers\TrainingDocumentController;
+use App\Http\Controllers\TranslationTextController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
 use App\Models\PaymentType;
@@ -56,6 +57,7 @@ use App\Models\Payroll;
 use App\Models\PayrollSheet;
 use App\Models\TrainingDocument;
 use App\Models\TraininingCenter;
+use App\Models\TranslationText;
 use App\Models\User;
 use App\Models\Volunteer;
 use App\Models\Woreda;
@@ -223,6 +225,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
     ////////////////////////////////////////////////////////////////////////////////
     Route::get('training_sessions', [RegionController::class, 'place'])->name('region.place');
+    Route::resource('translation',TranslationTextController::class);
 
     //Route::get('training_',[RegionController::class,'place'])->name('region.place');
     ///////////////////////////////////////////////////////////////////////////////////
