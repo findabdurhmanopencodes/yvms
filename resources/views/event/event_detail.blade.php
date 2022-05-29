@@ -1,4 +1,5 @@
 @extends('layouts.guest')
+@section('title', 'Event Detail')
 @push('css')
     <style>
         body {
@@ -71,89 +72,93 @@
     </style>
     <style>
         .forecast {
-    margin: 0;
-    padding: .3rem;
-    background-color: #eee;
-    font: 1rem 'Fira Sans', sans-serif;
-}
+            margin: 0;
+            padding: .3rem;
+            background-color: #eee;
+            font: 1rem 'Fira Sans', sans-serif;
+        }
 
-.forecast > h1,
-.day-forecast {
-    margin: .5rem;
-    padding: .3rem;
-    font-size: 1.2rem;
-}
+        .forecast>h1,
+        .day-forecast {
+            margin: .5rem;
+            padding: .3rem;
+            font-size: 1.2rem;
+        }
 
-.day-forecast {
-    background: right/contain content-box border-box no-repeat
-        url('/media/examples/rain.svg') white;
-}
+        .day-forecast {
+            background: right/contain content-box border-box no-repeat url('/media/examples/rain.svg') white;
+        }
 
-.day-forecast > h2,
-.day-forecast > p {
-    margin: .2rem;
-    font-size: 1rem;
-}
+        .day-forecast>h2,
+        .day-forecast>p {
+            margin: .2rem;
+            font-size: 1rem;
+        }
 
     </style>
 @endpush
 @push('js')
-    <script>
-        $('.owl-carousel').owlCarousel({
-            loop: true,
-            margin: 10,
-            dots: false,
-            nav: true,
-            autoplay: true,
-            smartSpeed: 3000,
-            autoplayTimeout: 7000,
-            responsive: {
-                0: {
-                    items: 1
-                },
-                600: {
-                    items: 2
-                },
-                1000: {
-                    items: 3
-                }
-            }
-        })
-    </script>
+ <script>
+     var slideIndex = 0;
+carousel();
+
+function carousel() {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  slideIndex++;
+  if (slideIndex > x.length) {slideIndex = 1}
+  x[slideIndex-1].style.display = "block";
+  setTimeout(carousel, 5000); // Change image every 2 seconds
+}
+
+ </script>
 @endpush
 @section('content')
-    <div class="header">
-        <h2>Events in National volunteerism</h2>
-    </div>
+<div class="card">
+    <div class="card-body">
+        <h2>Events On National volunteerism</h2>
 
-    <div class="row">
-        <div class="leftcolumn">
-            <div class="card">
-                <h2>{{ $event->title }}</h2>
-                <h5>{{ $event->created_at->diffForHumans() }}</h5>
-                <div class="fakeimg" style="height:200px;">Image</div>
-                <p>{!! $event->content !!}</p>
+
+        <div class="row">
+            <div class="leftcolumn">
+                <div class="card">
+
+                    <h2>{{ $event->title }}</h2>
+                    <h5>{{ $event->created_at->diffForHumans() }}</h5>
+                    @if (count($event->images) < 1)
+                        <img src="" width="800" height="300" alt="event Image not Found">
+                    @endif
+                    @foreach ($event->images as $img)
+                        <img src="{{ asset('storage/' . $img->url) }}" width="700" height="300" alt="event Image not Found" class="mySlides">
+                    @endforeach
+                    <p>{!! $event->content !!}</p>
+
+                </div>
+
             </div>
-
-        </div>
-        <div class="rightcolumn">
-            <div class="card">
-                <article class="forecast">
-                    <h1>Popular Events</h1>
-                @foreach ($featuredEvents as $featureEvent)
-
-                    <article class="day-forecast">
-                        <h2>{{  $featureEvent->created_at->diffForHumans() }}</h2>
-                        <p><a href="{{ route('event.detail',['event'=>$featureEvent->id]) }}">{{ $featureEvent->title }}</a></p>
+            <div class="rightcolumn">
+                <div class="card">
+                    <article class="forecast">
+                        <h1>Popular Events</h1>
+                        @foreach ($featuredEvents as $featureEvent)
+                            <article class="day-forecast">
+                                <h2>{{ $featureEvent->created_at->diffForHumans() }}</h2>
+                                <p><a
+                                        href="{{ route('event.detail', ['event' => $featureEvent->id]) }}">{{ $featureEvent->title }}</a>
+                                </p>
+                            </article>
+                        @endforeach
                     </article>
 
-                   @endforeach
-                </article>
+
+                </div>
 
 
             </div>
-
-
         </div>
     </div>
+</div>
 @endsection

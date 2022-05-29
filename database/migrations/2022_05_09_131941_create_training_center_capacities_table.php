@@ -18,8 +18,8 @@ return new class extends Migration
     {
         Schema::create('training_center_capacities', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(TraininingCenter::class)->onDelete('cascade');
-            $table->foreignIdFor(TrainingSession::class)->onDelete('cascade');
+            $table->foreignIdFor(TraininingCenter::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(TrainingSession::class)->constrained()->onDelete('cascade');
             $table->integer('capacity');
             $table->timestamps();
         });

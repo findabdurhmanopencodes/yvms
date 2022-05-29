@@ -11,4 +11,6 @@ class Constants {
     const TRAINING_SESSION_PLACEMENT_APPROVE = 1;
     const TRAINING_SESSION_GRADUATED = 2;
 
+
+
 }

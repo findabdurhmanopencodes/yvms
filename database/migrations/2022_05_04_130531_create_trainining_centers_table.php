@@ -17,11 +17,11 @@ return new class extends Migration
     {
         Schema::create('trainining_centers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(File::class,'logo')->nullable();
+            $table->foreignIdFor(File::class,'logo')->nullable()->constrained('files','id');
             $table->string('name');
             $table->string('decription')->nullable();
             $table->string('code')->nullable();
-            $table->foreignIdFor(Zone::class)->onDelete('cascade');
+            $table->foreignIdFor(Zone::class)->constrained();
             $table->timestamps();
         });
     }

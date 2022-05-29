@@ -61,48 +61,48 @@ class DatabaseSeeder extends Seeder
             'status' => 0,
         ]);
 
-        \App\Models\Region::factory(4)->create();
-        //Zone creation
-        $quota = [0.4, 0.3, 0.3];
-        $region = 1;
-        for ($y = 0; $y < 3; $y++) {
-            \App\Models\Zone::factory(1)->create(['region_id' => $region, 'qoutaInpercent' => $quota[$y]]);
-        }
-        $quota = [0.3, 0.2, 0.1, 0.2, 0.2];
-        $region = 2;
-        for ($y = 0; $y < count($quota); $y++) {
-            \App\Models\Zone::factory(1)->create(['region_id' => $region, 'qoutaInpercent' => $quota[$y]]);
-        }
-        $quota = [0.5, 0.2, 0.1, 0.2];
-        $region = 3;
-        for ($y = 0; $y < count($quota); $y++) {
-            \App\Models\Zone::factory(1)->create(['region_id' => $region, 'qoutaInpercent' => $quota[$y]]);
-        }
-        $quota = [0.1, 0.3, 0.6];
-        $region = 4;
-        for ($y = 0; $y < count($quota); $y++) {
-            \App\Models\Zone::factory(1)->create(['region_id' => $region, 'qoutaInpercent' => $quota[$y]]);
-        }
-        //Woreda creation
-        $zonesCount = Zone::count();
-        $quotas = [
-            [0.2, 0.4, 0.4],
-            [0.2, 0.5, 0.1, 0.2],
-            [0.2, 0.2, 0.1, 0.3, 0.2]
-        ];
-        $zone = 1;
-        $iterate = 0;
-        for ($x = 0; $x < $zonesCount; $x++) {
-            $quota = $quotas[$iterate];
-            for ($y = 0; $y < count($quota); $y++) {
-                \App\Models\Woreda::factory(1)->create(['zone_id' => $zone, 'qoutaInpercent' => $quota[$y]]);
-            }
-            $zone++;
-            $iterate++;
-            if ($iterate > 2) {
-                $iterate = 0;
-            }
-        }
+        // \App\Models\Region::factory(4)->create();
+        // //Zone creation
+        // $quota = [0.4, 0.3, 0.3];
+        // $region = 1;
+        // for ($y = 0; $y < 3; $y++) {
+        //     \App\Models\Zone::factory(1)->create(['region_id' => $region, 'qoutaInpercent' => $quota[$y]]);
+        // }
+        // $quota = [0.3, 0.2, 0.1, 0.2, 0.2];
+        // $region = 2;
+        // for ($y = 0; $y < count($quota); $y++) {
+        //     \App\Models\Zone::factory(1)->create(['region_id' => $region, 'qoutaInpercent' => $quota[$y]]);
+        // }
+        // $quota = [0.5, 0.2, 0.1, 0.2];
+        // $region = 3;
+        // for ($y = 0; $y < count($quota); $y++) {
+        //     \App\Models\Zone::factory(1)->create(['region_id' => $region, 'qoutaInpercent' => $quota[$y]]);
+        // }
+        // $quota = [0.1, 0.3, 0.6];
+        // $region = 4;
+        // for ($y = 0; $y < count($quota); $y++) {
+        //     \App\Models\Zone::factory(1)->create(['region_id' => $region, 'qoutaInpercent' => $quota[$y]]);
+        // }
+        // //Woreda creation
+        // $zonesCount = Zone::count();
+        // $quotas = [
+        //     [0.2, 0.4, 0.4],
+        //     [0.2, 0.5, 0.1, 0.2],
+        //     [0.2, 0.2, 0.1, 0.3, 0.2]
+        // ];
+        // $zone = 1;
+        // $iterate = 0;
+        // for ($x = 0; $x < $zonesCount; $x++) {
+        //     $quota = $quotas[$iterate];
+        //     for ($y = 0; $y < count($quota); $y++) {
+        //         \App\Models\Woreda::factory(1)->create(['zone_id' => $zone, 'qoutaInpercent' => $quota[$y]]);
+        //     }
+        //     $zone++;
+        //     $iterate++;
+        //     if ($iterate > 2) {
+        //         $iterate = 0;
+        //     }
+        // }
         \App\Models\User::factory(200)->create();
         \App\Models\File::factory(16)->create();
         \App\Models\FeildOfStudy::factory(4)->create();
