@@ -44,6 +44,7 @@ class EventController extends Controller
         $this->validate($request, [
             'title' => 'required|string|max:255',
             'content' => 'required',
+             'pictures' =>'required|regex:/^data:image/'
         ]);
         $event = new Event();
         $event->title = $request->title;
@@ -52,13 +53,13 @@ class EventController extends Controller
         foreach ($request->file('pictures') as $imagefile) {
             $eventImage = new EventImage();
             $fileName = time() . '_' . $imagefile->getClientOriginalName();
-            $filePath = $imagefile->storeAs('/events/'.$event->title.'_'.$event->id, $fileName, 'public');
-            // $path = $imagefile->store('/events/' . $event->title.'-'.$event->created_at, ['disk' =>   'public']);
+            $filePath = $imagefile->storeAs('/events/'.'_'.$event->id, $fileName, 'public');
             $eventImage->url = $filePath;
             $eventImage->event_id = $event->id;
             $eventImage->save();
-            return redirect()->route('Events.index');
         }
+        return redirect()->route('Events.index');
+
     }
 
     /**
@@ -108,10 +109,10 @@ class EventController extends Controller
     }
     public function allEvents()
     {
-        return view('event.all_events',['events'=>Event::paginate(10)]);
+        return view('event.all_events',['events'=>Event::latest()->paginate(3)]);
     }
     public function detailEvent($event)
     {
-        return view('event\event_detail',['event'=>Event::find($event),'featuredEvents'=>Event::all()]);
+        return view('event\event_detail',['event'=>Event::find($event),'featuredEvents'=> Event::latest()->take(5)->get()]);
     }
 }
