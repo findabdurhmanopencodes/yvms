@@ -78,7 +78,7 @@
                             {{-- <td>{{ $placedVolunteer->approvedApplicant->volunteer->father_name }}</td> --}}
                             {{-- <td> {{ $placedVolunteer->approvedApplicant->volunteer->grand_father_name }} </td> --}}
                             <td> {{ $graduatedVolunteer->woreda->zone->region->name }} </td>
-                            {{-- <td> {{ $graduatedVolunteer->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->name }} </td> --}}
+                            <td> {{ $graduatedVolunteer->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->name }} </td>
                         </tr>
                     @endforeach
                 </tbody>
