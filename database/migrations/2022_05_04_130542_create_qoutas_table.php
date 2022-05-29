@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('qoutas', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(TrainingSession::class)->onDelete('cascade');
+            $table->foreignIdFor(TrainingSession::class)->constrained()->onDelete('cascade');
             $table->integer('quotable_id');
             $table->string('quotable_type');
             $table->integer('quantity');

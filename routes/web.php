@@ -38,6 +38,7 @@ use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\TransportTarifController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\DistanceController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PayrollSheetController;
 use App\Http\Controllers\VolunteerResourceHistoryController;
@@ -235,6 +236,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
     Route::get('training_sessions', [RegionController::class, 'place'])->name('region.place');
     Route::resource('translation',TranslationTextController::class);
+    Route::resource('language',LanguageController::class);
 
     //Route::get('training_',[RegionController::class,'place'])->name('region.place');
     ///////////////////////////////////////////////////////////////////////////////////
@@ -248,8 +250,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('payroll', PayrollController::class);
     Route::resource('payrollSheet', PayrollSheetController::class);
     Route::get('generatePDF', [PayrollSheetController::class, 'generatePDF'])->name('payrollSheet.generatePDF');
-    Route::get('payee_list', [PayrollSheetController::class, 'payee'])->name('payrollSheet.payee');
-    //Route::get('/payroll/{id}/payroll_sheet', [PayrollSheetController::class, 'payrollSheet'])->name('payrollSheet.dispaly');
+
+    Route::get('{payroll_id}/payroll_list', [PayrollSheetController::class, 'payroll_list'])->name('payrollSheet.payroll_list');
+    Route::get('{payroll_sheet_id}/payee_list', [PayrollSheetController::class, 'payee'])->name('payrollSheet.payee');
+
     ////////////////////////////////////////////////////////////////////
     Route::resource('region', RegionController::class);
     Route::resource('zone', ZoneController::class);

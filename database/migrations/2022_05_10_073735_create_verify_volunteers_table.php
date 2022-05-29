@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('verify_volunteers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Volunteer::class);
+            $table->foreignIdFor(Volunteer::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('token');
             $table->timestamps();
         });

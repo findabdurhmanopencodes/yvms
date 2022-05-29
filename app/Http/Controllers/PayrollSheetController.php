@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePayrollSheetRequest;
 use App\Http\Requests\UpdatePayrollSheetSheetRequest;
 use App\Models\Payroll;
 use App\Models\PayrollSheet;
+use App\Models\TransportTarif;
 use App\Models\PayrollSheetSheet;
 use App\Models\Region;
 use App\Models\TrainingCenterCapacity;
@@ -15,8 +16,12 @@ use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\Woreda;
 use App\Models\PaymentType;
+
 use Andegna\DateTimeFactory;
+use App\Models\Distance;
 use App\Models\Volunteer;
+use App\Models\ApprovedApplicant;
+use App\Models\Status;
 use App\Models\Zone;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
@@ -26,6 +31,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use DateTime;
+use GuzzleHttp\TransferStats;
+
 class PayrollSheetController extends Controller
 {
     /**
@@ -40,87 +47,131 @@ class PayrollSheetController extends Controller
 
     }
 
-    public function index(Request $request,Payroll $payroll_id)
+    public function index(Request $request)
     {
 
-      //  $payroll_sheets = PayrollSheet::whereRelation('payroll_sheets','training_centers','training_sessions','payroll_id',1)->paginate(10);
-       // $payrollsheets = PayrollSheet::with('payrollSheets.payroll')->find($payroll_id);
-         $training_centers = TraininingCenter::all();
-         $training_sessions = TrainingSession::all();
-         $payroll_sheets = PayrollSheet::orderBy('id', 'Desc')->Paginate(10);
-        // $payrollcode = PayrollSheet::whereRelation('id',$payroll_id);
+        $training_centers = TraininingCenter::all();
+       $training_sessions = TrainingSession::all();
+        $payroll_sheets = PayrollSheet::orderBy('id', 'Desc')->Paginate(10);
 
-       return view('payrollSheet.index', compact(['payroll_sheets',
-       'training_centers','training_sessions']));
-        //return view('payrollSheet.index', compact('payroll_sheets'));
-    }
-
-    public function generatePDF( Request $request) {
-
-             $placedVolunteers = Volunteer::all();
-             $paymentTypes  = PaymentType::where('id',1)->first();
-             $year = '2014';
-             $date = DateTimeFactory::fromDateTime(new Carbon('now'))->format('d/m/Y h:i:s');
-             $title = 'Trainee  payroll Payment report';
-             $session = 'MoP-YVMS-01-2014';
-             $center ='Jimma University';
-
-             if ( $request->get('payment_type')=='fixed') {
-
-                // write here code to generate  pocket meoney for trainee
-              }
-
-             elseif ($request->get('payment_type')=='transport') {
-                  // write here location based payment betwwen zone and training center in kemeter
-             }
-               else{
-
-                 }
-
-            if ($request->get('format') != null and $request->get('format')=='pdf') {
-            $pdf = PDF::loadView('payrollSheet.myPDF', compact('placedVolunteers','title','paymentTypes','session','center'))->setPaper('a4', 'landscape');
-            return $pdf->download('payroll'.$year.'pdf');
-              }
-           else{
-            return redirect()->route('payrollSheet.index')->with('message', 'Sorry currently We have no Ms exceel file');
-
-        }
-
+        return view('payrollSheet.index', compact('payroll_sheets','training_centers', 'training_sessions'));
 
     }
 
-    public function payee(Request $request)
+    public function payroll_list($payroll_id){
+
+
+        $training_centers = TraininingCenter::all();
+        $training_sessions = TrainingSession::all();
+        $training_centers = TraininingCenter::all();
+        $payroll_sheets = PayrollSheet::select('*')->where('id', '=',$payroll_id)->paginate(10);
+
+        return view('payrollSheet.index', compact('payroll_sheets','training_centers', 'training_sessions'));
+
+    }
+
+    public function calculate($zone_id, $traingCenter_id)
     {
-        // $trainingSession = TrainingSession::availableSession()->first();
+          $result = 0.0;
+          $distance  = Distance::select('km')->where('zone_id', '=', $zone_id)->where('trainining_center_id', '=', $traingCenter_id)->get()->last();
+          $tarif = TransportTarif::select('price')->get()->last()->price;
 
-        // $q = TrainingPlacement::query()->where('training_placements.training_session_id', $trainingSession->id);
+          if ($distance==null) {
+                $result = 0;
+            }
+            else{
+                $result =  $distance->km  * $tarif;
+            }
 
-        // if ($request->get('payment') != null and $request->get('payment')=='fixed') {
-        //     $q->whereHas('approvedApplicant.volunteer.woreda.zone.region', function ($query) use ($request) {
-        //         $query->where('id', $request->get('region'));
-        //     });
-        // }
-        // if ($request->get('transport') != null and $request->get('transport')=='transport') {
-        //     $q->whereHas('approvedApplicant.volunteer.woreda.zone', function ($query) use ($request) {
-        //         $query->where('id', $request->get('zone'));
-        //     });
-        // }
-        // if ($request->get('mothly') != null and $request->get('monthly')=='monthly') {
-        //     $q->whereHas('approvedApplicant.volunteer.woreda', function ($query) use ($request) {
-        //         $query->where('id', $request->get('woreda'));
-        //     });
-        // }
 
+        return  $result;
+    }
+
+
+
+      public function getPayee($training_session_id,$trainining_center_id){
+
+        $results = [];
+        $results = Volunteer::whereRelation('status','acceptance_status',5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainining_center_id)->whereRelation('approvedApplicant', 'training_session_id', $training_session_id)->get();
+
+        return $results;
+
+      }
+
+
+    public function generatePDF(Request $request)
+    {
+
+        $placedVolunteers = Volunteer::whereRelation('status','acceptance_status',5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
         $total_volunteers = DB::table('volunteers')->count();
-        
-        $placedVolunteers = Volunteer::all();
-        $PaymentType  = PaymentType::where('id',1)->first();
+        $paymentTypes  = PaymentType::where('id', 1)->first();
+
+        $year = Carbon::now()->format('Y');
+        $date = DateTimeFactory::fromDateTime(new Carbon('now'))->format('d/m/Y h:i:s');
+        $title = 'Trainee  payroll Payment report';
+        $session = 'MoP-YVMS-01-2014';
+        $center = 'Jimma University';
+
+   ///////////////////////////////////////////////////////////////////////////////
+        if ($request->get('payment_type') == '1') {  // for pocket  money payment
+            if ($request->get('format') != null and $request->get('format') == 'pdf') {
+                $pdf = PDF::loadView('payrollSheet.pocket_money_pdf', compact(
+                    'placedVolunteers',
+                    'title',
+                    'paymentTypes',
+                    'session',
+                    'center',
+                    'total_volunteers'
+                ))->setPaper('a4', 'landscape');
+
+                return $pdf->download('payroll' . $year . 'pdf');
+            } else {
+                return redirect()->route('payrollSheet.index')->with('message', 'Sorry currently We have no Ms exceel file');
+            }
+        }
+        //////////////////////////////////////////////////////////////////////////
+        elseif ($request->get('payment_type') == '2') { // for transport payment
+            $totals = [];
+            foreach ($placedVolunteers as $key => $value) {
+
+                array_push($totals, $this->calculate($value->woreda->zone->id, $value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->id));
+
+            }
+            if ($request->get('format') != null and $request->get('format') == 'pdf') {
+                $payment = 2000;
+                $pdf = PDF::loadView('payrollSheet.transport_payment_pdf', compact(
+                    'placedVolunteers',
+                    'title',
+                    'totals',
+                    'session',
+                    'center',
+                    'total_volunteers',
+                ))->setPaper('a4', 'landscape');
+
+                return $pdf->download('transport_payment' . $year . 'pdf');
+            } else {
+
+                return redirect()->route('payrollSheet.index')->with('message', 'Sorry currently We have no Ms exceel file');
+            }
+             } else {
+            return redirect()->route('payrollSheet.index')->with('message', 'Sorry currently  no other typeo of paymment');
+        }
+    }
+
+ public function payee($payroll_sheet_id) {
+
+        $training_session_id  = PayrollSheet::select('training_session_id')->where('id', '=',$payroll_sheet_id)->get()->first()->training_session_id;
+        $trainining_center_id  = PayrollSheet::select('trainining_center_id')->where('id', '=',$payroll_sheet_id)->get()->first()->trainining_center_id;
+        $placedVolunteers = $this->getPayee($training_session_id,$trainining_center_id);
+        $center = TraininingCenter::where('id', $trainining_center_id)->get()->first();
+        $PaymentType  = PaymentType::where('id', 1)->first();
         return view('payrollSheet.trainee_list', [
             'placedVolunteers' => $placedVolunteers,
-            'PaymentType' =>$PaymentType,
-            'total_vol'=>   $total_volunteers,
-            'payment_types' =>PaymentType::all(),
-
+            'PaymentType' => $PaymentType,
+            'total_vol' =>   DB::table('volunteers')->count(),
+            'payment_types' => PaymentType::all(),
+            'center' => $center,
+            'training_session_id'=>$training_session_id
         ]);
     }
 
@@ -131,22 +182,18 @@ class PayrollSheetController extends Controller
      */
     public function create()
     {
-          // creating eduycational level setting
-          return view('payrollSheet.create');
-
+        // creating eduycational level setting
+        return view('payrollSheet.create');
     }
     public function store(Request $request)
     {
-
         $payroll_sheet = new PayrollSheet();
-        $payroll_sheet->payroll_id= 1;
+        $payroll_sheet->payroll_id = 1;
         $payroll_sheet->trainining_center_id = $request->training_center;
         $payroll_sheet->training_session_id = TrainingSession::availableSession()->last()->id;
-        $payroll_sheet->user_id=Auth::user()->id;
-        $payroll_sheet ->save();
-
-
-          return redirect()->route('payrollSheet.index')->with('message', 'PayrollSheet created successfully');
+        $payroll_sheet->user_id = Auth::user()->id;
+        $payroll_sheet->save();
+        return redirect()->route('payrollSheet.index')->with('message', 'PayrollSheet created successfully');
     }
     /**
      * Display the specified resource.
@@ -157,7 +204,7 @@ class PayrollSheetController extends Controller
     public function show(PayrollSheet $payrollsheet_id)
     {
         return view('payrollSheet.show', [
-            'PayrollSheet' =>PayrollSheet::findOrFail($payrollsheet_id)
+            'PayrollSheet' => PayrollSheet::findOrFail($payrollsheet_id)
         ]);
     }
 
@@ -169,7 +216,7 @@ class PayrollSheetController extends Controller
      */
     public function edit(PayrollSheet $payrollsheet)
     {
-        return view('payrollsheet.edit',compact('payrollsheet'));
+        return view('payrollsheet.edit', compact('payrollsheet'));
     }
     /**
      * Update the specified resource in storage.
@@ -180,7 +227,7 @@ class PayrollSheetController extends Controller
      */
     public function update(UpdatePayrollSheetRequest $request, PayrollSheet $payrollsheet)
     {
-        $data = $request->validate(['name' => 'required|string|unique:payrollsheets,name,'.$payrollsheet->id]);
+        $data = $request->validate(['name' => 'required|string|unique:payrollsheets,name,' . $payrollsheet->id]);
         $payrollsheet->update($data);
         return redirect()->route('payrollsheet.index')->with('message', 'PayrollSheet updated successfully');
         //
@@ -191,7 +238,7 @@ class PayrollSheetController extends Controller
      * @param  \App\Models\PayrollSheet  $payrollsheet
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,PayrollSheet $payrollsheet)
+    public function destroy(Request $request, PayrollSheet $payrollsheet)
     {
         $payrollsheet->delete();
         if ($request->ajax()) {
