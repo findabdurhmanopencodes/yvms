@@ -193,7 +193,7 @@
 
                     var p6 = document.createElement("p");
                     var s6 = document.createElement("strong");
-                    var textToAdd6 = document.createTextNode( '{{ $userType }}' == 'mop user' ? applicant.user.first_name.toUpperCase()+' '+applicant.user.father_name.toUpperCase() : applicant.master.user.first_name.toUpperCase()+' '+applicant.master.user.father_name.toUpperCase() );
+                    var textToAdd6 = document.createTextNode( '{{ $userType }}' == 'mop user' ? applicant.user.first_name.toUpperCase() );
                     s6.appendChild(textToAdd6);
                     p6.appendChild(s6);
                     p6.style.position = "relative";
@@ -315,7 +315,7 @@
 
                     var p2 = document.createElement("p");
                     var s2 = document.createElement("strong");
-                    var textToAdd2 = document. createTextNode(applicant.first_name+' '+applicant.father_name);
+                    var textToAdd2 = document. createTextNode(applicant.first_name);
                     s2.appendChild(textToAdd2);
                     p2.appendChild(s2);
                     p2.style.position = "relative";

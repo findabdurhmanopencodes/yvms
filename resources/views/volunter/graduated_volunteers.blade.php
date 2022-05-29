@@ -73,7 +73,7 @@
                 <tbody>
                     @foreach ($graduatedVolunteers as $key => $graduatedVolunteer)
                         <tr>
-                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $graduatedVolunteer->id_number }}</td>
                             <td>{{ $graduatedVolunteer->name() }}</td>
                             {{-- <td>{{ $placedVolunteer->approvedApplicant->volunteer->father_name }}</td> --}}
                             {{-- <td> {{ $placedVolunteer->approvedApplicant->volunteer->grand_father_name }} </td> --}}
