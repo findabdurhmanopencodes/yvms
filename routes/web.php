@@ -189,7 +189,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::resource('{training_center}/cindication_room', CindicationRoomController::class);
     Route::resource('training_master_placement', TrainingMasterPlacementController::class);
     Route::get('{training_center}/trainer/list', [IdGenerateController::class, 'TrainerList'])->name('training_center.trainer_list');
-    Route::get('{training_center}/{cindication_room}/attendance_export', [TraininingCenterController::class, 'get_attendance_data'])->name('attendance.export');
+    Route::get('{training_center}/{cindication_room}/attendance_export/{schedule_id}', [TraininingCenterController::class, 'get_attendance_data'])->name('attendance.export');
     Route::post('{training_center}/{cindication_room}/attendance_import', [TraininingCenterController::class, 'fileImport'])->name('attendance.import');
 
     Route::get('{region_id}/region/capacity', [RegionController::class, 'regionIntake'])->name('region.intake');
@@ -201,6 +201,11 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('{woreda_id}/woreda/capacity', [WoredaController::class, 'woredaIntake'])->name('woreda.intake');
     Route::post('woreda/{woreda_id}/capacity/store', [WoredaController::class, 'woredaIntakeStore'])->name('woreda.intake_store');
     Route::post('/approve_placment',[TrainingSessionController::class,'approvePlacment'])->name('placment.approve');
+
+    Route::get('{training_center}/show/volunteers', [TraininingCenterController::class, 'show_all_volunteers'])->name('show.volunteers');
+    Route::post('{training_center}/graduate', [TraininingCenterController::class, 'graduateVolunteers'])->name('graduate.volunteers');
+
+    Route::get('graduated/list', [TraininingCenterController::class, 'graduationList'])->name('graduation.list');
 });
 
 
@@ -245,8 +250,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('payroll', PayrollController::class);
     Route::resource('payrollSheet', PayrollSheetController::class);
     Route::get('generatePDF', [PayrollSheetController::class, 'generatePDF'])->name('payrollSheet.generatePDF');
-    Route::get('payee_list', [PayrollSheetController::class, 'payee'])->name('payrollSheet.payee');
-    //Route::get('/payroll/{id}/payroll_sheet', [PayrollSheetController::class, 'payrollSheet'])->name('payrollSheet.dispaly');
+
+    Route::get('{payroll_id}/payroll_list', [PayrollSheetController::class, 'payroll_list'])->name('payrollSheet.payroll_list');
+    Route::get('{payroll_sheet_id}/payee_list', [PayrollSheetController::class, 'payee'])->name('payrollSheet.payee');
+
     ////////////////////////////////////////////////////////////////////
     Route::resource('region', RegionController::class);
     Route::resource('zone', ZoneController::class);

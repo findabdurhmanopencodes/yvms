@@ -23,7 +23,7 @@ class TrainingPlacement extends Model
 
     public function getRegionAttribute()
     {
-        return $this->approvedApplicant->region->id;
+        return $this->approvedApplicant->region;
     }
 
     public function session()

@@ -18,6 +18,8 @@
     <!--begin::Card-->
     <div class="card card-custom card-body mb-3">
         <form action="{{ route('payrollSheet.generatePDF',[]) }}" method="GET">
+            <input type="hidden" name="session" value="{{ $training_session_id }}">
+            <input type="hidden" name="center" value="{{ $center->id }}">
             <div class=" ml-0 col-12 p-0">
                 <div class="row ">
                     <div class="form-group col-4">
@@ -43,7 +45,7 @@
                         <button class="btn btn-primary btn-sm"><i class="fa fa-print"> </i> Print out</button>
                     </div>
 
-              <span> Total Trainee :{{ $total_vol }}  &nbsp;  Training Session ID :0    &nbsp;    Training Center: JU</span>
+              <span> Total Trainee :{{ $placedVolunteers->count() }}  &nbsp;  &nbsp;    Training Center: {{ $center->code }}</span>
                 </div>
             </div>
         </form>
@@ -53,7 +55,7 @@
     <div class="card card-custom">
 
         <div class="card-body">
-            <table width="100%" class="table table-striped ">
+            <table width="100%"  style="font-size:12px;" class="table table-striped ">
                 <thead>
                     </tr>
                     <th> #</th>
@@ -62,7 +64,8 @@
                     <th> Sex </th>
                     <th> CBE Acc </th>
                     <th> Amount </th>
-                    <th> Zone </th>
+                    <th> Tax rate </th>
+                    <th> Origin zone </th>
 
                     </tr>
                 </thead>
@@ -74,7 +77,9 @@
                              <td> {{ $placedVolunteer->phone }} </td>
                              <td> {{ $placedVolunteer->gender }} </td>
                              <td> {{ $placedVolunteer->account_number }} </td>
-                             <td>  {{ $PaymentType->amount }} </td>
+                             <td> ETB {{ number_format($PaymentType->amount,2) }} </td>
+
+                             <td> {{ '0%' }} </td>
                              <td>  {{ $placedVolunteer->woreda->zone->name }}  </td>
 
 

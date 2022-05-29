@@ -45,7 +45,7 @@
                                     <tr>
                                         <th> ID </th>
                                         <th> Name </th>
-                                        <th> Training Center </th>
+                                        <th> Center </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -55,12 +55,10 @@
                                                 {{ $applicant->id }}
                                             </td>
                                             <td>
-                                                {{($applicant->getTable() == 'volunteers')?$applicant->first_name:$applicant->master->user->first_name}}
+                                                {{($applicant->getTable() == 'volunteers'?$applicant->first_name:($userType == 'mop user'))? $applicant->user->first_name.' '.$applicant->user->father_name : $applicant->master->user->first_name.' '.$applicant->master->user->father_name}}
                                             </td>
                                             <td>
-                                                {{($applicant->getTable() == 'volunteers')?$applicant->approvedApplicant?->trainingPlacement?->trainingCenterCapacity?->trainingCenter?->code:$trainingCenter->code}}
-
-                                                {{-- {{ $applicant->approvedApplicant?->trainingPlacement?->trainingCenterCapacity?->trainingCenter?->code }} --}}
+                                                {{ $trainingCenter->code }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -169,7 +167,7 @@
 
                     var p4 = document.createElement("p");
                     var s4 = document.createElement("strong");
-                    var textToAdd4 = document.createTextNode("Master Trainer ID");
+                    var textToAdd4 = document.createTextNode('{{ $userType }}' == 'mop user' ? 'Mop User' : 'Master Trainer');
                     s4.appendChild(textToAdd4);
                     p4.appendChild(s4);
                     p4.style.position = "relative";
@@ -195,16 +193,18 @@
 
                     var p6 = document.createElement("p");
                     var s6 = document.createElement("strong");
-                    var textToAdd6 = document.createTextNode(applicant.master.user.first_name.toUpperCase()+' '+applicant.master.user.father_name.toUpperCase()+' '+applicant.master.user.grand_father_name.toUpperCase());
+                    var textToAdd6 = document.createTextNode( '{{ $userType }}' == 'mop user' ? applicant.user.first_name.toUpperCase()+' '+applicant.user.father_name.toUpperCase() : applicant.master.user.first_name.toUpperCase()+' '+applicant.master.user.father_name.toUpperCase() );
                     s6.appendChild(textToAdd6);
                     p6.appendChild(s6);
                     p6.style.position = "relative";
                     p6.style.left = "87px";
                     p6.style.top = "-237px";
+                    p6.style.marginRight = "45px";
                     p6.style.backgroundColor = "inherit";
                     p6.style.fontSize = '11px';
                     p6.style.color = '#000000';
                     myDesign.appendChild(p6);
+                    myDesign.marginRight = "100px"
                     
                     var p7 = document.createElement("p");
                     var s7 = document.createElement("strong");
@@ -315,7 +315,7 @@
 
                     var p2 = document.createElement("p");
                     var s2 = document.createElement("strong");
-                    var textToAdd2 = document. createTextNode(applicant.first_name);
+                    var textToAdd2 = document. createTextNode(applicant.first_name+' '+applicant.father_name);
                     s2.appendChild(textToAdd2);
                     p2.appendChild(s2);
                     p2.style.position = "relative";

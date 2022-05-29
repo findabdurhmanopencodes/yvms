@@ -65,14 +65,19 @@
                     <li class="navi-header pb-1">
                         <span class="text-primary text-uppercase font-weight-bold font-size-sm">Import/Export:</span>
                     </li>
-                    <li class="navi-item">
-                        <a href="{{ route('session.attendance.export', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room'=>Request::route('cindication_room')]) }}" class="navi-link">
-                            <span class="navi-icon">
-                                <i class="flaticon2-shopping-cart-1"></i>
-                            </span>
-                            <span class="navi-text">Export Data</span>
-                        </a>
-                    </li>
+                    <form method="GET" id="export_form" action="{{ route('session.attendance.export', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room'=>Request::route('cindication_room'), 'schedule_id'=>1]) }}">
+                     @csrf
+
+                        <input type="hidden" name="schedule_id" id="schedule_id" value="">
+                        <li class="navi-item">
+                            <a id="export_data" href="#" onclick="$('#export_form').submit()" class="navi-link">
+                                <span class="navi-icon">
+                                    <i class="flaticon2-shopping-cart-1"></i>
+                                </span>
+                                <span class="navi-text">Export Data</span>
+                            </a>
+                        </li>
+                    </form>
                     <li class="navi-item">
                         <a href="#" class="navi-link" data-toggle="modal" data-target="#exampleModal">
                             <span class="navi-icon">
@@ -85,11 +90,12 @@
                 </ul>
                 <!--end::Navigation-->
             </div>
-        </div>
-
-        
-        
+        </div>    
     </div>
+        {{-- <input type="hidden" id="session_id" value="{{ Request::route('training_session')->id }}">
+        <input type="hidden" id="center_id" value="{{ $trainingCenter->id }}">
+        <input type="hidden" id="cindication_id" value="{{ Request::route('cindication_room')->id }}"> --}}
+
         <div class="card-body pl-0" id="search_card" style="overflow: scroll;">
             <table width="100%" class="table" id="search_table">
                 <thead>
@@ -97,7 +103,11 @@
                         {{-- <th> ID </th> --}}
                         <th style="background-color:white;font-size:13px;width: 250px !important;position: sticky;left: 0;z-index: 999999;"> Name </th>
                         @foreach ($trainingSchedules as $trainingSchedule)
-                            <th style="font-size: 13px;">{{ $trainingSchedule->schedule->dateET() }} {{ ($trainingSchedule->schedule->shift == 0)? "Morning" : "Afternoon"  }}</th>
+                            @if (!$trainingSchedule->schedule->checkDateAtt())
+                                <th style="font-size: 13px;"><input type="radio" name="radioSchedule" value="{{ $trainingSchedule->schedule->id }}" id="radioSchedule" disabled/> {{ $trainingSchedule->schedule->dateET() }} {{ ($trainingSchedule->schedule->shift == 0)? "Morning" : "Afternoon"  }}</th>
+                            @else
+                                <th style="font-size: 13px;"><input type="radio" name="radioSchedule" value="{{ $trainingSchedule->schedule->id }}" id="radioSchedule"/> {{ $trainingSchedule->schedule->dateET() }} {{ ($trainingSchedule->schedule->shift == 0)? "Morning" : "Afternoon"  }}</th>
+                            @endif
                         @endforeach
                     </tr>
                 </thead>
@@ -148,7 +158,7 @@
 @push('js')
     <script>
         var myCheckboxes = new Array();
-        $('input').change(function() {
+        $('input:checkbox').change(function() {
             
             if(this.checked) {
                 $.ajax({
@@ -176,6 +186,15 @@
                     },
                 });
             }
+        });
+    </script>
+
+    <script>
+        $('input:radio').change(function(){
+                if (this.checked) {
+                    var schedule_id = this.value;
+                    $('#schedule_id').val(schedule_id);
+                }
         });
     </script>
 @endpush

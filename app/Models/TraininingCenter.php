@@ -48,6 +48,10 @@ class TraininingCenter extends Model
         return $this->hasMany(Distance::class);
     }
 
+    public function PayrollSheet(){
+        return $this->hasMany(PayrollSheet::class);
+    }
+
     public function checkers()
     {
         return $this->hasMany(User::class);

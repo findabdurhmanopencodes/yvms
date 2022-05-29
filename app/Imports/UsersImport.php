@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\Schedule;
 use App\Models\TrainingSchedule;
 use App\Models\TrainingSessionTraining;
+use App\Models\User;
 use App\Models\UserAttendance;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
@@ -30,18 +31,24 @@ class UsersImport implements ToCollection,  WithStartRow
     */
     public function collection(Collection $row)
     {
-        // dd('sdfsd');
-        foreach ($row as $key => $value) {
-            foreach (Schedule::where('training_session_id', $this->trainingSession->id)->get() as $key => $val) {
-                if ($val->checkDateAtt() == true && $val->shift == 1) {
-                    $training_schedule_id = TrainingSchedule::where('training_session_training_id', TrainingSessionTraining::where('training_session_id', $this->trainingSession->id)->pluck('id'))->where('schedule_id', $val->id)->get()[0]->id;
+        $schedule = Schedule::where('id', $row[0][5])->get()[0];
+        $arr = [];
+        foreach ($row as $key => $ro) {
+            array_push($arr, $ro);
+        }
+        array_shift($arr);
+        foreach ($arr as $key => $value) {
+            
+            if ($schedule->checkDateAtt() == true) {
+                $training_schedule_id = TrainingSchedule::where('training_session_training_id', TrainingSessionTraining::where('training_session_id', $this->trainingSession->id)->pluck('id'))->where('schedule_id', $schedule->id)->get()[0]->id;
+                
+                $user_id = User::whereRelation('volunteer', 'id_number', $value[0])->get()[0]->id;
 
-                    $checkifExists = UserAttendance::where('user_id',$value[0])->where('training_schedule_id',$training_schedule_id)->get();
+                $checkifExists = UserAttendance::where('user_id',$user_id)->where('training_schedule_id',$training_schedule_id)->get();
 
-                    if (!$checkifExists->first()) {
-                        if ($value[2] == 'P') {
-                            UserAttendance::create(['user_id' => $value[0], 'training_schedule_id' => $training_schedule_id]);
-                        }
+                if (!$checkifExists->first()) {
+                    if ($value[4] == 'P') {
+                        UserAttendance::create(['user_id' => $user_id, 'training_schedule_id' => $training_schedule_id]);
                     }
                 }
             }
@@ -53,6 +60,6 @@ class UsersImport implements ToCollection,  WithStartRow
      */
     public function startRow(): int
     {
-        return 2;
+        return 1;
     }
 }
