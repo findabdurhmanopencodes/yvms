@@ -234,7 +234,16 @@
                                         class="menu-link">
                                         <i class="menu-icon fal fa-map-marker-check"></i>
 
-                                        <span class="menu-text">Placment Result</span>
+                                        <span class="menu-text">Placement Result</span>
+                                    </a>
+                                </li>
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.deployment.index') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.deployment.index', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon fal fa-map-marker-check"></i>
+
+                                        <span class="menu-text">Deployments </span>
                                     </a>
                                 </li>
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.schedule') === 0 ? 'menu-item-active' : '' }}"
@@ -648,23 +657,21 @@
     @stack('js')
     <!--end::Page Scripts-->
     <script>
-
-
         @if (Session::has('message') && !Session::has('error'))
             $(function() {
                 toastr.success('{{ Session::get('message') }}');
             })
-            @endif
+        @endif
 
         @if (session('warning'))
             $(function() {
-                swal.fire("Error!", "{{session('warning')}}", "warning");
+                swal.fire("Error!", "{{ session('warning') }}", "warning");
             })
         @endif
 
         @if (session('error'))
             $(function() {
-                swal.fire("Error!", "{{session('error')}}", "error");
+                swal.fire("Error!", "{{ session('error') }}", "error");
             })
         @endif
     </script>
