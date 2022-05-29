@@ -11,6 +11,7 @@ use App\Models\TraininingCenter;
 use App\Models\User;
 use App\Models\Volunteer;
 use App\Models\Woreda;
+use App\Models\WoredaIntake;
 use App\Models\Zone;
 use Database\Factories\UserFactory;
 use DateTime;
@@ -133,7 +134,33 @@ class DatabaseSeeder extends Seeder
             }
         }
         // $this->approveAllVolunteers();
+        DatabaseSeeder::woredaIntake();
     }
+
+    public static function woredaIntake()
+    {
+        $intakes = [6, 6, 5, 6, 7, 5, 6, 10, 7, 6, 4, 8, 7, 9, 8];
+        $trainingSession = TrainingSession::availableSession()->first();
+        foreach ($intakes as $intake) {
+            WoredaIntake::create([
+                'training_session_id' => $trainingSession->id,
+                'woreda_id' => DatabaseSeeder::randomUniqueWoreda($trainingSession), 'intake' => $intake
+            ]);
+        }
+
+    }
+
+    public static function randomUniqueWoreda($trainingSession)
+    {
+        $woredaCount = Woreda::count();
+        $woredaId = mt_rand(1, $woredaCount);
+        if (WoredaIntake::where(['training_session_id' => $trainingSession->id, 'woreda_id' => $woredaId])->count() > 0 ) {
+            return DatabaseSeeder::randomUniqueWoreda($trainingSession);
+        }
+
+        return $woredaId;
+    }
+
     public function approveAllVolunteers()
     {
         foreach (Volunteer::all() as $v)

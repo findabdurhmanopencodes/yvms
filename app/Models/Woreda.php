@@ -29,9 +29,16 @@ class Woreda extends Model
         return $this->belongsTo(Zone::class);
     }
 
+
+
     public function getRegionAttribute()
     {
-        return $this->zone->region->id;
+        return $this->zone->region;
+    }
+    public function getIntakeAttribute()
+    {
+        $session = TrainingSession::availableSession()->first();
+        return $this->woredaIntakes()->where(['training_session_id' => $session->id])->first()->intake;
     }
 
     public function getQuotasInNumberAttribute()
@@ -50,11 +57,13 @@ class Woreda extends Model
         return $this->hasMany(Volunteer::class);
     }
 
-    public function sessionWoredas(){
+    public function sessionWoredas()
+    {
         return $this->hasMany(SessionWoreda::class);
     }
 
-    public function woredaIntakes(){
+    public function woredaIntakes()
+    {
         return $this->hasMany(WoredaIntake::class);
     }
 }

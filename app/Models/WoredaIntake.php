@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class WoredaIntake extends Model
 {
     use HasFactory;
+
     protected $table = "woreda_intakes";
 
     /**
@@ -21,7 +22,13 @@ class WoredaIntake extends Model
         'intake',
     ];
 
-    public function woreda(){
+    public function woreda()
+    {
         return $this->belongsTo(Woreda::class);
+    }
+
+    public function getRegionAttribute()
+    {
+        return $this->woreda->region;
     }
 }

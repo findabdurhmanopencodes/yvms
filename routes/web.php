@@ -229,11 +229,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('disablity', DisablityController::class);
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
     Route::get('training_sessions', [RegionController::class, 'place'])->name('region.place');
-<<<<<<< HEAD
     Route::resource('translation',TranslationTextController::class);
 
-=======
->>>>>>> e49fc1ef663b4a22954eff52889f831347de85fd
     //Route::get('training_',[RegionController::class,'place'])->name('region.place');
     ///////////////////////////////////////////////////////////////////////////////////
     Route::resource('training_session', TrainingSessionController::class);
