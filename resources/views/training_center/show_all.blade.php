@@ -30,7 +30,7 @@
                             <div class="form-group row">
                                 <div class="col-lg-9">
                                     <label>Attendace amount</label>
-                                    <input type="number" id="att_amount" class="form-control" name="att_amount"/>
+                                    <input type="number" id="att_amount" class="form-control" name="att_amount" max="{{ count($arr_unique) }}"/>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -51,7 +51,7 @@
     </div>
 </form>
 {{-- <form method="POST" action="{{ route('session.training_center.generate', ['training_session' => Request::route('training_session'),'training_center'=>$trainingCenter->id]) }}"> --}}
-    @csrf
+    {{-- @csrf --}}
     <div class="card card-custom">
     <input type="hidden" value="{{ $trainingCenter->id }}" id="training_center_id">
     <div class="card-header flex-wrap  pt-6 ">
@@ -83,7 +83,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody> 
                     @if (count($applicants) > 0)
                         @foreach ($applicants as $key => $applicant)
                             <tr>
@@ -96,7 +96,21 @@
                                 <td>
                                     {{ $userAttendance->where('user_id', $applicant->user->id)->count() }}
                                 </td>
-                                <td></td>
+                                <td>
+                                    @if ($applicant->status->acceptance_status == 6)
+                                        <a href="#" class="btn btn-success">
+                                            <span class="svg-icon svg-icon-md">
+                                                <i class="flaticon-medal" id="i_text"></i>
+                                        </span>
+                                        Graduated</a>
+                                    @else
+                                    <a href="#" class="btn btn-danger">
+                                        <span class="svg-icon svg-icon-md">
+                                            <i class="flaticon-medal" id="i_text"></i>
+                                    </span>
+                                    Graduate</a>
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                     @else

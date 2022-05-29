@@ -13,6 +13,7 @@ use App\Models\TrainingSession;
 use App\Models\Zone;
 use App\Models\Region;
 use App\Models\Schedule;
+use App\Models\Status;
 use App\Models\Training;
 use App\Models\TrainingCenterBasedPermission;
 use App\Models\TrainingSchedule;
@@ -219,7 +220,8 @@ class TraininingCenterController extends Controller
     public function checkIn($training_session, $id)
     {
         Volunteer::find($id)->status->update(['acceptance_status' => 5]);
-        return redirect()->route('session.TrainingCenter.CheckIn', ['training_session' => $training_session]);
+        return redirect()->route('session.TrainingCenter.CheckIn',['training_session'=>$training_session]);
+
     }
     public function indexChecking($training_session, Request $request)
     {
@@ -301,22 +303,14 @@ class TraininingCenterController extends Controller
 
     public function get_attendance_data(Request $request,TrainingSession $trainingSession, TraininingCenter $trainingCenter, CindicationRoom $cindicationRoom)
     {
-<<<<<<< HEAD
         $schedule_id = $request->get('schedule_id');
         $users = DB::table('volunteers')->leftJoin('approved_applicants', 'volunteers.id','=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id','=', 'training_placements.approved_applicant_id')->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id','=', 'training_center_capacities.id')->where('training_center_capacities.trainining_center_id',$trainingSession->id)->where('cindication_room_id', $cindicationRoom->id)->select(['id_number','first_name','father_name', 'grand_father_name'])->get();
         
         return Excel::download(new UsersExport( $users,[ 'ID Number','First Name','Father Name','Grand Father Name', 'Status', $schedule_id]), 'attendance.xlsx');
-=======
-        // $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingSession->id)->where('cindication_room_id',$cindicationRoom->id)->paginate(10);
-        // ->select('first_name')
-        $users = DB::table('volunteers')->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')->where('training_center_capacities.trainining_center_id', $trainingSession->id)->where('cindication_room_id', $cindicationRoom->id)->select(['user_id', 'first_name'])->get();
-        return Excel::download(new UsersExport($users, ['User_ID', 'Volunteer Name', 'Status']), 'attendance.xlsx');
->>>>>>> 43608cdc90be943d314fc99d721f813bf1d3f839
         // return Excel::download(new UserAttendance(), 'attendance.xlsx');
     }
 
-    public function fileImport(Request $request, TrainingSession $trainingSession, TraininingCenter $trainingCenter, CindicationRoom $cindicationRoom)
-    {
+    public function fileImport(Request $request, TrainingSession $trainingSession, TraininingCenter $trainingCenter, CindicationRoom $cindicationRoom){
         Excel::import(new UsersImport($trainingSession, $trainingCenter, $cindicationRoom), $request->file('attendance')->store('temp'));
         $past_url = url()->previous();
         return redirect($past_url)->with('success', 'Successfully Registered!!!');
@@ -325,46 +319,39 @@ class TraininingCenterController extends Controller
     public function placeVolunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
         $volunteerGroups = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->get()->groupBy('woreda.zone.region.id');
-        if (count($trainingCenter->rooms) <= 0) {
-            return redirect()->back()->with('error', 'You have no syndication room!');
-        }
-        if (count($volunteerGroups) <= 0) {
-            return redirect()->back()->with('error', 'You have no volunteer to place');
-        }
+        // foreach($volunteerGroups as $volunteerGroup){
+        //     foreach($volunteerGroup as $volunter){
+        //         dump($volunter->woreda->zone->region->name);
+        //         dump($volunter->name());
+        //     }
+        // }
+        // dd('sd');
+        $regionIds = array_keys($volunteerGroups->toArray());
+        $x = [];
         $cindicationRooms = CindicationRoom::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->get();
-        $x = 0;
-        $volunteerGroups = array_values($volunteerGroups->toArray());
-        $numberOfRegions = count($volunteerGroups);
-        foreach($cindicationRooms as $cindicationRoom){
-            $roomCapacity = $cindicationRoom->number_of_volunteers;
-            $placed = 0;
-            $x = 0;
-            while($roomCapacity > $placed ){
-                $row = $x % $numberOfRegions;
-                if(count($volunteerGroups[$row])>0){
-                    $volunteer = Volunteer::find($volunteerGroups[$row][0]['id']);
-                    $volunteer->update([
-                        'cindication_room_id' => $cindicationRoom->id,
-                    ]);
-                    $volunteer->save();
-                    unset($volunteerGroups[$row][0]);
-                    $volunteerGroups[$row] = array_values($volunteerGroups[$row]);
-                    $placed++;
+        foreach ($cindicationRooms as $cindicationRoom) {
+            $capacity = $cindicationRoom->number_of_volunteers;
+            $round = 0;
+            for($a = 0;$a<$capacity;$a++){
+                if($round>=count($volunteerGroups)){
+                    $round = 0;
                 }
-                $x++;
-                if($x > 200){
-                    dd('Contact Abdurhman for this error');
-                    break;
-                }
+                $group = $volunteerGroups[$regionIds[$round]];
+                $volunteer = $group[count($group)-1];
+                $volunteer->update([
+                    'cindication_room_id' => $cindicationRoom,
+                ]);
+                $volunteer->save();
+                $volunteerGroups[$regionIds[$round]]->pop();
+                $round++;
             }
         }
-
-        return redirect()->back()->with('message', 'Volunteer placment finnished');
+        return redirect()->back()->with('message','Volunteer placment finnished');
     }
 
     public function show_all_volunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter, UserAttendance $userAttendance)
     {
-        $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->whereRelation('status','acceptance_status', 5)->paginate(10);
+        $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->paginate(10);
         $trainingSchedules = TrainingSchedule::all();
 
         $arr = [];
@@ -383,16 +370,43 @@ class TraininingCenterController extends Controller
         $att_amount = $request->get('att_amount');
         $all_vol = $request->get('gc_vol');
         $max_att = $request->get('max_attendance');
-
+        
         $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('training_center'))->whereRelation('status','acceptance_status', 5)->get();
 
-        if ($all_vol) { 
-            // foreach (Volunteer::where('training_session_id', $trainingSession->id)->get() as $key => $volunteer) {
-            //     dump($volunteer);
-            // }
-            dd('sfsd');
-        }else{
-
+        if ($all_vol) {
+            foreach ($applicants as $key => $applicant) {
+                Status::where('volunteer_id', $applicant->id)->update(['acceptance_status'=>6]);
+            }
+        } else {
+            foreach ($applicants as $key => $applicant) {
+                if ($applicant->user->attendances->count() >= $att_amount) {
+                    Status::where('volunteer_id', $applicant->id)->update(['acceptance_status'=>6]);
+                }
+            }
         }
+        return redirect()->back()->with('message','Volunteer Successfully Graduated!!!');
+    }
+
+    public function graduationList(TrainingSession $trainingSession, Request $request)
+    {
+        $training_centers = TraininingCenter::all();
+        $regions = Region::all();
+        
+        $q = Volunteer::whereRelation('status', 'acceptance_status', 6)->where('training_session_id', $trainingSession->id);
+
+        if ($request->get('training_center') != null) {
+            $q->whereHas('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', function ($query) use ($request) {
+                $query->where('id', $request->get('training_center'));
+            });
+        }
+        if ($request->get('region') != null) {
+            $q->whereHas('woreda.zone.region', function ($query) use ($request) {
+                $query->where('id', $request->get('region'));
+            });
+        }
+
+        $graduatedVolunteers = $q->paginate(10);
+        
+        return view('volunter.graduated_volunteers', compact('training_centers', 'regions', 'graduatedVolunteers'));
     }
 }
