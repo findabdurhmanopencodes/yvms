@@ -8,6 +8,7 @@ use App\Http\Controllers\DisablityController;
 use App\Http\Controllers\FeildOfStudyController;
 use App\Http\Controllers\EducationalLevelController;
 use App\Http\Controllers\EventController;
+
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\IdGenerateController;
 use App\Http\Controllers\ImportExportController;
@@ -34,6 +35,7 @@ use App\Http\Controllers\UserAttendanceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\WoredaController;
+use App\Http\Controllers\TransportTarifController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\DistanceController;
 use App\Http\Controllers\PayrollController;
@@ -41,12 +43,14 @@ use App\Http\Controllers\PayrollSheetController;
 use App\Http\Controllers\VolunteerResourceHistoryController;
 use App\Http\Controllers\TrainingCenterBasedPermissionController;
 use App\Http\Controllers\TrainingDocumentController;
+use App\Http\Controllers\TranslationTextController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
 use App\Models\PaymentType;
 use App\Models\CindicationRoom;
 use App\Models\Training;
 use App\Models\Distance;
+use App\Models\Event;
 use App\Models\TrainingMaster;
 use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingPlacement;
@@ -56,6 +60,8 @@ use App\Models\Payroll;
 use App\Models\PayrollSheet;
 use App\Models\TrainingDocument;
 use App\Models\TraininingCenter;
+use App\Models\TranslationText;
+use App\Models\TransportTarif;
 use App\Models\User;
 use App\Models\Volunteer;
 use App\Models\Woreda;
@@ -75,8 +81,9 @@ use Symfony\Component\Console\Input\Input;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
+Route::get('importRegion',[RegionController::class,'import']);
+Route::get('importZone',[ZoneController::class,'import']);
+Route::get('importWoreda',[WoredaController::class,'import']);
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
@@ -105,15 +112,16 @@ Route::get('/placement', function () {
     return view('placement.index');
 })->name('placement');
 
-// Route::get('adb', function () {
-//     // dd('sd');
-//     $level = 'asdb';
-//     $introLines = 'adsbi';
-//     $volunteer = Volunteer::find(1);
-//     $notification = (new \App\Notifications\VolunteerPlaced($volunteer))->toMail('findabdurhman@gmail.com');
-//     $markdown = new \Illuminate\Mail\Markdown(view(), config('mail.markdown'));
-//     return $markdown->render($notification->markdown, $notification->data());
-// });
+Route::get('adb', function () {
+    // dd('sd');
+    $level = 'asdb';
+    $introLines = 'adsbi';
+    $volunteer = Volunteer::find(33);
+    // return /
+    // $notification = (new \App\Notifications\VolunteerPlaced($volunteer))->toMail('findabdurhman@gmail.com');
+    // $markdown = new \Illuminate\Mail\Markdown(view(), config('mail.markdown'));
+    // return $markdown->render($notification->markdown, $notification->data());
+});
 // Route::get('send',[NotificationController::class,'sendApplicantPlacmentEmail']);
 Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
 //Role & Permission
@@ -223,8 +231,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('feild_of_study', FeildOfStudyController::class);
     Route::resource('disablity', DisablityController::class);
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
-    ////////////////////////////////////////////////////////////////////////////////
     Route::get('training_sessions', [RegionController::class, 'place'])->name('region.place');
+    Route::resource('translation',TranslationTextController::class);
 
     //Route::get('training_',[RegionController::class,'place'])->name('region.place');
     ///////////////////////////////////////////////////////////////////////////////////
@@ -232,6 +240,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('qouta', QoutaController::class);
     Route::resource('user', UserController::class);
     /////////////////////////////////////////////////////////////////
+    Route::resource('transportTarif', TransportTarifController::class);
     Route::resource('distance', DistanceController::class);
     Route::resource('paymentType', PaymentTypeController::class);
     Route::resource('payroll', PayrollController::class);
@@ -287,3 +296,5 @@ Route::get('{training_session}/reset-verification', [VolunteerController::class,
 //     dd('stop');
 // });
 Route::resource('Events', EventController::class);
+Route::get('/All-Events' ,[EventController::class,'allEvents'])->name('event.all');
+Route::get('/Event/{event}' ,[EventController::class,'detailEvent'])->name('event.detail');

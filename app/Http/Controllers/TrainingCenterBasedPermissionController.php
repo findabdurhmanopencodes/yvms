@@ -41,6 +41,7 @@ class TrainingCenterBasedPermissionController extends Controller
      */
     public function store(StoreTrainingCenterBasedPermissionRequest $request, TrainingSession $trainingSession)
     {
+        // dd('sd');
         $data = $request->validated();
         $permission = Permission::findById($data['permission_id']);
         $trainingCenterBasedPermissionQuery = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', $data['user_id'])->where('trainining_center_id', $data['training_center_id'])->where('permission_id', $data['permission_id'])->where('permission_id', $data['permission_id']);

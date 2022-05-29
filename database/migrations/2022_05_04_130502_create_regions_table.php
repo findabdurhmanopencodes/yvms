@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('regions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('code');
+            $table->string('code')->nullable();
             $table->double('qoutaInpercent')->nullable();
             $table->smallInteger('status');
             $table->timestamps();

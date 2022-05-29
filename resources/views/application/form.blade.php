@@ -611,29 +611,29 @@
                                                     <div class="tab-pane fade show active" id="lang_en_app" role="tabpanel"
                                                         aria-labelledby="lang_en_app">
                                                         National Volunteer Service Community Service Program Youth
-                                                        Participation Requirements: -
+                                                        Participation Requirements:<br>
                                                         The National Volunteer Community Development Service Training
                                                         includes young volunteers nationwide in the 10 regional and 2 city
                                                         governments, and the requirements for registration for this
                                                         volunteer community service are required to have a full
-                                                        identification questionnaire.
+                                                        identification questionnaire. <br>
 
                                                         1. Bachelor's degree and above from legal higher education
-                                                        institutions nationwide;
+                                                        institutions nationwide <br>
                                                         2. Has a Certificate of Completion of Grade 8 National Examination
-                                                        3. Not over 35 years of age;
+                                                        3. Not over 35 years of age <br>
                                                         4. Has a valid ID from the place where he / she lives and identifies
-                                                        the registrant.
+                                                        the registrant. <br>
                                                         5. Be able to give an ethical life testimony from a well-behaved
-                                                        community;
-                                                        6. Free of any kind of addiction.
+                                                        community <br>
+                                                        6. Free of any kind of addiction. <br>
                                                         7. Dedicated and committed to the volunteer service of borderless
-                                                        community engagement.
-                                                        8. Has confidence in the volunteer community service program.
+                                                        community engagement. <br>
+                                                        8. Has confidence in the volunteer community service program.<br>
                                                         9. Has a humane personality and among of the values of our country
-                                                        is giving and sharing.
+                                                        is giving and sharing.</br>
                                                         10. S/he has no health problems and can train and work in any part
-                                                        of the climate.
+                                                        of the climate.<br>
                                                         11. Non-pregnant registered for the Women's Volunteer Community.
                                                     </div>
                                                     <div class="tab-pane fade" id="lang_am_app" role="tabpanel"

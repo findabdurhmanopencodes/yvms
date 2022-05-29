@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreDistanceRequest;
 use App\Http\Requests\UpdateDistanceRequest;
 use App\Models\Distance;
+use App\Models\TraininingCenter;
+use App\Models\TransportTarif;
+use App\Models\Zone;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Files\Disk;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DistanceController extends Controller
 {
@@ -18,12 +23,22 @@ class DistanceController extends Controller
 
     public function index(Request $request)
     {
+
+
         if ($request->ajax()) {
             return datatables()->of(Distance::select())->make(true);
         }
 
-       $distances = Distance::all();
-        return view('distance.index', compact('distances'));
+      // $price = TransportTarif::all()->sortByDesc('id')->take(1)->toArray();
+       $price = DB::table('transport_tarifs')->orderBy('id', 'DESC')->first();
+     //  dd($price);
+       $distances = Distance::paginate(10);
+
+       $training_centers = TraininingCenter::all();
+       $zones = Zone::all();
+
+        return view('distance.index', compact('distances','training_centers','zones', "price"));
+        //return view::make('distance.index')->with('distances','training_centers','zones',  $price);
 
     }
     /**
@@ -47,7 +62,11 @@ class DistanceController extends Controller
         Distance::create([
 
             'zone_id' => $request->get('zone'),
-            'training_session_id'=>$request->get('center')]);
+            'km' => $request->get('km'),
+            'user_id'=>Auth::user()->id,
+            'trainining_center_id'=>$request->get('training_center')
+
+        ]);
 
       return redirect()->route('distance.index')->with('message', 'Distance created successfully');
     }
@@ -60,9 +79,10 @@ class DistanceController extends Controller
      */
     public function show(Distance $distance)
     {
-        //
+        return view('distance.show', [
+            'distance' => Distance::findOrFail($distance)
+        ]);
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -71,7 +91,7 @@ class DistanceController extends Controller
      */
     public function edit(Distance $distance)
     {
-        //
+        return view('distance.edit',compact('distances'));
     }
 
     /**
@@ -84,6 +104,12 @@ class DistanceController extends Controller
     public function update(UpdateDistanceRequest $request, Distance $distance)
     {
         //
+
+      //  $data = $request->validate(['name' => 'required|string|unique:educational_levels,name,'.$educationalLevel->id]);
+         $distance->update();
+      //  $distance->update($data);
+        return redirect()->route('distance.index')->with('message', ' Updated successfully');
+        //
     }
 
     /**
@@ -92,8 +118,11 @@ class DistanceController extends Controller
      * @param  \App\Models\Distance  $distance
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Distance $distance)
+    public function destroy(Request $request, Distance $distance)
     {
-        //
+        $distance->delete();
+        if ($request->ajax()) {
+            return response()->json(array('msg' => 'deleted successfully'), 200);
+        }
     }
 }

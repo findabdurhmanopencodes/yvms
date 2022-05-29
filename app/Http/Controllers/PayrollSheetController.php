@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 use LDAP\Result;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use DateTime;
 class PayrollSheetController extends Controller
 {
@@ -49,21 +50,15 @@ class PayrollSheetController extends Controller
          $payroll_sheets = PayrollSheet::orderBy('id', 'Desc')->Paginate(10);
         // $payrollcode = PayrollSheet::whereRelation('id',$payroll_id);
 
-
-       return view('payrollSheet.index', compact(['payroll_sheets','training_centers','training_sessions']));
+       return view('payrollSheet.index', compact(['payroll_sheets',
+       'training_centers','training_sessions']));
         //return view('payrollSheet.index', compact('payroll_sheets'));
     }
 
-    // public function generateTeamPDF(PDF $pdfCreator, Team $team)
-    // {
-    //     $team = $team::find(Input::get('team'));
-    //     $membersOfTeam = $team->users()->get();
-    //     $pdf = $pdfCreator->loadView('pdf.teamHours', compact('membersOfTeam'));
-    //     return $pdf->stream('Arbeitsstunden');
-    // }
     public function generatePDF( Request $request) {
 
              $placedVolunteers = Volunteer::all();
+             $paymentTypes  = PaymentType::where('id',1)->first();
              $year = '2014';
              $date = DateTimeFactory::fromDateTime(new Carbon('now'))->format('d/m/Y h:i:s');
              $title = 'Trainee  payroll Payment report';
@@ -83,7 +78,7 @@ class PayrollSheetController extends Controller
                  }
 
             if ($request->get('format') != null and $request->get('format')=='pdf') {
-            $pdf = PDF::loadView('payrollSheet.myPDF', compact('placedVolunteers','title','session','center'))->setPaper('a4', 'landscape');
+            $pdf = PDF::loadView('payrollSheet.myPDF', compact('placedVolunteers','title','paymentTypes','session','center'))->setPaper('a4', 'landscape');
             return $pdf->download('payroll'.$year.'pdf');
               }
            else{
@@ -116,12 +111,14 @@ class PayrollSheetController extends Controller
         //     });
         // }
 
+        $total_volunteers = DB::table('volunteers')->count();
+        
         $placedVolunteers = Volunteer::all();
-
-        //$placedVolunteers = $q->paginate(10);
-
+        $PaymentType  = PaymentType::where('id',1)->first();
         return view('payrollSheet.trainee_list', [
             'placedVolunteers' => $placedVolunteers,
+            'PaymentType' =>$PaymentType,
+            'total_vol'=>   $total_volunteers,
             'payment_types' =>PaymentType::all(),
 
         ]);
@@ -147,13 +144,7 @@ class PayrollSheetController extends Controller
         $payroll_sheet->training_session_id = TrainingSession::availableSession()->last()->id;
         $payroll_sheet->user_id=Auth::user()->id;
         $payroll_sheet ->save();
-//   //if ($request->has('training_center')) {
-//               PayrollSheet::create([
-//               'payroll_id'=>1,
-//               'trainining_center_id'=>$request->training_center,
-//               'training_session_id'=>TrainingSession::availableSession()->last()->id,
-//               'user_id'=>Auth::user()->id]);
-//      //   }
+
 
           return redirect()->route('payrollSheet.index')->with('message', 'PayrollSheet created successfully');
     }

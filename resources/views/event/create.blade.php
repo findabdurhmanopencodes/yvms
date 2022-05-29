@@ -134,7 +134,6 @@
                     <div class="row">
                         <div class="col-md-12 form-group d-flex">
 
-
                             <div class="col-md-11">
                                 <input class="form-control @error('title') is-invalid @enderror" type="text"
                                     placeholder="Title" id="title" name="title" value="{{ old('title') }}" />

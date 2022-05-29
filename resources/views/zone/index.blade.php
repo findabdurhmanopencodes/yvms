@@ -68,7 +68,7 @@
 
         });
 
-        $("#zon_quota").on("input", function(){  
+        $("#zon_quota").on("input", function(){
             value = $('#region').val();
               if (value) {
                 $.ajax({
@@ -92,7 +92,7 @@
                 });
               }
         })
-        
+
         var COLUMNS = [{
                 field: 'id',
                 title: '#',
