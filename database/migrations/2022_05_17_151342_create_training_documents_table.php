@@ -18,8 +18,8 @@ return new class extends Migration
         Schema::create('training_documents', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignIdFor(File::class);
-            $table->foreignIdFor(Training::class);
+            $table->foreignIdFor(File::class)->constrained();
+            $table->foreignIdFor(Training::class)->constrained();
             $table->timestamps();
         });
     }

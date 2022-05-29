@@ -19,7 +19,7 @@ return new class extends Migration
             $table->smallInteger('translation_type');
             $table->string('lang');
             $table->longText('content');
-            $table->foreignIdFor(Language::class);
+            $table->foreignIdFor(Language::class)->constrained();
             $table->timestamps();
         });
     }
