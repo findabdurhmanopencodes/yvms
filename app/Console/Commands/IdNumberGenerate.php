@@ -30,8 +30,8 @@ class IdNumberGenerate extends Command
     public function handle()
     {
         foreach (TrainingPlacement::all() as $key=>$placement) {
-            $idNumber = 'MOP-' . $placement->trainingCenterCapacity->trainingCenter?->code . '-' . str_pad($key+1, 6, "0", STR_PAD_LEFT) . '/' . TrainingSession::find(1)->id;
             if( Volunteer::find($placement->approvedApplicant?->volunteer?->id)->id_number==null){
+                $idNumber = 'MoP-' . $placement->trainingCenterCapacity?->trainingCenter?->code . '-' . str_pad($key+1, 5, "0", STR_PAD_LEFT) . '/' . TrainingSession::find(1)->id;
                 Volunteer::find($placement->approvedApplicant?->volunteer?->id)->update(['id_number'=>$idNumber]);
             }
         }

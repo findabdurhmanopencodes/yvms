@@ -19,7 +19,7 @@ return new class extends Migration
         Schema::create('user_attendances', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(TrainingSchedule::class)->constrained();
+            $table->foreignIdFor(TrainingSchedule::class)->constrained('training_schedules','id');
             $table->timestamps();
         });
     }

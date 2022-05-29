@@ -38,17 +38,20 @@ use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\TransportTarifController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\DistanceController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PayrollSheetController;
 use App\Http\Controllers\VolunteerResourceHistoryController;
 use App\Http\Controllers\TrainingCenterBasedPermissionController;
 use App\Http\Controllers\TrainingDocumentController;
+use App\Http\Controllers\TranslationTextController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
 use App\Models\PaymentType;
 use App\Models\CindicationRoom;
 use App\Models\Training;
 use App\Models\Distance;
+use App\Models\Event;
 use App\Models\TrainingMaster;
 use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingPlacement;
@@ -58,6 +61,7 @@ use App\Models\Payroll;
 use App\Models\PayrollSheet;
 use App\Models\TrainingDocument;
 use App\Models\TraininingCenter;
+use App\Models\TranslationText;
 use App\Models\TransportTarif;
 use App\Models\User;
 use App\Models\Volunteer;
@@ -78,8 +82,9 @@ use Symfony\Component\Console\Input\Input;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
+Route::get('importRegion',[RegionController::class,'import']);
+Route::get('importZone',[ZoneController::class,'import']);
+Route::get('importWoreda',[WoredaController::class,'import']);
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
@@ -225,6 +230,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('disablity', DisablityController::class);
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
     Route::get('training_sessions', [RegionController::class, 'place'])->name('region.place');
+    Route::resource('translation',TranslationTextController::class);
+    Route::resource('language',LanguageController::class);
+
     //Route::get('training_',[RegionController::class,'place'])->name('region.place');
     ///////////////////////////////////////////////////////////////////////////////////
     Route::resource('training_session', TrainingSessionController::class);
@@ -289,3 +297,5 @@ Route::get('{training_session}/reset-verification', [VolunteerController::class,
 //     dd('stop');
 // });
 Route::resource('Events', EventController::class);
+Route::get('/All-Events' ,[EventController::class,'allEvents'])->name('event.all');
+Route::get('/Event/{event}' ,[EventController::class,'detailEvent'])->name('event.detail');

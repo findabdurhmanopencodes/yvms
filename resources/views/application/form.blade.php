@@ -447,18 +447,12 @@
                                                             role="button" aria-haspopup="true"
                                                             aria-expanded="false">Language</a>
                                                         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_en">
-                                                                English
-                                                            </a>
-                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_am">
-                                                                Amharic
-                                                            </a>
-                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_or">
-                                                                Afaan Oromoo
-                                                            </a>
-                                                            <a class="dropdown-item" data-toggle="tab" href="#lang_afar">
-                                                                Afar
-                                                            </a>
+                                                            @foreach ($objectiveTexts as $key => $objectiveText)
+                                                                <a class="dropdown-item" data-toggle="tab"
+                                                                    href="#lang_obj_{{ $objectiveText->id }}">
+                                                                    {{ $objectiveText->language->name }}
+                                                                </a>
+                                                            @endforeach
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -469,7 +463,7 @@
                                                 <div data-scroll="true" class="scroll scroll-pull"
                                                     style="max-height:350px !important; overflow:auto;">
                                                     <div class="tab-content mt-5" id="myTabContent">
-                                                        <div class="tab-pane fade show active" id="lang_en" role="tabpanel"
+                                                        {{-- <div class="tab-pane fade show active" id="lang_en" role="tabpanel"
                                                             aria-labelledby="lang_en">
                                                             <h3>Objectives</h3>
                                                             <p>
@@ -533,19 +527,14 @@
                                                                 Repellat,
                                                                 tenetur.
                                                             </p>
-                                                        </div>
-                                                        <div class="tab-pane fade" id="lang_am" role="tabpanel"
-                                                            aria-labelledby="lang_am">
-                                                            Tab content 2
-                                                        </div>
-                                                        <div class="tab-pane fade" id="lang_or" role="tabpanel"
-                                                            aria-labelledby="lang_or">
-                                                            Tab content 4
-                                                        </div>
-                                                        <div class="tab-pane fade" id="lang_afar" role="tabpanel"
-                                                            aria-labelledby="lang_afar">
-                                                            Tab content 5
-                                                        </div>
+                                                        </div> --}}
+                                                        @foreach ($objectiveTexts as $key => $objectiveText)
+                                                            <div class="tab-pane fade {{ $key == 0 ? ' show active' : '' }}"
+                                                                id="lang_obj_{{ $objectiveText->id }}" role="tabpanel"
+                                                                aria-labelledby="lang_obj_{{ $objectiveText->id }}">
+                                                                {!! $objectiveText->content !!}
+                                                            </div>
+                                                        @endforeach
                                                     </div>
                                                 </div>
                                             </div>
@@ -582,22 +571,12 @@
                                                             role="button" aria-haspopup="true"
                                                             aria-expanded="false">Language</a>
                                                         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                                            <a class="dropdown-item" data-toggle="tab"
-                                                                href="#lang_en_app">
-                                                                English
-                                                            </a>
-                                                            <a class="dropdown-item" data-toggle="tab"
-                                                                href="#lang_am_app">
-                                                                Amharic
-                                                            </a>
-                                                            <a class="dropdown-item" data-toggle="tab"
-                                                                href="#lang_or_app">
-                                                                Afaan Oromoo
-                                                            </a>
-                                                            <a class="dropdown-item" data-toggle="tab"
-                                                                href="#lang_afar_app">
-                                                                Afar
-                                                            </a>
+                                                            @foreach ($appTexts as $key => $appText)
+                                                                <a class="dropdown-item" data-toggle="tab"
+                                                                    href="#lang_app_{{ $appText->id }}">
+                                                                    {{ $appText->language->name }}
+                                                                </a>
+                                                            @endforeach
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -607,33 +586,32 @@
                                             <div data-scroll="true" class="scroll scroll-pull"
                                                 style="max-height:350px !important; overflow:auto;">
                                                 <div class="tab-content mt-5" id="myTabContent">
-
-                                                    <div class="tab-pane fade show active" id="lang_en_app" role="tabpanel"
+                                                    {{-- <div class="tab-pane fade show active" id="lang_en_app" role="tabpanel"
                                                         aria-labelledby="lang_en_app">
                                                         National Volunteer Service Community Service Program Youth
-                                                        Participation Requirements: -
+                                                        Participation Requirements:<br>
                                                         The National Volunteer Community Development Service Training
                                                         includes young volunteers nationwide in the 10 regional and 2 city
                                                         governments, and the requirements for registration for this
                                                         volunteer community service are required to have a full
-                                                        identification questionnaire.
+                                                        identification questionnaire. <br>
 
                                                         1. Bachelor's degree and above from legal higher education
-                                                        institutions nationwide;
+                                                        institutions nationwide <br>
                                                         2. Has a Certificate of Completion of Grade 8 National Examination
-                                                        3. Not over 35 years of age;
+                                                        3. Not over 35 years of age <br>
                                                         4. Has a valid ID from the place where he / she lives and identifies
-                                                        the registrant.
+                                                        the registrant. <br>
                                                         5. Be able to give an ethical life testimony from a well-behaved
-                                                        community;
-                                                        6. Free of any kind of addiction.
+                                                        community <br>
+                                                        6. Free of any kind of addiction. <br>
                                                         7. Dedicated and committed to the volunteer service of borderless
-                                                        community engagement.
-                                                        8. Has confidence in the volunteer community service program.
+                                                        community engagement. <br>
+                                                        8. Has confidence in the volunteer community service program.<br>
                                                         9. Has a humane personality and among of the values of our country
-                                                        is giving and sharing.
+                                                        is giving and sharing.</br>
                                                         10. S/he has no health problems and can train and work in any part
-                                                        of the climate.
+                                                        of the climate.<br>
                                                         11. Non-pregnant registered for the Women's Volunteer Community.
                                                     </div>
                                                     <div class="tab-pane fade" id="lang_am_app" role="tabpanel"
@@ -684,15 +662,14 @@
                                                             ተዘጋጅተዉ
                                                             መላክ ይኖርባቸዋል
                                                         </p>
-                                                    </div>
-                                                    <div class="tab-pane fade" id="lang_or_app" role="tabpanel"
-                                                        aria-labelledby="lang_or_app">
-                                                        Tab content 4
-                                                    </div>
-                                                    <div class="tab-pane fade" id="lang_afar_app" role="tabpanel"
-                                                        aria-labelledby="lang_afar_app">
-                                                        Tab content 5
-                                                    </div>
+                                                    </div> --}}
+                                                    @foreach ($appTexts as $key => $appText)
+                                                        <div class="tab-pane fade {{ $key == 0 ? ' show active' : '' }}"
+                                                            id="lang_app_{{ $appText->id }}" role="tabpanel"
+                                                            aria-labelledby="lang_app_{{ $appText->id }}">
+                                                            {!! $appText->content !!}
+                                                        </div>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </div>

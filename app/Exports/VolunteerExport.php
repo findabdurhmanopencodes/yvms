@@ -23,7 +23,7 @@ class VolunteerExport implements FromCollection ,WithHeadings,WithEvents
 
    public function __construct($data, $a)
    {
-    // dd($a);
+
        $this->data = $data;
        $this->a = $a;
    }
@@ -53,7 +53,7 @@ class VolunteerExport implements FromCollection ,WithHeadings,WithEvents
                $event->sheet->getDelegate()->getColumnDimension('E')->setWidth(35);
                $event->sheet->getProtection()->setPassword('password');
                $event->sheet->getProtection()->setSheet(true);
-               $event->sheet->getStyle('E1:E20000')->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
+               $event->sheet->getStyle("E1:E".count($this->data))->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
 
            },
        ];
