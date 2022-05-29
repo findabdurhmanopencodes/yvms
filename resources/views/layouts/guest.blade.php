@@ -164,6 +164,17 @@
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
+                                    <li
+                                    class="menu-item {{ strpos(Route::currentRouteName(), 'evene.all') === 0 ? 'menu-item-active' : '' }}">
+                                    <a href="{{ route('event.all') }}" class="menu-link">
+                                        <i style="color:#5dade2 !important;" class="fal fa-album-collection"></i>
+
+
+                                        <span style="color:#5dade2 !important;" class="menu-text"> &nbsp; Events
+                                        </span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                </li>
                                 </ul>
                                 <!--end::Header Nav-->
                             </div>
