@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTranslationTextRequest;
 use App\Http\Requests\UpdateTranslationTextRequest;
+use App\Models\Language;
 use App\Models\TranslationText;
+use Illuminate\Validation\ValidationException;
 
 class TranslationTextController extends Controller
 {
@@ -15,7 +17,8 @@ class TranslationTextController extends Controller
      */
     public function index()
     {
-        //
+        $translationTexts = TranslationText::all();
+        return view('translation.index',compact('translationTexts'));
     }
 
     /**
@@ -25,7 +28,23 @@ class TranslationTextController extends Controller
      */
     public function create()
     {
-        //
+        Language::where('name','English')->firstOr(function(){
+            Language::create(['name'=>'English']);
+        });
+        Language::where('name','Amharic')->firstOr(function(){
+            Language::create(['name'=>'Amharic']);
+        });
+        Language::where('name','Afaan Oromoo')->firstOr(function(){
+            Language::create(['name'=>'Afaan Oromoo']);
+        });
+        Language::where('name','Afar')->firstOr(function(){
+            Language::create(['name'=>'Afar']);
+        });
+
+        $translationText = null;
+        $langs = Language::all();
+        $translationTypes = TranslationText::TRANSLATION_TEXT_TYPES;
+        return view('transportTarif.create',compact('translationText','langs','translationTypes'));
     }
 
     /**
@@ -36,7 +55,15 @@ class TranslationTextController extends Controller
      */
     public function store(StoreTranslationTextRequest $request)
     {
-        //
+        $data = $request->validated();
+        $exist = TranslationText::where('translation_type',$data['translation_type'])->where('lang',$data['lang'])->first() != null;
+        if($exist){
+            throw ValidationException::withMessages(['lang','Please translation exist']);
+        }
+        TranslationText::create(
+            $data
+        );
+        return redirect()->route('translation.index')->with('message','Translation created successfully');
     }
 
     /**

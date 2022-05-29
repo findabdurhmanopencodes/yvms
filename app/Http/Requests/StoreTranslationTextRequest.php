@@ -13,7 +13,7 @@ class StoreTranslationTextRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class StoreTranslationTextRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'lang' => ['required'],
+            'translation_type'=> ['required'],
+            'content' => ['required'],
         ];
     }
 }
