@@ -43,16 +43,17 @@ class IdGenerateController extends Controller
             $paginate_apps = TrainingMasterPlacement::with('master.user')->where('training_session_id', $trainingSession->id)->where('trainining_center_id', $training_center_id)->take(5)->get();
 
             $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()[0];
-        } 
+        }
         else {
             $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()[0];
+
             $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $training_center_id)->whereRelation('status','acceptance_status', 5)->get();
 
             $paginate_apps = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $training_center_id)->whereRelation('status','acceptance_status', 5)->take(5)->get();
         }
         $center_code = $trainingCenter->code;
         // dd(TrainingSession::whereRelation('approvedApplicants.volunteer','id', 1)->get()[0]->start_date);
-        
+
         $training_session_id = $trainingSession->availableSession()[0]->id;
         $train_end_date = $trainingSession->trainingEndDateET();
         // $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->take(3)->get();
@@ -64,11 +65,12 @@ class IdGenerateController extends Controller
         $applicant = [];
 
         $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->training_center_id)->where('id', 'like', '%' . $search_var . '%')->paginate(10);
-        
+
         return response()->json(['applicants'=>$applicants]);
     }
 
     public function idCount(Request $request){
+
         foreach ($request->applicants as $key => $value) {
             $check_val = IDcount::where('training_session_id', $request->training_session_id)->where('volunteer_id',$value['id'])->get();
             if (count($check_val) > 0) {
@@ -83,7 +85,7 @@ class IdGenerateController extends Controller
 
     public function TrainerList(Request $request, TrainingSession $trainingSession, $training_center_id){
         $totalTrainingMasters = TrainingMasterPlacement::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $training_center_id)->get();
-    
+
         return view('id.trainerList', compact('totalTrainingMasters', 'training_center_id'));
     }
 }

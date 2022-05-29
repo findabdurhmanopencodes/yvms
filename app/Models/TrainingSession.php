@@ -67,6 +67,7 @@ class TrainingSession extends Model
 
         return $ts;
     }
+ //////////////////////////////////////////////
     public function startDateET()
     {
         return DateTimeFactory::fromDateTime(new DateTime($this->start_date))->format('d/m/Y');
@@ -76,7 +77,7 @@ class TrainingSession extends Model
     {
         return DateTimeFactory::fromDateTime(new DateTime($this->end_date))->format('d/m/Y');
     }
-
+///////////////////////////////////////////////////
     public function startRegDateET()
     {
         return DateTimeFactory::fromDateTime(new DateTime($this->registration_start_date))->format('d/m/Y');
@@ -117,16 +118,21 @@ class TrainingSession extends Model
     {
         return $this->hasMany(TrainingPlacement::class, 'training_session_id', 'id');
     }
-
+////////////////////////////////////////////////
     public function sessionRegions()
     {
         return $this->hasMany(SessionRegion::class);
     }
-
+///////////////////////////////////////////////
     public function sessionZones()
     {
         return $this->hasMany(SessionRegion::class);
     }
+
+    public function payroll()
+{
+    return $this->hasMany(Payroll::class);
+}
 
     public function sessionWoredas()
     {

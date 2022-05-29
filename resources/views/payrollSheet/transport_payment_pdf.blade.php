@@ -5,7 +5,7 @@
 
 <head>
 
-    <title> Trainee payroll </title>
+    <title> Transportation payroll </title>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,7 +30,7 @@ table {
         <span style="text-align:center;">
             <p style="font-size: 19px"> <b>  Ministery of Peace </b> </p>
             <p style="font-size: 14px"><b>   Youth Volunterism Managment System </b></p>
-            <p style="font-size: 12px"><b>   Trainee payroll Sheet</b></p>
+            <p style="font-size: 12px"><b>   Trainee Transport payroll Sheet</b></p>
 
         </span>
 
@@ -42,17 +42,19 @@ table {
         <thead>
             <tr style="background-color:lightblue;">
             <th style="text-align:left; width:3%"> #</th>
-            <th style="text-align:left;"> Name </th>
+            <th style="text-align:left; width:15%;"> Name </th>
             <th style="text-align:left;"> Phone </th>
             <th style="text-align:left;"> Sex </th>
             <th style="text-align:left;"> Zone </th>
             <th style="text-align:left;"> CBE Account </th>
-            <th style="text-align:left;"> Amount </th>
+            <th style="text-align:left;"> Tax rate </th>
+            <th style="text-align:right;"> Amount </th>
             <th style="text-align:left; width:10%">Remark</th>
 
             </tr>
         </thead>
         <tbody>
+
             @foreach ($placedVolunteers as $key => $placedVolunteer)
                 <tr>
                      <td>{{ $key + 1 }}</td>
@@ -61,26 +63,28 @@ table {
                      <td> {{ $placedVolunteer->gender }} </td>
                      <td>  {{ $placedVolunteer->woreda->zone->name }}  </td>
                      <td> {{ $placedVolunteer->account_number }} </td>
-                     <td style="text-align:right;"> {{ $paymentTypes->amount }}</td>
+                     <td> {{ '0%' }} </td>
+                     <td style="text-align:right;">   ETB {{ number_format($totals[$key],2)}}</td>
 
 
                      <td>  &nbsp; &nbsp; &nbsp; </td>
-
-
                 </tr>
-
             @endforeach
             <tr style="text-align:right;">
-                <td colspan="7">
+                <td colspan="8">
+                    <?php $sum = 0 ?>
+                    @foreach ($placedVolunteers as $key => $placedVolunteer)
 
-                    Grand total: ETB  xxxxxxx
+                    <?php $sum =  $sum + $totals[$key]; ?>
 
+                    @endforeach
+                    Grand total: ETB {{  number_format($sum,2)  }}
                 </td>
                 <td colspan="1"></td>
             </tr>
         </tbody>
     </table>
-    <div class="float-right"> Session/Round :01  Training center :Jimma University    Total payee:122 </div> <br>
+    <div class="float-right"> Training center :Jimma University    Total payee: :{{ $total_volunteers }} </div> <br>
 
 
 
@@ -91,3 +95,4 @@ table {
 </body>
 
 </html>
+

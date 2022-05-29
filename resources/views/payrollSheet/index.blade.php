@@ -42,6 +42,35 @@
             });
         }
     </script>
+      @push('css')
+      <style>
+          .select2,
+          .select2-container,
+          .select2-container--default,
+          .select2-container--below {
+              width: 100% !important;
+          }
+      </style>
+  @endpush
+
+    <script>
+        $( document ).ready(function() {
+            $('#training_session').select2({
+            });
+
+        });
+        $( document ).ready(function() {
+            $('#training_center').select2({
+            });
+
+        });
+        $( document ).ready(function() {
+            $('#center').select2({
+            });
+
+        });
+
+    </script>
     <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
 @endpush
 
@@ -54,27 +83,17 @@
         <div class=" ml-1 col-12 p-0">
             <div class="row ">
 
-                <div class="form-group col-5">
-                    <select name="training_session" id="" class="form-control">
-                        <option value="">Select Training Session </option>
-                        @foreach ($training_sessions as $training_session)
-                            <option value="{{ $training_session->id }}">{{ $training_session->moto }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-
-                <div class="form-group col-5">
-                    <select name="training_center" id="" class="form-control">
+                 <div class="form-group col-8">
+                    <select name="training_center" id="training_center" class="form-control select2">
                         <option value="">Select Training Center</option>
-                        @foreach ($training_centers as $training_center)
+                        {{-- @foreach ($training_centers as $training_center)
                             <option value="{{ $training_center->id }}">{{ $training_center->name }}</option>
-                        @endforeach
+                        @endforeach --}}
                     </select>
                 </div>
 
 
-                <div class="form-group col-2">
+                <div class="form-group col-4">
                     <button class="btn btn-primary btn-sm"><i class="fa fa-search"></i> Filter </button>
                 </div>
 
@@ -89,7 +108,7 @@
     <div class="card card-custom">
         <div class="card-header flex-wrap  pt-6 ">
             <div class="card-title mr-0">
-                <h3 class="card-label">Payroll code :</u> MoP-YVMS-02-204-payroll</u> </h3>
+             <h5> <i class=" fa fa-list"></i> &nbsp; List of payroll sheets per training center </h5>
             </div>
             <div class="card-title mr-0">
             <a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
@@ -105,13 +124,13 @@
 </div>
 
         <div class="card-body">
-            <table width="100%" class="table table-striped ">
+            <table width="100%"  style="font-size:12px;"  class="table table-striped ">
                 <thead>
                     </tr>
                     <th> #</th>
 
                     <th> Training Center </th>
-                    <th> Training Session ID </th>
+                    <th> Payroll code </th>
                     <th> User </th>
                     <th> Created at </th>
 
@@ -124,18 +143,23 @@
 
                     @foreach($payroll_sheets  as $key =>  $payroll_sheet )
                         <tr>
+
+
                                  <td> {{ $key + 1 }}</td>
-                                 <td> {{ $payroll_sheet->trainining_center_id }} </td>
-                                 <td> Training session ID  </td>
-                                 <td> {{ $payroll_sheet->user_id }} </td>
+                                 <td> {{ $payroll_sheet->traininingCenter->name }} </td>
+                                 <td> {{ $payroll_sheet->payroll->name }}
+
+                                 </td>
+
+                                 <td> {{ $payroll_sheet->user->first_name }}  {{ $payroll_sheet->user->father_name }}  </td>
                                  <td> {{ $payroll_sheet->created_at }} </td>
                             </td>
                             <td>
-                                <a href="javascript:;" onclick="deletePayrollSheet('+payroll_sheet+ ',$(this))" class="btn btn-sm btn-clean btn-icon" class="btn btn-icon">
+                                <a href="javascript:;" onclick="deletePayrollSheet('payroll_sheet ',$(this))" class="btn btn-sm btn-clean btn-icon" class="btn btn-icon">
                                 <span class="fa fa-trash"></span>
                                 </a>
-                                 <a href="{{ route('payrollSheet.payee', ['trainining_center_id'=>$payroll_sheet->trainining_center_id,'training_session_id'=>'sessionid']) }}"
-                                    class="btn btn-icon">
+
+                                 <a href="{{ route('payrollSheet.payee', ['payroll_sheet_id'=> $payroll_sheet->id]) }}" class="btn btn-icon">
                                     <span class="fa fa-list"></span>
                                 </a>
                             </td>
@@ -148,27 +172,22 @@
             {{ $payroll_sheets->withQueryString()->links() }}
         </div>
     </div>
-
-
     <div class="card-toolbar">
-
-
         <form method="POST" action="{{ route('payrollSheet.store', ['payroll_id'=>1]) }}">
                 @csrf
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg"  role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Create  payroll sheet</h5>
+                            <div class="modal-dialog modal-md"  role="document">
+                              <div class="modal-content">
+                               <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Create payroll sheet</h5>
                                 <button type="button" class="close" data-dismiss="modal" -label="Close">
-                                    <i aria-hidden="true" class="ki ki-close"></i>
+                                <i aria-hidden="true" class="ki ki-close"></i>
                                 </button>
                             </div>
-
                             <div class="modal-body">
                                 <div class="card-body">
                                     <div class="form-group col-12">
-                                        <select name="training_center" id="" class="form-control">
+                                        <select name="training_center" id="center" class="form-control select2">
                                             <option value="">Select Training Center</option>
                                             @foreach ($training_centers as $training_center)
                                                 <option value="{{ $training_center->id }}">{{ $training_center->name }}</option>

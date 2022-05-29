@@ -237,8 +237,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('payroll', PayrollController::class);
     Route::resource('payrollSheet', PayrollSheetController::class);
     Route::get('generatePDF', [PayrollSheetController::class, 'generatePDF'])->name('payrollSheet.generatePDF');
-    Route::get('payee_list', [PayrollSheetController::class, 'payee'])->name('payrollSheet.payee');
-    //Route::get('/payroll/{id}/payroll_sheet', [PayrollSheetController::class, 'payrollSheet'])->name('payrollSheet.dispaly');
+
+    Route::get('{payroll_id}/payroll_list', [PayrollSheetController::class, 'payroll_list'])->name('payrollSheet.payroll_list');
+    Route::get('{payroll_sheet_id}/payee_list', [PayrollSheetController::class, 'payee'])->name('payrollSheet.payee');
+
     ////////////////////////////////////////////////////////////////////
     Route::resource('region', RegionController::class);
     Route::resource('zone', ZoneController::class);
