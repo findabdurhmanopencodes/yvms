@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Http\Controllers\RegionController;
+use App\Http\Controllers\WoredaController;
+use App\Http\Controllers\ZoneController;
 use App\Models\ApprovedApplicant;
 use App\Models\EducationalLevel;
 use App\Models\Region;
@@ -60,6 +63,9 @@ class DatabaseSeeder extends Seeder
             'status' => 0,
         ]);
 
+        (new RegionController())->import();
+        (new ZoneController())->import();
+        (new WoredaController())->import();
         // \App\Models\Region::factory(4)->create();
         // //Zone creation
         // $quota = [0.4, 0.3, 0.3];
@@ -102,36 +108,36 @@ class DatabaseSeeder extends Seeder
         //         $iterate = 0;
         //     }
         // }
-        \App\Models\User::factory(200)->create();
-        \App\Models\File::factory(16)->create();
-        \App\Models\FeildOfStudy::factory(4)->create();
-        $zones = Zone::all();
-        foreach ($zones as $zone) {
-            \App\Models\TraininingCenter::factory(1)->create(['zone_id' => $zone->id]);
-        }
+        // \App\Models\User::factory(200)->create();
+        // \App\Models\File::factory(16)->create();
+        // \App\Models\FeildOfStudy::factory(4)->create();
+        // $zones = Zone::all();
+        // foreach ($zones as $zone) {
+        //     \App\Models\TraininingCenter::factory(1)->create(['zone_id' => $zone->id]);
+        // }
 
-        $capacities = [6, 6, 5, 6, 7, 5, 6, 10, 7, 6, 4, 8, 7, 9, 8];
-        $trainingcenters = TraininingCenter::all();
-        foreach ($trainingcenters as $key => $center) {
-            $data = ['capacity' => $capacities[$key], 'trainining_center_id' => $center->id];
-            \App\Models\TrainingCenterCapacity::factory(1)->create($data);
-        }
-        $regions = Region::all();
-        $totalPersons = 100;
-        foreach ($regions as $region) {
-            $regionQuota = $region->qoutaInpercent * 100;
-            $zones = $region->zones;
-            foreach ($zones as $zone) {
-                $zoneQuota = $zone->qoutaInpercent * $regionQuota;
-                $woredas = $zone->woredas;
-                $woredaCount = 0;
-                foreach ($woredas as  $woreda) {
-                    $woredaQuota = round($woreda->qoutaInpercent * $zoneQuota);
-                    for ($x = 0; $x < $woredaQuota; $x++)
-                        \App\Models\Volunteer::factory(1)->create(['woreda_id' => $woreda->id]);
-                }
-            }
-        }
+        // $capacities = [6, 6, 5, 6, 7, 5, 6, 10, 7, 6, 4, 8, 7, 9, 8];
+        // $trainingcenters = TraininingCenter::all();
+        // foreach ($trainingcenters as $key => $center) {
+        //     $data = ['capacity' => $capacities[$key], 'trainining_center_id' => $center->id];
+        //     \App\Models\TrainingCenterCapacity::factory(1)->create($data);
+        // }
+        // $regions = Region::all();
+        // $totalPersons = 100;
+        // foreach ($regions as $region) {
+        //     $regionQuota = $region->qoutaInpercent * 100;
+        //     $zones = $region->zones;
+        //     foreach ($zones as $zone) {
+        //         $zoneQuota = $zone->qoutaInpercent * $regionQuota;
+        //         $woredas = $zone->woredas;
+        //         $woredaCount = 0;
+        //         foreach ($woredas as  $woreda) {
+        //             $woredaQuota = round($woreda->qoutaInpercent * $zoneQuota);
+        //             for ($x = 0; $x < $woredaQuota; $x++)
+        //                 \App\Models\Volunteer::factory(1)->create(['woreda_id' => $woreda->id]);
+        //         }
+        //     }
+        // }
         // $this->approveAllVolunteers();
     }
     public function approveAllVolunteers()

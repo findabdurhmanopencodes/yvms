@@ -216,7 +216,7 @@ class RegionController extends Controller
         }
         foreach ($regions as $region) {
             Region::where('name', $region)->firstOr(function () use ($region) {
-                Region::create(['name' => $region, 'status' => 1]);
+                Region::create(['name' => $region, 'status' => 0]);
             });
         }
         dd('Region Imported successfully');
