@@ -8,7 +8,8 @@
                 <h3 class="title-label">Translation texts</h3>
             </div>
             <div class="card-toolbar">
-                <a href="{{ route('translation.create', []) }}" class="btn btn-primary"><i class="fa fa-plus"></i>Add new translation</a>
+                <a href="{{ route('translation.create', []) }}" class="btn btn-primary"><i class="fa fa-plus"></i>Add
+                    new translation</a>
             </div>
         </div>
         <div class="card-body">
@@ -29,25 +30,47 @@
                             <td>{{ $translationText->trasnslationType() }}</td>
                             {{-- <td>{{ count($translationText->volunteers) }}</td> --}}
                             <td>
-                                {{-- <a href="#"
-                                    onclick="confirmDeleteRoom('{{ route('session.cindication_room.destroy', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room' => $translation.0Text->id]) }}')">
+                                <a href="#"
+                                    onclick="confirmDelete('{{ route('translation.destroy', ['translation' => $translationText->id]) }}')">
                                     <i class="fal fa-trash"></i>
                                 </a>
-                                <a
-                                    href="{{ route('session.cindication_room.show', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room' => $translationText->id]) }}">
+                                <a href="{{ route('translation.show', ['translation' => $translationText->id]) }}">
                                     <i class="fal fa-eye"></i>
-                                </a> --}}
+                                </a>
                             </td>
                         </tr>
                     @endforeach
 
                     @if (count($translationTexts) <= 0)
                         <tr style="font-size: 13px;" class="text-center">
-                            <td colspan="3" style="">No cindication room</td>
+                            <td colspan="3" style="">No translation text</td>
                         </tr>
                     @endif
                 </tbody>
             </table>
         </div>
     </div>
+    <form action="" method="POST" id="deleteForm">
+        @csrf
+        @method('DELETE')
+    </form>
 @endsection
+
+@push('js')
+    <script>
+        function confirmDelete(url) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $('#deleteForm').attr('action', url);
+                    $('#deleteForm').submit();
+                }
+            });
+        }
+    </script>
+@endpush

@@ -72,9 +72,10 @@ class TranslationTextController extends Controller
      * @param  \App\Models\TranslationText  $translationText
      * @return \Illuminate\Http\Response
      */
-    public function show(TranslationText $translationText)
+    public function show(TranslationText $translation)
     {
-        //
+        $translationText = $translation;
+        return view('translation.show',compact('translationText'));
     }
 
     /**
@@ -106,8 +107,9 @@ class TranslationTextController extends Controller
      * @param  \App\Models\TranslationText  $translationText
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TranslationText $translationText)
+    public function destroy(TranslationText $translation)
     {
-        //
+        $translation->delete();
+        return redirect()->back()->with(['message','Translation text deleted successfully']);
     }
 }
