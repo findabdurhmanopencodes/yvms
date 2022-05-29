@@ -129,6 +129,14 @@
                                                 <span class="navi-text">Place Volunteers</span>
                                             </a>
                                         </li>
+                                        <li class="navi-item">
+                                            <a href="{{ route('session.show.volunteers', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="fal fas fa-graduation-cap"></i>
+                                                </span>
+                                                <span class="navi-text">Graduate Volunteers</span>
+                                            </a>
+                                        </li>
                                     </ul>
                                     <!--end::Navigation-->
                                 </div>

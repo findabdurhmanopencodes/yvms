@@ -42,13 +42,14 @@ class UsersExport implements FromCollection, WithHeadings, WithEvents
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
-                $drop_column = 'C';
+                $drop_column = 'E';
 
                 // set dropdown options
                 $options = [
                     'P',
                     'A',
                 ];
+                
 
                 $validation = $event->sheet->getCell("{$drop_column}2")->getDataValidation();
                 $validation->setType(DataValidation::TYPE_LIST );
@@ -62,22 +63,22 @@ class UsersExport implements FromCollection, WithHeadings, WithEvents
                 $validation->setPromptTitle('Pick from list');
                 $validation->setPrompt('Please pick a value from the drop-down list.');
                 $validation->setFormula1(sprintf('"%s"',implode(',',$options)));
-                // $event->sheet->getDelegate()->getRowDimension('1')->setRowHeight(40);
-                // $event->sheet->getDelegate()->getColumnDimension('A')->setWidth(50);
                 
-                $event->sheet->getDelegate()->getColumnDimension('B')->setWidth(50);
-                $event->sheet->getDelegate()->freezePane('A1');
+                $event->sheet->getDelegate()->getColumnDimension('A')->setWidth(30);
+                $event->sheet->getDelegate()->getColumnDimension('B')->setWidth(30);
+                $event->sheet->getDelegate()->getColumnDimension('C')->setWidth(30);
+                $event->sheet->getDelegate()->getColumnDimension('D')->setWidth(30);
 
                 for ($i = 3; $i <= count($this->data) + 1; $i++) {
                     $event->sheet->getCell("{$drop_column}{$i}")->setDataValidation(clone $validation);
                 }
 
-                // for ($i = 1; $i <= $column_count; $i++) {
-                //     $column = Coordinate::stringFromColumnIndex($i);
-                //     $event->sheet->getColumnDimension($column)->setAutoSize(true);
-                // }
+                $event->sheet->getProtection()->setPassword('password');
+                $event->sheet->getProtection()->setSheet(true);
+                $event->sheet->getStyle('E1:E'.count($this->data) + 1)->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
      
             },
+            
         ];
     }
 }

@@ -28,11 +28,13 @@ class PayrollController extends Controller
     {
         if ($request->ajax()) {
             return datatables()->of(Payroll::select())->make(true);
+
         }
+        $last_sessions = TrainingSession::orderBy('id', 'desc')->paginate(1);
+        $training_sessions = TrainingSession::orderBy('id', 'desc')->paginate(30);
+         $payrolls = Payroll::orderBy('id', 'desc')->Paginate(1);
 
-       $payrolls = Payroll::orderBy('id', 'Desc')->Paginate(1);
-
-        return view('payroll.index', compact('payrolls'));
+        return view('payroll.index', compact('payrolls','training_sessions','last_sessions'));
     }
 
     /**

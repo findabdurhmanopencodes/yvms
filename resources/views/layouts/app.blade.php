@@ -246,6 +246,15 @@
                                         <span class="menu-text">Deployments </span>
                                     </a>
                                 </li>
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.graduation.list') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.graduation.list', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon fal fas fa-graduation-cap"></i>
+
+                                        <span class="menu-text">Graduated Volunteers</span>
+                                    </a>
+                                </li>
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.schedule') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.schedule', ['training_session' => Request::route('training_session')]) }}"

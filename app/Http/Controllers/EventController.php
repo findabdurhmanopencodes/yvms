@@ -44,8 +44,7 @@ class EventController extends Controller
         $this->validate($request, [
             'title' => 'required|string|max:255',
             'content' => 'required',
-             'pictures' =>'required|regex:/^data:image/'
-        ]);
+            'pictures.*' => 'required|image|mimes:jpg,jpeg,png',        ]);
         $event = new Event();
         $event->title = $request->title;
         $event->content = $request->content;

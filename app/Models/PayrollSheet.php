@@ -4,30 +4,36 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class PayrollSheet extends Model
 {
 use HasFactory;
 
-protected $fillable = [ 'fullName', 'trainining_center', 'phone','account' ,'zone_id','user_id','created_at']; 
+protected $fillable = [ 'fullName', 'trainining_center', 'phone','account' ,'zone_id','user_id','created_at'];
 
-    public function user()
+
+
+public function user(): BelongsTo
 {
-    return $this->belongsTo('App\User');
+    return $this->belongsTo(User::class);
 }
 
-public function trainingCenter()
+public function traininingCenter(): BelongsTo
 {
-    return $this->belongsTo('App\TrainingCenter');
+    return $this->belongsTo(TraininingCenter::class);
 }
 
-public function zones()
+public function zone(): BelongsTo
 {
-    return $this->belongsTo('App\Zone');
+    return $this->belongsTo(Zone::class);
 }
-public function payroll()
+
+public function payroll(): BelongsTo
 {
-    return $this->belongsTo('App\Payroll');
+    return $this->belongsTo(Payroll::class);
 }
 
 }

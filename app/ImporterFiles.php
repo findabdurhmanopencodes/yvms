@@ -46,6 +46,50 @@ class ImporterFiles
     ];
     const ZONE_IMPORTS = [
         [
+            "Addis Ababa",
+            "Adis ketema"
+        ],
+        [
+            null,
+            "Akaki kality"
+        ],
+        [
+            null,
+            "Arada"
+        ],
+        [
+            null,
+            "Bole"
+        ],
+        [
+            null,
+            "Gulele"
+        ],
+        [
+            null,
+            "Kirkos"
+        ],
+        [
+            null,
+            "Kolife"
+        ],
+        [
+            null,
+            "Lemikura"
+        ],
+        [
+            null,
+            "Lidata"
+        ],
+        [
+            null,
+            "N/silk"
+        ],
+        [
+            null,
+            "Yeka"
+        ],
+        [
             "አማራ ክልል",
             " ምስራቅ ጎጃም ዞን",
             null,
