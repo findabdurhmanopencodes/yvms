@@ -74,7 +74,7 @@
         .forecast {
             margin: 0;
             padding: .3rem;
-            background-color: #eee;
+            background-color: rgb(92, 178, 218);
             font: 1rem 'Fira Sans', sans-serif;
         }
 

@@ -41,7 +41,7 @@ class VolunteerExport implements FromCollection ,WithHeadings,WithEvents
    }
    public function registerEvents(): array
    {
-
+// dd(count($this->data));
     // $objPHPExcel = new PHPExcel;
     // $objSheet = $objPHPExcel->getActiveSheet();
        return [
@@ -53,7 +53,7 @@ class VolunteerExport implements FromCollection ,WithHeadings,WithEvents
                $event->sheet->getDelegate()->getColumnDimension('E')->setWidth(35);
                $event->sheet->getProtection()->setPassword('password');
                $event->sheet->getProtection()->setSheet(true);
-               $event->sheet->getStyle("E1:E".count($this->data))->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
+               $event->sheet->getStyle("E1:E".count($this->data)+1)->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
 
            },
        ];
