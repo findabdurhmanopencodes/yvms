@@ -192,6 +192,9 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('{woreda_id}/woreda/capacity', [WoredaController::class, 'woredaIntake'])->name('woreda.intake');
     Route::post('woreda/{woreda_id}/capacity/store', [WoredaController::class, 'woredaIntakeStore'])->name('woreda.intake_store');
     Route::post('/approve_placment',[TrainingSessionController::class,'approvePlacment'])->name('placment.approve');
+
+    Route::get('{training_center}/show/volunteers', [TraininingCenterController::class, 'show_all_volunteers'])->name('show.volunteers');
+    Route::post('{training_center}/graduate', [TraininingCenterController::class, 'graduateVolunteers'])->name('graduate.volunteers');
 });
 
 

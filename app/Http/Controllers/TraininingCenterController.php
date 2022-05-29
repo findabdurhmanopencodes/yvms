@@ -347,4 +347,38 @@ class TraininingCenterController extends Controller
         }
         return redirect()->back()->with('message','Volunteer placment finnished');
     }
+
+    public function show_all_volunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter, UserAttendance $userAttendance)
+    {
+        $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->whereRelation('status','acceptance_status', 5)->paginate(10);
+        $trainingSchedules = TrainingSchedule::all();
+
+        $arr = [];
+        foreach ($trainingSchedules as $key => $schedule) {
+            array_push($arr, $schedule->schedule->date);
+        }
+
+        $arr_unique = array_unique($arr);
+
+        return view('training_center.show_all', compact('applicants', 'trainingCenter', 'trainingSession', 'userAttendance', 'arr_unique'));
+    }
+
+    public function graduateVolunteers(Request $request, TrainingSession $trainingSession)
+    {
+        // dd($trainingSession);
+        $att_amount = $request->get('att_amount');
+        $all_vol = $request->get('gc_vol');
+        $max_att = $request->get('max_attendance');
+
+        $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('training_center'))->whereRelation('status','acceptance_status', 5)->get();
+
+        if ($all_vol) { 
+            // foreach (Volunteer::where('training_session_id', $trainingSession->id)->get() as $key => $volunteer) {
+            //     dump($volunteer);
+            // }
+            dd('sfsd');
+        }else{
+
+        }
+    }
 }
