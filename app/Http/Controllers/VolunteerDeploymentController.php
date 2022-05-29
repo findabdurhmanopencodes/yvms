@@ -14,6 +14,7 @@ use App\Models\WoredaIntake;
 use App\Models\Zone;
 use App\Models\ZoneIntake;
 use Illuminate\Http\Request;
+use App\Console\Commands\VoluteerDeploymentCommand;
 
 class VolunteerDeploymentController extends Controller
 {
@@ -86,7 +87,10 @@ class VolunteerDeploymentController extends Controller
      */
     public function deploy()
     {
-        //
+        $dep =  new VoluteerDeploymentCommand();
+        $dep->deploy();
+
+        return redirect(route('session.deployment.index', ['training_session' => request()->route('training_session')]))->with('message', 'Volunteers Successfully  Deployed');
     }
 
     /**

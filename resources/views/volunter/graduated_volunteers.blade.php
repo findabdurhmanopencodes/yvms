@@ -54,7 +54,7 @@
             </div>
             <div class="card-toolbar">
                 <div class="d-flex">
-                    <a class="btn ml-4 btn-sm btn-primary" href="#"> Deploy Volunteers
+                    <a class="btn ml-4 btn-sm btn-primary" href="{{ route('session.deployment.deploy',[Request::route('training_session')]) }}"><i class="fal fa-server"></i> Deploy Volunteers
                     </a>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                             {{-- <td>{{ $placedVolunteer->approvedApplicant->volunteer->father_name }}</td> --}}
                             {{-- <td> {{ $placedVolunteer->approvedApplicant->volunteer->grand_father_name }} </td> --}}
                             <td> {{ $graduatedVolunteer->woreda->zone->region->name }} </td>
-                            <td> {{ $graduatedVolunteer->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->name }} </td>
+                            {{-- <td> {{ $graduatedVolunteer->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->name }} </td> --}}
                         </tr>
                     @endforeach
                 </tbody>

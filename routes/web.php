@@ -150,12 +150,14 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');
     Route::get('applicants/document-verified', [VolunteerController::class, 'verifiedApplicant'])->name('applicant.verified');
     Route::get('applicants/selected', [VolunteerController::class, 'selected'])->name('applicant.selected');
+
     Route::get('placement', [TrainingPlacementController::class, 'index'])->name('placement.index');
     Route::get('placement/reset', [TrainingPlacementController::class, 'resetPlacement'])->name('placement.reset');
     Route::post('{approvedApplicant}/manual-placement', [TrainingPlacementController::class, 'placeManually'])->name('placement.manual');
     Route::post('training-placement/{training_placement}/change', [TrainingPlacementController::class, 'changePlacement'])->name('placement.change');
 
     Route::get('deployment', [VolunteerDeploymentController::class, 'index'])->name('deployment.index');
+    Route::get('deployment/deploy', [VolunteerDeploymentController::class, 'deploy'])->name('deployment.deploy');
     Route::get('deployment/reset', [VolunteerDeploymentController::class, 'resetDeployment'])->name('deployment.reset');
     Route::post('{deployment}/manual-deployment', [VolunteerDeploymentController::class, 'deployManually'])->name('deployment.manual');
     Route::post('deployment/{deployment}/change', [VolunteerDeploymentController::class, 'changeDeployment'])->name('deployment.change');

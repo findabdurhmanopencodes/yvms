@@ -241,9 +241,9 @@
                                     aria-haspopup="true">
                                     <a href="{{ route('session.deployment.index', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
-                                        <i class="menu-icon fal fa-map-marker-check"></i>
+                                        <i class="menu-icon fal fa-server"></i>
 
-                                        <span class="menu-text">Deployments </span>
+                                        <span class="menu-text">Volunteer Deployments </span>
                                     </a>
                                 </li>
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.graduation.list') === 0 ? 'menu-item-active' : '' }}"

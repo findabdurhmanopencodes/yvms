@@ -305,7 +305,7 @@ class TraininingCenterController extends Controller
     {
         $schedule_id = $request->get('schedule_id');
         $users = DB::table('volunteers')->leftJoin('approved_applicants', 'volunteers.id','=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id','=', 'training_placements.approved_applicant_id')->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id','=', 'training_center_capacities.id')->where('training_center_capacities.trainining_center_id',$trainingSession->id)->where('cindication_room_id', $cindicationRoom->id)->select(['id_number','first_name','father_name', 'grand_father_name'])->get();
-        
+
         return Excel::download(new UsersExport( $users,[ 'ID Number','First Name','Father Name','Grand Father Name', 'Status', $schedule_id]), 'attendance.xlsx');
         // return Excel::download(new UserAttendance(), 'attendance.xlsx');
     }
@@ -370,7 +370,7 @@ class TraininingCenterController extends Controller
         $att_amount = $request->get('att_amount');
         $all_vol = $request->get('gc_vol');
         $max_att = $request->get('max_attendance');
-        
+
         $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('training_center'))->whereRelation('status','acceptance_status', 5)->get();
 
         if ($all_vol) {
@@ -391,7 +391,7 @@ class TraininingCenterController extends Controller
     {
         $training_centers = TraininingCenter::all();
         $regions = Region::all();
-        
+
         $q = Volunteer::whereRelation('status', 'acceptance_status', 6)->where('training_session_id', $trainingSession->id);
 
         if ($request->get('training_center') != null) {
@@ -406,7 +406,7 @@ class TraininingCenterController extends Controller
         }
 
         $graduatedVolunteers = $q->paginate(10);
-        
+
         return view('volunter.graduated_volunteers', compact('training_centers', 'regions', 'graduatedVolunteers'));
     }
 }
