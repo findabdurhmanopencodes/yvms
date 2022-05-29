@@ -38,6 +38,7 @@ use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\TransportTarifController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\DistanceController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PayrollSheetController;
 use App\Http\Controllers\VolunteerResourceHistoryController;
@@ -230,6 +231,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
     Route::get('training_sessions', [RegionController::class, 'place'])->name('region.place');
     Route::resource('translation',TranslationTextController::class);
+    Route::resource('language',LanguageController::class);
 
     //Route::get('training_',[RegionController::class,'place'])->name('region.place');
     ///////////////////////////////////////////////////////////////////////////////////

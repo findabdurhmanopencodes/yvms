@@ -17,8 +17,8 @@ return new class extends Migration
     {
         Schema::create('approved_applicants', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(TrainingSession::class)->onDelete('cascade');
-            $table->foreignIdFor(Volunteer::class)->onDelete('cascade');
+            $table->foreignIdFor(TrainingSession::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Volunteer::class)->constrained()->onDelete('cascade');
             $table->smallInteger('status');
             $table->timestamps();
         });

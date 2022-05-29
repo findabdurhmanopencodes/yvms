@@ -19,7 +19,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->foreignIdFor(TrainingSession::class)->constrained();
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)->constrained();
             $table->timestamps();
         });
     }

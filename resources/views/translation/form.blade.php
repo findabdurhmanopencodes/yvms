@@ -4,7 +4,9 @@
         <select name="lang" class="form-control @error('lang') is-invalid @enderror select2" id="lang">
             <option value="">Select</option>
             @foreach ($langs as $lang)
-                <option value="{{ $lang->id }}">{{ $lang->name }}</option>
+                <option value="{{ $lang->id }}"
+                    {{ old('lang') == $lang->id ? 'selected' : ($translationText?->lang == $lang->id ? 'selected' : '') }}>
+                    {{ $lang->name }}</option>
             @endforeach
         </select>
         @error('lang')
@@ -17,7 +19,9 @@
             id="translation_type">
             <option value="">Select</option>
             @foreach ($translationTypes as $index => $translationType)
-                <option value="{{ $index }}">{{ $translationType }}</option>
+                <option value="{{ $index }}"
+                    {{ old('translation_type') == $index ? 'selected' : ($translationText?->translation_type == $index ? 'selected' : '') }}>
+                    {{ $translationType }}</option>
             @endforeach
         </select>
         @error('translation_type')
@@ -27,7 +31,6 @@
 </div>
 
 <div class="row">
-
     <div class="col-md-12 form-group">
         <label for="">Translation Content</label>
         <div class="clear-both">

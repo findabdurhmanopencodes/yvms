@@ -18,7 +18,8 @@ class TranslationTextController extends Controller
     public function index()
     {
         $translationTexts = TranslationText::all();
-        return view('translation.index',compact('translationTexts'));
+        $langs = Language::all();
+        return view('translation.index',compact('translationTexts','langs'));
     }
 
     /**
@@ -44,7 +45,7 @@ class TranslationTextController extends Controller
         $translationText = null;
         $langs = Language::all();
         $translationTypes = TranslationText::TRANSLATION_TEXT_TYPES;
-        return view('transportTarif.create',compact('translationText','langs','translationTypes'));
+        return view('translation.create',compact('translationText','langs','translationTypes'));
     }
 
     /**
@@ -72,9 +73,10 @@ class TranslationTextController extends Controller
      * @param  \App\Models\TranslationText  $translationText
      * @return \Illuminate\Http\Response
      */
-    public function show(TranslationText $translationText)
+    public function show(TranslationText $translation)
     {
-        //
+        $translationText = $translation;
+        return view('translation.show',compact('translationText'));
     }
 
     /**
@@ -106,8 +108,9 @@ class TranslationTextController extends Controller
      * @param  \App\Models\TranslationText  $translationText
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TranslationText $translationText)
+    public function destroy(TranslationText $translation)
     {
-        //
+        $translation->delete();
+        return redirect()->back()->with(['message','Translation text deleted successfully']);
     }
 }
