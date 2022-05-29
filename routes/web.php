@@ -43,6 +43,7 @@ use App\Http\Controllers\PayrollSheetController;
 use App\Http\Controllers\VolunteerResourceHistoryController;
 use App\Http\Controllers\TrainingCenterBasedPermissionController;
 use App\Http\Controllers\TrainingDocumentController;
+use App\Http\Controllers\TranslationTextController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
 use App\Models\PaymentType;
@@ -59,6 +60,7 @@ use App\Models\Payroll;
 use App\Models\PayrollSheet;
 use App\Models\TrainingDocument;
 use App\Models\TraininingCenter;
+use App\Models\TranslationText;
 use App\Models\TransportTarif;
 use App\Models\User;
 use App\Models\Volunteer;
@@ -79,8 +81,9 @@ use Symfony\Component\Console\Input\Input;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
+Route::get('importRegion',[RegionController::class,'import']);
+Route::get('importZone',[ZoneController::class,'import']);
+Route::get('importWoreda',[WoredaController::class,'import']);
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
@@ -226,6 +229,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('disablity', DisablityController::class);
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
     Route::get('training_sessions', [RegionController::class, 'place'])->name('region.place');
+    Route::resource('translation',TranslationTextController::class);
+
     //Route::get('training_',[RegionController::class,'place'])->name('region.place');
     ///////////////////////////////////////////////////////////////////////////////////
     Route::resource('training_session', TrainingSessionController::class);

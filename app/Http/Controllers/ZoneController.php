@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Zone;
 use App\Http\Requests\StoreZoneRequest;
 use App\Http\Requests\UpdateZoneRequest;
+use App\ImporterFiles;
 use App\Models\Region;
 use App\Models\TrainingSession;
 use App\Models\Woreda;
@@ -16,7 +17,7 @@ class ZoneController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Zone::class,'zone');
+        $this->authorizeResource(Zone::class, 'zone');
     }
     /**
      * Display a listing of the resource.
@@ -27,7 +28,7 @@ class ZoneController extends Controller
     {
         $trainingSession_id = TrainingSession::availableSession()[0]->id;
         if ($request->ajax()) {
-            return datatables()->of(Zone::select())->addColumn('region', function (Zone $zone){
+            return datatables()->of(Zone::select())->addColumn('region', function (Zone $zone) {
                 return $zone->region->name;
             })->make(true);
         }
@@ -59,14 +60,14 @@ class ZoneController extends Controller
      */
     public function store(StoreZoneRequest $request)
     {
-        $zoneInquota = $request->get('zone_quota')/100;
+        $zoneInquota = $request->get('zone_quota') / 100;
         $zone = new Zone();
         $request->validate(['name' => 'required|string|unique:zones,name', 'code' => 'required|string|unique:zones,code']);
         // $zone->name = $request->get('name');
         // $zone->code = $request->get('code');
         // $zone->region_id = $request->get('region');
         // $zone->save();
-        Zone::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'region_id' => $request->get('region'), 'qoutaInpercent'=>$zoneInquota, 'status'=>1]);
+        Zone::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'region_id' => $request->get('region'), 'qoutaInpercent' => $zoneInquota, 'status' => 1]);
         return redirect()->route('zone.index')->with('message', 'Zone created successfully');
     }
 
@@ -108,11 +109,11 @@ class ZoneController extends Controller
         $zone->name = $request->get('name');
         $zone->code = $request->get('code');
         $zone->region_id = $request->get('region');
-        $zone->qoutaInpercent = $request->get('qoutaInpercent')/100;
+        $zone->qoutaInpercent = $request->get('qoutaInpercent') / 100;
         if ($request->get('status')) {
             if ($request->get('status') == 'on') {
                 $zone->status = 1;
-            }else{
+            } else {
                 $zone->status = 0;
                 foreach ($zone->woredas as $key => $wor) {
                     $woreda = Woreda::find($wor->id);
@@ -120,7 +121,7 @@ class ZoneController extends Controller
                     $woreda->save();
                 }
             }
-        }else{
+        } else {
             $zone->status = 0;
             foreach ($zone->woredas as $key => $wor) {
                 $woreda = Woreda::find($wor->id);
@@ -150,22 +151,23 @@ class ZoneController extends Controller
     }
     public function fetch(Region $region)
     {
-        return datatables()->of(Zone::select()->where('region_id','=',$region->id))->make(true);
+        return datatables()->of(Zone::select()->where('region_id', '=', $region->id))->make(true);
     }
 
-    public function validateForm(Zone $zone, Request $request){
+    public function validateForm(Zone $zone, Request $request)
+    {
         $limit = false;
         $zon = $zone::where('region_id', $request->region_id)->get();
-        $sum = $request->qouta/100;
+        $sum = $request->qouta / 100;
         foreach ($zon as $key => $value) {
-            $sum+=$value->qoutaInpercent;
+            $sum += $value->qoutaInpercent;
         }
 
         if ($sum <= 1) {
             $limit = true;
         }
 
-        return response()->json(['limit'=>$limit]);
+        return response()->json(['limit' => $limit]);
     }
 
     public function zoneIntake(TrainingSession $trainingSession, $zone_id)
@@ -174,11 +176,30 @@ class ZoneController extends Controller
         $curr_sess = TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
         $intake_exist = ZoneIntake::where('training_session_id', $trainingSession->id)->where('zone_id', $zone_id)->get();
         $zone = Zone::where('id', $zone_id)?->get()[0];
-        return view('zone.zone_capacity', compact('zone', 'trainingSession', 'intake_exist','curr_sess'));
+        return view('zone.zone_capacity', compact('zone', 'trainingSession', 'intake_exist', 'curr_sess'));
     }
 
-    public function zoneIntakeStore(Request $request, TrainingSession $trainingSession, $zone_id){
-        ZoneIntake::create(['training_session_id' => $trainingSession->id, 'zone_id'=>$zone_id, 'intake'=> $request->get('capacity')]);
-        return redirect()->route('session.zone.intake', ['training_session'=>$trainingSession->id, 'zone_id'=>$zone_id])->with('message', 'Zone Intake created successfully');
+    public function zoneIntakeStore(Request $request, TrainingSession $trainingSession, $zone_id)
+    {
+        ZoneIntake::create(['training_session_id' => $trainingSession->id, 'zone_id' => $zone_id, 'intake' => $request->get('capacity')]);
+        return redirect()->route('session.zone.intake', ['training_session' => $trainingSession->id, 'zone_id' => $zone_id])->with('message', 'Zone Intake created successfully');
+    }
+
+    public function import()
+    {
+        $binZones = ImporterFiles::ZONE_IMPORTS;
+        $zones = [];
+        $region = null;
+        foreach ($binZones as $bin) {
+            if($bin[0] != null){
+                $region = $bin[0];
+            }
+            $zoneName = $bin[1];
+            $re = Region::where('name',$region)->first();
+            Zone::where('name', $zoneName)->firstOr(function () use ($zoneName,$re) {
+                Zone::create(['name' => $zoneName, 'status' => 1,'region_id'=>$re->id]);
+            });
+        }
+        dd('Zone imported successfully');
     }
 }

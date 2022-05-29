@@ -6,6 +6,7 @@ use App\Models\Region;
 use App\Models\Zone;
 use App\Http\Requests\StoreRegionRequest;
 use App\Http\Requests\UpdateRegionRequest;
+use App\ImporterFiles;
 use App\Models\Qouta;
 use App\Models\RegionIntake;
 use App\Models\TrainingSession;
@@ -18,8 +19,7 @@ class RegionController extends Controller
     public function __construct()
     {
 
-        $this->authorizeResource(Region::class,'region');
-
+        $this->authorizeResource(Region::class, 'region');
     }
     protected function resourceAbilityMap()
     {
@@ -30,7 +30,7 @@ class RegionController extends Controller
             'edit' => 'update',
             'update' => 'update',
             'destroy' => 'delete',
-            'place'=>'place',
+            'place' => 'place',
         ];
     }
 
@@ -75,10 +75,12 @@ class RegionController extends Controller
      */
     public function store(StoreRegionRequest $request)
     {
-        $regionInquota = $request->get('region_quota')/100;
-        $request->validate(['name' => 'required|string|unique:permissions,name',
-        'code' => 'required|string|unique:permissions,name']);
-        Region::create(['name' => $request->get('name'), 'code'=>$request->get('code'), 'qoutaInpercent'=> $regionInquota, 'status'=>1]);
+        $regionInquota = $request->get('region_quota') / 100;
+        $request->validate([
+            'name' => 'required|string|unique:permissions,name',
+            'code' => 'required|string|unique:permissions,name'
+        ]);
+        Region::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'qoutaInpercent' => $regionInquota, 'status' => 1]);
         return redirect()->route('region.index')->with('message', 'Region created successfully');
     }
 
@@ -117,11 +119,11 @@ class RegionController extends Controller
         $region = Region::find($id);
         $region->name = $request->get('name');
         $region->code = $request->get('code');
-        $region->qoutaInpercent = $request->get('qoutaInpercent')/100;
+        $region->qoutaInpercent = $request->get('qoutaInpercent') / 100;
         if ($request->get('status')) {
             if ($request->get('status') == 'on') {
                 $region->status = 1;
-            }else{
+            } else {
                 $region->status = 0;
                 foreach ($region->zones as $key => $zon) {
                     $zone = Zone::find($zon->id);
@@ -134,7 +136,7 @@ class RegionController extends Controller
                     }
                 }
             }
-        }else{
+        } else {
             $region->status = 0;
             foreach ($region->zones as $key => $zon) {
                 $zone = Zone::find($zon->id);
@@ -164,23 +166,24 @@ class RegionController extends Controller
         // }
         $region->delete();
         // if ($request->ajax()) {
-            return response()->json(array('msg' => 'deleted successfully'));
+        return response()->json(array('msg' => 'deleted successfully'));
         // }
     }
 
-    public function validateForm(Region $region, Request $request){
+    public function validateForm(Region $region, Request $request)
+    {
         $limit = false;
         $reg = $region::all();
-        $sum = $request->qouta/100;
+        $sum = $request->qouta / 100;
         foreach ($reg as $key => $value) {
-            $sum+=$value->qoutaInpercent;
+            $sum += $value->qoutaInpercent;
         }
 
         if ($sum <= 1) {
             $limit = true;
         }
 
-        return response()->json(['limit'=>$limit]);
+        return response()->json(['limit' => $limit]);
     }
 
     public function regionIntake(TrainingSession $trainingSession, $region_id)
@@ -189,11 +192,33 @@ class RegionController extends Controller
         $curr_sess = TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
         $intake_exist = RegionIntake::where('training_session_id', $trainingSession->id)->where('region_id', $region_id)->get();
         $region = Region::where('id', $region_id)?->get()[0];
-        return view('region.region_capacity', compact('region', 'trainingSession', 'intake_exist','curr_sess'));
+        return view('region.region_capacity', compact('region', 'trainingSession', 'intake_exist', 'curr_sess'));
     }
 
-    public function regionIntakeStore(Request $request, TrainingSession $trainingSession, $region_id){
-        RegionIntake::create(['training_session_id' => $trainingSession->id, 'region_id'=>$region_id, 'intake'=> $request->get('capacity')]);
-        return redirect()->route('session.region.intake', ['training_session'=>$trainingSession->id, 'region_id'=>$region_id])->with('message', 'Region created successfully');
+    public function regionIntakeStore(Request $request, TrainingSession $trainingSession, $region_id)
+    {
+        RegionIntake::create(['training_session_id' => $trainingSession->id, 'region_id' => $region_id, 'intake' => $request->get('capacity')]);
+        return redirect()->route('session.region.intake', ['training_session' => $trainingSession->id, 'region_id' => $region_id])->with('message', 'Region created successfully');
+    }
+    public function import()
+    {
+        $binRegions = ImporterFiles::REGION_IMPORTS;
+        function filter($var)
+        {
+            return $var !== NULL && $var !== FALSE && $var !== '' && $var !== "";
+        }
+        $regions = [];
+        foreach ($binRegions as $bin) {
+            $filterResult = filter($bin[0]);
+            if ($filterResult) {
+                array_push($regions, $bin[0]);
+            }
+        }
+        foreach ($regions as $region) {
+            Region::where('name', $region)->firstOr(function () use ($region) {
+                Region::create(['name' => $region, 'status' => 1]);
+            });
+        }
+        dd('Region Imported successfully');
     }
 }
