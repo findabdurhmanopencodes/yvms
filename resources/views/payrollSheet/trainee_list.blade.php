@@ -45,7 +45,7 @@
                         <button class="btn btn-primary btn-sm"><i class="fa fa-print"> </i> Print out</button>
                     </div>
 
-              <span> Total Trainee :{{ $placedVolunteers->count() }}  &nbsp;  &nbsp;    Training Center: {{ $center->code }}</span>
+              <span> Total Trainee :{{ $placedVolunteers->count() }}  &nbsp;  &nbsp;    Training Center: {{ $center->name }}</span>
                 </div>
             </div>
         </form>

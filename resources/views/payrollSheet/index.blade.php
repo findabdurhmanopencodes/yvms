@@ -86,9 +86,9 @@
                  <div class="form-group col-8">
                     <select name="training_center" id="training_center" class="form-control select2">
                         <option value="">Select Training Center</option>
-                        {{-- @foreach ($training_centers as $training_center)
+                        @foreach ($training_centers as $training_center)
                             <option value="{{ $training_center->id }}">{{ $training_center->name }}</option>
-                        @endforeach --}}
+                        @endforeach
                     </select>
                 </div>
 
