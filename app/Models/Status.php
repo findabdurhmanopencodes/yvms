@@ -24,5 +24,7 @@ class Status extends Model
         3 => 'Selected',
         4 => 'Placed',
         5 => 'checked-In',
+        6 => 'graduated',
+        7 => 'deployed'
     ];
 }
