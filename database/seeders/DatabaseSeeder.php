@@ -64,103 +64,151 @@ class DatabaseSeeder extends Seeder
             'status' => 0,
         ]);
 
-        // (new RegionController())->import();
-        // (new ZoneController())->import();
-        // (new WoredaController())->import();
-        \App\Models\Region::factory(4)->create();
-        //Zone creation
-        $quota = [0.4, 0.3, 0.3];
-        $region = 1;
-        for ($y = 0; $y < 3; $y++) {
-            \App\Models\Zone::factory(1)->create(['region_id' => $region, 'qoutaInpercent' => $quota[$y]]);
-        }
-        $quota = [0.3, 0.2, 0.1, 0.2, 0.2];
-        $region = 2;
-        for ($y = 0; $y < count($quota); $y++) {
-            \App\Models\Zone::factory(1)->create(['region_id' => $region, 'qoutaInpercent' => $quota[$y]]);
-        }
-        $quota = [0.5, 0.2, 0.1, 0.2];
-        $region = 3;
-        for ($y = 0; $y < count($quota); $y++) {
-            \App\Models\Zone::factory(1)->create(['region_id' => $region, 'qoutaInpercent' => $quota[$y]]);
-        }
-        $quota = [0.1, 0.3, 0.6];
-        $region = 4;
-        for ($y = 0; $y < count($quota); $y++) {
-            \App\Models\Zone::factory(1)->create(['region_id' => $region, 'qoutaInpercent' => $quota[$y]]);
-        }
-        //Woreda creation
-        $zonesCount = Zone::count();
-        $quotas = [
-            [0.2, 0.4, 0.4],
-            [0.2, 0.5, 0.1, 0.2],
-            [0.2, 0.2, 0.1, 0.3, 0.2]
-        ];
-        $zone = 1;
-        $iterate = 0;
-        for ($x = 0; $x < $zonesCount; $x++) {
-            $quota = $quotas[$iterate];
-            for ($y = 0; $y < count($quota); $y++) {
-                \App\Models\Woreda::factory(1)->create(['zone_id' => $zone, 'qoutaInpercent' => $quota[$y]]);
-            }
-            $zone++;
-            $iterate++;
-            if ($iterate > 2) {
-                $iterate = 0;
-            }
-        }
-        \App\Models\User::factory(200)->create();
+        (new RegionController())->import();
+        (new ZoneController())->import();
+        (new WoredaController())->import();
         \App\Models\File::factory(16)->create();
         \App\Models\FeildOfStudy::factory(4)->create();
-        $zones = Zone::all();
-        foreach ($zones as $zone) {
-            \App\Models\TraininingCenter::factory(1)->create(['zone_id' => $zone->id]);
-        }
 
+        $quota = [0.3, 0.3, 0.4];
         $capacities = [6, 6, 5, 6, 7, 5, 6, 10, 7, 6, 4, 8, 7, 9, 8];
-        $trainingcenters = TraininingCenter::all();
-        foreach ($trainingcenters as $key => $center) {
-            $data = ['capacity' => $capacities[$key], 'trainining_center_id' => $center->id];
-            \App\Models\TrainingCenterCapacity::factory(1)->create($data);
-        }
-        $regions = Region::all();
-        $totalPersons = 100;
-        foreach ($regions as $region) {
-            $regionQuota = $region->qoutaInpercent * 100;
-            $zones = $region->zones;
-            foreach ($zones as $zone) {
+
+        foreach (Region::all()->take(3) as $key => $region) {
+            $region->update(['qoutaInpercent' => $quota[$key], 'status' => 1]);
+            $regionQuota = $region->qoutaInpercent * 200;
+            foreach ($region->zones()->where('region_id',$region->id)->get()->take(3) as $key => $zone) {
+                $center= \App\Models\TraininingCenter::factory(1)->create(['zone_id' => $zone->id]);
+                $data = ['capacity' => 22, 'trainining_center_id' => $center[0]->id];
+                \App\Models\TrainingCenterCapacity::factory(1)->create($data);
+                \App\Models\TrainingCenterCapacity::factory(1)->create($data);
+                $zone->update(['qoutaInpercent' => $quota[$key], 'status' => 1]);
                 $zoneQuota = $zone->qoutaInpercent * $regionQuota;
-                $woredas = $zone->woredas;
-                $woredaCount = 0;
-                foreach ($woredas as  $woreda) {
-                    $woredaQuota = round($woreda->qoutaInpercent * $zoneQuota);
-                    for ($x = 0; $x < $woredaQuota; $x++)
-                        \App\Models\Volunteer::factory(1)->create(['woreda_id' => $woreda->id]);
+                foreach ($zone->woredas()->where('zone_id',$zone->id)->get()->take(3) as $key => $wereda) {
+                    // dump($wereda->name);
+                    $wereda->update(['qoutaInpercent' => $quota[$key], 'status' => 1]);
+                    $woredaQuota = round($wereda->qoutaInpercent * $zoneQuota);
+                    for ($x = 0; $x < $woredaQuota; $x++){
+                        $user = User::factory(1)->create();
+                        \App\Models\Volunteer::factory(1)->create(['woreda_id' => $wereda->id,'user_id'=>$user[0]->id]);
+                    }
                 }
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // dd('stop');
+        // \App\Models\Region::factory(4)->create();
+        // //Zone creation
+        // $quota = [0.4, 0.3, 0.3];
+        // $region = 1;
+        // for ($y = 0; $y < 3; $y++) {
+        //     \App\Models\Zone::factory(1)->create(['region_id' => $region, 'qoutaInpercent' => $quota[$y]]);
+        // }
+        // $quota = [0.3, 0.2, 0.1, 0.2, 0.2];
+        // $region = 2;
+        // for ($y = 0; $y < count($quota); $y++) {
+        //     \App\Models\Zone::factory(1)->create(['region_id' => $region, 'qoutaInpercent' => $quota[$y]]);
+        // }
+        // $quota = [0.5, 0.2, 0.1, 0.2];
+        // $region = 3;
+        // for ($y = 0; $y < count($quota); $y++) {
+        //     \App\Models\Zone::factory(1)->create(['region_id' => $region, 'qoutaInpercent' => $quota[$y]]);
+        // }
+        // $quota = [0.1, 0.3, 0.6];
+        // $region = 4;
+        // for ($y = 0; $y < count($quota); $y++) {
+        //     \App\Models\Zone::factory(1)->create(['region_id' => $region, 'qoutaInpercent' => $quota[$y]]);
+        // }
+        // //Woreda creation
+        // $zonesCount = Zone::count();
+        // $quotas = [
+        //     [0.2, 0.4, 0.4],
+        //     [0.2, 0.5, 0.1, 0.2],
+        //     [0.2, 0.2, 0.1, 0.3, 0.2]
+        // ];
+        // $zone = 1;
+        // $iterate = 0;
+        // for ($x = 0; $x < $zonesCount; $x++) {
+        //     $quota = $quotas[$iterate];
+        //     for ($y = 0; $y < count($quota); $y++) {
+        //         \App\Models\Woreda::factory(1)->create(['zone_id' => $zone, 'qoutaInpercent' => $quota[$y]]);
+        //     }
+        //     $zone++;
+        //     $iterate++;
+        //     if ($iterate > 2) {
+        //         $iterate = 0;
+        //     }
+        // }
+        // \App\Models\User::factory(200)->create();
+        // $zones = Zone::all();
+        // foreach ($zones as $zone) {
+            // \App\Models\TraininingCenter::factory(1)->create(['zone_id' => $zone->id]);
+        // }
+
+        // $capacities = [6, 6, 5, 6, 7, 5, 6, 10, 7, 6, 4, 8, 7, 9, 8];
+        // $trainingcenters = TraininingCenter::all();
+        // foreach ($trainingcenters as $key => $center) {
+            // $data = ['capacity' => $capacities[$key], 'trainining_center_id' => $center->id];
+            // \App\Models\TrainingCenterCapacity::factory(1)->create($data);
+        // }
+        // $regions = Region::all();
+        // $totalPersons = 100;
+        // foreach ($regions as $region) {
+        //     $regionQuota = $region->qoutaInpercent * 100;
+        //     $zones = $region->zones;
+        //     foreach ($zones as $zone) {
+        //         $zoneQuota = $zone->qoutaInpercent * $regionQuota;
+        //         $woredas = $zone->woredas;
+        //         $woredaCount = 0;
+        //         foreach ($woredas as  $woreda) {
+        //             $woredaQuota = round($woreda->qoutaInpercent * $zoneQuota);
+        //             for ($x = 0; $x < $woredaQuota; $x++)
+        //                 \App\Models\Volunteer::factory(1)->create(['woreda_id' => $woreda->id]);
+        //         }
+        //     }
+        // }
         // $this->approveAllVolunteers();
         // DatabaseSeeder::woredaIntake();
+        $this->woredaIntake();
+
     }
 
     public static function woredaIntake()
     {
         $intakes = [6, 6, 5, 6, 7, 5, 6, 10, 7, 6, 4, 8, 7, 9, 8];
         $trainingSession = TrainingSession::availableSession()->first();
+        // dd('aj');
         foreach ($intakes as $intake) {
             WoredaIntake::create([
                 'training_session_id' => $trainingSession->id,
                 'woreda_id' => DatabaseSeeder::randomUniqueWoreda($trainingSession), 'intake' => $intake
             ]);
         }
-
     }
 
     public static function randomUniqueWoreda($trainingSession)
     {
         $woredaCount = Woreda::count();
         $woredaId = mt_rand(1, $woredaCount);
-        if (WoredaIntake::where(['training_session_id' => $trainingSession->id, 'woreda_id' => $woredaId])->count() > 0 ) {
+        if (WoredaIntake::where(['training_session_id' => $trainingSession->id, 'woreda_id' => $woredaId])->count() > 0) {
             return DatabaseSeeder::randomUniqueWoreda($trainingSession);
         }
 

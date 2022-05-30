@@ -6,9 +6,9 @@ class ImporterFiles
 {
 
     const REGION_IMPORTS = [
-        [
-            "Addis Ababa"
-        ],
+        // [
+        //     "Addis Ababa"
+        // ],
         [
             "አማራ ክልል"
         ],
