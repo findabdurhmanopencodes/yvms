@@ -17,8 +17,8 @@ return new class extends Migration
     {
         Schema::create('cindication_rooms', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(TrainingSession::class)->constrained();
-            $table->foreignIdFor(TraininingCenter::class)->constrained();
+            $table->foreignIdFor(TrainingSession::class);
+            $table->foreignIdFor(TraininingCenter::class);
             $table->smallInteger('number_of_volunteers');
             $table->string('number');
             $table->timestamps();
