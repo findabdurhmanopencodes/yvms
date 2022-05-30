@@ -204,6 +204,6 @@ class ZoneController extends Controller
                 Zone::create(['name' => $zoneName, 'status' => 1,'region_id'=>$re->id]);
             });
         }
-        dd('Zone imported successfully');
+        // dd('Zone imported successfully');
     }
 }

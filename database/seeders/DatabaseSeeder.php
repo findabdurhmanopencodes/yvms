@@ -34,67 +34,66 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-        // $this->call([
-        //     PermissionSeeder::class,
-        //     RoleSeeder::class,
-        //     // BaseSeeder::class,
-        //     // FakeDataSeeder::class,
-        // ]);
-        // $superUser = User::create(
-        //     [
-        //         'first_name' => 'Super',
-        //         'father_name' => 'Admin',
-        //         'grand_father_name' => 'Mop',
-        //         'dob' => '1999-04-28',
-        //         'gender' => 'M',
-        //         'email' => 'super@gmail.com',
-        //         'email_verified_at' => now(),
-        //         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-        //         'remember_token' => Str::random(10),
-        //     ]
-        // );
-        // $superUser->assignRole('super-admin');
-        // TrainingSession::create([
-        //     'start_date' => '2022-05-06',
-        //     'end_date' => '2022-07-07',
-        //     'moto' => 'Kindness for living together',
-        //     'registration_start_date' => '2022-05-01',
-        //     'registration_dead_line' => '2022-06-29',
-        //     'quantity' => 800,
-        //     'status' => 0,
-        // ]);
+        $this->call([
+            PermissionSeeder::class,
+            RoleSeeder::class,
+            // BaseSeeder::class,
+            // FakeDataSeeder::class,
+        ]);
+        $superUser = User::create(
+            [
+                'first_name' => 'Super',
+                'father_name' => 'Admin',
+                'grand_father_name' => 'Mop',
+                'dob' => '1999-04-28',
+                'gender' => 'M',
+                'email' => 'super@gmail.com',
+                'email_verified_at' => now(),
+                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+                'remember_token' => Str::random(10),
+            ]
+        );
+        $superUser->assignRole('super-admin');
+        TrainingSession::create([
+            'start_date' => '2022-05-06',
+            'end_date' => '2022-07-07',
+            'moto' => 'Kindness for living together',
+            'registration_start_date' => '2022-05-01',
+            'registration_dead_line' => '2022-06-29',
+            'quantity' => 800,
+            'status' => 0,
+        ]);
 
-        // (new RegionController())->import();
-        // (new ZoneController())->import();
-        // (new WoredaController())->import();
-        // \App\Models\File::factory(16)->create();
-        // \App\Models\FeildOfStudy::factory(4)->create();
-        // dd('s');
+        (new RegionController())->import();
+        (new ZoneController())->import();
+        (new WoredaController())->import();
+        \App\Models\File::factory(16)->create();
+        \App\Models\FeildOfStudy::factory(4)->create();
 
-        // $quota = [0.3, 0.3, 0.4];
-        // $capacities = [6, 6, 5, 6, 7, 5, 6, 10, 7, 6, 4, 8, 7, 9, 8];
+        $quota = [0.3, 0.3, 0.4];
+        $capacities = [6, 6, 5, 6, 7, 5, 6, 10, 7, 6, 4, 8, 7, 9, 8];
 
-        // foreach (Region::all()->take(3) as $key => $region) {
-        //     $region->update(['qoutaInpercent' => $quota[$key], 'status' => 1]);
-        //     $regionQuota = $region->qoutaInpercent * 200;
-        //     foreach ($region->zones()->where('region_id',$region->id)->get()->take(3) as $key => $zone) {
-        //         $center= \App\Models\TraininingCenter::factory(1)->create(['zone_id' => $zone->id]);
-        //         $data = ['capacity' => 22, 'trainining_center_id' => $center[0]->id];
-        //         \App\Models\TrainingCenterCapacity::factory(1)->create($data);
-        //         \App\Models\TrainingCenterCapacity::factory(1)->create($data);
-        //         $zone->update(['qoutaInpercent' => $quota[$key], 'status' => 1]);
-        //         $zoneQuota = $zone->qoutaInpercent * $regionQuota;
-        //         foreach ($zone->woredas()->where('zone_id',$zone->id)->get()->take(3) as $key => $wereda) {
-        //             // dump($wereda->name);
-        //             $wereda->update(['qoutaInpercent' => $quota[$key], 'status' => 1]);
-        //             $woredaQuota = round($wereda->qoutaInpercent * $zoneQuota);
-        //             for ($x = 0; $x < $woredaQuota; $x++){
-        //                 $user = User::factory(1)->create();
-        //                 \App\Models\Volunteer::factory(1)->create(['woreda_id' => $wereda->id,'user_id'=>$user[0]->id]);
-        //             }
-        //         }
-        //     }
-        // }
+        foreach (Region::all()->take(3) as $key => $region) {
+            $region->update(['qoutaInpercent' => $quota[$key], 'status' => 1]);
+            $regionQuota = $region->qoutaInpercent * 200;
+            foreach ($region->zones()->where('region_id',$region->id)->get()->take(3) as $key => $zone) {
+                $center= \App\Models\TraininingCenter::factory(1)->create(['zone_id' => $zone->id]);
+                $data = ['capacity' => 22, 'trainining_center_id' => $center[0]->id];
+                \App\Models\TrainingCenterCapacity::factory(1)->create($data);
+                \App\Models\TrainingCenterCapacity::factory(1)->create($data);
+                $zone->update(['qoutaInpercent' => $quota[$key], 'status' => 1]);
+                $zoneQuota = $zone->qoutaInpercent * $regionQuota;
+                foreach ($zone->woredas()->where('zone_id',$zone->id)->get()->take(3) as $key => $wereda) {
+                    // dump($wereda->name);
+                    $wereda->update(['qoutaInpercent' => $quota[$key], 'status' => 1]);
+                    $woredaQuota = round($wereda->qoutaInpercent * $zoneQuota);
+                    for ($x = 0; $x < $woredaQuota; $x++){
+                        $user = User::factory(1)->create();
+                        \App\Models\Volunteer::factory(1)->create(['woreda_id' => $wereda->id,'user_id'=>$user[0]->id]);
+                    }
+                }
+            }
+        }
 
 
 
