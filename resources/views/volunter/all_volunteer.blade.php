@@ -18,7 +18,7 @@
                 placeholder: "Select a Gender"
             });
             $('#acceptance_status').select2({
-                placeholder: "Select a disablity Status "
+                placeholder: "Select a  Status "
             });
             $('#region_id').select2({
                 placeholder: "Select a Region"
@@ -225,6 +225,7 @@
                             <th>Gender</th>
                             <th>Phone</th>
                             <th>Woreda</th>
+                            <th>Id Number</th>
                             <th>status</th>
                             <th> Actions</th>
 
@@ -253,6 +254,9 @@
 
                                 <td>
                                     {{ $volunter->woreda?->name }}
+                                </td>
+                                <td>
+                                    {{ $volunter->id_number}}
                                 </td>
                                 <td>
                                     <span

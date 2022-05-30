@@ -189,7 +189,7 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Title</h5>
+        <h5 class="card-title">Events</h5>
         <section class="blog_section">
             <div class="blog_content">
                 <div class="owl-carousel owl-theme">
@@ -221,6 +221,10 @@
             <div class="d-flex justify-content-center">
                 {!! $events->links() !!}
             </div>
-        </section>    </div>
+            @if (count($events)<1)
+                <h2 class="text text-danger">NO Event Found!!!</h2>
+            @endif
+        </section>
+     </div>
 </div>
 @endsection

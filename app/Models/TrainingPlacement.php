@@ -16,6 +16,10 @@ class TrainingPlacement extends Model
     {
         return $this->belongsTo(ApprovedApplicant::class, 'approved_applicant_id', 'id');
     }
+    public function deployment()
+    {
+        return $this->hasOne(VolunteerDeployment::class, 'training_placement_id', 'id');
+    }
     public function trainingCenterCapacity()
     {
         return $this->belongsTo(TrainingCenterCapacity::class, 'training_center_capacity_id', 'id');

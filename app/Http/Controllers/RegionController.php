@@ -219,6 +219,6 @@ class RegionController extends Controller
                 Region::create(['name' => $region, 'status' => 0]);
             });
         }
-        dd('Region Imported successfully');
+        // dd('Region Imported successfully');
     }
 }

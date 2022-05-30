@@ -9,11 +9,11 @@ use NunoMaduro\Collision\Adapters\Phpunit\State;
 class Status extends Model
 {
     use HasFactory;
-    protected $fillable=['volunteer_id','acceptance_status','rejection_reason','status'];
+    protected $fillable = ['volunteer_id', 'acceptance_status', 'rejection_reason', 'status'];
 
     public function applicants()
     {
-        return $this->belongsTo(Volunteer::class);
+        return $this->belongsTo(Volunteer::class, 'volunteer_id', 'id');
     }
 
 
@@ -24,6 +24,7 @@ class Status extends Model
         3 => 'Selected',
         4 => 'Placed',
         5 => 'checked-In',
+        6 => 'graduated',
+        7 => 'deployed'
     ];
-
 }

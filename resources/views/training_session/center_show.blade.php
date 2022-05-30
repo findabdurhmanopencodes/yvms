@@ -132,9 +132,9 @@
                                         <li class="navi-item">
                                             <a href="{{ route('session.show.volunteers', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}" class="navi-link">
                                                 <span class="navi-icon">
-                                                    <i class="fal fa-map-marker-check"></i>
+                                                    <i class="fal fas fa-graduation-cap"></i>
                                                 </span>
-                                                <span class="navi-text">All Volunteers</span>
+                                                <span class="navi-text">Graduate Volunteers</span>
                                             </a>
                                         </li>
                                     </ul>

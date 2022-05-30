@@ -2,6 +2,7 @@
 
 use App\Helpers\Helper;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\CertificateGenerate;
 use App\Http\Controllers\CindicationRoomController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DisablityController;
@@ -45,6 +46,7 @@ use App\Http\Controllers\VolunteerResourceHistoryController;
 use App\Http\Controllers\TrainingCenterBasedPermissionController;
 use App\Http\Controllers\TrainingDocumentController;
 use App\Http\Controllers\TranslationTextController;
+use App\Http\Controllers\VolunteerDeploymentController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
 use App\Models\PaymentType;
@@ -82,9 +84,10 @@ use Symfony\Component\Console\Input\Input;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('importRegion',[RegionController::class,'import']);
-Route::get('importZone',[ZoneController::class,'import']);
-Route::get('importWoreda',[WoredaController::class,'import']);
+
+Route::get('importRegion', [RegionController::class, 'import']);
+Route::get('importZone', [ZoneController::class, 'import']);
+Route::get('importWoreda', [WoredaController::class, 'import']);
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
@@ -108,10 +111,6 @@ Route::get('/vission_and_mission', function () {
 Route::get('/terms', function () {
     return view('menu.terms');
 })->name('terms');
-
-Route::get('/placement', function () {
-    return view('placement.index');
-})->name('placement');
 
 Route::get('adb', function () {
     // dd('sd');
@@ -152,10 +151,18 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');
     Route::get('applicants/document-verified', [VolunteerController::class, 'verifiedApplicant'])->name('applicant.verified');
     Route::get('applicants/selected', [VolunteerController::class, 'selected'])->name('applicant.selected');
+
     Route::get('placement', [TrainingPlacementController::class, 'index'])->name('placement.index');
     Route::get('placement/reset', [TrainingPlacementController::class, 'resetPlacement'])->name('placement.reset');
     Route::post('{approvedApplicant}/manual-placement', [TrainingPlacementController::class, 'placeManually'])->name('placement.manual');
-    Route::post('{training_placement}/change', [TrainingPlacementController::class, 'changePlacement'])->name('placement.change');
+    Route::post('training-placement/{training_placement}/change', [TrainingPlacementController::class, 'changePlacement'])->name('placement.change');
+
+    Route::get('deployment', [VolunteerDeploymentController::class, 'index'])->name('deployment.index');
+    Route::get('deployment/deploy', [VolunteerDeploymentController::class, 'deploy'])->name('deployment.deploy');
+    Route::get('deployment/reset', [VolunteerDeploymentController::class, 'resetDeployment'])->name('deployment.reset');
+    Route::post('{deployment}/manual-deployment', [VolunteerDeploymentController::class, 'deployManually'])->name('deployment.manual');
+    Route::post('deployment/{deployment}/change', [VolunteerDeploymentController::class, 'changeDeployment'])->name('deployment.change');
+
     Route::post('{approvedApplicant}/manual-screen', [TrainingSessionController::class, 'screenManually'])->name('screen.manual');
 
     Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedule');
@@ -200,12 +207,15 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
 
     Route::get('{woreda_id}/woreda/capacity', [WoredaController::class, 'woredaIntake'])->name('woreda.intake');
     Route::post('woreda/{woreda_id}/capacity/store', [WoredaController::class, 'woredaIntakeStore'])->name('woreda.intake_store');
+    Route::post('/approve_placment', [TrainingSessionController::class, 'approvePlacment'])->name('placment.approve');
     Route::post('/approve_placment',[TrainingSessionController::class,'approvePlacment'])->name('placment.approve');
 
     Route::get('{training_center}/show/volunteers', [TraininingCenterController::class, 'show_all_volunteers'])->name('show.volunteers');
     Route::post('{training_center}/graduate', [TraininingCenterController::class, 'graduateVolunteers'])->name('graduate.volunteers');
 
     Route::get('graduated/list', [TraininingCenterController::class, 'graduationList'])->name('graduation.list');
+    Route::get('certificate/graduated', [CertificateGenerate::class, 'certificateGenerate'])->name('certificate.graduate');
+    Route::post('print/certificate/graduated', [CertificateGenerate::class, 'designGenerate'])->name('generate.certificate');
 });
 
 
@@ -235,8 +245,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('disablity', DisablityController::class);
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
     Route::get('training_sessions', [RegionController::class, 'place'])->name('region.place');
-    Route::resource('translation',TranslationTextController::class);
-    Route::resource('language',LanguageController::class);
+    Route::resource('translation', TranslationTextController::class);
+    Route::resource('language', LanguageController::class);
 
     //Route::get('training_',[RegionController::class,'place'])->name('region.place');
     ///////////////////////////////////////////////////////////////////////////////////
@@ -302,5 +312,5 @@ Route::get('{training_session}/reset-verification', [VolunteerController::class,
 //     dd('stop');
 // });
 Route::resource('Events', EventController::class);
-Route::get('/All-Events' ,[EventController::class,'allEvents'])->name('event.all');
-Route::get('/Event/{event}' ,[EventController::class,'detailEvent'])->name('event.detail');
+Route::get('/All-Events', [EventController::class, 'allEvents'])->name('event.all');
+Route::get('/Event/{event}', [EventController::class, 'detailEvent'])->name('event.detail');
