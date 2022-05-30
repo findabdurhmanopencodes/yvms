@@ -194,6 +194,10 @@ class ZoneController extends Controller
             if($bin[0] != null){
                 $region = $bin[0];
             }
+            if($region == 'Addis Ababa')
+            {
+                continue;
+            }
             $zoneName = $bin[1];
             $re = Region::where('name',$region)->first();
             Zone::where('name', $zoneName)->firstOr(function () use ($zoneName,$re) {

@@ -35,6 +35,6 @@ class IdNumberGenerate extends Command
                 Volunteer::find($placement->approvedApplicant?->volunteer?->id)->update(['id_number'=>$idNumber]);
             }
         }
-        Artisan::call('volunteer:placment:notify:all');
+        // Artisan::call('volunteer:placment:notify:all');
     }
 }

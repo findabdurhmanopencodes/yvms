@@ -187,6 +187,7 @@ class WoredaController extends Controller
                 dump($zone . ' - null found');
             } else {
                 $zo = Zone::where('name', $zone)->first();
+
                 Woreda::where('name', $woredaName)->firstOr(function () use ($woredaName, $zo) {
                     Woreda::create(['name' => $woredaName, 'status' => 1, 'zone_id' => $zo->id]);
                 });
