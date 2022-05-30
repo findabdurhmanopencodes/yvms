@@ -39,7 +39,7 @@ return new class extends Migration
             $table->foreignIdFor(File::class,'non_pregnant_validation_document')->constrained('files','id')->nullable();
             $table->foreignIdFor(File::class,'ethical_license')->constrained('files','id')->nullable();
             $table->foreignIdFor(File::class,'kebele_id')->constrained('files','id')->nullable();
-            $table->foreignIdFor(CindicationRoom::class)->nullable()->constrained()->nullOnDelete();
+            $table->foreignIdFor(CindicationRoom::class)->nullable();
             $table->string('account_number')->unique()->nullable();
             $table->string('id_number')->nullable()->unique();
             $table->smallInteger('educational_level')->default(0);
