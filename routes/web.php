@@ -2,6 +2,7 @@
 
 use App\Helpers\Helper;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\CertificateGenerate;
 use App\Http\Controllers\CindicationRoomController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DisablityController;
@@ -213,6 +214,8 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::post('{training_center}/graduate', [TraininingCenterController::class, 'graduateVolunteers'])->name('graduate.volunteers');
 
     Route::get('graduated/list', [TraininingCenterController::class, 'graduationList'])->name('graduation.list');
+    Route::get('certificate/graduated', [CertificateGenerate::class, 'certificateGenerate'])->name('certificate.graduate');
+    Route::post('print/certificate/graduated', [CertificateGenerate::class, 'designGenerate'])->name('generate.certificate');
 });
 
 
