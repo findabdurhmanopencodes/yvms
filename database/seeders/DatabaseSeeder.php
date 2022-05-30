@@ -69,7 +69,6 @@ class DatabaseSeeder extends Seeder
         (new WoredaController())->import();
         \App\Models\File::factory(16)->create();
         \App\Models\FeildOfStudy::factory(4)->create();
-        dd('s');
 
         $quota = [0.3, 0.3, 0.4];
         $capacities = [6, 6, 5, 6, 7, 5, 6, 10, 7, 6, 4, 8, 7, 9, 8];
