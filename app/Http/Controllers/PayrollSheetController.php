@@ -63,7 +63,6 @@ class PayrollSheetController extends Controller
 
         $training_centers = TraininingCenter::all();
         $training_sessions = TrainingSession::all();
-        $training_centers = TraininingCenter::all();
         $payroll_sheets = PayrollSheet::select('*')->where('id', '=',$payroll_id)->paginate(10);
 
         return view('payrollSheet.index', compact('payroll_sheets','training_centers', 'training_sessions'));
@@ -87,9 +86,7 @@ class PayrollSheetController extends Controller
         return  $result;
     }
 
-
-
-      public function getPayee($training_session_id,$trainining_center_id){
+       public function getPayee($training_session_id,$trainining_center_id){
 
         $results = [];
         $results = Volunteer::whereRelation('status','acceptance_status',5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainining_center_id)->whereRelation('approvedApplicant', 'training_session_id', $training_session_id)->get();
@@ -98,19 +95,19 @@ class PayrollSheetController extends Controller
 
       }
 
-
     public function generatePDF(Request $request)
     {
+       $placedVolunteers = Volunteer::whereRelation('status','acceptance_status',5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
 
-        $placedVolunteers = Volunteer::whereRelation('status','acceptance_status',5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
-        $total_volunteers = DB::table('volunteers')->count();
+       $total_volunteers = Volunteer::whereRelation('status','acceptance_status',5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->count();
+
         $paymentTypes  = PaymentType::where('id', 1)->first();
 
         $year = Carbon::now()->format('Y');
         $date = DateTimeFactory::fromDateTime(new Carbon('now'))->format('d/m/Y h:i:s');
         $title = 'Trainee  payroll Payment report';
         $session = 'MoP-YVMS-01-2014';
-        $center = 'Jimma University';
+        $center = 'Name';
 
    ///////////////////////////////////////////////////////////////////////////////
         if ($request->get('payment_type') == '1') {  // for pocket  money payment

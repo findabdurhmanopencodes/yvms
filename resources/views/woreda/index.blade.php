@@ -204,7 +204,7 @@
                                                         <select class="form-control select2" id="zone" name="woreda" required>
                                                             <option value=""></option>
                                                             @foreach ($zones as $zone)
-                                                                <option value="{{ $zone->id }}">{{ $zone->code }}</option>
+                                                                <option value="{{ $zone->id }}">{{ $zone->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
