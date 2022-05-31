@@ -17,7 +17,7 @@ return new class extends Migration
     {
         Schema::create('cindication_rooms', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(TrainingSession::class)->constrained()->nullOnDelete();
+            $table->foreignIdFor(TrainingSession::class)->constrained()->cascadeOnUpdate();
             $table->foreignIdFor(TraininingCenter::class)->constrained()->cascadeOnUpdate();
             $table->smallInteger('number_of_volunteers');
             $table->string('number');
