@@ -17,8 +17,8 @@ return new class extends Migration
     {
         Schema::create('zone_intakes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(TrainingSession::class)->constrained();
-            $table->foreignIdFor(Zone::class)->constrained();
+            $table->foreignIdFor(TrainingSession::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignIdFor(Zone::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('intake');
             $table->timestamps();
         });
