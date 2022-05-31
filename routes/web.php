@@ -292,7 +292,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             $trainingSession = TrainingSession::availableSession()[0];
             return redirect(route('session.dashboard', ['training_session' => $trainingSession->id]));
         }
-        return 'No active training session found!';
+        return redirect()->route('training_session.index');
     })->name('dashboard');
 
     Route::post('roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions.give');

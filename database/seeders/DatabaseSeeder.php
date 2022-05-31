@@ -54,20 +54,20 @@ class DatabaseSeeder extends Seeder
             ]
         );
         $superUser->assignRole('super-admin');
-        TrainingSession::create([
-            'start_date' => '2022-05-06',
-            'end_date' => '2022-07-07',
-            'moto' => 'Kindness for living together',
-            'registration_start_date' => '2022-05-01',
-            'registration_dead_line' => '2022-06-29',
-            'quantity' => 800,
-            'status' => 0,
-        ]);
+        // TrainingSession::create([
+        //     'start_date' => '2022-05-06',
+        //     'end_date' => '2022-07-07',
+        //     'moto' => 'Kindness for living together',
+        //     'registration_start_date' => '2022-05-01',
+        //     'registration_dead_line' => '2022-06-29',
+        //     'quantity' => 800,
+        //     'status' => 0,
+        // ]);
 
         (new RegionController())->import();
         (new ZoneController())->import();
         (new WoredaController())->import();
-	dd('done seeding');
+	    dd('done seeding');
         \App\Models\File::factory(16)->create();
         \App\Models\FeildOfStudy::factory(4)->create();
 
