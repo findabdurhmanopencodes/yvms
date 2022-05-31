@@ -337,13 +337,16 @@ class TraininingCenterController extends Controller
                     $round = 0;
                 }
                 $group = $volunteerGroups[$regionIds[$round]];
-                $volunteer = $group[count($group)-1];
-                $volunteer->update([
-                    'cindication_room_id' => $cindicationRoom,
-                ]);
-                $volunteer->save();
-                $volunteerGroups[$regionIds[$round]]->pop();
-                $round++;
+                if(count($group)>0){
+
+                    $volunteer = $group[count($group)-1];
+                    $volunteer->update([
+                        'cindication_room_id' => $cindicationRoom,
+                    ]);
+                    $volunteer->save();
+                    $volunteerGroups[$regionIds[$round]]->pop();
+                    $round++;
+                }
             }
         }
         return redirect()->back()->with('message','Volunteer placment finnished');
