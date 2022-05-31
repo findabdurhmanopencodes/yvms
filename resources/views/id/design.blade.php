@@ -193,7 +193,7 @@
 
                     var p6 = document.createElement("p");
                     var s6 = document.createElement("strong");
-                    // var textToAdd6 = document.createTextNode( '{{ $userType }}' == 'mop user' ? applicant.user.first_name);
+                    var textToAdd6 = document.createTextNode( '{{ $userType }}' == 'mop user' ? applicant.user.first_name);
                     s6.appendChild(textToAdd6);
                     p6.appendChild(s6);
                     p6.style.position = "relative";
