@@ -17,7 +17,7 @@ return new class extends Migration
     {
         Schema::create('training_masters', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('bank_account');
             $table->timestamps();
         });
