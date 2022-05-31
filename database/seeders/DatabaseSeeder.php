@@ -67,6 +67,7 @@ class DatabaseSeeder extends Seeder
         (new RegionController())->import();
         (new ZoneController())->import();
         (new WoredaController())->import();
+	dd('done seeding');
         \App\Models\File::factory(16)->create();
         \App\Models\FeildOfStudy::factory(4)->create();
 
