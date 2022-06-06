@@ -328,33 +328,36 @@ class TraininingCenterController extends Controller
     public function placeVolunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
         $volunteerGroups = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->get()->groupBy('woreda.zone.region.id');
-        // foreach($volunteerGroups as $volunteerGroup){
-        //     foreach($volunteerGroup as $volunter){
-        //         dump($volunter->woreda->zone->region->name);
-        //         dump($volunter->name());
-        //     }
-        // }
-        // dd('sd');
-        $regionIds = array_keys($volunteerGroups->toArray());
-        $x = [];
+        if (count($trainingCenter->rooms) <= 0) {
+            return redirect()->back()->with('error', 'You have no syndication room!');
+        }
+        if (count($volunteerGroups) <= 0) {
+            return redirect()->back()->with('error', 'You have no volunteer to place');
+        }
         $cindicationRooms = CindicationRoom::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->get();
-        foreach ($cindicationRooms as $cindicationRoom) {
-            $capacity = $cindicationRoom->number_of_volunteers;
-            $round = 0;
-            for ($a = 0; $a < $capacity; $a++) {
-                if ($round >= count($volunteerGroups)) {
-                    $round = 0;
-                }
-                $group = $volunteerGroups[$regionIds[$round]];
-                if (count($group) > 0) {
-
-                    $volunteer = $group[count($group) - 1];
+        $x = 0;
+        $volunteerGroups = array_values($volunteerGroups->toArray());
+        $numberOfRegions = count($volunteerGroups);
+        foreach($cindicationRooms as $cindicationRoom){
+            $roomCapacity = $cindicationRoom->number_of_volunteers;
+            $placed = 0;
+            $x = 0;
+            while($roomCapacity > $placed ){
+                $row = $x % $numberOfRegions;
+                if(count($volunteerGroups[$row])>0){
+                    $volunteer = Volunteer::find($volunteerGroups[$row][0]['id']);
                     $volunteer->update([
-                        'cindication_room_id' => $cindicationRoom,
+                        'cindication_room_id' => $cindicationRoom->id,
                     ]);
                     $volunteer->save();
-                    $volunteerGroups[$regionIds[$round]]->pop();
-                    $round++;
+                    unset($volunteerGroups[$row][0]);
+                    $volunteerGroups[$row] = array_values($volunteerGroups[$row]);
+                    $placed++;
+                }
+                $x++;
+                if($x > 200){
+                    dd('Contact Abdurhman for this error');
+                    break;
                 }
             }
         }
