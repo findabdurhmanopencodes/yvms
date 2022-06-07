@@ -57,7 +57,10 @@ class TranslationTextController extends Controller
     public function store(StoreTranslationTextRequest $request)
     {
         $data = $request->validated();
-        $exist = TranslationText::where('translation_type',$data['translation_type'])->where('lang',$data['lang'])->first() != null;
+        $language = Language::findOrFail($data['lang']);
+        unset($data['lang']);
+        $data['language_id'] = $language->id;
+        $exist = TranslationText::where('translation_type',$data['translation_type'])->where('language_id',$language->id)->first() != null;
         if($exist){
             throw ValidationException::withMessages(['lang','Please translation exist']);
         }

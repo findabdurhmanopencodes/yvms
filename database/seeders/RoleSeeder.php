@@ -19,6 +19,7 @@ class RoleSeeder extends Seeder
         $volunteerRole = Role::create(['name' => 'volunteer']);
         $superAdminRole = Role::create(['name' => 'super-admin']);
         $regionalCordinatorRole = Role::create(['name' => 'regional-coordinator']);
+        $systemUserCordinatorRole = Role::create(['name' => 'system-user']);
         $zoneCordinatorRole = Role::create(['name' => 'zone-coordinator']);
     }
 }

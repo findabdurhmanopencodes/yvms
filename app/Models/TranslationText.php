@@ -23,7 +23,7 @@ class TranslationText extends Model
      */
     public function language(): BelongsTo
     {
-        return $this->belongsTo(Language::class,'lang','id');
+        return $this->belongsTo(Language::class,'language_id','id');
     }
 
     public function trasnslationType()

@@ -33,7 +33,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-
         $this->call([
             PermissionSeeder::class,
             RoleSeeder::class,
@@ -54,26 +53,24 @@ class DatabaseSeeder extends Seeder
             ]
         );
         $superUser->assignRole('super-admin');
-        // TrainingSession::create([
-        //     'start_date' => '2022-05-06',
-        //     'end_date' => '2022-07-07',
-        //     'moto' => 'Kindness for living together',
-        //     'registration_start_date' => '2022-05-01',
-        //     'registration_dead_line' => '2022-06-29',
-        //     'quantity' => 800,
-        //     'status' => 0,
-        // ]);
+        TrainingSession::create([
+            'start_date' => '2022-05-06',
+            'end_date' => '2022-07-07',
+            'moto' => 'Kindness for living together',
+            'registration_start_date' => '2022-05-01',
+            'registration_dead_line' => '2022-06-29',
+            'quantity' => 800,
+            'status' => 0,
+        ]);
 
         (new RegionController())->import();
         (new ZoneController())->import();
         (new WoredaController())->import();
-	    dd('done seeding');
         \App\Models\File::factory(16)->create();
         \App\Models\FeildOfStudy::factory(4)->create();
 
         $quota = [0.3, 0.3, 0.4];
         $capacities = [6, 6, 5, 6, 7, 5, 6, 10, 7, 6, 4, 8, 7, 9, 8];
-
         foreach (Region::all()->take(3) as $key => $region) {
             $region->update(['qoutaInpercent' => $quota[$key], 'status' => 1]);
             $regionQuota = $region->qoutaInpercent * 200;
@@ -85,7 +82,6 @@ class DatabaseSeeder extends Seeder
                 $zone->update(['qoutaInpercent' => $quota[$key], 'status' => 1]);
                 $zoneQuota = $zone->qoutaInpercent * $regionQuota;
                 foreach ($zone->woredas()->where('zone_id',$zone->id)->get()->take(3) as $key => $wereda) {
-                    // dump($wereda->name);
                     $wereda->update(['qoutaInpercent' => $quota[$key], 'status' => 1]);
                     $woredaQuota = round($wereda->qoutaInpercent * $zoneQuota);
                     for ($x = 0; $x < $woredaQuota; $x++){
@@ -95,6 +91,8 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
+
+        dd('done for testing');
 
 
 

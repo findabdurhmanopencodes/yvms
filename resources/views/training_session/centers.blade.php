@@ -16,6 +16,7 @@
                 <h3 class="card-label">Trainning Centers</h3>
             </div>
             <div class="card-tool">
+                <a href="{{ route('session.deployment.regions', ['training_session'=>Request::route('training_session')->id]) }}" class="btn btn-primary">View deployment list</a>
             </div>
         </div>
         <div class="card-body">

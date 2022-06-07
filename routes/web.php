@@ -130,6 +130,10 @@ Route::post('application_form/apply', [VolunteerController::class, 'apply'])->na
 Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
 
 Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verified'], 'as' => 'session.'], function () {
+    Route::get('deployment-regions',[RegionController::class,'deployment'])->name('deployment.regions');
+    Route::get('deployment-regions/{region}/zones',[VolunteerDeploymentController::class,'zones'])->name('deployment.region.zones');
+    Route::get('deployment-regions/zone/{zone}/woredas',[VolunteerDeploymentController::class,'woredas'])->name('deployment.zone.woredas');
+    Route::get('deployment-regions/woreda/{woreda}/show',[VolunteerDeploymentController::class,'woredaDetail'])->name('deployment.woreda.detail');
     Route::get('training-center/regional-volunteer-contribution/{id}', [DashboardController::class, 'trainginCenersVolenteerRegionalDistribution'])->name('placed-contribution');
     Route::any('/volunteer/all', [VolunteerController::class, 'volunteerAll'])->name('volunteer.all');
     Route::get('/volunteer/{volunteer}/detail', [VolunteerController::class, 'volunteerDetail'])->name('volunteer.detail');
@@ -183,6 +187,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('check-in/', [TraininingCenterController::class, 'checkInView'])->name('TrainingCenter.CheckIn');
     Route::get('result/', [TraininingCenterController::class, 'result'])->name('result');
     Route::get('/check-in/action/{id}', [TraininingCenterController::class, 'checkIn'])->name('TrainingCenter.checked');
+    Route::get('/checkin_all', [TraininingCenterController::class, 'checkInAll'])->name('trainingCenter.checkin.all');
     Route::any('/check-in/reports/', [TraininingCenterController::class, 'indexChecking'])->name('TrainingCenter.index.checked');
     Route::get('training_center', [TrainingSessionController::class, 'trainingCenterIndex'])->name('training_center.index');
     Route::get('training_center/{training_center}', [TrainingSessionController::class, 'trainingCenterShow'])->name('training_center.show');

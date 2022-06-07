@@ -15,6 +15,8 @@ use App\Models\Zone;
 use App\Models\ZoneIntake;
 use Illuminate\Http\Request;
 use App\Console\Commands\VoluteerDeploymentCommand;
+use App\Models\Qouta;
+use App\Models\Region;
 
 class VolunteerDeploymentController extends Controller
 {
@@ -147,5 +149,22 @@ class VolunteerDeploymentController extends Controller
     public function destroy(VolunteerDeployment $volunteerDeployment)
     {
         //
+    }
+    public function zones(TrainingSession $trainingSession, Region $region)
+    {
+        $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type',Zone::class)->pluck('quotable_id');
+        $zones = Zone::where('region_id',$region->id)->with(['woredas', 'quotas'])->whereIn('id',$quota)->get();
+        return view('training_session.zones',compact('trainingSession','region','zones'));
+    }
+    public function woredas(TrainingSession $trainingSession, Zone $zone)
+    {
+        $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type',Woreda::class)->pluck('quotable_id');
+        $woredas = Woreda::where('zone_id',$zone->id)->with(['quotas'])->whereIn('id',$quota)->get();
+        return view('training_session.woredas',compact('trainingSession','woredas','zone'));
+    }
+
+    public function woredaDetail(TrainingSession $trainingSession,Woreda $woreda)
+    {
+        return view('training_session.woreda_show',compact('trainingSession','woreda'));
     }
 }

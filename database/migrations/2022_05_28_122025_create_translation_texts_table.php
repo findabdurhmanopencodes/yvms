@@ -17,7 +17,6 @@ return new class extends Migration
         Schema::create('translation_texts', function (Blueprint $table) {
             $table->id();
             $table->smallInteger('translation_type');
-            $table->string('lang');
             $table->longText('content');
             $table->foreignIdFor(Language::class)->constrained()->cascadeOnUpdate();
             $table->timestamps();
