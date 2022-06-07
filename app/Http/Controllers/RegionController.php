@@ -221,4 +221,11 @@ class RegionController extends Controller
         }
         // dd('Region Imported successfully');
     }
+
+    public function deployment(TrainingSession $trainingSession)
+    {
+        $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->get();
+        $regions = Region::with(['zones', 'quotas'])->get();
+        return view('training_session.regions',compact('trainingSession','regions'));
+    }
 }

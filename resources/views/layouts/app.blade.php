@@ -130,6 +130,15 @@
                                 </a>
                             </li>
                             @if (Request::route('training_session'))
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_center.index') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.training_center.index', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon fal fa-university"></i>
+                                        <span class="menu-text">Session Detail</span>
+                                    </a>
+                                </li>
+
                                 <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'session.volunteer.index') === 0 || strpos(Route::currentRouteName(), 'session.volunteer.all') === 0 || strpos(Route::currentRouteName(), 'session.applicant.verified') === 0 || strpos(Route::currentRouteName(), 'session.applicant.selected') === 0 || strpos(Route::currentRouteName(), 'session.applicant.email.unVerified') === 0 ? 'menu-item-open' : '' }}"
                                     aria-haspopup="true" data-menu-toggle="hover">
 
@@ -237,33 +246,7 @@
                                         <span class="menu-text">Placement Result</span>
                                     </a>
                                 </li>
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.deployment.index') === 0 ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('session.deployment.index', ['training_session' => Request::route('training_session')]) }}"
-                                        class="menu-link">
-                                        <i class="menu-icon fal fa-server"></i>
 
-                                        <span class="menu-text">Volunteer Deployments </span>
-                                    </a>
-                                </li>
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.graduation.list') === 0 ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('session.graduation.list', ['training_session' => Request::route('training_session')]) }}"
-                                        class="menu-link">
-                                        <i class="menu-icon fal fas fa-graduation-cap"></i>
-
-                                        <span class="menu-text">Graduated Volunteers</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.certificate.graduate') === 0 ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('session.certificate.graduate', ['training_session' => Request::route('training_session')]) }}"
-                                        class="menu-link">
-                                        <i class="menu-icon fal flaticon2-document"></i>
-
-                                        <span class="menu-text">Generate Certificate</span>
-                                    </a>
-                                </li>
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.schedule') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.schedule', ['training_session' => Request::route('training_session')]) }}"
@@ -281,6 +264,43 @@
                                     </a>
                                 </li>
 
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.CheckIn.index') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.TrainingCenter.CheckIn', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon flaticon2-check-mark"></i>
+                                        <span class="menu-text">Check-In</span>
+                                    </a>
+                                </li>
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.graduation.list') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.graduation.list', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon fal fas fa-graduation-cap"></i>
+
+                                        <span class="menu-text">Graduated Volunteers</span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.deployment.index') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.deployment.index', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon fal fa-server"></i>
+
+                                        <span class="menu-text">Volunteer Deployments </span>
+                                    </a>
+                                </li>
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.certificate.graduate') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.certificate.graduate', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon fal flaticon2-document"></i>
+
+                                        <span class="menu-text">Generate Certificate</span>
+                                    </a>
+                                </li>
+
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_session.quota') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.training_session.quota', ['training_session' => Request::route('training_session')]) }}"
@@ -289,30 +309,12 @@
                                         <span class="menu-text">Regional Quota</span>
                                     </a>
                                 </li>
-
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_center.index') === 0 ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('session.training_center.index', ['training_session' => Request::route('training_session')]) }}"
-                                        class="menu-link">
-                                        <i class="menu-icon fal fa-university"></i>
-                                        <span class="menu-text">Training Centers</span>
-                                    </a>
-                                </li>
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'resources') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.resource.all', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
                                         <i class="menu-icon flaticon2-shopping-cart"></i>
                                         <span class="menu-text">Resource Managment</span>
-                                    </a>
-                                </li>
-
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.CheckIn.index') === 0 ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('session.TrainingCenter.CheckIn', ['training_session' => Request::route('training_session')]) }}"
-                                        class="menu-link">
-                                        <i class="menu-icon flaticon2-check-mark"></i>
-                                        <span class="menu-text">Check-In</span>
                                     </a>
                                 </li>
                             @endif
