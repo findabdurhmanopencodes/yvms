@@ -43,7 +43,7 @@
                             <table width="100%" class="table table-striped ">
                                 <thead>
                                     <tr>
-                                        <th> ID </th>
+                                        <th> # </th>
                                         <th> Name </th>
                                         <th> Center </th>
                                     </tr>
@@ -52,10 +52,17 @@
                                     @foreach ($paginate_apps as $key => $applicant)
                                         <tr>
                                             <td>
-                                                {{ $applicant->id }}
+                                                {{ $key + 1 }}
                                             </td>
                                             <td>
-                                                {{($applicant->getTable() == 'volunteers'?$applicant->first_name:($userType == 'mop user'))? $applicant->user->first_name.' '.$applicant->user->father_name : $applicant->master->user->first_name.' '.$applicant->master->user->father_name}}
+                                                @if ($applicant->getTable() == 'volunteers')
+                                                    {{ $applicant->first_name }}
+                                                @elseif ($userType == 'mop user')
+                                                    {{ $applicant->user->first_name.' '.$applicant->user->father_name }}
+                                                @else
+                                                    {{ $applicant->master->user->first_name.' '.$applicant->master->user->father_name }}
+                                                @endif
+                                                {{-- {{($applicant->getTable() == 'volunteers'? $applicant->first_name:($userType == 'mop user'))? $applicant->user->first_name.' '.$applicant->user->father_name : $applicant->master->user->first_name.' '.$applicant->master->user->father_name}} --}}
                                             </td>
                                             <td>
                                                 {{ $trainingCenter->code }}
@@ -92,6 +99,8 @@
 
                             <div class="card-footer">
                                 <div class="card-toolbar">
+                                    {{-- <a id="print_btn2" class="btn btn-sm btn-primary font-weight-bold" style="float: right; margin-right: 80px"><i class="flaticon2-print"></i>Print Check ID</a> --}}
+
                                     <a id="print_btn" class="btn btn-sm btn-primary font-weight-bold" style="float: right; margin-right: 80px"><i class="flaticon2-print"></i>Print ID</a>
                                 </div>
                             </div>
@@ -193,7 +202,7 @@
 
                     var p6 = document.createElement("p");
                     var s6 = document.createElement("strong");
-                    var textToAdd6 = document.createTextNode( '{{ $userType }}' == 'mop user' ? applicant.user.first_name);
+                    // var textToAdd6 = document.createTextNode( '{{ $userType }}' == 'mop user' ? applicant.user.first_name);
                     s6.appendChild(textToAdd6);
                     p6.appendChild(s6);
                     p6.style.position = "relative";
@@ -456,9 +465,36 @@
             generatePDF(DATAS, applicants);
         })
 
-        function generateQR(applicant){
+        // $('#print_btn2').on('click', function(event){
+        //     var a = document.getElementById('myDesign');
+            
+        //     var div = document.createElement("div");
+        //     var p = document.createElement("p");
+        //     var s = document.createElement("strong");
+        //     var textToAdd = document.createTextNode("MILKY SEIFU BENTI");
+        //     s.appendChild(textToAdd);
+        //     p.appendChild(s);
+        //     p.style.position = "relative";
+        //     p.style.left = "92px";
+        //     p.style.top = "212px";
+        //     p.style.backgroundColor = "inherit";
+        //     p.style.fontSize = '10px';
+        //     p.style.color = 'blue';
+        //     a.appendChild(p);
+        //     div.appendChild(a.cloneNode(true));
 
-        }
+        //     var mywindow = window.open('', 'PRINT', 'height=1000,width=1000');
+
+        //     mywindow.document.write('<html><head>');
+        //     mywindow.document.write('</head><body >');
+        //     mywindow.document.write('<div style="display:flex; flex-wrap: wrap">');
+        //     mywindow.document.write(div.innerHTML);
+        //     mywindow.document.write('</div>');
+        //     mywindow.document.write('</body></html>');
+
+        //     mywindow.document.close();
+        //     mywindow.focus();
+        // })
 
         function generatePDF(abc, applicants){
             var mywindow = window.open('', 'PRINT', 'height=1000,width=1000');
