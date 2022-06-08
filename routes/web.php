@@ -221,6 +221,8 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('graduated/list', [TraininingCenterController::class, 'graduationList'])->name('graduation.list');
     Route::get('certificate/graduated', [CertificateGenerate::class, 'certificateGenerate'])->name('certificate.graduate');
     Route::post('print/certificate/graduated', [CertificateGenerate::class, 'designGenerate'])->name('generate.certificate');
+
+    Route::get('deployment/id', [IdGenerateController::class, 'deploymentID'])->name('deployment.generateID');
 });
 
 

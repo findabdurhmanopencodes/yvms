@@ -381,21 +381,37 @@ class TraininingCenterController extends Controller
 
     public function graduateVolunteers(Request $request, TrainingSession $trainingSession)
     {
+        // gc_vol, att_amount
+
         // dd($trainingSession);
         $att_amount = $request->get('att_amount');
         $all_vol = $request->get('gc_vol');
         $max_att = $request->get('max_attendance');
+        $att_count = [];
 
         $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('training_center'))->whereRelation('status', 'acceptance_status', 5)->get();
 
-        if ($all_vol) {
+        if (!$request->get('att_amount') && !$request->get('gc_vol')) {
+            return redirect()->back()->with('error', 'You have not selected anything!');
+        }
+
+        else if ($all_vol) {
             foreach ($applicants as $key => $applicant) {
                 Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => 6]);
             }
         } else {
             foreach ($applicants as $key => $applicant) {
                 if ($applicant->user->attendances->count() >= $att_amount) {
-                    Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => 6]);
+                    array_push($att_count, $applicant);
+                    // Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => 6]);
+                }
+            }
+
+            if (!$att_count) {
+                return redirect()->back()->with('error', 'No volunteer meet your requirement!');
+            }else{
+                foreach ($att_count as $key => $applicant) {
+                   Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => 6]);
                 }
             }
         }

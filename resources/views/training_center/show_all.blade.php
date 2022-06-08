@@ -103,7 +103,7 @@
                                                 <i class="flaticon-medal" id="i_text"></i>
                                         </span>
                                         Graduated</a>
-                                    @else
+                                    @elseif ($applicant->status->acceptance_status == 5)
                                     <a href="#" class="btn btn-danger">
                                         <span class="svg-icon svg-icon-md">
                                             <i class="flaticon-medal" id="i_text"></i>

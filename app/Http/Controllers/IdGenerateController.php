@@ -16,6 +16,7 @@ use App\Models\Volunteer;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Symfony\Component\Mailer\Transport\Dsn;
 
 class IdGenerateController extends Controller
 {
@@ -106,5 +107,10 @@ class IdGenerateController extends Controller
 
         $totalTrainingMasters = TrainingMasterPlacement::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $training_center_id)->get();
         return view('id.trainerList', compact('totalTrainingMasters', 'training_center_id', 'mopUsers'));
+    }
+
+    public function deploymentID(TrainingSession $trainingSession)
+    {
+        return view('id.deployment_id');   
     }
 }
