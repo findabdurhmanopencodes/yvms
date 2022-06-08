@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants;
 use App\Exports\UsersExport;
 use App\Models\TraininingCenter;
 use App\Http\Requests\StoreTraininingCenterRequest;
@@ -29,6 +30,7 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use \Maatwebsite\Excel\Facades\Excel;
+use PHPUnit\TextUI\XmlConfiguration\Constant;
 
 class TraininingCenterController extends Controller
 {
@@ -389,7 +391,7 @@ class TraininingCenterController extends Controller
         $max_att = $request->get('max_attendance');
         $att_count = [];
 
-        $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('training_center'))->whereRelation('status', 'acceptance_status', 5)->get();
+        $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('training_center'))->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_CHECKEDIN)->get();
 
         if (!$request->get('att_amount') && !$request->get('gc_vol')) {
             return redirect()->back()->with('error', 'You have not selected anything!');
@@ -397,7 +399,7 @@ class TraininingCenterController extends Controller
 
         else if ($all_vol) {
             foreach ($applicants as $key => $applicant) {
-                Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => 6]);
+                Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_GRADUATED]);
             }
         } else {
             foreach ($applicants as $key => $applicant) {
@@ -411,7 +413,7 @@ class TraininingCenterController extends Controller
                 return redirect()->back()->with('error', 'No volunteer meet your requirement!');
             }else{
                 foreach ($att_count as $key => $applicant) {
-                   Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => 6]);
+                   Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_GRADUATED]);
                 }
             }
         }
@@ -423,7 +425,7 @@ class TraininingCenterController extends Controller
         $training_centers = TraininingCenter::all();
         $regions = Region::all();
 
-        $q = Volunteer::whereRelation('status', 'acceptance_status', 6)->where('training_session_id', $trainingSession->id);
+        $q = Volunteer::whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_GRADUATED)->where('training_session_id', $trainingSession->id);
 
         if ($request->get('training_center') != null) {
             $q->whereHas('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', function ($query) use ($request) {
