@@ -355,8 +355,8 @@ class TraininingCenterController extends Controller
                     $placed++;
                 }
                 $x++;
-                if($x > 200){
-                    dd('Contact Abdurhman for this error');
+                if($x > 2000){
+                    // dd('Contact Abdurhman for this error');
                     break;
                 }
             }

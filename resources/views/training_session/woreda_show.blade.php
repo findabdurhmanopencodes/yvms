@@ -89,6 +89,21 @@
                 <!--end: Info-->
             </div>
             <div class="separator separator-solid my-7"></div>
+            <!--begin: Items-->
+            <div class="flex-wrap d-flex align-items-center">
+                <!--begin: Item-->
+                <div class="my-1 mr-5 d-flex align-items-center flex-lg-fill">
+                    <span class="mr-4">
+                        <i class="flaticon-piggy-bank icon-2x text-muted font-weight-bold"></i>
+                    </span>
+                    <div class="d-flex flex-column text-dark-75">
+                        <span class="font-weight-bolder font-size-sm">Total Volunteers</span>
+                        <span class="font-weight-bolder font-size-h5">
+                            <span class="text-dark-50 font-weight-bold"></span>{{ '2' }}</span>
+                    </div>
+                </div>
+                <!--end: Item-->
+            </div>
         </div>
     </div>
     <!--end::Card-->
