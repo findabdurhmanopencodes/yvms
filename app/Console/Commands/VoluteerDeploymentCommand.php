@@ -87,8 +87,8 @@ class VoluteerDeploymentCommand extends Command
             $q->where(['training_session_id' => $activeSession->id]);
         })->delete();
 
-//        $graduatedVolunteers = TrainingPlacement::query()->whereRelation('approvedApplicant.volunteer.status', 'acceptance_status', '=', Constants::VOLUNTEER_STATUS_GRADUATED)->get();
-        $graduatedVolunteers = TrainingPlacement::all();
+       $graduatedVolunteers = TrainingPlacement::query()->whereRelation('approvedApplicant.volunteer.status', 'acceptance_status', '=', Constants::VOLUNTEER_STATUS_GRADUATED)->get();
+        // $graduatedVolunteers = TrainingPlacement::all();
 
         $woredas = WoredaIntake::where(['training_session_id' => $activeSession->id])->where('intake', '>', 0)->get();
 
