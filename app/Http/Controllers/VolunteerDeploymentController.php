@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use App\Console\Commands\VoluteerDeploymentCommand;
 use App\Models\Qouta;
 use App\Models\Region;
+use App\Models\Volunteer;
 
 class VolunteerDeploymentController extends Controller
 {
@@ -165,6 +166,7 @@ class VolunteerDeploymentController extends Controller
 
     public function woredaDetail(TrainingSession $trainingSession,Woreda $woreda)
     {
+        // $volunteers = Volunteer::whereRelation()
         return view('training_session.woreda_show',compact('trainingSession','woreda'));
     }
 }

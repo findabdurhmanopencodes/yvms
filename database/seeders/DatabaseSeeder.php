@@ -78,7 +78,6 @@ class DatabaseSeeder extends Seeder
                 $center= \App\Models\TraininingCenter::factory(1)->create(['zone_id' => $zone->id]);
                 $data = ['capacity' => 22, 'trainining_center_id' => $center[0]->id];
                 \App\Models\TrainingCenterCapacity::factory(1)->create($data);
-                \App\Models\TrainingCenterCapacity::factory(1)->create($data);
                 $zone->update(['qoutaInpercent' => $quota[$key], 'status' => 1]);
                 $zoneQuota = $zone->qoutaInpercent * $regionQuota;
                 foreach ($zone->woredas()->where('zone_id',$zone->id)->get()->take(3) as $key => $wereda) {
