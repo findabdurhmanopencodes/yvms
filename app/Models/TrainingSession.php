@@ -154,4 +154,8 @@ class TrainingSession extends Model
     {
         return DateTimeFactory::fromDateTime(new DateTime($this->training_end_date))->format('d/m/Y');
     }
+
+    public function attendances(){
+        return $this->hasMany(DeploymentVolunteerAttendance::class);
+    }
 }
