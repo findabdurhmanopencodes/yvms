@@ -93,7 +93,7 @@ class DeploymentVolunteerAttendanceController extends Controller
 
     public function get_attendance_data(TrainingSession $trainingSession, Woreda $woreda)
     {
-        $users = DB::table('volunteers')->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->leftJoin('volunteer_deployments', 'volunteer_deployments.training_placement_id', '=', 'training_placements.id')->leftJoin('woreda_intakes', 'volunteer_deployments.woreda_intake_id', '=', 'woreda_intakes.id')->leftJoin('woredas', 'woreda_intakes.woreda_id', '=', 'woredas.id')->where('woredas.id', 70)->select(['id_number', 'first_name', 'father_name', 'grand_father_name'])->get();
+        $users = DB::table('volunteers')->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->leftJoin('volunteer_deployments', 'volunteer_deployments.training_placement_id', '=', 'training_placements.id')->leftJoin('woreda_intakes', 'volunteer_deployments.woreda_intake_id', '=', 'woreda_intakes.id')->leftJoin('woredas', 'woreda_intakes.woreda_id', '=', 'woredas.id')->where('woredas.id', $woreda->id)->select(['id_number', 'first_name', 'father_name', 'grand_father_name'])->get();
 
         return Excel::download(new DeploymentAttendanceExport($users, ['ID Number', 'First Name', 'Father Name', 'Grand Father Name', 'Status', 'Date']), 'attendance.xlsx');
     }

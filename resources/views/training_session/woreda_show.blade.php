@@ -85,30 +85,6 @@
                                                 <span class="navi-text">Import Attendance</span>
                                             </a>
                                         </li>
-                                        <li class="navi-item">
-                                            <a href="" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="flaticon2-shopping-cart-1"></i>
-                                                </span>
-                                                <span class="navi-text">Trainners List</span>
-                                            </a>
-                                        </li>
-                                        <li class="navi-item">
-                                            <a href="#" onclick="confirmPlacment()" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="fal fa-map-marker-check"></i>
-                                                </span>
-                                                <span class="navi-text">Place Volunteers</span>
-                                            </a>
-                                        </li>
-                                        <li class="navi-item">
-                                            <a href="" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="fal fas fa-graduation-cap"></i>
-                                                </span>
-                                                <span class="navi-text">Graduate Volunteers</span>
-                                            </a>
-                                        </li>
                                     </ul>
                                     <!--end::Navigation-->
                                 </div>
