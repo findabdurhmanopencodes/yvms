@@ -180,7 +180,7 @@
 
                 var e_date = document.createElement("p");
                 var se_date = document.createElement("strong");
-                var setextToAdd = document. createTextNode('Exp. Date: ');
+                var setextToAdd = document. createTextNode('Exp. Date:');
                 se_date.appendChild(setextToAdd);
                 e_date.appendChild(se_date);
                 e_date.style.position = "relative";

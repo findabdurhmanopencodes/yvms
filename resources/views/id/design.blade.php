@@ -120,8 +120,9 @@
         var DATAS = [];
         var div = document.createElement('div');
         var myDesign;
+        var applicants = @json($applicants);
+        var paginate_apps = @json($applicant_count);
         $('#print_btn').on('click', function(event){
-            var applicants = @json($applicants);
             if ('{{ $trainer }}' == 'trainer') {
                 applicants.forEach((applicant, key) => {
                     var div = document.createElement('div');
@@ -201,7 +202,8 @@
 
                     var p6 = document.createElement("p");
                     var s6 = document.createElement("strong");
-                    // var textToAdd6 = document.createTextNode( '{{ $userType }}' == 'mop user' ? applicant.user.first_name);
+
+                    var textToAdd6 = document.createTextNode("{{ $userType }}" == 'mop user' ? applicant.user.first_name+' '+applicant.user.father_name : applicant.master.user.first_name+' '+applicant.master.user.father_name);
                     s6.appendChild(textToAdd6);
                     p6.appendChild(s6);
                     p6.style.position = "relative";
@@ -454,14 +456,16 @@
                     div__qr_img_2.style.top = '-20';
                     div__qr_img_2.appendChild(qrf_img.cloneNode(true));
                     myDesign.appendChild(div__qr_img_2.cloneNode(true));
-                    div.appendChild(myDesign.cloneNode(true))
+
+                    div.appendChild(myDesign.cloneNode(true));
+                    // div.style.pageBreakAfter = "always";
 
                     DATAS.push(div);
 
                 });
             }
 
-            generatePDF(DATAS, applicants);
+            generatePDF(DATAS, paginate_apps);
         })
 
         // $('#print_btn2').on('click', function(event){
@@ -519,17 +523,18 @@
             toastr.success('ID printed');
 
             document.getElementById('print_btn').style.visibility = 'hidden';
+
             setTimeout(() => {
                 $.ajax({
                     type: "POST",
-                    url: '/'+{{ $training_center_id }}+"/id/count",
+                    url: "/"+{{ $training_center_id }}+"/id/count",
                     data: {
                         'applicants': applicants,
                         'training_session_id': {{ $training_session_id }},
                         "_token": $('meta[name="csrf-token"]').attr('content'),
                     },
                     success: function(result){
-                        console.log(result.applicants);
+                        console.log(result.message);
                     },
                 });
             }, 200);
