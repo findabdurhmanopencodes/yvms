@@ -368,8 +368,15 @@ class TraininingCenterController extends Controller
 
     public function show_all_volunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter, UserAttendance $userAttendance)
     {
+        $check_deployed = [];
         $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->paginate(10);
         $trainingSchedules = TrainingSchedule::all();
+
+        foreach ($applicants as $key => $applicant) {
+            if ($applicant->status->acceptance_status == 7) {
+                array_push($check_deployed, $applicant);
+            }
+        }
 
         $arr = [];
         foreach ($trainingSchedules as $key => $schedule) {
@@ -378,7 +385,7 @@ class TraininingCenterController extends Controller
 
         $arr_unique = array_unique($arr);
 
-        return view('training_center.show_all', compact('applicants', 'trainingCenter', 'trainingSession', 'userAttendance', 'arr_unique'));
+        return view('training_center.show_all', compact('applicants', 'trainingCenter', 'trainingSession', 'userAttendance', 'arr_unique', 'check_deployed'));
     }
 
     public function graduateVolunteers(Request $request, TrainingSession $trainingSession)

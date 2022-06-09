@@ -63,12 +63,22 @@
             </div>
         </div>
         @if ($applicants)
-            <div class="card-toolbar">
-                <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModal">
-                    <span class="svg-icon svg-icon-md">
-                        <i class="flaticon-medal" id="i_text"></i>
-                 </span>
-                 Graduate Volunteers</a>
+            <div class="card-toolbar" >
+                <div class="d-flex">
+                    @if (!$check_deployed)
+                        <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModal">
+                        <span class="svg-icon svg-icon-md">
+                            <i class="flaticon-medal" id="i_text"></i>
+                        </span>
+                        Graduate Volunteers
+                    </a>
+                    @endif
+
+                    @if ($check_deployed)    
+                        <a class="btn ml-4 btn-sm btn-primary" href="{{ route('session.deployment.generateID', [Request::route('training_session')]) }}"><i class="fal flaticon2-print"></i> Print ID
+                        </a>
+                    @endif
+                </div>
             </div>
         @endif
 
@@ -80,7 +90,7 @@
                         <th> ID Number</th>
                         <th> Name </th>
                         <th>Attendance Count({{ count($arr_unique) }})</th>
-                        <th>Action</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody> 
@@ -98,17 +108,17 @@
                                 </td>
                                 <td>
                                     @if ($applicant->status->acceptance_status == 6)
-                                        <a href="#" class="btn btn-success">
-                                            <span class="svg-icon svg-icon-md">
-                                                <i class="flaticon-medal" id="i_text"></i>
+                                        <span class="badge badge-pill badge-success">
+                                            Graduated
                                         </span>
-                                        Graduated</a>
                                     @elseif ($applicant->status->acceptance_status == 5)
-                                    <a href="#" class="btn btn-danger">
-                                        <span class="svg-icon svg-icon-md">
-                                            <i class="flaticon-medal" id="i_text"></i>
+                                    <span class="badge badge-pill badge-warning">
+                                        Graduate
                                     </span>
-                                    Graduate</a>
+                                    @elseif ($applicant->status->acceptance_status == 7)
+                                    <span class="badge badge-pill badge-success">
+                                        Deployed
+                                    </span>
                                     @endif
                                 </td>
                             </tr>

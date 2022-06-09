@@ -117,7 +117,6 @@
 @push('js')
     <script src="{{ asset('js/qrcode.min.js') }}"></script>
     <script>
-        // var qrcode = document.getElementById("qrcode");
         var DATAS = [];
         var div = document.createElement('div');
         var myDesign;

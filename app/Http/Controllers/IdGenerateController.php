@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants;
 use App\Models\ApprovedApplicant;
 use App\Models\IDcount;
 use App\Models\Status;
@@ -111,6 +112,8 @@ class IdGenerateController extends Controller
 
     public function deploymentID(TrainingSession $trainingSession)
     {
-        return view('id.deployment_id');   
+        $graduated_volunteers = Volunteer::with('approvedApplicant.trainingPlacement.deployment.woredaIntake.woreda')->with('session')->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->where('training_session_id', $trainingSession->id)->get();
+
+        return view('id.deployment_id', compact('graduated_volunteers'));
     }
 }
