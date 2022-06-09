@@ -39,24 +39,56 @@
                 <div class="row">
                     <div class="col-lg-1">
                     </div>
-                    <div class="col-lg-6">
-                        <div class="card card-custom card-fit card-border">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <h3 class="card-label">Front Design ID
-                                </div>
-                            </div>
-                            <div class="card-body pt-2">
-                                <div id="myDesign" style="width: 220px; height:339px;background-size:cover;background-image: url({{ asset('img/id_page_1.jpg') }});">
-                                </div>
-                            </div>
+                    <div class="col-lg-11">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card card-custom card-fit card-border">
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            <h3 class="card-label">Front Design ID
+                                        </div>
+                                    </div>
+                                    <div class="card-body pt-2">
+                                        <div id="myDesign" style="border: #000000 solid 1px; width: 220px; height:339px;background-size:cover;background-image: url({{ asset('img/id_page_1.jpg') }});">
+                                        </div>
+                                    </div>
 
-                            <div class="card-footer">
-                                <div class="card-toolbar">
-                                    <a id="print_btn" class="btn btn-sm btn-primary font-weight-bold" style="float: right; margin-right: 80px"><i class="flaticon2-print"></i>Print ID</a>
+                                    {{-- <div class="card-footer">
+                                        <div class="card-toolbar">
+                                            <a id="print_btn" class="btn btn-sm btn-primary font-weight-bold" style="float: right; margin-right: 80px"><i class="flaticon2-print"></i>Print ID</a>
+                                        </div>
+                                    </div> --}}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card card-custom card-fit card-border">
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            <h3 class="card-label">Back Design ID
+                                        </div>
+                                    </div>
+                                    <div class="card-body pt-2">
+                                        <div id="myDesign" style="border: #000000 solid 1px; width: 339px; height:220px;background-size:cover;background-image: url({{ asset('img/ID_mopBack.jpg') }});">
+                                            <p style="color: white; left: 61px; top: 30px; font-size: 10px; position: relative;">web: www.mop.gov.et</p>
+                                            <p style="color: white; left: 184px; top: 3px; font-size: 10px; position: relative;">mail: mop@gmail.com</p>
+                                            <p style="color: white; left: 64px; top: -10px; font-size: 10px; position: relative;">+251(0)471117588</p>
+                                            <p style="font-style: italic; color: black; left: 16px; top: -13px; font-size: 10px; position: relative;">Full name</p>
+                                            <p style="font-style: italic; color: black; left: 16px; top: 3px; font-size: 10px; position: relative;">Nationality</p>
+                                            <p style="font-style: italic; color: black; left: 16px; top: 23px; font-size: 10px; position: relative;">Date of Issue</p>
+                                            <p style="font-style: italic; color: black; left: 202px; top: -50px; font-size: 10px; position: relative;">Deployment place</p>
+                                            <p style="font-style: italic; color: black; left: 202px; top: -47px; font-size: 10px; position: relative;">Exp. date</p>
+                                        </div>
+                                    </div>
+
+                                    {{-- <div class="card-footer">
+                                        <div class="card-toolbar">
+                                            <a id="print_btn" class="btn btn-sm btn-primary font-weight-bold" style="float: right; margin-right: 80px"><i class="flaticon2-print"></i>Print ID</a>
+                                        </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
+                        <a id="print_btn" class="btn btn-sm btn-primary font-weight-bold" style="float: right; margin-right: 80px"><i class="flaticon2-print"></i>Print ID</a>
                     </div>
                 </div>
             </div>
@@ -161,7 +193,7 @@
 
                 var e_date_text = document.createElement("p");
                 var se_date_text = document.createElement("strong");
-                var setextToAddText = document. createTextNode('12/12/2015');
+                var setextToAddText = document. createTextNode(applicant.session.end_date_am);
                 se_date_text.appendChild(setextToAddText);
                 e_date_text.appendChild(se_date_text);
                 e_date_text.style.position = "relative";
@@ -459,13 +491,13 @@
                 var div_img = document.createElement('div');
                 profile_img.src = '{{ asset("img/meti.jpg") }}';
                 profile_img.style.width = '67px';
-                profile_img.style.height = '62px';
+                profile_img.style.height = '64px';
                 profile_img.style.borderRadius = "5%";
 
                 div_img.appendChild(profile_img);
                 div_img.style.position = "relative";
                 div_img.style.left = '273px';
-                div_img.style.top = '-361px';
+                div_img.style.top = '-363px';
                 myDesignBack.appendChild(div_img);
 
                 myDesign.style.pageBreakAfter = "always";
