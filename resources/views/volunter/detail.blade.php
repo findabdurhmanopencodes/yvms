@@ -5,7 +5,6 @@
 @endsection
 @section('breadcrumbTitle', 'volunteer Detail')
 @section('breadcrumbList')
-
     <li class="breadcrumb-item">
         <a href="" class="text-muted">volunteer Detail</a>
     </li>
@@ -13,8 +12,6 @@
         <a href="" class="text-muted">{{ $volunteer->first_name }} {{ $volunteer->father_name }}</a>
     </li>
 @endsection
-
-
 @section('content')
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
@@ -451,15 +448,14 @@
                     <h3 class="card-title align-items-start flex-column">
                         Placed Training Center Information
                     </h3>
-
                 </div>
                 <!--end::Header-->
                 <div class="card-body">
                     <li>Placement Place
-                        <strong class="{{ $volunteer->placment() != null?'':'text-danger' }}">{{ $volunteer->placment() != null ? $volunteer->placment()->name : 'Not Placed' }}
-                            ({{ $volunteer->placment()->code }})</strong></li>
-
-
+                        <strong
+                            class="{{ $volunteer->placment() != null ? '' : 'text-danger' }}">{{ $volunteer->placment() != null ? $volunteer->placment()->name : 'Not Placed' }}
+                            ({{ $volunteer->placment()->code }})</strong>
+                    </li>
                 </div>
             </div>
             <div class="card card-custom gutter-b">
@@ -472,7 +468,7 @@
                 <!--end::Header-->
                 <div class="card-body">
                     <li>Deployment Place <strong
-                            class="{{ $volunteer?->approvedApplicant?->trainingPlacement?->deployment?->woredaIntake?->woreda != null ? '' : 'text-danger' }}">{{ $volunteer?->approvedApplicant?->trainingPlacement?->deployment?->woredaIntake?->woreda != null ? $volunteer?->approvedApplicant?->trainingPlacement?->deployment?->woredaIntake?->woreda->name .' Woreda': 'Not Placed' }}
+                            class="{{ $volunteer?->approvedApplicant?->trainingPlacement?->deployment?->woredaIntake?->woreda != null ? '' : 'text-danger' }}">{{ $volunteer?->approvedApplicant?->trainingPlacement?->deployment?->woredaIntake?->woreda != null ? $volunteer?->approvedApplicant?->trainingPlacement?->deployment?->woredaIntake?->woreda->name . ' Woreda' : 'Not Placed' }}
                         </strong></li>
                 </div>
             </div>
