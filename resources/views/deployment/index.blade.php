@@ -146,11 +146,11 @@
                     @foreach ($deployedVolunteers as $key => $deployedVolunteer)
                         <tr>
                             <td>{{ $key + 1 }}</td>
-                            <td>{{ $deployedVolunteer->trainingPlacement->approvedApplicant->volunteer->name() }}</td>
+                            <td>{{ $deployedVolunteer?->trainingPlacement?->approvedApplicant?->volunteer?->name() }}</td>
                             {{-- <td>{{ $placedVolunteer->approvedApplicant->volunteer->father_name }}</td> --}}
-                            <td> {{ $deployedVolunteer->woredaIntake->woreda->zone->region->name }} </td>
-                            <td> {{ $deployedVolunteer->woredaIntake->woreda->zone->name }} </td>
-                            <td> {{ $deployedVolunteer->woredaIntake->woreda->name }} </td>
+                            <td> {{ $deployedVolunteer?->woredaIntake?->woreda?->zone?->region?->name }} </td>
+                            <td> {{ $deployedVolunteer->woredaIntake->woreda?->zone?->name }} </td>
+                            <td> {{ $deployedVolunteer?->woredaIntake?->woreda?->name }} </td>
                             <td>
                                 <a href="#"
                                     data-action="{{ route('session.deployment.change', [request()->route('training_session'), $deployedVolunteer->id]) }}"

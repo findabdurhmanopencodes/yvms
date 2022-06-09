@@ -18,7 +18,7 @@ class TrainingPlacement extends Model
     }
     public function deployment()
     {
-        return $this->hasOne(VolunteerDeployment::class, 'training_placement_id', 'id');
+        return $this->hasOne(VolunteerDeployment::class);
     }
     public function trainingCenterCapacity()
     {
@@ -27,7 +27,7 @@ class TrainingPlacement extends Model
 
     public function getRegionAttribute()
     {
-        return $this->approvedApplicant->region;
+        return $this->approvedApplicant?->region;
     }
 
     public function session()

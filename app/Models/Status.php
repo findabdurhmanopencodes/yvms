@@ -16,7 +16,6 @@ class Status extends Model
         return $this->belongsTo(Volunteer::class, 'volunteer_id', 'id');
     }
 
-
     public static $status = [
         0 => 'Pending',
         1 => 'Verified',

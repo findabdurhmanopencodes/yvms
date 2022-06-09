@@ -31,7 +31,7 @@ class ApprovedApplicant extends Model
 
     public function getRegionAttribute()
     {
-        return $this->volunteer->woreda->zone->region;
+        return $this->volunteer?->woreda?->zone?->region;
     }
 
     public function trainingSessionId()
