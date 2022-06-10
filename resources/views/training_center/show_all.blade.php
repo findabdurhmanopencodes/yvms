@@ -50,10 +50,10 @@
         </div>
     </div>
 </form>
-{{-- <form method="POST" action="{{ route('session.training_center.generate', ['training_session' => Request::route('training_session'),'training_center'=>$trainingCenter->id]) }}"> --}}
-    {{-- @csrf --}}
+<form method="POST" id="IdForm" action="{{ route('session.deployment.generateID', [Request::route('training_session')]) }}">
+    @csrf
     <div class="card card-custom">
-    <input type="hidden" value="{{ $trainingCenter->id }}" id="training_center_id">
+    {{-- <input type="hidden" value="all" name="allPrint" id="training_center_id"> --}}
     <div class="card-header flex-wrap  pt-6 ">
         <div class="card-title mr-0">
             <div class="form-group">
@@ -75,7 +75,7 @@
                     @endif
 
                     @if ($check_deployed)    
-                        <a class="btn ml-4 btn-sm btn-primary" href="{{ route('session.deployment.generateID', [Request::route('training_session')]) }}"><i class="fal flaticon2-print"></i> Print ID
+                        <a class="btn ml-4 btn-sm btn-primary" href="#" onclick="$('#IdForm').submit();"><i class="fal flaticon2-print"></i> Print ID
                         </a>
                     @endif
                 </div>
@@ -87,6 +87,7 @@
             <table width="100%" class="table table" id="search_table">
                 <thead>
                     </tr>
+                        <th>#</th>
                         <th> ID Number</th>
                         <th> Name </th>
                         <th>Attendance Count({{ count($arr_unique) }})</th>
@@ -97,6 +98,7 @@
                     @if (count($applicants) > 0)
                         @foreach ($applicants as $key => $applicant)
                             <tr>
+                                <td><input type="checkbox" name="applicant[]" value="{{ $applicant->id }}" id="checkbox"/></td>
                                 <td>
                                     {{ $applicant->id_number }}
                                 </td>
@@ -112,13 +114,13 @@
                                             Graduated
                                         </span>
                                     @elseif ($applicant->status->acceptance_status == 5)
-                                    <span class="badge badge-pill badge-warning">
-                                        Graduate
-                                    </span>
+                                        <span class="badge badge-pill badge-warning">
+                                            Graduate
+                                        </span>
                                     @elseif ($applicant->status->acceptance_status == 7)
-                                    <span class="badge badge-pill badge-success">
-                                        Deployed
-                                    </span>
+                                        <span class="badge badge-pill badge-success">
+                                            Deployed
+                                        </span>
                                     @endif
                                 </td>
                             </tr>
@@ -137,7 +139,7 @@
         {{ $applicants->withQueryString()->links() }}
     </div>
     </div>
-{{-- </form> --}}
+</form>
 @endsection
 
 @push('js')
@@ -173,7 +175,7 @@
                         $('#search_table tbody').html('');
                         data.forEach(element => {
                             var input = `<input type="checkbox" name="applicant[]" value="${element.id}" id="checkbox"/>`;
-                            $('#search_table tbody').append("<tr>"+getTableCell(input)+getTableCell(element.id)+getTableCell(element.first_name)+getTableCell(element.approved_applicant.training_placement.training_center_capacity.training_center.code)+"</tr>");
+                            $('#search_table tbody').append("<tr>"+getTableCell(input)+getTableCell(element.id_number)+getTableCell(element.first_name)+getTableCell(element.approved_applicant.training_placement.training_center_capacity.training_center.code)+getTableCell(((element.status.acceptance_status == '6')?'<span class="badge badge-pill badge-success">Graduated</span>':(element.status.acceptance_status == '5')?'<span class="badge badge-pill badge-warning">Graduate</span>': (element.status.acceptance_status == '7')? '<span class="badge badge-pill badge-success">Deployed</span>' : ''))+"</tr>");
                         });
                         $("#paginate").hide();
                     }else{

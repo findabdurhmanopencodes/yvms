@@ -95,7 +95,7 @@ class IdGenerateController extends Controller
         $search_var = $request->search;
         $applicant = [];
 
-        $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->training_center_id)->where('id_number', 'like', '%' . $search_var . '%')->paginate(10);
+        $applicants = Volunteer::with('status')->with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->training_center_id)->where('id_number', 'like', '%' . $search_var . '%')->paginate(10);
 
         return response()->json(['applicants'=>$applicants]);
     }
@@ -120,9 +120,13 @@ class IdGenerateController extends Controller
         return view('id.trainerList', compact('totalTrainingMasters', 'training_center_id', 'mopUsers'));
     }
 
-    public function deploymentID(TrainingSession $trainingSession)
+    public function deploymentID(Request $request, TrainingSession $trainingSession)
     {
-        $graduated_volunteers = Volunteer::with('approvedApplicant.trainingPlacement.deployment.woredaIntake.woreda')->with('session')->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->where('training_session_id', $trainingSession->id)->get();
+        if ($request->get('applicant')) {
+            $graduated_volunteers = Volunteer::with('approvedApplicant.trainingPlacement.deployment.woredaIntake.woreda')->with('session')->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->where('training_session_id', $trainingSession->id)->whereIn('id', $request->get('applicant'))->get();
+        }else{
+            $graduated_volunteers = Volunteer::with('approvedApplicant.trainingPlacement.deployment.woredaIntake.woreda')->with('session')->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->where('training_session_id', $trainingSession->id)->get();
+        }   
 
         return view('id.deployment_id', compact('graduated_volunteers'));
     }
