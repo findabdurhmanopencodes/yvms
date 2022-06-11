@@ -11,6 +11,7 @@
     </style>
 @endpush
 @section('content')
+
     <!-- Modal-->
     <div class="modal fade" id="writeReportModal" data-backdrop="static" tabindex="-1" role="dialog"
         aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -84,9 +85,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="reportEditForm"
-                        action=""
-                        method="POST">
+                    <form id="reportEditForm" action="" method="POST">
                         @csrf
                         @method('PATCH')
                         <div class="">
@@ -108,7 +107,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-                    <button type="button" onclick="$('#reportForm').submit()" class="btn btn-primary font-weight-bold">Update
+                    <button type="button" onclick="$('#reportForm').submit()"
+                        class="btn btn-primary font-weight-bold">Update
                         Report</button>
                 </div>
             </div>
@@ -123,7 +123,7 @@
 
                 {{-- <a href="#" data-toggle="modal" data-target="#writeReportModal" class="btn btn-primary">
 
-                </a> --}}
+        </a> --}}
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#writeReportModal">
                     <i class="fal fa-plus "></i>
                     Write hierarchial report
@@ -152,15 +152,15 @@
                             <td>
                                 <div class="d-flex justify-content-between">
                                     {{-- <a class="" href="#"
-                                        onclick="$('#reportViewDiv').html('{!! $report->content !!}');" data-toggle="modal"
-                                        data-target="#viewReportModal">
-                                        <i class="fa text-primary fa-eye">
-                                        </i>
-                                    </a> --}}
+                                onclick="$('#reportViewDiv').html('{!! $report->content !!}');" data-toggle="modal"
+                                data-target="#viewReportModal">
+                                <i class="fa text-primary fa-eye">
+                                </i>
+                            </a> --}}
                                     {{-- <a class="" href="#" onclick="$('#reportEditForm').attr('action','{{ route('session.hierarchy.update',['training_session'=>Request::route('training_session')->id,'hierarchy'=>$report->id]) }}');$('#contentQuill1 .ql-editor').html('{!! $report->content !!}')" data-toggle="modal" data-target="#editReportModal">
-                                        <i class="fa text-primary fa-pen">
-                                        </i>
-                                    </a> --}}
+                                <i class="fa text-primary fa-pen">
+                                </i>
+                            </a> --}}
                                     <a class="" href="#"
                                         onclick="confirmDeleteReport('{{ route('session.hierarchy.destroy', ['training_session' => Request::route('training_session')->id, 'hierarchy' => $report->id]) }}')">
                                         <i class="fa text-danger fa-trash">
@@ -178,6 +178,42 @@
             </table>
         </div>
     </div>
+
+    <form method="POST"
+        action="{{ route('session.import.deployment_attendance', ['training_session' => Request::route('training_session')->id, 'woreda' => Request::route('woreda')->id]) }}"
+        enctype="multipart/form-data">
+        @csrf
+        <div style="z-index: 9999999;" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Import File</h5>
+                        <button type="button" class="close" data-dismiss="modal" -label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <div class="col-lg-6">
+                                        <label>Attendance File: </label>
+                                        <input type="file" name="attendance" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold"
+                            data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary font-weight-bold">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
     <!--begin::Card-->
     <div class="card card-custom gutter-b">
         {{-- <div cl --}}
@@ -206,43 +242,21 @@
                                     <!--begin::Navigation-->
                                     <ul class="navi navi-hover">
                                         <li class="navi-item">
-                                            <a href="" class="navi-link">
+                                            <a href="{{ route('session.deployment_attendance.export', ['training_session' => Request::route('training_session')->id, 'woreda' => Request::route('woreda')->id]) }}"
+                                                class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="flaticon2-shopping-cart-1"></i>
                                                 </span>
-                                                <span class="navi-text">Resources</span>
+                                                <span class="navi-text">Export Attendance</span>
                                             </a>
                                         </li>
                                         <li class="navi-item">
-                                            <a href="" class="navi-link">
+                                            <a href="" class="navi-link" data-toggle="modal"
+                                                data-target="#exampleModal">
                                                 <span class="navi-icon">
                                                     <i class="fa fa-users"></i>
                                                 </span>
-                                                <span class="navi-text">Checked In List</span>
-                                            </a>
-                                        </li>
-                                        <li class="navi-item">
-                                            <a href="" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="flaticon2-shopping-cart-1"></i>
-                                                </span>
-                                                <span class="navi-text">Trainners List</span>
-                                            </a>
-                                        </li>
-                                        <li class="navi-item">
-                                            <a href="#" onclick="confirmPlacment()" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="fal fa-map-marker-check"></i>
-                                                </span>
-                                                <span class="navi-text">Place Volunteers</span>
-                                            </a>
-                                        </li>
-                                        <li class="navi-item">
-                                            <a href="" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="fal fas fa-graduation-cap"></i>
-                                                </span>
-                                                <span class="navi-text">Graduate Volunteers</span>
+                                                <span class="navi-text">Import Attendance</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -384,7 +398,7 @@
         }
 
         function quillEditorSetup(quillId, areaId) {
-            var quill = new Quill('#'+quillId, {
+            var quill = new Quill('#' + quillId, {
                 modules: {
                     toolbar: [
                         [{
@@ -433,8 +447,8 @@
                 placeholder: 'Type your text here...',
                 theme: 'snow' // or 'bubble'
             });
-            var editorId = '#'+quillId;
-            var textAreaId = '#'+areaId;
+            var editorId = '#' + quillId;
+            var textAreaId = '#' + areaId;
             quill.on('text-change', function(delta, oldDelta, source) {
                 if ($(editorId + " .ql-editor").html() != '<p><br></p>') {
                     var content = $(editorId + " .ql-editor").html();
@@ -521,7 +535,7 @@
             var reports = @json($reports->toJson());
             console.log(reports[0]);
             KTQuilDemos.init();
-            quillEditorSetup('contentQuill1','content-textarea');
+            quillEditorSetup('contentQuill1', 'content-textarea');
         });
     </script>
 @endpush

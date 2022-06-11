@@ -29,7 +29,8 @@ class TrainingSession extends Model
         'status',
         'moto',
         'training_start_date',
-        'training_end_date'
+        'training_end_date',
+        'end_date_am'
     ];
     protected $append = ['sessionQouta'];
 
@@ -152,5 +153,9 @@ class TrainingSession extends Model
     public function trainingEndDateET()
     {
         return DateTimeFactory::fromDateTime(new DateTime($this->training_end_date))->format('d/m/Y');
+    }
+
+    public function attendances(){
+        return $this->hasMany(DeploymentVolunteerAttendance::class);
     }
 }

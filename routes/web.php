@@ -5,6 +5,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CertificateGenerate;
 use App\Http\Controllers\CindicationRoomController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeploymentVolunteerAttendanceController;
 use App\Http\Controllers\DisablityController;
 use App\Http\Controllers\FeildOfStudyController;
 use App\Http\Controllers\EducationalLevelController;
@@ -52,6 +53,7 @@ use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
 use App\Models\PaymentType;
 use App\Models\CindicationRoom;
+use App\Models\DeploymentVolunteerAttendance;
 use App\Models\Training;
 use App\Models\Distance;
 use App\Models\Event;
@@ -224,7 +226,10 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('certificate/graduated', [CertificateGenerate::class, 'certificateGenerate'])->name('certificate.graduate');
     Route::post('print/certificate/graduated', [CertificateGenerate::class, 'designGenerate'])->name('generate.certificate');
 
-    Route::get('deployment/id', [IdGenerateController::class, 'deploymentID'])->name('deployment.generateID');
+    Route::post('deployment/id', [IdGenerateController::class, 'deploymentID'])->name('deployment.generateID');
+
+    Route::get('{woreda}/deployment/attendance_export', [DeploymentVolunteerAttendanceController::class, 'get_attendance_data'])->name('deployment_attendance.export');
+    Route::post('{woreda}/import/deployment', [DeploymentVolunteerAttendanceController::class, 'fileImport'])->name('import.deployment_attendance');
 });
 
 

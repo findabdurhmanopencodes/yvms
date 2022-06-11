@@ -54,8 +54,6 @@
             </div>
             <div class="card-toolbar">
                 <div class="d-flex">
-                    <a class="btn ml-4 btn-sm btn-primary" href="{{ route('session.deployment.generateID', [Request::route('training_session')]) }}"><i class="fal flaticon2-print"></i> Print ID
-                    </a>
                     <a class="btn ml-4 btn-sm btn-primary" href="{{ route('session.deployment.deploy',[Request::route('training_session')]) }}"><i class="fal fa-server"></i> Deploy Volunteers
                     </a>
                 </div>
