@@ -942,7 +942,6 @@ class TrainingSessionController extends Controller
     }
     public function allResource()
     {
-
         return view('training_session.resource.index', ['resources' => Resource::all()]);
     }
 

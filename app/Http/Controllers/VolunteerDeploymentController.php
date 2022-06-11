@@ -155,15 +155,19 @@ class VolunteerDeploymentController extends Controller
     }
     public function zones(TrainingSession $trainingSession, Region $region)
     {
+
+        $reports = HierarchyReport::where('reportable_type',Region::class)->where('reportable_id',$region->id)->get(['id','content','status','created_at']);
         $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type',Zone::class)->pluck('quotable_id');
         $zones = Zone::where('region_id',$region->id)->with(['woredas', 'quotas'])->whereIn('id',$quota)->get();
-        return view('training_session.zones',compact('trainingSession','region','zones'));
+        return view('training_session.zones',compact('trainingSession','region','zones','reports'));
     }
     public function woredas(TrainingSession $trainingSession, Zone $zone)
     {
         $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type',Woreda::class)->pluck('quotable_id');
         $woredas = Woreda::where('zone_id',$zone->id)->with(['quotas'])->whereIn('id',$quota)->get();
-        return view('training_session.woredas',compact('trainingSession','woredas','zone'));
+
+        $reports = HierarchyReport::where('reportable_type',Zone::class)->where('reportable_id',$zone->id)->get(['id','content','status','created_at']);
+        return view('training_session.woredas',compact('trainingSession','woredas','zone','reports'));
     }
 
     public function woredaDetail(TrainingSession $trainingSession,Woreda $woreda)

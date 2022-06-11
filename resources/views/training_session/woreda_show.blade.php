@@ -83,7 +83,7 @@
                                 {{ $key + 1 }}
                             </td>
                             <td>
-                                {{ $report->created_at->diffForHumans() }}
+                                {{ \App\Constants::convertDateToEt($report->created_at)->format('d-m-Y') }}
                             </td>
                             <td>
                                 <div class="d-flex justify-content-between">
@@ -95,10 +95,6 @@
                                         <i class="fa text-primary fa-pen">
                                         </i>
                                     </a>
-                                    {{-- <a class="" href="{{ route('session.hierarchy.edit', ['training_session'=>Request::route('training_sesion')->id,'hierarchy'=>$report->id]) }}">
-                                        <i class="fa text-primary fa-pen">
-                                        </i>
-                                    </a> --}}
                                     <a class="" href="#"
                                         onclick="confirmDeleteReport('{{ route('session.hierarchy.destroy', ['training_session' => Request::route('training_session')->id, 'hierarchy' => $report->id]) }}')">
                                         <i class="fa text-danger fa-trash">

@@ -7,6 +7,7 @@ use App\Models\Zone;
 use App\Http\Requests\StoreRegionRequest;
 use App\Http\Requests\UpdateRegionRequest;
 use App\ImporterFiles;
+use App\Models\HierarchyReport;
 use App\Models\Qouta;
 use App\Models\RegionIntake;
 use App\Models\TrainingSession;
