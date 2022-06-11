@@ -29,6 +29,9 @@ class Woreda extends Model
         return $this->belongsTo(Zone::class);
     }
 
+    public function reports(){
+        return $this->morphMany(HierarchyReport::class, 'reportable');
+    }
 
 
     public function getRegionAttribute()

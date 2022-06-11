@@ -168,7 +168,7 @@ class VolunteerDeploymentController extends Controller
 
     public function woredaDetail(TrainingSession $trainingSession,Woreda $woreda)
     {
-        $reports = HierarchyReport::where('reporter_type',Woreda::class)->where('reporter_id',$woreda->id)->get(['id','content','status','created_at']);
+        $reports = HierarchyReport::where('reportable_type',Woreda::class)->where('reportable_id',$woreda->id)->get(['id','content','status','created_at']);
         return view('training_session.woreda_show',compact('trainingSession','woreda','reports'));
     }
 }
