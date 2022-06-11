@@ -66,4 +66,8 @@ class Woreda extends Model
     {
         return $this->hasMany(WoredaIntake::class);
     }
+
+    public function attendances(){
+        return $this->hasMany(DeploymentVolunteerAttendance::class);
+    }
 }

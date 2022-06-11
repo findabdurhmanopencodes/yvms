@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('training_placement_id')->constrained('training_placements','id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('woreda_intake_id')->constrained('woreda_intakes','id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('issued_date_am')->nullable();
 //            $table->foreignId('training_session_id')->constrained('training_sessions','id');
             $table->timestamps();
         });

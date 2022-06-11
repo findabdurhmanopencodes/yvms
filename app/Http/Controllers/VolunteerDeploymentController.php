@@ -18,6 +18,7 @@ use App\Console\Commands\VoluteerDeploymentCommand;
 use App\Models\Qouta;
 use App\Models\Region;
 use App\Models\Volunteer;
+use Illuminate\Support\Facades\DB;
 
 class VolunteerDeploymentController extends Controller
 {

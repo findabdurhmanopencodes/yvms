@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use \Maatwebsite\Excel\Facades\Excel;
+use PHPUnit\TextUI\XmlConfiguration\Constant;
 
 class TraininingCenterController extends Controller
 {
@@ -317,7 +318,7 @@ class TraininingCenterController extends Controller
     public function get_attendance_data(Request $request, TrainingSession $trainingSession, TraininingCenter $trainingCenter, CindicationRoom $cindicationRoom)
     {
         $schedule_id = $request->get('schedule_id');
-        $users = DB::table('volunteers')->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')->where('training_center_capacities.trainining_center_id', $trainingSession->id)->where('cindication_room_id', $cindicationRoom->id)->select(['id_number', 'first_name', 'father_name', 'grand_father_name'])->get();
+        $users = DB::table('volunteers')->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')->where('training_center_capacities.trainining_center_id', $trainingCenter->id)->where('cindication_room_id', $cindicationRoom->id)->select(['id_number', 'first_name', 'father_name', 'grand_father_name'])->get();
 
         return Excel::download(new UsersExport($users, ['ID Number', 'First Name', 'Father Name', 'Grand Father Name', 'Status', $schedule_id]), 'attendance.xlsx');
         // return Excel::download(new UserAttendance(), 'attendance.xlsx');
@@ -327,7 +328,7 @@ class TraininingCenterController extends Controller
     {
         Excel::import(new UsersImport($trainingSession, $trainingCenter, $cindicationRoom), $request->file('attendance')->store('temp'));
         $past_url = url()->previous();
-        return redirect($past_url)->with('success', 'Successfully Registered!!!');
+        return redirect($past_url)->with('success', 'Successfully Imported!!!');
     }
 
     public function placeVolunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
@@ -371,8 +372,15 @@ class TraininingCenterController extends Controller
 
     public function show_all_volunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter, UserAttendance $userAttendance)
     {
+        $check_deployed = [];
         $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->paginate(10);
         $trainingSchedules = TrainingSchedule::all();
+
+        foreach ($applicants as $key => $applicant) {
+            if ($applicant->status->acceptance_status == 7) {
+                array_push($check_deployed, $applicant);
+            }
+        }
 
         $arr = [];
         foreach ($trainingSchedules as $key => $schedule) {
@@ -381,7 +389,7 @@ class TraininingCenterController extends Controller
 
         $arr_unique = array_unique($arr);
 
-        return view('training_center.show_all', compact('applicants', 'trainingCenter', 'trainingSession', 'userAttendance', 'arr_unique'));
+        return view('training_center.show_all', compact('applicants', 'trainingCenter', 'trainingSession', 'userAttendance', 'arr_unique', 'check_deployed'));
     }
 
     public function graduateVolunteers(Request $request, TrainingSession $trainingSession)
@@ -394,7 +402,7 @@ class TraininingCenterController extends Controller
         $max_att = $request->get('max_attendance');
         $att_count = [];
 
-        $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('training_center'))->whereRelation('status', 'acceptance_status', 5)->get();
+        $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('training_center'))->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_CHECKEDIN)->get();
 
         if (!$request->get('att_amount') && !$request->get('gc_vol')) {
             return redirect()->back()->with('error', 'You have not selected anything!');
@@ -402,7 +410,7 @@ class TraininingCenterController extends Controller
 
         else if ($all_vol) {
             foreach ($applicants as $key => $applicant) {
-                Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => 6]);
+                Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_GRADUATED]);
             }
         } else {
             foreach ($applicants as $key => $applicant) {
@@ -416,7 +424,7 @@ class TraininingCenterController extends Controller
                 return redirect()->back()->with('error', 'No volunteer meet your requirement!');
             }else{
                 foreach ($att_count as $key => $applicant) {
-                   Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => 6]);
+                   Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_GRADUATED]);
                 }
             }
         }
@@ -428,7 +436,7 @@ class TraininingCenterController extends Controller
         $training_centers = TraininingCenter::all();
         $regions = Region::all();
 
-        $q = Volunteer::whereRelation('status', 'acceptance_status', 6)->where('training_session_id', $trainingSession->id);
+        $q = Volunteer::whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_GRADUATED)->where('training_session_id', $trainingSession->id);
 
         if ($request->get('training_center') != null) {
             $q->whereHas('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', function ($query) use ($request) {
