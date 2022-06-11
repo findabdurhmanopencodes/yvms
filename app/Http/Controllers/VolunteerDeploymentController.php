@@ -15,6 +15,7 @@ use App\Models\Zone;
 use App\Models\ZoneIntake;
 use Illuminate\Http\Request;
 use App\Console\Commands\VoluteerDeploymentCommand;
+use App\Models\HierarchyReport;
 use App\Models\Qouta;
 use App\Models\Region;
 use App\Models\Volunteer;
@@ -166,7 +167,7 @@ class VolunteerDeploymentController extends Controller
 
     public function woredaDetail(TrainingSession $trainingSession,Woreda $woreda)
     {
-        // $volunteers = Volunteer::whereRelation()
-        return view('training_session.woreda_show',compact('trainingSession','woreda'));
+        $reports = HierarchyReport::where('reporter_type',Woreda::class)->where('reporter_id',$woreda->id)->get(['id','content','status','created_at']);
+        return view('training_session.woreda_show',compact('trainingSession','woreda','reports'));
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\HierarchyReport;
 use App\Http\Requests\StoreHierarchyReportRequest;
 use App\Http\Requests\UpdateHierarchyReportRequest;
+use App\Models\TrainingSession;
 
 class HierarchyReportController extends Controller
 {
@@ -36,7 +37,9 @@ class HierarchyReportController extends Controller
      */
     public function store(StoreHierarchyReportRequest $request)
     {
-        //
+        $data = $request->validated();
+        HierarchyReport::create($data);
+        return redirect()->back()->with('message','Hierarchical report created successfully');
     }
 
     /**
@@ -79,8 +82,9 @@ class HierarchyReportController extends Controller
      * @param  \App\Models\HierarchyReport  $hierarchyReport
      * @return \Illuminate\Http\Response
      */
-    public function destroy(HierarchyReport $hierarchyReport)
+    public function destroy(TrainingSession $trainingSession,HierarchyReport $hierarchy)
     {
-        //
+        $hierarchy->delete();
+        return redirect()->back()->with('message','Report deleted successfully');
     }
 }

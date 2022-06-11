@@ -13,7 +13,7 @@ class StoreHierarchyReportRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class StoreHierarchyReportRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'content'=>['required','string','min:0'],
+            'reporter_type'=>['required','string','min:0','max:100'],
+            'reporter_id'=>['required','numeric']
         ];
     }
 }
