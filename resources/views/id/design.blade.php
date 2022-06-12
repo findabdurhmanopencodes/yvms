@@ -133,8 +133,7 @@
                     myDesign.style.height = "339";
                     myDesign.style.backgroundSize = "cover";
                     myDesign.style.backgroundImage = "url({{ asset('img/id_page_1.jpg') }})";
-                    myDesign.style.marginRight = "100px";
-                    myDesign.style.marginBottom = "5vh";
+                    myDesign.style.margin = "2vh";
 
                     var blank_img = document.createElement('img');
                     var div_blank = document.createElement('div');
@@ -295,6 +294,8 @@
                     p3.style.color = '#01b1f2';
                     myDesign.appendChild(p3);
 
+                    myDesign.style.pageBreakAfter = "always";
+                    myDesign.style.pageBreakBefore = "always";
                     div.appendChild(myDesign.cloneNode(true))
 
                     DATAS.push(div);
@@ -308,8 +309,8 @@
                     myDesign.style.height = "339";
                     myDesign.style.backgroundSize = "cover";
                     myDesign.style.backgroundImage = "url({{ asset('img/id_page_1.jpg') }})";
-                    myDesign.style.marginRight = "100px";
-                    myDesign.style.marginBottom = "5vh";
+                    myDesign.style.margin = "2vh";
+                    
                     var p = document.createElement("p");
                     var s = document.createElement("strong");
                     var textToAdd = document.createTextNode(applicant.id_number);
@@ -457,8 +458,9 @@
                     div__qr_img_2.appendChild(qrf_img.cloneNode(true));
                     myDesign.appendChild(div__qr_img_2.cloneNode(true));
 
+                    myDesign.style.pageBreakAfter = "always";
+                    myDesign.style.pageBreakBefore = "always";
                     div.appendChild(myDesign.cloneNode(true));
-                    // div.style.pageBreakAfter = "always";
 
                     DATAS.push(div);
 
@@ -467,37 +469,6 @@
 
             generatePDF(DATAS, paginate_apps);
         })
-
-        // $('#print_btn2').on('click', function(event){
-        //     var a = document.getElementById('myDesign');
-            
-        //     var div = document.createElement("div");
-        //     var p = document.createElement("p");
-        //     var s = document.createElement("strong");
-        //     var textToAdd = document.createTextNode("MILKY SEIFU BENTI");
-        //     s.appendChild(textToAdd);
-        //     p.appendChild(s);
-        //     p.style.position = "relative";
-        //     p.style.left = "92px";
-        //     p.style.top = "212px";
-        //     p.style.backgroundColor = "inherit";
-        //     p.style.fontSize = '10px';
-        //     p.style.color = 'blue';
-        //     a.appendChild(p);
-        //     div.appendChild(a.cloneNode(true));
-
-        //     var mywindow = window.open('', 'PRINT', 'height=1000,width=1000');
-
-        //     mywindow.document.write('<html><head>');
-        //     mywindow.document.write('</head><body >');
-        //     mywindow.document.write('<div style="display:flex; flex-wrap: wrap">');
-        //     mywindow.document.write(div.innerHTML);
-        //     mywindow.document.write('</div>');
-        //     mywindow.document.write('</body></html>');
-
-        //     mywindow.document.close();
-        //     mywindow.focus();
-        // })
 
         function generatePDF(abc, applicants){
             var mywindow = window.open('', 'PRINT', 'height=1000,width=1000');

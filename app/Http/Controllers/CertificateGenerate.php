@@ -21,7 +21,7 @@ class CertificateGenerate extends Controller
 
     public function designGenerate(Request $request, TrainingSession $trainingSession)
     {
-        $applicants = Volunteer::whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->where('training_session_id', $trainingSession->id)->get();
+        $applicants = Volunteer::whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->where('training_session_id', $trainingSession->id)->take(2)->get();
         $curr_date = new DateTime();
         $curr_date_now = $curr_date->format('M d, Y');
 
