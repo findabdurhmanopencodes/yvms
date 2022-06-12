@@ -95,7 +95,13 @@ class DeploymentVolunteerAttendanceController extends Controller
     {
         $users = DB::table('volunteers')->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->leftJoin('volunteer_deployments', 'volunteer_deployments.training_placement_id', '=', 'training_placements.id')->leftJoin('woreda_intakes', 'volunteer_deployments.woreda_intake_id', '=', 'woreda_intakes.id')->leftJoin('woredas', 'woreda_intakes.woreda_id', '=', 'woredas.id')->where('woredas.id', $woreda->id)->select(['id_number', 'first_name', 'father_name', 'grand_father_name'])->get();
 
-        return Excel::download(new DeploymentAttendanceExport($users, ['ID Number', 'First Name', 'Father Name', 'Grand Father Name', 'Status', 'Date']), 'attendance.xlsx');
+        $past_url = url()->previous();
+        if ($users->first() == null) {
+            return redirect($past_url)->with('error', 'No Volunteer available!!');
+        }else{
+            return Excel::download(new DeploymentAttendanceExport($users, ['ID Number', 'First Name', 'Father Name', 'Grand Father Name', 'Status', 'Date']), 'attendance.xlsx');
+        }
+
     }
     public function fileImport(Request $request, TrainingSession $trainingSession, Woreda $woreda)
     {
