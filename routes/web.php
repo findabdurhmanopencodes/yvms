@@ -2,6 +2,7 @@
 
 use App\Helpers\Helper;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AuditController;
 use App\Http\Controllers\CertificateGenerate;
 use App\Http\Controllers\CindicationRoomController;
 use App\Http\Controllers\DashboardController;
@@ -326,3 +327,5 @@ Route::get('{training_session}/reset-verification', [VolunteerController::class,
 Route::resource('Events', EventController::class);
 Route::get('/All-Events', [EventController::class, 'allEvents'])->name('event.all');
 Route::get('/Event/{event}', [EventController::class, 'detailEvent'])->name('event.detail');
+Route::any('audits', [AuditController::class,'index'])
+->middleware('auth', \App\Http\Middleware\AllowOnlyAdmin::class)->name('audit.index');

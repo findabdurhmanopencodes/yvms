@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use NunoMaduro\Collision\Adapters\Phpunit\State;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Status extends Model
+class Status extends Model implements Auditable
 {
     use HasFactory;
+    use \OwenIt\Auditing\Auditable;
     protected $fillable = ['volunteer_id', 'acceptance_status', 'rejection_reason', 'status'];
 
     public function applicants()
