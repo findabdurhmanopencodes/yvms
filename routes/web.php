@@ -41,6 +41,7 @@ use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\TransportTarifController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\DistanceController;
+use App\Http\Controllers\HierarchyReportController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PayrollSheetController;
@@ -133,6 +134,7 @@ Route::post('application_form/apply', [VolunteerController::class, 'apply'])->na
 Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
 
 Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verified'], 'as' => 'session.'], function () {
+    Route::resource('hierarchy',HierarchyReportController::class);
     Route::get('deployment-regions',[RegionController::class,'deployment'])->name('deployment.regions');
     Route::get('deployment-regions/{region}/zones',[VolunteerDeploymentController::class,'zones'])->name('deployment.region.zones');
     Route::get('deployment-regions/zone/{zone}/woredas',[VolunteerDeploymentController::class,'woredas'])->name('deployment.zone.woredas');
