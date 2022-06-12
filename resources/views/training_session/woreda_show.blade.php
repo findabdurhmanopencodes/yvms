@@ -11,37 +11,209 @@
     </style>
 @endpush
 @section('content')
-<form method="POST" action="{{ route('session.import.deployment_attendance', ['training_session' => Request::route('training_session')->id, 'woreda' => Request::route('woreda')->id]) }}" enctype="multipart/form-data">
-    @csrf
-    <div style="z-index: 9999999;" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg"  role="document">
+
+    <!-- Modal-->
+    <div class="modal fade" id="writeReportModal" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered  modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Import File</h5>
-                    <button type="button" class="close" data-dismiss="modal" -label="Close">
+                    <h5 class="modal-title" id="exampleModalLabel">Report Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="card-body">
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <div class="col-lg-6">
-                                    <label>Attendance File: </label>
-                                    <input type="file" name="attendance"/>
-                                </div>
+                    <form id="reportForm"
+                        action="{{ route('session.hierarchy.store', ['training_session' => Request::route('training_session')->id]) }}"
+                        method="POST">
+                        @csrf
+                        <div class="">
+                            <label for="">Report Text</label>
+                            <div id="contentQuill" style="height: 325px">
+                                {!! old('content') !!}
                             </div>
+                            <textarea name="content" id="content-textarea" class="d-none">{{ old('content') }}</textarea>
+                            @error('content')
+                                <div class="fv-plugins-message-container">
+                                    <div data-field="content" data-validator="stringLength" class="fv-help-block">
+                                        {{ $message }}
+                                    </div>
+                                </div>
+                            @enderror
                         </div>
-                    </div>
+                        <input type="hidden" name="reporter_type" value="{{ \App\Models\Woreda::class }}">
+                        <input type="hidden" name="reporter_id" value="{{ $woreda->id }}">
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary font-weight-bold">Submit</button>
+                    <button type="button" onclick="$('#reportForm').submit()" class="btn btn-primary font-weight-bold">Write
+                        Report</button>
                 </div>
             </div>
         </div>
     </div>
-</form>
+    <!--view report modal-->
+    <div class="modal fade" id="viewReportModal" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered  modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Report View Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="reportViewDiv"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editReportModal" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered  modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Report Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="reportEditForm" action="" method="POST">
+                        @csrf
+                        @method('PATCH')
+                        <div class="">
+                            <label for="">Report Text</label>
+                            <div id="contentQuill1" style="height: 325px">
+                            </div>
+                            <textarea name="content" id="content-textarea1" class="d-none">{{ old('content') }}</textarea>
+                            @error('content')
+                                <div class="fv-plugins-message-container">
+                                    <div data-field="content" data-validator="stringLength" class="fv-help-block">
+                                        {{ $message }}
+                                    </div>
+                                </div>
+                            @enderror
+                        </div>
+                        <input type="hidden" name="reporter_type" value="{{ \App\Models\Woreda::class }}">
+                        <input type="hidden" name="reporter_id" value="{{ $woreda->id }}">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="$('#reportForm').submit()"
+                        class="btn btn-primary font-weight-bold">Update
+                        Report</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card-custom mb-2">
+        <div class="card-header flex-wrap  pt-6 ">
+            <div class="card-title mr-0">
+                <h3 class="card-label">{{ $woreda->name }} Hierarchila Reports</h3>
+            </div>
+            <div class="card-tool">
+
+                {{-- <a href="#" data-toggle="modal" data-target="#writeReportModal" class="btn btn-primary">
+
+        </a> --}}
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#writeReportModal">
+                    <i class="fal fa-plus "></i>
+                    Write hierarchial report
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <table width="100%" class="table">
+                <thead>
+                    </tr>
+                    <th>#</th>
+                    <th>Report Date</th>
+                    <th width="100">Action</th>
+                    {{-- <th><i class="menu-icon flaticon-list"></i> </th> --}}
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse  ($reports as $key=>$report)
+                        <tr>
+                            <td>
+                                {{ $key + 1 }}
+                            </td>
+                            <td>
+                                {{ $report->created_at->diffForHumans() }}
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-between">
+                                    {{-- <a class="" href="#"
+                                onclick="$('#reportViewDiv').html('{!! $report->content !!}');" data-toggle="modal"
+                                data-target="#viewReportModal">
+                                <i class="fa text-primary fa-eye">
+                                </i>
+                            </a> --}}
+                                    {{-- <a class="" href="#" onclick="$('#reportEditForm').attr('action','{{ route('session.hierarchy.update',['training_session'=>Request::route('training_session')->id,'hierarchy'=>$report->id]) }}');$('#contentQuill1 .ql-editor').html('{!! $report->content !!}')" data-toggle="modal" data-target="#editReportModal">
+                                <i class="fa text-primary fa-pen">
+                                </i>
+                            </a> --}}
+                                    <a class="" href="#"
+                                        onclick="confirmDeleteReport('{{ route('session.hierarchy.destroy', ['training_session' => Request::route('training_session')->id, 'hierarchy' => $report->id]) }}')">
+                                        <i class="fa text-danger fa-trash">
+                                        </i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr style="font-size: 13px;" class="text-center">
+                            <td colspan='2'>No reports found</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <form method="POST"
+        action="{{ route('session.import.deployment_attendance', ['training_session' => Request::route('training_session')->id, 'woreda' => Request::route('woreda')->id]) }}"
+        enctype="multipart/form-data">
+        @csrf
+        <div style="z-index: 9999999;" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Import File</h5>
+                        <button type="button" class="close" data-dismiss="modal" -label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <div class="col-lg-6">
+                                        <label>Attendance File: </label>
+                                        <input type="file" name="attendance" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold"
+                            data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary font-weight-bold">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
     <!--begin::Card-->
     <div class="card card-custom gutter-b">
         {{-- <div cl --}}
@@ -70,7 +242,8 @@
                                     <!--begin::Navigation-->
                                     <ul class="navi navi-hover">
                                         <li class="navi-item">
-                                            <a href="{{ route('session.deployment_attendance.export', ['training_session'=> Request::route('training_session')->id, 'woreda' => Request::route('woreda')->id]) }}" class="navi-link">
+                                            <a href="{{ route('session.deployment_attendance.export', ['training_session' => Request::route('training_session')->id, 'woreda' => Request::route('woreda')->id]) }}"
+                                                class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="flaticon2-shopping-cart-1"></i>
                                                 </span>
@@ -78,7 +251,8 @@
                                             </a>
                                         </li>
                                         <li class="navi-item">
-                                            <a href="" class="navi-link" data-toggle="modal" data-target="#exampleModal">
+                                            <a href="" class="navi-link" data-toggle="modal"
+                                                data-target="#exampleModal">
                                                 <span class="navi-icon">
                                                     <i class="fa fa-users"></i>
                                                 </span>
@@ -113,6 +287,10 @@
             </div>
         </div>
     </div>
+    <form id="reportFormDelete" method="POST">
+        @method('DELETE')
+        @csrf
+    </form>
     <!--end::Card-->
 @endsection
 @push('js')
@@ -199,5 +377,165 @@
                 }
             });
         }
+    </script>
+@endpush
+@push('js')
+    <script>
+        function confirmDeleteReport(url) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "danger",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $('#reportFormDelete').attr('action', url);
+                    $('#reportFormDelete').submit();
+                }
+            });
+        }
+
+        function quillEditorSetup(quillId, areaId) {
+            var quill = new Quill('#' + quillId, {
+                modules: {
+                    toolbar: [
+                        [{
+                            header: [1, 2, false]
+                        }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        ['blockquote'],
+                        [{
+                            'header': 1
+                        }, {
+                            'header': 2
+                        }], // custom button values
+                        [{
+                            'list': 'ordered'
+                        }, {
+                            'list': 'bullet'
+                        }],
+                        [{
+                            'script': 'sub'
+                        }, {
+                            'script': 'super'
+                        }], // superscript/subscript
+                        [{
+                            'indent': '-1'
+                        }, {
+                            'indent': '+1'
+                        }], // outdent/indent
+                        [{
+                            'direction': 'rtl'
+                        }], // text direction
+                        ['link'],
+                        ['clean'],
+                        [{
+                            'color': []
+                        }, {
+                            'background': []
+                        }], // dropdown with defaults from theme
+                        [{
+                            'font': []
+                        }],
+                        [{
+                            'align': []
+                        }], // remove formatting button
+                    ]
+                },
+                placeholder: 'Type your text here...',
+                theme: 'snow' // or 'bubble'
+            });
+            var editorId = '#' + quillId;
+            var textAreaId = '#' + areaId;
+            quill.on('text-change', function(delta, oldDelta, source) {
+                if ($(editorId + " .ql-editor").html() != '<p><br></p>') {
+                    var content = $(editorId + " .ql-editor").html();
+                    $(textAreaId).text(content);
+                }
+                if ($(editorId + " .ql-editor").html() == '<p><br></p>')
+                    $(textAreaId).text('');
+            });
+        }
+        // Class definition
+        var KTQuilDemos = function() {
+
+            // Private functions
+            var demo1 = function() {
+                var quill = new Quill('#contentQuill', {
+                    modules: {
+                        toolbar: [
+                            [{
+                                header: [1, 2, false]
+                            }],
+                            ['bold', 'italic', 'underline', 'strike'],
+                            ['blockquote'],
+                            [{
+                                'header': 1
+                            }, {
+                                'header': 2
+                            }], // custom button values
+                            [{
+                                'list': 'ordered'
+                            }, {
+                                'list': 'bullet'
+                            }],
+                            [{
+                                'script': 'sub'
+                            }, {
+                                'script': 'super'
+                            }], // superscript/subscript
+                            [{
+                                'indent': '-1'
+                            }, {
+                                'indent': '+1'
+                            }], // outdent/indent
+                            [{
+                                'direction': 'rtl'
+                            }], // text direction
+                            ['link'],
+                            ['clean'],
+                            [{
+                                'color': []
+                            }, {
+                                'background': []
+                            }], // dropdown with defaults from theme
+                            [{
+                                'font': []
+                            }],
+                            [{
+                                'align': []
+                            }], // remove formatting button
+                        ]
+                    },
+                    placeholder: 'Type your text here...',
+                    theme: 'snow' // or 'bubble'
+                });
+                var editorId = '#contentQuill';
+                var textAreaId = '#content-textarea'
+                quill.on('text-change', function(delta, oldDelta, source) {
+                    if ($(editorId + " .ql-editor").html() != '<p><br></p>') {
+                        var content = $(editorId + " .ql-editor").html();
+                        $(textAreaId).text(content);
+                    }
+                    if ($(editorId + " .ql-editor").html() == '<p><br></p>')
+                        $(textAreaId).text('');
+                });
+            }
+            return {
+                // public functions
+                init: function() {
+                    demo1();
+                }
+            };
+        }();
+
+        jQuery(document).ready(function() {
+            var reports = @json($reports->toJson());
+            console.log(reports[0]);
+            KTQuilDemos.init();
+            quillEditorSetup('contentQuill1', 'content-textarea');
+        });
     </script>
 @endpush

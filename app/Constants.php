@@ -15,6 +15,8 @@ class Constants {
 
     const SYSTEM_USER_ROLE= 'system-user';
 
+    const HIERARCHY_REPORT_DRAFT = 0;
+    const HIERARCHY_REPORT_SENT = 1;
 
 
 }
