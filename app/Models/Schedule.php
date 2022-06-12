@@ -9,10 +9,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Schedule extends Model
+class Schedule extends Model implements Auditable
 {
     use HasFactory;
+    use \OwenIt\Auditing\Auditable;
+
     protected $guarded = [];
     /**
      * Get the trainingSession that owns the Schedule
@@ -56,12 +59,12 @@ class Schedule extends Model
     {
         return DateTimeFactory::fromDateTime(new DateTime($this->date))->format('d/m/Y');
     }
-    
+
     public function checkDateAtt()
     {
         $check_date_att = false;
         $date_now_et = DateTimeFactory::fromDateTime(new DateTime(Carbon::now()))->format('d/m/Y');
-        
+
         if ($this->dateET() == $date_now_et) {
             $check_date_att = true;
         }

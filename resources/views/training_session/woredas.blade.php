@@ -12,7 +12,7 @@
     <div class="card-body">
         <table width="100%" class="table ">
             <thead>
-                </tr>
+                <tr style="font-size: 13px;">
                     <th> # </th>
                     <th> Name </th>
                     <th> Action </th>
@@ -20,7 +20,7 @@
             </thead>
             <tbody>
                 @foreach ($woredas as $key => $woreda)
-                    <tr>
+                    <tr style="font-size: 13px;">
                         <td>{{ $key + 1 }}</td>
                         <td>{{ $woreda->name }}</td>
                         <td>

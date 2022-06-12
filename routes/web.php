@@ -2,6 +2,7 @@
 
 use App\Helpers\Helper;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AuditController;
 use App\Http\Controllers\CertificateGenerate;
 use App\Http\Controllers\CindicationRoomController;
 use App\Http\Controllers\DashboardController;
@@ -40,6 +41,7 @@ use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\TransportTarifController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\DistanceController;
+use App\Http\Controllers\HierarchyReportController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PayrollSheetController;
@@ -132,6 +134,7 @@ Route::post('application_form/apply', [VolunteerController::class, 'apply'])->na
 Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
 
 Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verified'], 'as' => 'session.'], function () {
+    Route::resource('hierarchy',HierarchyReportController::class);
     Route::get('deployment-regions',[RegionController::class,'deployment'])->name('deployment.regions');
     Route::get('deployment-regions/{region}/zones',[VolunteerDeploymentController::class,'zones'])->name('deployment.region.zones');
     Route::get('deployment-regions/zone/{zone}/woredas',[VolunteerDeploymentController::class,'woredas'])->name('deployment.zone.woredas');
@@ -326,3 +329,5 @@ Route::get('{training_session}/reset-verification', [VolunteerController::class,
 Route::resource('Events', EventController::class);
 Route::get('/All-Events', [EventController::class, 'allEvents'])->name('event.all');
 Route::get('/Event/{event}', [EventController::class, 'detailEvent'])->name('event.detail');
+Route::any('audits', [AuditController::class,'index'])
+->middleware('auth', \App\Http\Middleware\AllowOnlyAdmin::class)->name('audit.index');

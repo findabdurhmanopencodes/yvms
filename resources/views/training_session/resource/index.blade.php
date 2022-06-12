@@ -38,12 +38,21 @@
                             <td><a class="btn btn-sm btn-info" href="{{ route('session.resource.show',['training_session'=>Request::route('training_session'),'resource'=>$resource->id]) }}"><i class="fa fa-eye"></i>Show</a></td>
 
                         </tr>
+
                     @endforeach
+
+                    @if (count($resources)<1)
+                    <tr>
+                    <td> <span class="text text-danger">No Resource Found!!  </span><span><a href="{{ route('resource.create') }}">  Create</a></span></td>
+                </tr>
+
+                    @endif
+
                 </tbody>
             </table>
         </div>
         <div class="m-auto col-6 mt-3">
-            {{-- {{ $masters->withQueryString()->links() }} --}}
+            {{ $resources->withQueryString()->links() }}
         </div>
     </div>
 @endsection

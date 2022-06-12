@@ -194,6 +194,9 @@ class TraininingCenterController extends Controller
     }
     public function checkInView()
     {
+
+
+
         return view('training_center.check_in.check_in');
     }
     public function result(Request $request)
@@ -201,6 +204,7 @@ class TraininingCenterController extends Controller
         if ($request->ajax()) {
             $output = '';
             $query = $request->get('query');
+            // Auth::user()->getRoleNames()[0]==Constants::SYSTEM_USER_ROLE;//Need This For Permission
             // ->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',Auth::user()->trainingCheckerOf->id);
             $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', $query);
 

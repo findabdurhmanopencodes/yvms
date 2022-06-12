@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class CindicationRoom extends Model
+class CindicationRoom extends Model implements Auditable
 {
     use HasFactory;
     protected $guarded = [];
+    use \OwenIt\Auditing\Auditable;
+
 
     /**
      * Get the trainingCenter that owns the CindicationRoom

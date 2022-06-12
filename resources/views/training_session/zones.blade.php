@@ -1,6 +1,16 @@
 @extends('layouts.app')
 @section('title','Region list')
 @section('content')
+
+<div class="card card-custom mb-2">
+    <div class="card-header flex-wrap  pt-6 ">
+        <div class="card-title mr-0">
+            <h3 class="card-label">Hierarchila Reports</h3>
+        </div>
+        <div class="card-tool">
+        </div>
+    </div>
+</div>
 <div class="card card-custom">
     <div class="card-header flex-wrap  pt-6 ">
         <div class="card-title mr-0">
