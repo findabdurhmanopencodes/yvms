@@ -16,8 +16,8 @@
 </head>
 
 <body style="font-family: 'EB Garamond', serif;">
-    <div>
-            <table style="border-collapse: collapse;width: 100%;margin:0px;">
+<header>
+    <table style="border-collapse: collapse;width: 100%;margin:0px;">
         <tbody>
             <tr>
                 <td>
@@ -40,8 +40,7 @@
         </tbody>
     </table>
     <hr />
-    </div>
-
+</header>
     <p>
         List of Volunteers Placed for Training
     </p>
