@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Volunteer extends Model
+class Volunteer extends Model implements Auditable
 {
     use HasFactory;
     use Notifiable;
+    use \OwenIt\Auditing\Auditable;
 
     protected $guarded = [];
     protected $appends = ["profilePhoto"];

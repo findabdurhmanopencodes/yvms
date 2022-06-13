@@ -310,8 +310,8 @@
                                         <i class="menu-icon flaticon2-check-mark"></i>
                                         <span class="menu-text">Check-In</span>
                                     </a>
-                                </li>
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.graduation.list') === 0 ? 'menu-item-active' : '' }}"
+                                </li> --}}
+                                {{-- <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.graduation.list') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.graduation.list', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
@@ -330,6 +330,14 @@
                                         <span class="menu-text">Volunteer Deployments </span>
                                     </a>
                                 </li>
+                                {{-- <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('session.hierarchy.index', ['training_session' => Request::route('training_session')]) }}"
+                                        class="menu-link">
+                                        <i class="menu-icon fal fa-university"></i>
+                                        <span class="menu-text">Hierarchial Reports</span>
+                                    </a>
+                                </li> --}}
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.certificate.graduate') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.certificate.graduate', ['training_session' => Request::route('training_session')]) }}"
@@ -488,6 +496,75 @@
                                                     <span></span>
                                                 </i>
                                                 <span class="menu-text">Translation</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'Events') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'feild_of_study') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
+                            aria-haspopup="true" data-menu-toggle="hover">
+                            <a href="javascript:;" class="menu-link menu-toggle">
+                                {{-- <i class="menu-icon flaticon-file"></i> --}}
+                                <i class=" menu-icon fa fa-file-magnifying-glass"></i>
+                                <span class="menu-text">Events</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="menu-submenu">
+                                <i class="menu-arrow"></i>
+                                <ul class="menu-subnav">
+                                    <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                        <span class="menu-link">
+                                            <span class="menu-text">Events</span>
+                                        </span>
+                                    </li>
+
+
+                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'audits') === 0 ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('Events.create', []) }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="menu-text">New Event </span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'audits') === 0 ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('Events.index', []) }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="menu-text">All Event </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                            <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'audits') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'feild_of_study') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
+                                aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    {{-- <i class="menu-icon flaticon-file"></i> --}}
+                                    <i class=" menu-icon fa fa-file-magnifying-glass"></i>
+                                    <span class="menu-text">Audits</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                            <span class="menu-link">
+                                                <span class="menu-text">Audits</span>
+                                            </span>
+                                        </li>
+
+
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'audits') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('audit.index', []) }}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">Audits </span>
                                             </a>
                                         </li>
                                     </ul>

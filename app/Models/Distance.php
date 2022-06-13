@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Contracts\Auditor;
 
-class Distance extends Model
+class Distance extends Model implements Auditable
 {
     use HasFactory;
+    use \OwenIt\Auditing\Auditable;
+
 
 
     protected $fillable = [

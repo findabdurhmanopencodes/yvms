@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class PayrollSheet extends Model
+class PayrollSheet extends Model implements Auditable
 {
 use HasFactory;
+use \OwenIt\Auditing\Auditable;
+
 
 protected $fillable = [ 'fullName', 'trainining_center', 'phone','account' ,'zone_id','user_id','created_at'];
 
