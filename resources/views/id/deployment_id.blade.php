@@ -107,10 +107,50 @@
             applicants.forEach(applicant => {
                 myDesign = document.createElement("div");
                 // myDesign.setAttribute('id', 'myDesign'+key);
-                myDesign.style.width = "220";
-                myDesign.style.height = "339";
+                myDesign.style.width = "210px";
+                myDesign.style.height = "324px";
                 myDesign.style.backgroundSize = "cover";
                 myDesign.style.backgroundImage = "url({{ asset('img/id_page_1.jpg') }})";
+
+                var profile_img = document.createElement('img');
+                var div = document.createElement('div');
+                // div.setAttribute('id', 'div_cont'+key);
+                var div_img = document.createElement('div');
+                profile_img.src = '{{ asset("img/meti.jpg") }}';
+                profile_img.style.width = '89px';
+                profile_img.style.height = '86.7px';
+                profile_img.style.borderRadius = "50%";
+
+                div_img.appendChild(profile_img);
+                div_img.style.position = "relative";
+                div_img.style.left = '60px';
+                div_img.style.top = '119px';
+                myDesign.appendChild(div_img);
+
+                var blank_img = document.createElement('img');
+                var div_blank = document.createElement('div');
+                blank_img.src = '{{ asset("img/blank.png") }}';
+                blank_img.style.width = '66px';
+                blank_img.style.height = '39.7px';
+
+                div_blank.appendChild(blank_img);
+                div_blank.style.position = "relative";
+                div_blank.style.left = '54px';
+                div_blank.style.top = '119.123px';
+                myDesign.appendChild(div_blank);
+
+                var p = document.createElement("p");
+                var s = document.createElement("strong");
+                var textToAdd = document.createTextNode('ID: ');
+                s.appendChild(textToAdd);
+                p.appendChild(s);
+                p.style.position = "relative";
+                p.style.left = "61px";
+                p.style.top = "71px";
+                p.style.backgroundColor = "inherit";
+                p.style.fontSize = '10px';
+                p.style.color = 'blue';
+                myDesign.appendChild(p);
 
                 var p = document.createElement("p");
                 var s = document.createElement("strong");
@@ -118,8 +158,21 @@
                 s.appendChild(textToAdd);
                 p.appendChild(s);
                 p.style.position = "relative";
-                p.style.left = "92px";
-                p.style.top = "214px";
+                p.style.left = "81px";
+                p.style.top = "50px";
+                p.style.backgroundColor = "inherit";
+                p.style.fontSize = '10px';
+                p.style.color = 'blue';
+                myDesign.appendChild(p);
+
+                var p = document.createElement("p");
+                var s = document.createElement("strong");
+                var textToAdd = document.createTextNode('Name: ');
+                s.appendChild(textToAdd);
+                p.appendChild(s);
+                p.style.position = "relative";
+                p.style.left = "47px";
+                p.style.top = "44px";
                 p.style.backgroundColor = "inherit";
                 p.style.fontSize = '10px';
                 p.style.color = 'blue';
@@ -131,8 +184,8 @@
                 s2.appendChild(textToAdd2);
                 p2.appendChild(s2);
                 p2.style.position = "relative";
-                p2.style.left = '92';
-                p2.style.top = '208';
+                p2.style.left = '81px';
+                p2.style.top = '24px';
                 p2.style.backgroundColor = "inherit";
                 p2.style.fontSize = '10px';
                 p2.style.color = 'blue';
@@ -140,42 +193,65 @@
 
                 var p = document.createElement("p");
                 var s = document.createElement("strong");
-                var textToAdd = document. createTextNode(applicant.approved_applicant.training_placement.deployment.woreda_intake.woreda.name);
+                var textToAdd = document.createTextNode('Training Center: ');
                 s.appendChild(textToAdd);
                 p.appendChild(s);
                 p.style.position = "relative";
-                p.style.left = '126';
-                p.style.top = '204';
+                p.style.left = "39px";
+                p.style.top = "17px";
                 p.style.backgroundColor = "inherit";
                 p.style.fontSize = '10px';
                 p.style.color = 'blue';
                 myDesign.appendChild(p);
 
-                var profile_img = document.createElement('img');
-                var div = document.createElement('div');
-                // div.setAttribute('id', 'div_cont'+key);
-                var div_img = document.createElement('div');
-                profile_img.src = '{{ asset("img/meti.jpg") }}';
-                profile_img.style.width = '92px';
-                profile_img.style.height = '86.7px';
-                profile_img.style.borderRadius = "50%";
+                var p = document.createElement("p");
+                var s = document.createElement("strong");
+                var textToAdd = document. createTextNode(applicant.approved_applicant.training_placement.deployment.woreda_intake.woreda.name);
+                s.appendChild(textToAdd);
+                p.appendChild(s);
+                p.style.position = "relative";
+                p.style.left = '115px';
+                p.style.top = '-3px';
+                p.style.backgroundColor = "inherit";
+                p.style.fontSize = '10px';
+                p.style.color = 'blue';
+                myDesign.appendChild(p);
 
-                div_img.appendChild(profile_img);
-                div_img.style.position = "relative";
-                div_img.style.left = '62';
-                div_img.style.top = '64';
-                myDesign.appendChild(div_img);
+                var blank_img = document.createElement('img');
+                var div_blank = document.createElement('div');
+                blank_img.src = '{{ asset("img/blank.png") }}';
+                blank_img.style.width = '109px';
+                blank_img.style.height = '13.7px';
+
+                div_blank.appendChild(blank_img);
+                div_blank.style.position = "relative";
+                div_blank.style.left = '46px';
+                div_blank.style.top = '-12.123px';
+                myDesign.appendChild(div_blank);
+
+                var p = document.createElement("p");
+                var s = document.createElement("strong");
+                var textToAdd = document. createTextNode("\"በጎነት ለአብሮነት!\"");
+                s.appendChild(textToAdd);
+                p.appendChild(s);
+                p.style.position = "relative";
+                p.style.left = '48px';
+                p.style.top = '-38px';
+                p.style.backgroundColor = "inherit";
+                p.style.fontSize = '13px';
+                p.style.color = 'blue';
+                myDesign.appendChild(p);
 
                 var blank_img = document.createElement('img');
                 var div_blank = document.createElement('div');
                 blank_img.src = '{{ asset("img/blank.png") }}';
                 blank_img.style.width = '49px';
-                blank_img.style.height = '50.7px';
+                blank_img.style.height = '46.7px';
 
                 div_blank.appendChild(blank_img);
                 div_blank.style.position = "relative";
-                div_blank.style.left = '81';
-                div_blank.style.top = '132.123';
+                div_blank.style.left = '77px';
+                div_blank.style.top = '-48px';
                 myDesign.appendChild(div_blank);
 
                 var e_date = document.createElement("p");
@@ -184,8 +260,8 @@
                 se_date.appendChild(setextToAdd);
                 e_date.appendChild(se_date);
                 e_date.style.position = "relative";
-                e_date.style.left = '12';
-                e_date.style.top = '78';
+                e_date.style.left = '12px';
+                e_date.style.top = '-101px';
                 e_date.style.backgroundColor = "inherit";
                 e_date.style.fontSize = '10px';
                 e_date.style.color = 'blue';
@@ -197,8 +273,8 @@
                 se_date_text.appendChild(setextToAddText);
                 e_date_text.appendChild(se_date_text);
                 e_date_text.style.position = "relative";
-                e_date_text.style.left = '59';
-                e_date_text.style.top = '57';
+                e_date_text.style.left = '61px';
+                e_date_text.style.top = '-122px';
                 e_date_text.style.backgroundColor = "inherit";
                 e_date_text.style.fontSize = '10px';
                 e_date_text.style.color = 'blue';
@@ -210,8 +286,8 @@
                 sr_date.appendChild(srtextToAdd);
                 r_date.appendChild(sr_date);
                 r_date.style.position = "relative";
-                r_date.style.left = '12';
-                r_date.style.top = '52';
+                r_date.style.left = '12px';
+                r_date.style.top = '-125px';
                 r_date.style.backgroundColor = "inherit";
                 r_date.style.fontSize = '10px';
                 r_date.style.color = 'blue';
@@ -223,14 +299,14 @@
                 sr_date_text.appendChild(srtextToAddText);
                 r_date_text.appendChild(sr_date_text);
                 r_date_text.style.position = "relative";
-                r_date_text.style.left = '38';
-                r_date_text.style.top = '31';
+                r_date_text.style.left = '38px';
+                r_date_text.style.top = '-146px';
                 r_date_text.style.backgroundColor = "inherit";
                 r_date_text.style.fontSize = '10px';
                 r_date_text.style.color = 'blue';
                 myDesign.appendChild(r_date_text);
 
-                // generateQR(applicant);
+                // // generateQR(applicant);
                 var div__qr_img = document.createElement("div");
 
                 var div__qr_img_2 = document.createElement("div");
@@ -254,14 +330,14 @@
 
                 qrf_img.src = src;
                 div__qr_img_2.style.position = "relative";
-                div__qr_img_2.style.left = '140';
-                div__qr_img_2.style.top = '-10';
+                div__qr_img_2.style.left = '150px';
+                div__qr_img_2.style.top = '-189px';
                 div__qr_img_2.appendChild(qrf_img.cloneNode(true));
                 myDesign.appendChild(div__qr_img_2.cloneNode(true));
                 
                 myDesignBack = document.createElement("div");
-                myDesignBack.style.width = "339";
-                myDesignBack.style.height = "220";
+                myDesignBack.style.width = "324px";
+                myDesignBack.style.height = "210px";
                 myDesignBack.style.backgroundSize = "cover";
                 myDesignBack.style.backgroundImage = "url({{ asset('img/ID_mopBack.jpg') }})";
 
@@ -456,13 +532,14 @@
                 var div__bar_img = document.createElement("img");
                 
                 JsBarcode(div__bar_img)
-                    .options({font: "OCR-B", displayValue: true, width:0.9, height: 17, background: "white"})
+                    .options({font: "OCR-B", displayValue: true, width:0.9, height: 15, background: "white"})
                     .CODE128(applicant.id_number, {fontSize: 11, textMargin: 2, textPosition: "top", color:'inherit'})
                     .render();
 
                 div__bar_img_2.style.position = "relative";
+                // div__bar_img_2.style.float = "right";
                 div__bar_img_2.style.left = '142px';
-                div__bar_img_2.style.top = '-212px';
+                div__bar_img_2.style.top = '-216px';
                 div__bar_img.style.color = "black";
 
                 div__bar_img_2.appendChild(div__bar_img.cloneNode(true));
@@ -484,27 +561,30 @@
                 pback14.style.fontSize = '9px';
                 pback14.style.position = "relative";
                 pback14.style.color = '#83dad1';
-                pback14.style.letterSpacing = "0.5px";
+                pback14.style.letterSpacing = " .5px";
                 myDesignBack.appendChild(pbackdiv);
 
                 var profile_img = document.createElement('img');
-                var div_img = document.createElement('div');
+                var div_img = document.createElement('div') 
                 profile_img.src = '{{ asset("img/meti.jpg") }}';
                 profile_img.style.width = '67px';
-                profile_img.style.height = '64px';
+                profile_img.style.height = '61px';
                 profile_img.style.borderRadius = "5%";
 
                 div_img.appendChild(profile_img);
                 div_img.style.position = "relative";
                 div_img.style.left = '273px';
-                div_img.style.top = '-363px';
+                div_img.style.top = '-361px';
                 myDesignBack.appendChild(div_img);
 
                 myDesign.style.pageBreakAfter = "always";
                 myDesignBack.style.pageBreakAfter = "always";
 
-                div.appendChild(myDesign.cloneNode(true))
-                div.appendChild(myDesignBack.cloneNode(true))
+                myDesign.style.transform = 'rotate(270deg)';
+                myDesign.style.transformOrigin = "105px 106px";
+
+                div.appendChild(myDesign.cloneNode(true));
+                div.appendChild(myDesignBack.cloneNode(true));
 
                 DATAS.push(div);
             });

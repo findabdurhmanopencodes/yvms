@@ -84,7 +84,7 @@
             if ($('#certificate').val() == 'volunteers') {
                 mydes.style.backgroundImage = "url({{ asset('img/certificate_app.png') }})";
             }else{
-                mydes.style.backgroundImage = "url({{ asset('img/meti.jpg') }})";
+                mydes.style.backgroundImage = "url({{ asset('img/certificate_app.png') }})";
             }
         });
 
