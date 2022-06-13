@@ -237,7 +237,7 @@
                                         <span class="menu-text">Placement Result</span>
                                     </a>
                                 </li>
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.deployment.index') === 0 ? 'menu-item-active' : '' }}"
+                                {{-- <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.deployment.index') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.deployment.index', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
@@ -245,8 +245,8 @@
 
                                         <span class="menu-text">Volunteer Deployments </span>
                                     </a>
-                                </li>
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.graduation.list') === 0 ? 'menu-item-active' : '' }}"
+                                </li> --}}
+                                {{-- <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.graduation.list') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.graduation.list', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
@@ -254,7 +254,7 @@
 
                                         <span class="menu-text">Graduated Volunteers</span>
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.schedule') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.schedule', ['training_session' => Request::route('training_session')]) }}"
