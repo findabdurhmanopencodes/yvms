@@ -21,6 +21,8 @@ use App\Models\HierarchyReport;
 use App\Models\Qouta;
 use App\Models\Region;
 use App\Models\Volunteer;
+use Dompdf\Dompdf;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Date;
@@ -58,10 +60,27 @@ class VolunteerDeploymentController extends Controller
                 $query->where('id', $request->get('woreda'));
             });
         }
+        $user = Auth::user();
+        if ($user->getCordinatingRegion() != null) {
+            $q->whereHas('woredaIntake.woreda.zone.region', function ($query) use ($user) {
+                $query->where('id', $user->getCordinatingRegion()->id);
+            });
+        }
+        if ($user->getCordinatingZone() != null) {
+            $q->whereHas('woredaIntake.woreda.zone', function ($query) use ($user) {
+                $query->where('id', $user->getCordinatingZone()->id);
+            });
+        }
         $deployedVolunteers = $q->paginate(10);
 
-        $woredaIntakes = WoredaIntake::where('training_session_id', $trainingSession->id)->get();
-        $zoneIntakes = ZoneIntake::where('training_session_id', $trainingSession->id)->get();
+        if ($user->getCordinatingRegion() != null) {
+            $zoneIntakes = ZoneIntake::whereRelation('zone.region', 'id', $user->getCordinatingRegion()->id)->get();
+            $woredaIntakes =  WoredaIntake::whereRelation('woreda.zone.region', 'id', $user->getCordinatingRegion()->id)->get();
+        } else {
+            $zoneIntakes = ZoneIntake::all();
+            $woredaIntakes = $user->getCordinatingZone() != null ? WoredaIntake::whereRelation('woreda.zone', 'id', $user->getCordinatingZone()->id)->get() : WoredaIntake::all();
+        }
+
         $regionIntakes = RegionIntake::where('training_session_id', $trainingSession->id)->get();
         $trainingCenterCapacities = TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->get();
 
@@ -78,6 +97,10 @@ class VolunteerDeploymentController extends Controller
         VolunteerDeployment::whereRelation('trainingPlacement', 'training_session_id', request()->route('training_session'))->delete();
 
         return redirect()->back()->with(['message' => 'Successfully Cleared Deployment']);
+    }
+
+    public function printPDF(){
+        // Dompdf
     }
 
     public function changeDeployment(Request $request)
@@ -160,15 +183,15 @@ class VolunteerDeploymentController extends Controller
     }
     public function zones(TrainingSession $trainingSession, Region $region)
     {
-        $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type',Zone::class)->pluck('quotable_id');
-        $zones = Zone::where('region_id',$region->id)->with(['woredas', 'quotas'])->whereIn('id',$quota)->get();
-        return view('training_session.zones',compact('trainingSession','region','zones'));
+        $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type', Zone::class)->pluck('quotable_id');
+        $zones = Zone::where('region_id', $region->id)->with(['woredas', 'quotas'])->whereIn('id', $quota)->get();
+        return view('training_session.zones', compact('trainingSession', 'region', 'zones'));
     }
     public function woredas(TrainingSession $trainingSession, Zone $zone)
     {
-        $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type',Woreda::class)->pluck('quotable_id');
-        $woredas = Woreda::where('zone_id',$zone->id)->with(['quotas'])->whereIn('id',$quota)->get();
-        return view('training_session.woredas',compact('trainingSession','woredas','zone'));
+        $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type', Woreda::class)->pluck('quotable_id');
+        $woredas = Woreda::where('zone_id', $zone->id)->with(['quotas'])->whereIn('id', $quota)->get();
+        return view('training_session.woredas', compact('trainingSession', 'woredas', 'zone'));
     }
 
     public function woredaDetail(Request $request, TrainingSession $trainingSession,Woreda $woreda)
@@ -179,7 +202,7 @@ class VolunteerDeploymentController extends Controller
         $volunteers = [];
 
         $date_now = Carbon::now();
-        
+
         $attendances = DeploymentVolunteerAttendance::where('training_session_id', $trainingSession->id)->where('woreda_id', $woreda->id)->where('attendance_date', $date_now->format('Y-m-d'))->get()->first();
         if ($attendances) {
             $volunteersID = json_decode($attendances->volunteers);

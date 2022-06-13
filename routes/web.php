@@ -45,6 +45,7 @@ use App\Http\Controllers\HierarchyReportController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PayrollSheetController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VolunteerResourceHistoryController;
 use App\Http\Controllers\TrainingCenterBasedPermissionController;
 use App\Http\Controllers\TrainingDocumentController;
@@ -134,11 +135,12 @@ Route::post('application_form/apply', [VolunteerController::class, 'apply'])->na
 Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
 
 Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verified'], 'as' => 'session.'], function () {
-    Route::resource('hierarchy',HierarchyReportController::class);
-    Route::get('deployment-regions',[RegionController::class,'deployment'])->name('deployment.regions');
-    Route::get('deployment-regions/{region}/zones',[VolunteerDeploymentController::class,'zones'])->name('deployment.region.zones');
-    Route::get('deployment-regions/zone/{zone}/woredas',[VolunteerDeploymentController::class,'woredas'])->name('deployment.zone.woredas');
-    Route::get('deployment-regions/woreda/{woreda}/show',[VolunteerDeploymentController::class,'woredaDetail'])->name('deployment.woreda.detail');
+    Route::get('report/{report_name}', [ReportController::class, 'index'])->name('reports');
+    Route::resource('hierarchy', HierarchyReportController::class);
+    Route::get('deployment-regions', [RegionController::class, 'deployment'])->name('deployment.regions');
+    Route::get('deployment-regions/{region}/zones', [VolunteerDeploymentController::class, 'zones'])->name('deployment.region.zones');
+    Route::get('deployment-regions/zone/{zone}/woredas', [VolunteerDeploymentController::class, 'woredas'])->name('deployment.zone.woredas');
+    Route::get('deployment-regions/woreda/{woreda}/show', [VolunteerDeploymentController::class, 'woredaDetail'])->name('deployment.woreda.detail');
     Route::get('training-center/regional-volunteer-contribution/{id}', [DashboardController::class, 'trainginCenersVolenteerRegionalDistribution'])->name('placed-contribution');
     Route::any('/volunteer/all', [VolunteerController::class, 'volunteerAll'])->name('volunteer.all');
     Route::get('/volunteer/{volunteer}/detail', [VolunteerController::class, 'volunteerDetail'])->name('volunteer.detail');
@@ -218,7 +220,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('{woreda_id}/woreda/capacity', [WoredaController::class, 'woredaIntake'])->name('woreda.intake');
     Route::post('woreda/{woreda_id}/capacity/store', [WoredaController::class, 'woredaIntakeStore'])->name('woreda.intake_store');
     Route::post('/approve_placment', [TrainingSessionController::class, 'approvePlacment'])->name('placment.approve');
-    Route::post('/approve_placment',[TrainingSessionController::class,'approvePlacment'])->name('placment.approve');
+    Route::post('/approve_placment', [TrainingSessionController::class, 'approvePlacment'])->name('placment.approve');
 
     Route::get('{training_center}/show/volunteers', [TraininingCenterController::class, 'show_all_volunteers'])->name('show.volunteers');
     Route::post('{training_center}/graduate', [TraininingCenterController::class, 'graduateVolunteers'])->name('graduate.volunteers');
@@ -329,5 +331,5 @@ Route::get('{training_session}/reset-verification', [VolunteerController::class,
 Route::resource('Events', EventController::class);
 Route::get('/All-Events', [EventController::class, 'allEvents'])->name('event.all');
 Route::get('/Event/{event}', [EventController::class, 'detailEvent'])->name('event.detail');
-Route::any('audits', [AuditController::class,'index'])
-->middleware('auth', \App\Http\Middleware\AllowOnlyAdmin::class)->name('audit.index');
+Route::any('audits', [AuditController::class, 'index'])
+    ->middleware('auth', \App\Http\Middleware\AllowOnlyAdmin::class)->name('audit.index');

@@ -17,27 +17,32 @@
 @section('content')
     <!--begin::Card-->
     <div class="card card-custom card-body mb-3">
-        <form action="" method="GET">
+        <form name="filterForm" action="" method="GET">
             <div class=" ml-0 col-12 p-0">
                 <div class="row ">
-                    <div class="form-group col-3">
-                        <select name="region" id="" class="form-control select2">
-                            <option value="">Select Region</option>
-                            @foreach ($regions as $region)
-                                <option value="{{ $region->id }}" @if (Request::get('region') == $region->id) selected @endif>
-                                    {{ $region->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group col-3">
-                        <select name="zone" id="" class="form-control select2">
-                            <option value="">Select Zone</option>
-                            @foreach ($zones as $zone)
-                                <option value="{{ $zone->id }}" @if (Request::get('zone') == $zone->id) selected @endif>
-                                    {{ $zone->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    @if (Auth::user()->getCordinatingRegion() == null && Auth::user()->getCordinatingZone() == null)
+                        <div class="form-group col-3">
+                            <select name="region" id="" class="form-control select2">
+                                <option value="">Select Region</option>
+                                @foreach ($regions as $region)
+                                    <option value="{{ $region->id }}" @if (Request::get('region') == $region->id) selected @endif>
+                                        {{ $region->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
+                    @if (Auth::user()->getCordinatingZone() == null)
+                        <div class="form-group col-3">
+                            <select name="zone" id="" class="form-control select2">
+                                <option value="">Select Zone</option>
+                                @foreach ($zones as $zone)
+                                    <option value="{{ $zone->id }}" @if (Request::get('zone') == $zone->id) selected @endif>
+                                        {{ $zone->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
+                    <input type="hidden" name="print" id="print" value="">
                     <div class="form-group col-3">
                         <select name="woreda" id="" class="form-control select2">
                             <option value="">Select Woreda</option>
@@ -108,19 +113,22 @@
                 <h3 class="card-label"> Volunteer Placement </h3>
             </div>
             <div class="card-toolbar">
-                <div class="d-flex">
+                <div class="d-flex btn-group">
                     @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
                         <a class="btn btn-sm btn-info"
                             href="{{ route('session.placement.reset', [request()->route('training_session')]) }}">
                             <i class="fal fa-recycle"></i> Reset
                         </a>
-                        <a class="btn ml-4 btn-sm btn-success" onclick="approvePlacment()" href="#">
-                            <i class="fal fa-stamp"></i> Approve placment
+                        <a class="btn btn-sm btn-success" onclick="approvePlacment()" href="#">
+                            <i class="fal fa-stamp"></i> Approve placement
                         </a>
+                        <a class="btn btn-sm btn-primary" href="#"
+                            onclick="document.filterForm.print.value = '1';document.filterForm.submit()">
+                            <i class="fal fa-print"></i> Print </a>
                     @endif
                     @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_PLACEMENT_APPROVE)
                         <a href="#">
-                            <span class="label label-xl label-light-success label-inline">Training Placment Approved</span>
+                            <span class="label label-xl label-light-success label-inline">Training Placement Approved</span>
                         </a>
                     @endif
 
