@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Center base detail')
 @push('css')
+    <link rel="stylesheet" type="text/css" href="{{ asset('calendar/css/redmond.calendars.picker.css') }}">
     <style>
         .select2,
         .select2-container,
@@ -214,77 +215,92 @@
             </div>
         </div>
     </form>
-    <!--begin::Card-->
+
+    <div class="card card-custom card-body mb-1">
+        <form action="" method="GET">
+            <div class=" ml-0 col-12 p-0">
+                <div class="row">
+                    <div class="form-group col-5">
+                        <input style="height: 40px;" type="text" id="start_date" class="form-control " name="date_att" placeholder="Search..." autocomplete="off" value=""/>
+                    </div>
+                    <div class="form-group col-2">
+                        <button class="btn btn-primary btn-block"> Filter</button>
+                    </div>
+                </div>
+
+                <h3>{{ ($date!='') ?$date.' Attendance ('.count($volunteers).')':'Today Attendance ('.count($volunteers).')' }}</h3>
+            </div>
+        </form>
+    </div>
     <div class="card card-custom gutter-b">
-        {{-- <div cl --}}
+        <div class="card-header flex-wrap pt-6 ">
+            <div class="card-title mr-0">
+                <h3>{{ $woreda->name }}</h3>
+                <a href="">
+                    <i class="ml-2 flaticon2-location text-success icon-md"></i>
+                    {{ $woreda->zone->name }} - {{ $woreda->zone->region->name }}
+                </a>
+            </div>
+            <div class="card-tool">
+                <div class="dropdown dropdown-inline">
+                    <a href="#" class="px-5 btn btn-sm btn-primary font-weight-bolder dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</a>
+                    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="">
+                        <!--begin::Navigation-->
+                        <ul class="navi navi-hover">
+                            <li class="navi-item">
+                                <a href="{{ route('session.deployment_attendance.export', ['training_session' => Request::route('training_session')->id, 'woreda' => Request::route('woreda')->id]) }}"
+                                    class="navi-link">
+                                    <span class="navi-icon">
+                                        <i class="flaticon2-shopping-cart-1"></i>
+                                    </span>
+                                    <span class="navi-text">Export Attendance</span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="" class="navi-link" data-toggle="modal"
+                                    data-target="#exampleModal">
+                                    <span class="navi-icon">
+                                        <i class="fa fa-users"></i>
+                                    </span>
+                                    <span class="navi-text">Import Attendance</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <!--end::Navigation-->
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="card-body">
-            <div class="d-flex">
-                <!--begin: Pic-->
-                <div class="flex-shrink-0 mt-3 mr-7 mt-lg-0">
-                    <div class="symbol symbol-50 symbol-lg-120">
-                        <h3>{{ $woreda->name }}</h3>
-                        <a href="">
-                            <i class="ml-2 flaticon2-location text-success icon-md"></i>
-                            {{ $woreda->zone->name }} - {{ $woreda->zone->region->name }}
-                        </a>
-                    </div>
-                </div>
-                <!--end: Pic-->
-                <!--begin: Info-->
-                <div class="flex-grow-1">
-                    <!--begin: Title-->
-                    <div class="flex-wrap d-flex align-items-center justify-content-end">
-                        <div class="my-1 my-lg-0">
-                            <div class="dropdown dropdown-inline">
-                                <a href="#" class="px-5 btn btn-sm btn-primary font-weight-bolder dropdown-toggle"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</a>
-                                <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="">
-                                    <!--begin::Navigation-->
-                                    <ul class="navi navi-hover">
-                                        <li class="navi-item">
-                                            <a href="{{ route('session.deployment_attendance.export', ['training_session' => Request::route('training_session')->id, 'woreda' => Request::route('woreda')->id]) }}"
-                                                class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="flaticon2-shopping-cart-1"></i>
-                                                </span>
-                                                <span class="navi-text">Export Attendance</span>
-                                            </a>
-                                        </li>
-                                        <li class="navi-item">
-                                            <a href="" class="navi-link" data-toggle="modal"
-                                                data-target="#exampleModal">
-                                                <span class="navi-icon">
-                                                    <i class="fa fa-users"></i>
-                                                </span>
-                                                <span class="navi-text">Import Attendance</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <!--end::Navigation-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--end: Title-->
-                </div>
-                <!--end: Info-->
-            </div>
-            <div class="separator separator-solid my-7"></div>
-            <!--begin: Items-->
-            <div class="flex-wrap d-flex align-items-center">
-                <!--begin: Item-->
-                <div class="my-1 mr-5 d-flex align-items-center flex-lg-fill">
-                    <span class="mr-4">
-                        <i class="flaticon-piggy-bank icon-2x text-muted font-weight-bold"></i>
-                    </span>
-                    <div class="d-flex flex-column text-dark-75">
-                        <span class="font-weight-bolder font-size-sm">Total Volunteers</span>
-                        <span class="font-weight-bolder font-size-h5">
-                            <span class="text-dark-50 font-weight-bold"></span>{{ '2' }}</span>
-                    </div>
-                </div>
-                <!--end: Item-->
-            </div>
+            <table width="100%" class="table">
+                <thead>
+                    </tr>
+                    <th>#</th>
+                    <th>Volunteer ID</th>
+                    <th>Full Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse  ($volunteers as $key=>$volunteer)
+                        <tr>
+                            <td>
+                                {{ $key + 1 }}
+                            </td>
+                            <td>
+                                {{ $volunteer->id_number }}
+                            </td>
+                            <td>
+                                {{ $volunteer->first_name }} {{ $volunteer->father_name }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr style="font-size: 13px;" class="text-center">
+                            <td colspan='2'>No attendance found</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
     <form id="reportFormDelete" method="POST">
@@ -294,7 +310,34 @@
     <!--end::Card-->
 @endsection
 @push('js')
+    <script src="{{ asset('calendar/js/jquery.plugin.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.plus.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.picker.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.ethiopian.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.ethiopian-am.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.picker-am.js') }}"></script>
     <script>
+        $(function() {
+            var calendar = $.calendars.instance('ethiopian', 'am');
+            $('#start_date').calendarsPicker({
+                calendar: calendar
+            });
+
+            $('#end_date').calendarsPicker({
+                calendar: calendar
+            });
+
+            $('#registration_start_date').calendarsPicker({
+                calendar: calendar
+            });
+
+            $('#registration_dead_line').calendarsPicker({
+                calendar: calendar
+            });
+        })
+
+        
         $('.select2').select2({
             allowClear: true
         });
