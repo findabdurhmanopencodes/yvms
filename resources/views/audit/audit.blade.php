@@ -9,6 +9,9 @@
             $('#action').select2({
                 placeholder: "Select a Action"
             });
+            $('#model').select2({
+                placeholder: "Select a Model"
+            });
 
 
         });
@@ -61,6 +64,16 @@
                                     <option value="deleted">deleted</option>
                                 </select>
                             </div>
+                            <div class="col-sm-4">
+                                <label for="model" class=" col-sm-12 col-form-label">Model</label>
+                                <select class="form-control select2" id="model" name="model">
+
+                                    <option value=0 disabled selected>Select Model..</option>
+                                    @foreach ($models as  $model)
+                                    <option value="{{$model}}">{{$model}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
                         <button type="submit" class="btn btn-primary  mx-4 my-4" name="filter" value="filter"><i
@@ -80,7 +93,7 @@
                     <tr>
                         <th scope="col">Model</th>
                         <th scope="col">Action</th>
-                        <th scope="col">User</th>
+                        <th scope="col">Responsible User</th>
                         <th scope="col">Time</th>
                         <th scope="col">Old Values</th>
                         <th scope="col">New Values</th>
