@@ -17,8 +17,8 @@ return new class extends Migration
     {
         Schema::create('woreda_intakes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(TrainingSession::class)->constrained();
-            $table->foreignIdFor(Woreda::class)->constrained();
+            $table->foreignIdFor(TrainingSession::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignIdFor(Woreda::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('intake');
             $table->timestamps();
         });

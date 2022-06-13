@@ -20,11 +20,11 @@ return new class extends Migration
     {
         Schema::create('training_center_based_permissions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(TrainingSession::class)->constrained();
-            $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(TraininingCenter::class)->constrained();
-            $table->foreignIdFor(CindicationRoom::class)->nullable()->constrained();
-            $table->foreignIdFor(Permission::class)->constrained();
+            $table->foreignIdFor(TrainingSession::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignIdFor(TraininingCenter::class)->constrained()->cascadeOnUpdate();
+            $table->foreignIdFor(CindicationRoom::class)->nullable()->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignIdFor(Permission::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

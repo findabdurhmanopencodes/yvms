@@ -17,8 +17,8 @@ return new class extends Migration
     {
         Schema::create('region_intakes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(TrainingSession::class)->constrained();
-            $table->foreignIdFor(Region::class)->constrained();
+            $table->foreignIdFor(TrainingSession::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignIdFor(Region::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('intake');
             $table->timestamps();
         });

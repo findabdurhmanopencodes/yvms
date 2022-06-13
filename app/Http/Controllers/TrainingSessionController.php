@@ -154,6 +154,10 @@ class TrainingSessionController extends Controller
         // $session = TrainingSession::create($trainingSession);
         $trainingSession->save();
 
+        $end_date_am = $trainingSession->endDateET();
+
+        $trainingSession->update(['end_date_am'=>$end_date_am]);
+
         foreach (Status::where('acceptance_status',1)->get() as $key => $stat) {
             Volunteer::where('id', $stat->volunteer_id)->update(['training_session_id'=>$trainingSession->id]);
         }
@@ -346,6 +350,10 @@ class TrainingSessionController extends Controller
             'registration_dead_line' => ['required', 'date_format:d/m/y', 'after_or_equal:registration_start_date', 'before_or_equal:end_date'],
             'quantity' => 'required'
         ]);
+
+        $end_date_am = $trainingSession->endDateET();
+
+        $trainingSession->update(['end_date_am'=>$end_date_am]);
 
         $regions = Region::all();
         $zones = Zone::all();
@@ -935,7 +943,7 @@ class TrainingSessionController extends Controller
     public function allResource()
     {
 
-        return view('training_session.resource.index', ['resources' => Resource::all()]);
+        return view('training_session.resource.index', ['resources' => Resource::paginate(10)]);
     }
 
     public function approvePlacment(TrainingSession $trainingSession)

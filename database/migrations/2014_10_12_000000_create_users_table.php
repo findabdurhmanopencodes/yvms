@@ -25,9 +25,9 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->string('profile_photo_path', 2048)->nullable();
-            $table->foreignId('created_by')->nullable()->constrained('users','id')->nullOnDelete();
-            $table->foreignId('updated_by')->nullable()->constrained('users','id')->nullOnDelete();
-            $table->foreignId('deleted_by')->nullable()->constrained('users','id')->nullOnDelete();
+            $table->foreignId('created_by')->nullable()->constrained('users','id')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('updated_by')->nullable()->constrained('users','id')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('deleted_by')->nullable()->constrained('users','id')->nullOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

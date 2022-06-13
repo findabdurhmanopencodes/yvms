@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class VolunteerResourceHistory extends Model
+class VolunteerResourceHistory extends Model implements Auditable
 {
     use HasFactory;
+    use \OwenIt\Auditing\Auditable;
+
     protected $fillable=['volunteer_id','training_session_id','resource_id','training_center_id','amount'];
 
     public function volunteer()

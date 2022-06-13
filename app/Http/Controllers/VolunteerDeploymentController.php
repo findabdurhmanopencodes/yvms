@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Andegna\DateTimeFactory;
 use App\Constants;
 use App\Models\RegionIntake;
 use App\Models\Status;
@@ -15,6 +16,15 @@ use App\Models\Zone;
 use App\Models\ZoneIntake;
 use Illuminate\Http\Request;
 use App\Console\Commands\VoluteerDeploymentCommand;
+use App\Models\DeploymentVolunteerAttendance;
+use App\Models\HierarchyReport;
+use App\Models\Qouta;
+use App\Models\Region;
+use App\Models\Volunteer;
+use Carbon\Carbon;
+use DateTime;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 
 class VolunteerDeploymentController extends Controller
 {
@@ -147,5 +157,52 @@ class VolunteerDeploymentController extends Controller
     public function destroy(VolunteerDeployment $volunteerDeployment)
     {
         //
+    }
+    public function zones(TrainingSession $trainingSession, Region $region)
+    {
+        $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type',Zone::class)->pluck('quotable_id');
+        $zones = Zone::where('region_id',$region->id)->with(['woredas', 'quotas'])->whereIn('id',$quota)->get();
+        return view('training_session.zones',compact('trainingSession','region','zones'));
+    }
+    public function woredas(TrainingSession $trainingSession, Zone $zone)
+    {
+        $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type',Woreda::class)->pluck('quotable_id');
+        $woredas = Woreda::where('zone_id',$zone->id)->with(['quotas'])->whereIn('id',$quota)->get();
+        return view('training_session.woredas',compact('trainingSession','woredas','zone'));
+    }
+
+    public function woredaDetail(Request $request, TrainingSession $trainingSession,Woreda $woreda)
+    {
+        $date = '';
+        $reports = HierarchyReport::where('reporter_type',Woreda::class)->where('reporter_id',$woreda->id)->get(['id','content','status','created_at']);
+
+        $volunteers = [];
+
+        $date_now = Carbon::now();
+        
+        $attendances = DeploymentVolunteerAttendance::where('training_session_id', $trainingSession->id)->where('woreda_id', $woreda->id)->where('attendance_date', $date_now->format('Y-m-d'))->get()->first();
+        if ($attendances) {
+            $volunteersID = json_decode($attendances->volunteers);
+
+            foreach ($volunteersID as $key => $value) {
+                array_push($volunteers ,Volunteer::where('id_number', $value)->get()->first());
+            }
+        }
+
+        if ($request->get('date_att') != null) {
+            $volunteers = [];
+            $date_filter =  DateTime::createFromFormat('d/m/Y', $request->get('date_att'));
+            $date_filter_gc = DateTimeFactory::of($date_filter->format('Y'), $date_filter->format('m'), $date_filter->format('d'))->toGregorian();
+            $attendances = DeploymentVolunteerAttendance::where('training_session_id', $trainingSession->id)->where('woreda_id', $woreda->id)->where('attendance_date', $date_filter_gc->format('Y-m-d'))->get()->first();
+            $date = $request->get('date_att');
+            if ($attendances) {
+                $volunteersID = json_decode($attendances->volunteers);
+
+                foreach ($volunteersID as $key => $value) {
+                    array_push($volunteers ,Volunteer::where('id_number', $value)->get()->first());
+                }
+            }
+        }
+        return view('training_session.woreda_show',compact('trainingSession','woreda','reports', 'volunteers', 'date'));
     }
 }

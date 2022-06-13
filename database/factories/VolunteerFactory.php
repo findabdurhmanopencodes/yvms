@@ -31,6 +31,7 @@ class VolunteerFactory extends Factory
                 'volunteer_id' => $volunteer->id,
                 'acceptance_status' => 0
             ]);
+
         });
     }
 

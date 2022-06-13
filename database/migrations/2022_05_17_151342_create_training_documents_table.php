@@ -18,8 +18,8 @@ return new class extends Migration
         Schema::create('training_documents', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignIdFor(File::class)->constrained();
-            $table->foreignIdFor(Training::class)->constrained();
+            $table->foreignIdFor(File::class)->constrained()->cascadeOnUpdate();
+            $table->foreignIdFor(Training::class)->constrained()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

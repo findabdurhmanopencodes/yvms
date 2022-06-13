@@ -23,11 +23,13 @@
                 </div>
             </div>
                 <div class="card-toolbar">
-                    <button type="submit" class="btn btn-primary font-weight-bolder" >
-                        <span class="svg-icon svg-icon-md" id="print_all">
-                            <i class="flaticon2-print" id="i_text"></i>Print ID
-                        </span>
-                    </button>
+                    @if (count($totalTrainingMasters) > 0)
+                        <button type="submit" class="btn btn-primary font-weight-bolder" >
+                            <span class="svg-icon svg-icon-md" id="print_all">
+                                <i class="flaticon2-print" id="i_text"></i>Print ID
+                            </span>
+                        </button>
+                    @endif
                 </div>
         </div>
             <div class="card-body" id="search_card">
@@ -86,11 +88,13 @@
                 </div>
             </div>
                 <div class="card-toolbar">
-                    <button type="submit" class="btn btn-primary font-weight-bolder" >
-                        <span class="svg-icon svg-icon-md" id="print_all">
-                            <i class="flaticon2-print" id="i_text"></i>Print ID
-                        </span>
-                    </button>
+                    @if (count($mopUsers) > 0)
+                        <button type="submit" class="btn btn-primary font-weight-bolder" >
+                            <span class="svg-icon svg-icon-md" id="print_all">
+                                <i class="flaticon2-print" id="i_text"></i>Print ID
+                            </span>
+                        </button>
+                    @endif
                 </div>
         </div>
             <div class="card-body" id="search_card">
@@ -123,7 +127,7 @@
                         @else
                         <tr>
                             <td class="text text-danger text-center" colspan="5">
-                                Trainer not found
+                                MoP user not found
                             </td>
                         </tr>
                         @endif

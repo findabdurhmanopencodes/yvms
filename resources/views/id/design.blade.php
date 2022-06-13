@@ -43,7 +43,7 @@
                             <table width="100%" class="table table-striped ">
                                 <thead>
                                     <tr>
-                                        <th> ID </th>
+                                        <th> # </th>
                                         <th> Name </th>
                                         <th> Center </th>
                                     </tr>
@@ -52,10 +52,17 @@
                                     @foreach ($paginate_apps as $key => $applicant)
                                         <tr>
                                             <td>
-                                                {{ $applicant->id }}
+                                                {{ $key + 1 }}
                                             </td>
                                             <td>
-                                                {{($applicant->getTable() == 'volunteers'?$applicant->first_name:($userType == 'mop user'))? $applicant->user->first_name.' '.$applicant->user->father_name : $applicant->master->user->first_name.' '.$applicant->master->user->father_name}}
+                                                @if ($applicant->getTable() == 'volunteers')
+                                                    {{ $applicant->first_name }}
+                                                @elseif ($userType == 'mop user')
+                                                    {{ $applicant->user->first_name.' '.$applicant->user->father_name }}
+                                                @else
+                                                    {{ $applicant->master->user->first_name.' '.$applicant->master->user->father_name }}
+                                                @endif
+                                                {{-- {{($applicant->getTable() == 'volunteers'? $applicant->first_name:($userType == 'mop user'))? $applicant->user->first_name.' '.$applicant->user->father_name : $applicant->master->user->first_name.' '.$applicant->master->user->father_name}} --}}
                                             </td>
                                             <td>
                                                 {{ $trainingCenter->code }}
@@ -92,6 +99,8 @@
 
                             <div class="card-footer">
                                 <div class="card-toolbar">
+                                    {{-- <a id="print_btn2" class="btn btn-sm btn-primary font-weight-bold" style="float: right; margin-right: 80px"><i class="flaticon2-print"></i>Print Check ID</a> --}}
+
                                     <a id="print_btn" class="btn btn-sm btn-primary font-weight-bold" style="float: right; margin-right: 80px"><i class="flaticon2-print"></i>Print ID</a>
                                 </div>
                             </div>
@@ -108,12 +117,12 @@
 @push('js')
     <script src="{{ asset('js/qrcode.min.js') }}"></script>
     <script>
-        // var qrcode = document.getElementById("qrcode");
         var DATAS = [];
         var div = document.createElement('div');
         var myDesign;
+        var applicants = @json($applicants);
+        var paginate_apps = @json($applicant_count);
         $('#print_btn').on('click', function(event){
-            var applicants = @json($applicants);
             if ('{{ $trainer }}' == 'trainer') {
                 applicants.forEach((applicant, key) => {
                     var div = document.createElement('div');
@@ -124,8 +133,7 @@
                     myDesign.style.height = "339";
                     myDesign.style.backgroundSize = "cover";
                     myDesign.style.backgroundImage = "url({{ asset('img/id_page_1.jpg') }})";
-                    myDesign.style.marginRight = "100px";
-                    myDesign.style.marginBottom = "5vh";
+                    myDesign.style.margin = "2vh";
 
                     var blank_img = document.createElement('img');
                     var div_blank = document.createElement('div');
@@ -193,7 +201,8 @@
 
                     var p6 = document.createElement("p");
                     var s6 = document.createElement("strong");
-                    var textToAdd6 = document.createTextNode( '{{ $userType }}' == 'mop user' ? applicant.user.first_name.toUpperCase() );
+
+                    var textToAdd6 = document.createTextNode("{{ $userType }}" == 'mop user' ? applicant.user.first_name+' '+applicant.user.father_name : applicant.master.user.first_name+' '+applicant.master.user.father_name);
                     s6.appendChild(textToAdd6);
                     p6.appendChild(s6);
                     p6.style.position = "relative";
@@ -285,6 +294,8 @@
                     p3.style.color = '#01b1f2';
                     myDesign.appendChild(p3);
 
+                    myDesign.style.pageBreakAfter = "always";
+                    myDesign.style.pageBreakBefore = "always";
                     div.appendChild(myDesign.cloneNode(true))
 
                     DATAS.push(div);
@@ -298,8 +309,8 @@
                     myDesign.style.height = "339";
                     myDesign.style.backgroundSize = "cover";
                     myDesign.style.backgroundImage = "url({{ asset('img/id_page_1.jpg') }})";
-                    myDesign.style.marginRight = "100px";
-                    myDesign.style.marginBottom = "5vh";
+                    myDesign.style.margin = "2vh";
+                    
                     var p = document.createElement("p");
                     var s = document.createElement("strong");
                     var textToAdd = document.createTextNode(applicant.id_number);
@@ -446,19 +457,18 @@
                     div__qr_img_2.style.top = '-20';
                     div__qr_img_2.appendChild(qrf_img.cloneNode(true));
                     myDesign.appendChild(div__qr_img_2.cloneNode(true));
-                    div.appendChild(myDesign.cloneNode(true))
+
+                    myDesign.style.pageBreakAfter = "always";
+                    myDesign.style.pageBreakBefore = "always";
+                    div.appendChild(myDesign.cloneNode(true));
 
                     DATAS.push(div);
 
                 });
             }
 
-            generatePDF(DATAS, applicants);
+            generatePDF(DATAS, paginate_apps);
         })
-
-        function generateQR(applicant){
-
-        }
 
         function generatePDF(abc, applicants){
             var mywindow = window.open('', 'PRINT', 'height=1000,width=1000');
@@ -484,17 +494,18 @@
             toastr.success('ID printed');
 
             document.getElementById('print_btn').style.visibility = 'hidden';
+
             setTimeout(() => {
                 $.ajax({
                     type: "POST",
-                    url: '/'+{{ $training_center_id }}+"/id/count",
+                    url: "/"+{{ $training_center_id }}+"/id/count",
                     data: {
                         'applicants': applicants,
                         'training_session_id': {{ $training_session_id }},
                         "_token": $('meta[name="csrf-token"]').attr('content'),
                     },
                     success: function(result){
-                        console.log(result.applicants);
+                        console.log(result.message);
                     },
                 });
             }, 200);

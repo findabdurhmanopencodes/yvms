@@ -83,8 +83,7 @@
             <h5 class="card-title">Search</h5>
             <input type="text" id="search" placeholder="Search Volunteer Using Id Number .."
                 class="typeahead form-control col-12 mb-6" style="background-color: #fdfbfb" value="MoP-">
-
-
+                <a href="{{ route('session.trainingCenter.checkin.all', ['training_session'=>Request::route('training_session')]) }}" class="btn btn-primary">Checked in All</a>
             <div class="card card-custom md-6">
                 <div class="card-header ribbon ribbon-top ribbon-ver">
                     <div class="ribbon-target bg-success" style="top: -2px; right: 20px;">

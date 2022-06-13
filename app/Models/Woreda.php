@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Woreda extends Model
+class Woreda extends Model implements Auditable
 {
     use HasFactory;
+    use \OwenIt\Auditing\Auditable;
 
     /**
      * The attributes that are mass assignable.
@@ -65,5 +67,9 @@ class Woreda extends Model
     public function woredaIntakes()
     {
         return $this->hasMany(WoredaIntake::class);
+    }
+
+    public function attendances(){
+        return $this->hasMany(DeploymentVolunteerAttendance::class);
     }
 }

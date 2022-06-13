@@ -51,7 +51,7 @@
                             <tr>
                                 <td><input type="checkbox" name="applicant[]" value="{{ $applicant->id }}" id="checkbox"/></td>
                                 <td>
-                                    {{ $applicant->id }}
+                                    {{ $applicant->id_number }}
                                 </td>
                                 <td>
                                     {{ $applicant->first_name }}
@@ -121,7 +121,7 @@
                         $('#search_table tbody').html('');
                         data.forEach(element => {
                             var input = `<input type="checkbox" name="applicant[]" value="${element.id}" id="checkbox"/>`;
-                            $('#search_table tbody').append("<tr>"+getTableCell(input)+getTableCell(element.id)+getTableCell(element.first_name)+getTableCell(element.approved_applicant.training_placement.training_center_capacity.training_center.code)+"</tr>");
+                            $('#search_table tbody').append("<tr>"+getTableCell(input)+getTableCell(element.id_number)+getTableCell(element.first_name)+getTableCell(element.approved_applicant.training_placement.training_center_capacity.training_center.code)+"</tr>");
                         });
                         $("#paginate").hide();
                     }else{

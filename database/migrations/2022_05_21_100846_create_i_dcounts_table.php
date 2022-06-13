@@ -17,8 +17,8 @@ return new class extends Migration
     {
         Schema::create('i_dcounts', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Volunteer::class)->constrained();
-            $table->foreignIdFor(TrainingSession::class)->constrained();
+            $table->foreignIdFor(Volunteer::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignIdFor(TrainingSession::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('count');
             $table->timestamps();
         });

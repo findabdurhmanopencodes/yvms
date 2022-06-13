@@ -24,6 +24,7 @@ return new class extends Migration
             $table->date('training_end_date')->nullable();
             $table->integer('quantity');
             $table->tinyInteger('status');
+            $table->string('end_date_am')->nullable();
             $table->timestamps();
         });
     }

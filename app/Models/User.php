@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use OwenIt\Auditing\Contracts\Auditable;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
