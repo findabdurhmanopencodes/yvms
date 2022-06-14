@@ -310,7 +310,7 @@
                                         <i class="menu-icon flaticon2-check-mark"></i>
                                         <span class="menu-text">Check-In</span>
                                     </a>
-                                </li> --}}
+                                </li>
                                 {{-- <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.graduation.list') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.graduation.list', ['training_session' => Request::route('training_session')]) }}"
@@ -337,7 +337,8 @@
                                         <i class="menu-icon fal fa-university"></i>
                                         <span class="menu-text">Hierarchial Reports</span>
                                     </a>
-                                </li> --}}
+                                </li>
+                                 --}}
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.certificate.graduate') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.certificate.graduate', ['training_session' => Request::route('training_session')]) }}"

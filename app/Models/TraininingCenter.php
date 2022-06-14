@@ -14,7 +14,7 @@ class TraininingCenter extends Model implements Auditable
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
 
-    protected $fillable = ['name', 'code', 'logo', 'zone_id'];
+    protected $fillable = ['name', 'code', 'logo', 'zone_id','scale'];
 
     protected $append = ['region'];
     public function zone()

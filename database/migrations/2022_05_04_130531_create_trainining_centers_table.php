@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('decription')->nullable();
             $table->string('code')->nullable();
+            $table->decimal('scale',10,2);
             $table->foreignIdFor(Zone::class)->constrained()->cascadeOnUpdate();
             $table->timestamps();
         });
