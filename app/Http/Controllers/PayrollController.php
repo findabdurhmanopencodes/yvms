@@ -58,7 +58,9 @@ class PayrollController extends Controller
              $current_year =now()->year;
              $code   = $prefix ."-".$traingSession->id."-".$current_year;
 
-             Payroll::create(['name'=>$code, 'training_session_id'=>$traingSession->id,'user_id'=>Auth::user()->id]);
+             Payroll::create(['name'=>$code,
+             'training_session_id'=>$traingSession->id,
+             'user_id'=>Auth::user()->id]);
 
           return redirect()->route('payroll.index')->with('message', 'Payroll created successfully');
 

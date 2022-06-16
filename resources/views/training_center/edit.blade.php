@@ -1,8 +1,8 @@
 <x-admin-layout>
     @push('styles')
     @endpush
-    <x-slot name="title">Edit permission</x-slot>
-    <x-slot name="breadcrumbTitle">Edit permission</x-slot>
+    <x-slot name="title">Edit training center</x-slot>
+    <x-slot name="breadcrumbTitle">Edit training cente</x-slot>
     <x-slot name="breadcrumbItems">
         <li class="breadcrumb-item"><a href="{{route('permission.index')}}">Permissions</a></li>
         <li class="breadcrumb-item active">{{$permission->name}}</li>
