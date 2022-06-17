@@ -24,6 +24,10 @@
 @endpush
 
 @section('content')
+<form method="POST" id="myForm" action="{{ route('id.download') }}">
+    @csrf
+    <input type="hidden" id="htmlValue" name="htmlVal">
+</form>
 <div class="row">
     <div class="col-lg-12">
         <div class="card card-custom gutter-b">
@@ -110,13 +114,13 @@
                 myDesign.style.width = "201.6px";
                 myDesign.style.height = "326.4px";
                 myDesign.style.backgroundSize = "cover";
-                myDesign.style.backgroundImage = "url({{ asset('img/mopfrontdes.png') }})";
+                myDesign.style.backgroundImage = "url({{ public_path('img/mopfrontdes.png') }})";
 
                 var profile_img = document.createElement('img');
                 var div = document.createElement('div');
                 // div.setAttribute('id', 'div_cont'+key);
                 var div_img = document.createElement('div');
-                profile_img.src = '{{ asset("img/meti.jpg") }}';
+                profile_img.src = '{{ public_path("img/meti.jpg") }}';
                 profile_img.style.width = '91px';
                 profile_img.style.height = '89.7px';
                 profile_img.style.borderRadius = "50%";
@@ -339,7 +343,7 @@
                 myDesignBack.style.width = "324px";
                 myDesignBack.style.height = "210px";
                 myDesignBack.style.backgroundSize = "cover";
-                myDesignBack.style.backgroundImage = "url({{ asset('img/ID_mopBack.jpg') }})";
+                myDesignBack.style.backgroundImage = "url({{ public_path('img/ID_mopBack.jpg') }})";
 
                 var pback = document.createElement("p");
                 var sback = document.createElement("strong");
@@ -566,7 +570,7 @@
 
                 var profile_img = document.createElement('img');
                 var div_img = document.createElement('div');
-                profile_img.src = '{{ asset("img/meti.jpg") }}';
+                profile_img.src = '{{ public_path("img/meti.jpg") }}';
                 profile_img.style.width = '67px';
                 profile_img.style.height = '61px';
                 profile_img.style.borderRadius = "5%";
@@ -604,16 +608,20 @@
                 mywindow.document.write(element.innerHTML);
             });
 
-            console.log(mywindow.document.body);
+            // console.log(mywindow.document.body);
             mywindow.document.write('</body></html>');
 
-            var allDocument = mywindow.document;
+            var allDocument = mywindow.document.body.innerHTML;
 
-            mywindow.document.close();
-            mywindow.focus();
+            document.getElementById('htmlValue').value = allDocument;
+
+            // mywindow.document.close();
+            
+
+            // mywindow.focus();
 
             setTimeout(() => {
-                mywindow.print();
+                // mywindow.print();
             }, 300);
         }
     </script>
