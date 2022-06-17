@@ -59,16 +59,19 @@ class DistanceController extends Controller
      */
     public function store(StoreDistanceRequest $request)
     {
-        Distance::create([
 
+        if (Distance::where('zone_id',$request->get('zone'),'trainining_center_id',$request->get('training_center') )->count() > 0) { {
+            return redirect()->route('distance.index')->with('message', 'The record al ready exist!');
+        }
+        Distance::create([
             'zone_id' => $request->get('zone'),
             'km' => $request->get('km'),
             'user_id'=>Auth::user()->id,
             'trainining_center_id'=>$request->get('training_center')
-
         ]);
 
       return redirect()->route('distance.index')->with('message', 'Distance created successfully');
+
     }
 
     /**
