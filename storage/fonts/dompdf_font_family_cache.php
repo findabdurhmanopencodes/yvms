@@ -109,5 +109,9 @@ return array (
     'bold' => $fontDir . '/eb_garamond_bold_8867239d5d72342d1d9904170e82fac4',
     '800' => $fontDir . '/eb_garamond_800_b221ae49c1466040c5bba38de4be6190',
   ),
+  'droid sans ethiopic' => array(
+    'normal' => $fontDir . '/droid_sans_ethiopic_normal_94f3eb64161a37bcbbbad13223d4f011',
+    'bold' => $fontDir . '/droid_sans_ethiopic_bold_ea5214179bb6f5cd705c0573b934ed7c',
+  ),
 );
 }; ?>

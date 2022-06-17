@@ -132,9 +132,18 @@ class IdGenerateController extends Controller
     }
 
     public function pdfDownload(Request $request){
-        // dd($request->get('htmlVal'));
-        $html = $request->get('htmlVal');
-        $pdf = Pdf::loadView('id.dowlnload_id', compact('html'))->setPaper('letter', 'landscape');
-        return $pdf->stream();
+        if ($request->get('checkVal') == 'deployment') {
+            $volunteer_id = [];
+            $exp = explode('data:image', $request->get('qrValue'));
+            $expBar = explode('data:image', $request->get('barValue'));
+            $html = json_decode($request->get('htmlVal'));
+            foreach ($html as $key => $value) {
+                array_push($volunteer_id, $value->id);
+            }
+
+            $html = Volunteer::whereIn('id', $volunteer_id)->get();
+            $pdf = Pdf::loadView('id.dowlnload_id', compact('html', 'exp', 'expBar'))->setPaper('letter', 'landscape');
+            return $pdf->stream(); 
+        }
     }
 }
