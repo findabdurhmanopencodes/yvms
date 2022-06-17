@@ -107,37 +107,37 @@
             applicants.forEach(applicant => {
                 myDesign = document.createElement("div");
                 // myDesign.setAttribute('id', 'myDesign'+key);
-                myDesign.style.width = "210px";
-                myDesign.style.height = "324px";
+                myDesign.style.width = "201.6px";
+                myDesign.style.height = "326.4px";
                 myDesign.style.backgroundSize = "cover";
-                myDesign.style.backgroundImage = "url({{ asset('img/id_page_1.jpg') }})";
+                myDesign.style.backgroundImage = "url({{ asset('img/mopfrontdes.png') }})";
 
                 var profile_img = document.createElement('img');
                 var div = document.createElement('div');
                 // div.setAttribute('id', 'div_cont'+key);
                 var div_img = document.createElement('div');
                 profile_img.src = '{{ asset("img/meti.jpg") }}';
-                profile_img.style.width = '89px';
-                profile_img.style.height = '86.7px';
+                profile_img.style.width = '91px';
+                profile_img.style.height = '89.7px';
                 profile_img.style.borderRadius = "50%";
 
                 div_img.appendChild(profile_img);
                 div_img.style.position = "relative";
-                div_img.style.left = '60px';
-                div_img.style.top = '119px';
+                div_img.style.left = '54px';
+                div_img.style.top = '120px';
                 myDesign.appendChild(div_img);
 
-                var blank_img = document.createElement('img');
-                var div_blank = document.createElement('div');
-                blank_img.src = '{{ asset("img/blank.png") }}';
-                blank_img.style.width = '66px';
-                blank_img.style.height = '39.7px';
+                // var blank_img = document.createElement('img');
+                // var div_blank = document.createElement('div');
+                // blank_img.src = '{{ asset("img/blank.png") }}';
+                // blank_img.style.width = '66px';
+                // blank_img.style.height = '39.7px';
 
-                div_blank.appendChild(blank_img);
-                div_blank.style.position = "relative";
-                div_blank.style.left = '54px';
-                div_blank.style.top = '119.123px';
-                myDesign.appendChild(div_blank);
+                // div_blank.appendChild(blank_img);
+                // div_blank.style.position = "relative";
+                // div_blank.style.left = '54px';
+                // div_blank.style.top = '119.123px';
+                // myDesign.appendChild(div_blank);
 
                 var p = document.createElement("p");
                 var s = document.createElement("strong");
@@ -145,8 +145,8 @@
                 s.appendChild(textToAdd);
                 p.appendChild(s);
                 p.style.position = "relative";
-                p.style.left = "61px";
-                p.style.top = "71px";
+                p.style.left = "56px";
+                p.style.top = "110px";
                 p.style.backgroundColor = "inherit";
                 p.style.fontSize = '10px';
                 p.style.color = 'blue';
@@ -158,8 +158,8 @@
                 s.appendChild(textToAdd);
                 p.appendChild(s);
                 p.style.position = "relative";
-                p.style.left = "81px";
-                p.style.top = "50px";
+                p.style.left = "76px";
+                p.style.top = "89px";
                 p.style.backgroundColor = "inherit";
                 p.style.fontSize = '10px';
                 p.style.color = 'blue';
@@ -171,8 +171,8 @@
                 s.appendChild(textToAdd);
                 p.appendChild(s);
                 p.style.position = "relative";
-                p.style.left = "47px";
-                p.style.top = "44px";
+                p.style.left = "42px";
+                p.style.top = "84px";
                 p.style.backgroundColor = "inherit";
                 p.style.fontSize = '10px';
                 p.style.color = 'blue';
@@ -180,12 +180,12 @@
 
                 var p2 = document.createElement("p");
                 var s2 = document.createElement("strong");
-                var textToAdd2 = document. createTextNode(applicant.first_name);
+                var textToAdd2 = document. createTextNode(applicant.first_name+' '+applicant.father_name);
                 s2.appendChild(textToAdd2);
                 p2.appendChild(s2);
                 p2.style.position = "relative";
-                p2.style.left = '81px';
-                p2.style.top = '24px';
+                p2.style.left = '76px';
+                p2.style.top = '64px';
                 p2.style.backgroundColor = "inherit";
                 p2.style.fontSize = '10px';
                 p2.style.color = 'blue';
@@ -193,12 +193,12 @@
 
                 var p = document.createElement("p");
                 var s = document.createElement("strong");
-                var textToAdd = document.createTextNode('Training Center: ');
+                var textToAdd = document.createTextNode('Dep. Place: ');
                 s.appendChild(textToAdd);
                 p.appendChild(s);
                 p.style.position = "relative";
-                p.style.left = "39px";
-                p.style.top = "17px";
+                p.style.left = "33px";
+                p.style.top = "57px";
                 p.style.backgroundColor = "inherit";
                 p.style.fontSize = '10px';
                 p.style.color = 'blue';
@@ -210,24 +210,24 @@
                 s.appendChild(textToAdd);
                 p.appendChild(s);
                 p.style.position = "relative";
-                p.style.left = '115px';
-                p.style.top = '-3px';
+                p.style.left = '87px';
+                p.style.top = '36px';
                 p.style.backgroundColor = "inherit";
                 p.style.fontSize = '10px';
                 p.style.color = 'blue';
                 myDesign.appendChild(p);
 
-                var blank_img = document.createElement('img');
-                var div_blank = document.createElement('div');
-                blank_img.src = '{{ asset("img/blank.png") }}';
-                blank_img.style.width = '109px';
-                blank_img.style.height = '13.7px';
+                // var blank_img = document.createElement('img');
+                // var div_blank = document.createElement('div');
+                // blank_img.src = '{{ asset("img/blank.png") }}';
+                // blank_img.style.width = '109px';
+                // blank_img.style.height = '13.7px';
 
-                div_blank.appendChild(blank_img);
-                div_blank.style.position = "relative";
-                div_blank.style.left = '46px';
-                div_blank.style.top = '-12.123px';
-                myDesign.appendChild(div_blank);
+                // div_blank.appendChild(blank_img);
+                // div_blank.style.position = "relative";
+                // div_blank.style.left = '46px';
+                // div_blank.style.top = '-12.123px';
+                // myDesign.appendChild(div_blank);
 
                 var p = document.createElement("p");
                 var s = document.createElement("strong");
@@ -235,24 +235,24 @@
                 s.appendChild(textToAdd);
                 p.appendChild(s);
                 p.style.position = "relative";
-                p.style.left = '48px';
-                p.style.top = '-38px';
+                p.style.left = '36px';
+                p.style.top = '24px';
                 p.style.backgroundColor = "inherit";
                 p.style.fontSize = '13px';
                 p.style.color = 'blue';
                 myDesign.appendChild(p);
 
-                var blank_img = document.createElement('img');
-                var div_blank = document.createElement('div');
-                blank_img.src = '{{ asset("img/blank.png") }}';
-                blank_img.style.width = '49px';
-                blank_img.style.height = '46.7px';
+                // var blank_img = document.createElement('img');
+                // var div_blank = document.createElement('div');
+                // blank_img.src = '{{ asset("img/blank.png") }}';
+                // blank_img.style.width = '49px';
+                // blank_img.style.height = '46.7px';
 
-                div_blank.appendChild(blank_img);
-                div_blank.style.position = "relative";
-                div_blank.style.left = '77px';
-                div_blank.style.top = '-48px';
-                myDesign.appendChild(div_blank);
+                // div_blank.appendChild(blank_img);
+                // div_blank.style.position = "relative";
+                // div_blank.style.left = '77px';
+                // div_blank.style.top = '-48px';
+                // myDesign.appendChild(div_blank);
 
                 var e_date = document.createElement("p");
                 var se_date = document.createElement("strong");
@@ -260,8 +260,8 @@
                 se_date.appendChild(setextToAdd);
                 e_date.appendChild(se_date);
                 e_date.style.position = "relative";
-                e_date.style.left = '12px';
-                e_date.style.top = '-101px';
+                e_date.style.left = '5px';
+                e_date.style.top = '23px';
                 e_date.style.backgroundColor = "inherit";
                 e_date.style.fontSize = '10px';
                 e_date.style.color = 'blue';
@@ -273,8 +273,8 @@
                 se_date_text.appendChild(setextToAddText);
                 e_date_text.appendChild(se_date_text);
                 e_date_text.style.position = "relative";
-                e_date_text.style.left = '61px';
-                e_date_text.style.top = '-122px';
+                e_date_text.style.left = '54px';
+                e_date_text.style.top = '2px';
                 e_date_text.style.backgroundColor = "inherit";
                 e_date_text.style.fontSize = '10px';
                 e_date_text.style.color = 'blue';
@@ -286,8 +286,8 @@
                 sr_date.appendChild(srtextToAdd);
                 r_date.appendChild(sr_date);
                 r_date.style.position = "relative";
-                r_date.style.left = '12px';
-                r_date.style.top = '-125px';
+                r_date.style.left = '5px';
+                r_date.style.top = '0px';
                 r_date.style.backgroundColor = "inherit";
                 r_date.style.fontSize = '10px';
                 r_date.style.color = 'blue';
@@ -299,8 +299,8 @@
                 sr_date_text.appendChild(srtextToAddText);
                 r_date_text.appendChild(sr_date_text);
                 r_date_text.style.position = "relative";
-                r_date_text.style.left = '38px';
-                r_date_text.style.top = '-146px';
+                r_date_text.style.left = '33px';
+                r_date_text.style.top = '-21px';
                 r_date_text.style.backgroundColor = "inherit";
                 r_date_text.style.fontSize = '10px';
                 r_date_text.style.color = 'blue';
@@ -330,8 +330,8 @@
 
                 qrf_img.src = src;
                 div__qr_img_2.style.position = "relative";
-                div__qr_img_2.style.left = '150px';
-                div__qr_img_2.style.top = '-189px';
+                div__qr_img_2.style.left = '149px';
+                div__qr_img_2.style.top = '-66px';
                 div__qr_img_2.appendChild(qrf_img.cloneNode(true));
                 myDesign.appendChild(div__qr_img_2.cloneNode(true));
                 
@@ -347,7 +347,7 @@
                 sback.appendChild(textToAddback);
                 pback.appendChild(textToAddback);
                 pback.style.position = "relative";
-                pback.style.left = "60px";
+                pback.style.left = "55px";
                 pback.style.top = "32px";
                 pback.style.backgroundColor = "inherit";
                 pback.style.fontSize = '10px';
@@ -357,11 +357,11 @@
 
                 var pback2 = document.createElement("p");
                 // var sback2 = document.createElement("strong");
-                var textToAddback2 = document.createTextNode('+251(0)471117588');
+                var textToAddback2 = document.createTextNode('mail: mop@gmail.com');
                 // sback.appendChild(textToAddback);
                 pback2.appendChild(textToAddback2);
                 pback2.style.position = "relative";
-                pback2.style.left = "63px";
+                pback2.style.left = "55px";
                 pback2.style.top = "24px";
                 pback2.style.backgroundColor = "inherit";
                 pback2.style.fontSize = '10px';
@@ -371,7 +371,7 @@
 
                 var pback3 = document.createElement("p");
                 // var sback2 = document.createElement("strong");
-                var textToAddback3 = document.createTextNode('mail: mop@gmail.com');
+                var textToAddback3 = document.createTextNode('+251(0)471117588');
                 // sback.appendChild(textToAddback);
                 pback3.appendChild(textToAddback3);
                 pback3.style.position = "relative";
@@ -390,7 +390,7 @@
                 pback4.appendChild(sback4);
                 pback4.style.position = "relative";
                 pback4.style.left = "8px";
-                pback4.style.top = "6px";
+                pback4.style.top = "0px";
                 pback4.style.backgroundColor = "inherit";
                 pback4.style.fontSize = '10px';
                 pback4.style.color = 'black';
@@ -400,12 +400,12 @@
 
                 var pback5 = document.createElement("p");
                 var sback5 = document.createElement("strong");
-                var textToAddback5 = document.createTextNode(applicant.first_name);
+                var textToAddback5 = document.createTextNode(applicant.first_name+' '+applicant.father_name);
                 sback5.appendChild(textToAddback5);
                 pback5.appendChild(sback5);
                 pback5.style.position = "relative";
                 pback5.style.left = "8px";
-                pback5.style.top = "-1px";
+                pback5.style.top = "-7px";
                 pback5.style.backgroundColor = "inherit";
                 pback5.style.fontSize = '10px';
                 pback5.style.color = 'black';
@@ -419,7 +419,7 @@
                 pback6.appendChild(sback6);
                 pback6.style.position = "relative";
                 pback6.style.left = "8px";
-                pback6.style.top = "6px";
+                pback6.style.top = "-7px";
                 pback6.style.backgroundColor = "inherit";
                 pback6.style.fontSize = '10px';
                 pback6.style.color = 'black';
@@ -434,7 +434,7 @@
                 pback7.appendChild(sback7);
                 pback7.style.position = "relative";
                 pback7.style.left = "8px";
-                pback7.style.top = "-1px";
+                pback7.style.top = "-13px";
                 pback7.style.backgroundColor = "inherit";
                 pback7.style.fontSize = '10px';
                 pback7.style.color = 'black';
@@ -448,7 +448,7 @@
                 pback8.appendChild(sback8);
                 pback8.style.position = "relative";
                 pback8.style.left = "8px";
-                pback8.style.top = "6px";
+                pback8.style.top = "-12px";
                 pback8.style.backgroundColor = "inherit";
                 pback8.style.fontSize = '10px';
                 pback8.style.color = 'black';
@@ -463,7 +463,7 @@
                 pback9.appendChild(sback9);
                 pback9.style.position = "relative";
                 pback9.style.left = "8px";
-                pback9.style.top = "-1px";
+                pback9.style.top = "-18px";
                 pback9.style.backgroundColor = "inherit";
                 pback9.style.fontSize = '10px';
                 pback9.style.color = 'black';
@@ -477,7 +477,7 @@
                 pback10.appendChild(sback10);
                 pback10.style.position = "relative";
                 pback10.style.left = "221px";
-                pback10.style.top = "-71px";
+                pback10.style.top = "-82px";
                 pback10.style.backgroundColor = "inherit";
                 pback10.style.fontSize = '10px';
                 pback10.style.color = 'black';
@@ -492,7 +492,7 @@
                 pback11.appendChild(sback11);
                 pback11.style.position = "relative";
                 pback11.style.left = "221px";
-                pback11.style.top = "-78px";
+                pback11.style.top = "-90px";
                 pback11.style.backgroundColor = "inherit";
                 pback11.style.fontSize = '10px';
                 pback11.style.color = 'black';
@@ -506,7 +506,7 @@
                 pback12.appendChild(sback12);
                 pback12.style.position = "relative";
                 pback12.style.left = "221px";
-                pback12.style.top = "-81px";
+                pback12.style.top = "-93px";
                 pback12.style.backgroundColor = "inherit";
                 pback12.style.fontSize = '10px';
                 pback12.style.color = 'black';
@@ -521,7 +521,7 @@
                 pback13.appendChild(sback13);
                 pback13.style.position = "relative";
                 pback13.style.left = "221px";
-                pback13.style.top = "-88px";
+                pback13.style.top = "-100px";
                 pback13.style.backgroundColor = "inherit";
                 pback13.style.fontSize = '10px';
                 pback13.style.color = 'black';
@@ -548,8 +548,8 @@
                 var pbackdiv = document.createElement("div");
                 var pback14 = document.createElement("p");
                 var textToAddback14 = document.createTextNode('I certify that bearer of this Id card is an employee of Jimma University');
-                pbackdiv.style.left = "37px";
-                pbackdiv.style.top = "-150px";
+                pbackdiv.style.left = "44px";
+                pbackdiv.style.top = "-167px";
                 pbackdiv.style.width = "180px";
                 pbackdiv.style.backgroundColor = "inherit";
                 pbackdiv.style.position = "relative";
@@ -565,7 +565,7 @@
                 myDesignBack.appendChild(pbackdiv);
 
                 var profile_img = document.createElement('img');
-                var div_img = document.createElement('div') 
+                var div_img = document.createElement('div');
                 profile_img.src = '{{ asset("img/meti.jpg") }}';
                 profile_img.style.width = '67px';
                 profile_img.style.height = '61px';
@@ -573,15 +573,18 @@
 
                 div_img.appendChild(profile_img);
                 div_img.style.position = "relative";
-                div_img.style.left = '273px';
+                div_img.style.left = '257px';
                 div_img.style.top = '-361px';
                 myDesignBack.appendChild(div_img);
 
                 myDesign.style.pageBreakAfter = "always";
                 myDesignBack.style.pageBreakAfter = "always";
 
-                myDesign.style.transform = 'rotate(270deg)';
-                myDesign.style.transformOrigin = "105px 106px";
+                myDesign.style.transform = 'rotate(90deg)';
+                myDesign.style.transformOrigin = "159px 159px";
+
+                myDesignBack.style.marginLeft = "-9px";
+                myDesignBack.style.marginTop = "-9px";
 
                 div.appendChild(myDesign.cloneNode(true));
                 div.appendChild(myDesignBack.cloneNode(true));
@@ -600,7 +603,11 @@
             div.forEach(element => {
                 mywindow.document.write(element.innerHTML); 
             });
+
+            console.log(mywindow.document.body);
             mywindow.document.write('</body></html>');
+
+            var allDocument = mywindow.document;
 
             mywindow.document.close();
             mywindow.focus();

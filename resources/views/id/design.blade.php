@@ -309,7 +309,7 @@
                     myDesign.style.height = "339";
                     myDesign.style.backgroundSize = "cover";
                     myDesign.style.backgroundImage = "url({{ asset('img/id_page_1.jpg') }})";
-                    myDesign.style.margin = "2vh";
+                    myDesign.style.margin = "4vh";
                     
                     var p = document.createElement("p");
                     var s = document.createElement("strong");
@@ -326,7 +326,7 @@
 
                     var p2 = document.createElement("p");
                     var s2 = document.createElement("strong");
-                    var textToAdd2 = document. createTextNode(applicant.first_name);
+                    var textToAdd2 = document. createTextNode(applicant.first_name+' '+applicant.father_name);
                     s2.appendChild(textToAdd2);
                     p2.appendChild(s2);
                     p2.style.position = "relative";
@@ -458,8 +458,7 @@
                     div__qr_img_2.appendChild(qrf_img.cloneNode(true));
                     myDesign.appendChild(div__qr_img_2.cloneNode(true));
 
-                    myDesign.style.pageBreakAfter = "always";
-                    myDesign.style.pageBreakBefore = "always";
+                    // myDesign.style.pageBreakAfter = "always";
                     div.appendChild(myDesign.cloneNode(true));
 
                     DATAS.push(div);
