@@ -39,6 +39,7 @@
             $('.select2').select2({
                 allowClear: true
             })
+            
             var calendar = $.calendars.instance('ethiopian', 'am');
             $('#dob').calendarsPicker({
                 calendar: calendar
@@ -308,6 +309,7 @@
                                 @enderror
                                 <span class="form-text text-muted">Please select gender.</span>
                             </div>
+
                             <div class="form-group">
                                 <label class="d-block">Date Of Birth</label>
                                 <input type="text" id="dob" class="@error('dob') is-invalid @enderror form-control"
@@ -320,6 +322,8 @@
                                     birth.</span>
                             </div>
                         </div>
+
+
                         <div class="row">
                             <div class="col-md-4 form-group">
                                 <x-jet-label for="role" value="{{ __('Role') }}" />

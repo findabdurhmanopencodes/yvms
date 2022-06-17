@@ -47,7 +47,9 @@ table {
             <th style="text-align:left; width:5%;"> Sex </th>
             <th style="text-align:left;"> Zone </th>
             <th style="text-align:left;width:16%;"> CBE Account </th>
-            <th style="text-align:left;"> Tax rate </th>
+            <th style="text-align:left; width:15%"> Date range  </th>
+            <th style="text-align:left;"> KM </th>
+            <th style="text-align:left;"> Tarif </th>
             <th style="text-align:right;"> Amount </th>
             <th style="text-align:left; width:10%">Remark</th>
             </tr>
@@ -61,10 +63,14 @@ table {
                      <td> {{ $placedVolunteer->gender }} </td>
                      <td> {{ $placedVolunteer->woreda->zone->name }}  </td>
                      <td> {{ $placedVolunteer->account_number }} </td>
-                     <td> {{ '0%' }} </td>
-                     <td style="text-align:right;">  {{ number_format($totals[$key],2)}}</td>
-                     <td>  &nbsp; - &nbsp; &nbsp; </td>
+                     <td>  {{ $sdate ->format("d/m/Y") }} - {{  Carbon\Carbon::parse($sdate)->addDays(round($day) )->format('d-m-Y') }}</td>
+                     <td> {{  $km[$key]    }} </td>
+                     <td> {{  $tarif }} </td>
+                     <td style="text-align:right;"> {{ number_format($totals[$key],2)}}</td>
+                     <td>  &nbsp;  &nbsp; &nbsp; &nbsp;   - </td>
                 </tr>
+
+
             @endforeach
             <tr style="text-align:right;">
                 <td colspan="8">

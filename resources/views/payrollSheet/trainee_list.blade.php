@@ -10,9 +10,29 @@
     </li>
 @endsection
 
+@push('css')
+    <link rel="stylesheet" type="text/css" href="{{ asset('calendar/css/redmond.calendars.picker.css') }}">
+@endpush
+
 @push('js')
     <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
+    {{-- <script src=" {{ asset('assets/js/select2.min.js') }}"></script> --}}
+    <script src=" {{ asset('calendar/js/jquery.plugin.js') }}"></script>
+    <script src=" {{ asset('calendar/js/jquery.calendars.js') }}"></script>
+    <script src=" {{ asset('calendar/js/jquery.calendars.plus.js') }}"></script>
+    <script src=" {{ asset('calendar/js/jquery.calendars.picker.js') }}"></script>
+    <script src=" {{ asset('calendar/js/jquery.calendars.ethiopian.js') }}"></script>
+    <script src=" {{ asset('calendar/js/jquery.calendars.ethiopian-am.js') }}"></script>
+    <script src=" {{ asset('calendar/js/jquery.calendars.picker-am.js') }}">  </script>
+
+<script>
+var calendar = $.calendars.instance('ethiopian', 'en');
+$('#sdate').calendarsPicker({
+    calendar: calendar
+});
+</script>
 @endpush
+
 {{--  --}}
 @section('content')
     <!--begin::Card-->
@@ -22,17 +42,17 @@
             <input type="hidden" name="center" value="{{ $center->id }}">
             <div class=" ml-0 col-12 p-0">
                 <div class="row ">
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
 
 
                         <select name="payment_type" id="" class="form-control select2" required>
-                            <option value="">Select payment type </option>
+                            <option value="">Select payment type  </option>
                             @foreach ($payment_types as $payment_type)
                                 <option value="{{ $payment_type->id }}">{{ $payment_type->name }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                                 <select name="format" id="" class="form-control select2" required>
                                  <option value=""> Select output format </option>
                                 <option value="pdf"> PDF </option>
@@ -41,7 +61,21 @@
 
                         </select>
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-2">
+
+                      <input type="number" min ="1" required="required" max="30"  placeholder="No of days" class="form-control" name="day">
+
+            </div>
+
+            <div class="form-group col-2">
+
+                        <input type="text"  id="sdate" required="required"  class="form-control" placeholder="Start date" name="sdate">
+
+          </div>
+
+
+
+                    <div class="form-group col-2">
                         <button class="btn btn-primary btn-sm"><i class="fa fa-print"> </i> Print out</button>
                     </div>
 
