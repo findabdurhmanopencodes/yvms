@@ -126,7 +126,7 @@ class IdGenerateController extends Controller
             $graduated_volunteers = Volunteer::with('approvedApplicant.trainingPlacement.deployment.woredaIntake.woreda')->with('session')->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->where('training_session_id', $trainingSession->id)->whereIn('id', $request->get('applicant'))->get();
         }else{
             $graduated_volunteers = Volunteer::with('approvedApplicant.trainingPlacement.deployment.woredaIntake.woreda')->with('session')->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->where('training_session_id', $trainingSession->id)->get();
-        }   
+        }
 
         return view('id.deployment_id', compact('graduated_volunteers'));
     }
@@ -134,7 +134,7 @@ class IdGenerateController extends Controller
     public function pdfDownload(Request $request){
         // dd($request->get('htmlVal'));
         $html = $request->get('htmlVal');
-        $pdf = Pdf::loadView('id.dowlnload_id', compact('html'))->setPaper('letter', 'landscape');
+        $pdf = Pdf::loadView('id.dowlnload_id', compact('html'))->setPaper('a4', 'landscape');
         return $pdf->stream();
     }
 }
