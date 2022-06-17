@@ -63,6 +63,7 @@ class DistanceController extends Controller
         if (Distance::where('zone_id',$request->get('zone'),'trainining_center_id',$request->get('training_center') )->count() > 0) { {
             return redirect()->route('distance.index')->with('message', 'The record al ready exist!');
         }
+
         Distance::create([
             'zone_id' => $request->get('zone'),
             'km' => $request->get('km'),
@@ -73,6 +74,7 @@ class DistanceController extends Controller
       return redirect()->route('distance.index')->with('message', 'Distance created successfully');
 
     }
+}
 
     /**
      * Display the specified resource.
