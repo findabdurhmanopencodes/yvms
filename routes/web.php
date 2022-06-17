@@ -303,6 +303,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('{training}/training/schedule', [TraininingCenterController::class, 'trainingSchedule'])->name('training.attendance');
     Route::post('{training}/training/schedule/remove', [TraininingCenterController::class, 'trainingScheduleRemove'])->name('training.remove');
     Route::resource('training/{training}/training_document', TrainingDocumentController::class);
+    Route::post('/download/idPDF', [IdGenerateController::class, 'pdfDownload'])->name('id.download');
     Route::get('/dashboard', function () {
 
         if (count(TrainingSession::availableSession()) > 0) {

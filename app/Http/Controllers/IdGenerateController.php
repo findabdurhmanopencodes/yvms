@@ -130,4 +130,11 @@ class IdGenerateController extends Controller
 
         return view('id.deployment_id', compact('graduated_volunteers'));
     }
+
+    public function pdfDownload(Request $request){
+        // dd($request->get('htmlVal'));
+        $html = $request->get('htmlVal');
+        $pdf = Pdf::loadView('id.dowlnload_id', compact('html'))->setPaper('letter', 'landscape');
+        return $pdf->stream();
+    }
 }
