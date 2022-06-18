@@ -24,7 +24,17 @@
 @endpush
 
 @section('content')
-
+<form method="POST" id="myForm" action="{{ route('id.download') }}">
+    @csrf
+    <input type="hidden" name="checkVal" value="checkedIn">
+    <input type="hidden" name="end_date" value="{{ $train_end_date }}">
+    <input type="hidden" name="center" value="{{ $center_code }}">
+    <input type="hidden" name="userType" value="{{ $userType }}">
+    <input type="hidden" name="trainer" value="{{ $trainer }}">
+    <input type="hidden" id="htmlValue" value="{{ $applicants }}" name="htmlVal">
+    <input type="hidden" id="qrValue" name="qrValue">
+    <input type="hidden" id="barValue" name="barValue">
+</form>
 <div class="row">
     <div class="col-lg-12">
         <div class="card card-custom gutter-b">
@@ -118,6 +128,7 @@
     <script src="{{ asset('js/qrcode.min.js') }}"></script>
     <script>
         var DATAS = [];
+        var obj = [];
         var div = document.createElement('div');
         var myDesign;
         var applicants = @json($applicants);
@@ -451,6 +462,8 @@
                     var src = div__qr_img.children[0].toDataURL("image/png");
                     var qrf_img = document.createElement('img');
 
+                    obj.push(src);
+
                     qrf_img.src = src;
                     div__qr_img_2.style.position = "relative";
                     div__qr_img_2.style.left = '140';
@@ -465,8 +478,9 @@
 
                 });
             }
-
-            generatePDF(DATAS, paginate_apps);
+            document.getElementById('qrValue').value = obj;
+            document.getElementById("myForm").submit();
+            // generatePDF(DATAS, paginate_apps);
         })
 
         function generatePDF(abc, applicants){

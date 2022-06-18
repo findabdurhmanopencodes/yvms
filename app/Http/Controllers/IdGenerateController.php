@@ -133,6 +133,8 @@ class IdGenerateController extends Controller
 
     public function pdfDownload(Request $request){
         if ($request->get('checkVal') == 'deployment') {
+            $check = $request->get('checkVal');
+            $trainer = '';
             $volunteer_id = [];
             $exp = explode('data:image', $request->get('qrValue'));
             $expBar = explode('data:image', $request->get('barValue'));
@@ -142,8 +144,41 @@ class IdGenerateController extends Controller
             }
 
             $html = Volunteer::whereIn('id', $volunteer_id)->get();
-            $pdf = Pdf::loadView('id.dowlnload_id', compact('html', 'exp', 'expBar'))->setPaper('letter', 'landscape');
+            $pdf = Pdf::loadView('id.dowlnload_id', compact('html', 'exp', 'expBar', 'check', 'trainer'))->setPaper('letter', 'landscape');
             return $pdf->stream(); 
+        }elseif(($request->get('checkVal') == 'checkedIn') && ($request->get('trainer') == '')){
+            $check = $request->get('checkVal');
+            $trainer = $request->get('trainer');
+            $exp = explode('data:image', $request->get('qrValue'));
+            $volunteer_id = [];
+            $htmlDec = json_decode($request->get('htmlVal'));
+            foreach ($htmlDec as $key => $value) {
+                array_push($volunteer_id, $value->id);
+            }
+
+            $html = Volunteer::whereIn('id', $volunteer_id)->get();
+            $pdf = Pdf::loadView('id.dowlnload_id', compact('html', 'check', 'exp', 'trainer'))->setPaper('letter', 'landscape');
+            return $pdf->stream();
+        }elseif(($request->get('checkVal') == 'checkedIn') && ($request->get('trainer') == 'trainer')){
+            $check = $request->get('checkVal');
+            $trainer = $request->get('trainer');
+            $center = $request->get('center');
+            $end_date = $request->get('end_date');
+            $volunteer_id = [];
+            $userType = $request->get('userType');
+            $htmlDec = json_decode($request->get('htmlVal'));
+            foreach ($htmlDec as $key => $value) {
+                array_push($volunteer_id, $value->id);
+            }
+
+            if ($userType == "mop user") {
+                $html = TrainingCenterBasedPermission::whereIn('id', $volunteer_id)->get(); 
+            } else {
+                $html = TrainingMasterPlacement::whereIn('id', $volunteer_id)->get(); 
+            }
+            
+            $pdf = Pdf::loadView('id.dowlnload_id', compact('html', 'check', 'trainer', 'userType', 'center', 'end_date'))->setPaper('letter', 'landscape');
+            return $pdf->stream();
         }
     }
 }
