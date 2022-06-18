@@ -181,4 +181,35 @@ class IdGenerateController extends Controller
             return $pdf->stream();
         }
     }
+
+    public function certificateDownload(Request $request){
+        if ($request->get('certifUsers') == 'volunteers') {
+            $certifUsers = $request->get('certifUsers');
+            $currDateET = $request->get('currDateET');
+            $currDatenow = $request->get('currDatenow');
+            $volunteer_id = [];
+            $html = json_decode($request->get('htmlVal'));
+            foreach ($html as $key => $value) {
+                array_push($volunteer_id, $value->id);
+            }
+
+            $html = Volunteer::whereIn('id', $volunteer_id)->get();
+            $pdf = Pdf::loadView('id.download_certificate', compact('html', 'certifUsers', 'currDateET', 'currDatenow'))->setPaper('letter', 'landscape');
+            return $pdf->stream(); 
+        } else {
+            $certifUsers = $request->get('certifUsers');
+            $currDateET = $request->get('currDateET');
+            $currDatenow = $request->get('currDatenow');
+            $volunteer_id = [];
+            $html = json_decode($request->get('mopValue'));
+            foreach ($html as $key => $value) {
+                array_push($volunteer_id, $value->id);
+            }
+
+            $html = TrainingCenterBasedPermission::whereIn('id', $volunteer_id)->get();
+            $pdf = Pdf::loadView('id.download_certificate', compact('html', 'certifUsers', 'currDateET', 'currDatenow'))->setPaper('letter', 'landscape');
+            return $pdf->stream();
+        }
+               
+    }
 }

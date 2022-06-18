@@ -17,9 +17,15 @@
     }
 </style>
 @endpush
-
 @section('content')
-
+<form method="POST" id="myForm" action="{{ route('certificate.download') }}">
+    @csrf
+    <input type="hidden" id="htmlValue" value="{{ $applicants }}" name="htmlVal">
+    <input type="hidden" id="mopValue" value="{{ $mopUsers }}" name="mopValue">
+    <input type="hidden" name="currDateET" value="{{ $curr_date_et }}">
+    <input type="hidden" name="currDatenow" value="{{ $curr_date_now }}">
+    <input type="hidden" id="certifUsers" name="certifUsers">
+</form>
 <div class="row">
     <div class="col-lg-12">
         <div class="card card-custom gutter-b">
@@ -79,6 +85,8 @@
     <script>
         var date = new Date().toISOString().slice(0, 10);
         var mydes = document.getElementById('myDesign');
+        var certifUsers = 'volunteers';
+        
 
         $( "#certificate" ).change(function() {
             if ($('#certificate').val() == 'volunteers') {
@@ -92,6 +100,7 @@
 
             if ($('#certificate').val() == 'volunteers') {
                 var applicants = @json($applicants);
+                certifUsers = 'volunteers';
                 var DATAS = [];
                 var myDesign;
 
@@ -165,6 +174,7 @@
                 });   
                 
             } else {
+                certifUsers = 'mop user';
                 var applicants = @json($mopUsers);
                 var DATAS = [];
                 var myDesign;
@@ -241,7 +251,9 @@
                 }
             }
 
-            generatePDF(DATAS, applicants);
+            document.getElementById("certifUsers").value = certifUsers;
+            document.getElementById("myForm").submit();
+            // generatePDF(DATAS, applicants);
         })
 
         function generatePDF(abc, applicants){
