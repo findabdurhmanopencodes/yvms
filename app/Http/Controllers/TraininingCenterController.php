@@ -216,7 +216,7 @@ class TraininingCenterController extends Controller
             $query = $request->get('query');
             // Auth::user()->getRoleNames()[0]==Constants::SYSTEM_USER_ROLE;//Need This For Permission
             // ->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',Auth::user()->trainingCheckerOf->id);
-            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', $query);
+            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-'.$query);
 
 
             if (count($volunteerQuery->get()) > 0) {

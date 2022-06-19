@@ -85,9 +85,16 @@
         </div>
 
         <div class="card-body">
-            <h5 class="card-title">Search</h5>
+            {{-- <h5 class="card-title">Search</h5>
             <input type="text" id="search" placeholder="Search Volunteer Using Id Number .."
-                class="typeahead form-control col-12 mb-6" style="background-color: #fdfbfb" value="MoP-">
+                class="typeahead form-control col-12 mb-6" style="background-color: #fdfbfb" value="MoP-"> --}}
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1">MoP-</span>
+                    </div>
+                    <input type="text" id="search" placeholder="Search Volunteer Using Id Number .. Example(Ju-00001/1)" class="typeahead form-control col-12" style="background-color: #fdfbfb" aria-label="id" aria-describedby="basic-addon1">
+                    {{-- <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"> --}}
+                  </div>
                 <div id="check">
 
                 </div>
@@ -115,10 +122,10 @@
 
             <img src="{{ asset('assets/media/users/default.jpg') }}" class="rounded float-right img-thumbnail"
             alt="..." width="200" id="profile">
-        <h3 id="name">Name</h3>
-        <h3 id="phone">Phone</h3>
-        <h3 id="region">Region</h3>
-        <h3 id="center">Training Center</h3>
+        <h5 id="name">Name</h5>
+        <h5 id="phone">Phone</h5>
+        <h5 id="region">Region</h5>
+        <h5 id="center">Training Center</h5>
         </div>
     </div>
 @endsection
@@ -169,7 +176,7 @@
                         $("#name").html('Name:' + data.data.first_name + data.data.father_name);
                         $("#phone").html('Phone:' + data.data.phone);
                         $("#region").html('Region:' + data.data.woreda.zone.region.name);
-                        $("#center").html('Training Center:' + data.data.placment().name);
+                        // $("#center").html('Training Center:' + data.data.placment().name);
                         $("#profile").attr("src", data.data.profilePhoto);
                         $("#check").html('<h3><a class="btn btn-primary" href='+'/{{ Request::route('training_session') }}/check-in/action/' + data.data.id + '><i class="fa fa-check"> Check-In</a></h3>');
 
