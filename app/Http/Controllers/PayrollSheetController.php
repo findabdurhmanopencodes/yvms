@@ -86,6 +86,26 @@ class PayrollSheetController extends Controller
         return  $result;
     }
 
+
+
+    public function getKm($zone_id, $traingCenter_id)
+    {
+          $result = 0;
+          $distance  = Distance::select('km')->where('zone_id', '=', $zone_id)->where('trainining_center_id', '=', $traingCenter_id)->get()->last();
+
+          if ($distance==null) {
+                $km = 0;
+            }
+            else{
+                $km =  $distance->km;
+            }
+
+
+        return  $km;
+    }
+
+
+
        public function getPayee($training_session_id,$trainining_center_id){
 
         $results = [];
@@ -101,6 +121,8 @@ class PayrollSheetController extends Controller
 
        $total_volunteers = Volunteer::whereRelation('status','acceptance_status',5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->count();
 
+       $tarif = TransportTarif::select('price')->get()->last()->price;
+       $km = [];
         $paymentTypes  = PaymentType::where('id', 1)->first();
 
         $year = Carbon::now()->format('Y');
@@ -109,8 +131,23 @@ class PayrollSheetController extends Controller
         $session = 'MoP-YVMS-01-2014';
         $center = 'Name';
 
+        $date =  DateTime::createFromFormat('d/m/Y', $request->get('sdate'));
+        $year = $date->format('Y');
+        $month = $date->format('m');
+        $day = $date->format('d');
+        //$date = Carbon::now();
+        $dob_GC = DateTimeFactory::of($year, $month, $day)->toGregorian();
+
+        $sdate =  $dob_GC;
+        $newDate = $sdate->format('d/m/Y');
+
+        $start_date = Carbon::createFromFormat('d/m/Y',  $newDate);
+        $edate  = $start_date->addDays($day);
+
+        $day = $request->get('day');
+
    ///////////////////////////////////////////////////////////////////////////////
-        if ($request->get('payment_type') == '1') {  // for pocket  money payment
+        if ($request->get('payment_type') == '1' ) {  // for pocket  money payment
             if ($request->get('format') != null and $request->get('format') == 'pdf') {
                 $pdf = PDF::loadView('payrollSheet.pocket_money_pdf', compact(
                     'placedVolunteers',
@@ -118,31 +155,82 @@ class PayrollSheetController extends Controller
                     'paymentTypes',
                     'session',
                     'center',
-                    'total_volunteers'
-                ))->setPaper('a4', 'landscape');
-
+                    'total_volunteers',
+                    'sdate',
+                    'edate',
+                    'day',
+                    'tarif'
+                ))->setPaper('A4', 'landscape');
                 return $pdf->download('payroll' . $year . 'pdf');
             } else {
                 return redirect()->route('payrollSheet.index')->with('message', 'Sorry currently We have no Ms exceel file');
             }
         }
-        //////////////////////////////////////////////////////////////////////////
-        elseif ($request->get('payment_type') == '2') { // for transport payment
+
+        elseif ($request->get('payment_type') == '2') { // for perdiem payment
             $totals = [];
+            $scale = [];
+
             foreach ($placedVolunteers as $key => $value) {
 
                 array_push($totals, $this->calculate($value->woreda->zone->id, $value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->id));
+                array_push($scale,$value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->scale);
+
+
+            }
+
+            if ($request->get('format') != null and $request->get('format') == 'pdf') {
+              //  $payment = 2000;
+                $pdf = PDF::loadView('payrollSheet.perdiem_payment_pdf', compact(
+                    'placedVolunteers',
+                    'title',
+                    'totals',
+                    'scale',
+                    'session',
+                    'center',
+                    'total_volunteers',
+                    'sdate',
+                    'edate',
+                    'day'
+
+                ))->setPaper('a4', 'landscape');
+
+                return $pdf->download('perdiem_payment' . $year . 'pdf');
+            } else {
+
+                return redirect()->route('payrollSheet.index')->with('message', 'Sorry currently We have no Ms exceel file');
+            }
+
+        }
+
+        //////////////////////////////////////////////////////////////////////////
+        elseif ($request->get('payment_type') == '3') { // for transport payment
+            $totals = [];
+            $scale = [];
+            $km = [];
+            $tarif = TransportTarif::select('price')->get()->last()->price;
+            foreach ($placedVolunteers as $key => $value) {
+
+                array_push($totals, $this->calculate($value->woreda->zone->id, $value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->id));
+                array_push($scale,$value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->scale);
+                array_push($km,$this->getKm($value->woreda->zone->id,  $value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->id));
+
 
             }
             if ($request->get('format') != null and $request->get('format') == 'pdf') {
-                $payment = 2000;
                 $pdf = PDF::loadView('payrollSheet.transport_payment_pdf', compact(
                     'placedVolunteers',
                     'title',
                     'totals',
+                    'scale',
                     'session',
                     'center',
                     'total_volunteers',
+                    'sdate',
+                    'edate',
+                    'day',
+                    'tarif',
+                    'km'
                 ))->setPaper('a4', 'landscape');
 
                 return $pdf->download('transport_payment' . $year . 'pdf');
@@ -150,7 +238,43 @@ class PayrollSheetController extends Controller
 
                 return redirect()->route('payrollSheet.index')->with('message', 'Sorry currently We have no Ms exceel file');
             }
-             } else {
+
+           }
+
+     //////////////////////////////////////////////////////////////////////////
+        elseif ($request->get('payment_type') == '4') { // for Deployment payment
+
+             $kms = [];
+             $tarif = TransportTarif::select('price')->get()->last()->price;
+            foreach ($placedVolunteers as $key => $value) {
+
+                //(((((((((((((((((((((  this can't work the relation b/n deployed zone id of volunter )))))))))))))))))))))
+                array_push($kms,$this->getKm($value->woreda->attendances->woreda->zone->id,  $value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->id));
+            }
+            if ($request->get('format') != null and $request->get('format') == 'pdf') {
+                $pdf = PDF::loadView('payrollSheet.deployment_payment_pdf', compact(
+                    'placedVolunteers',
+                    'title',
+                    'session',
+                    'center',
+                    'total_volunteers',
+                    'sdate',
+                    'edate',
+                    'day',
+                    'tarif',
+                    'kms'
+                ))->setPaper('a4', 'landscape');
+
+                return $pdf->download('deployment_payment' . $year . 'pdf');
+            } else {
+
+                return redirect()->route('payrollSheet.index')->with('message', 'Sorry currently We have no Ms exceel file');
+            }
+
+           }
+           //////////////////////////////////////////////////////////////////////////
+
+     else {
             return redirect()->route('payrollSheet.index')->with('message', 'Sorry currently  no other typeo of paymment');
         }
     }

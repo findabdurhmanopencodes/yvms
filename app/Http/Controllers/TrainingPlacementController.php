@@ -13,9 +13,11 @@ use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\Woreda;
 use App\Models\Zone;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Console\Input\Input;
 
 class TrainingPlacementController extends Controller
@@ -54,9 +56,35 @@ class TrainingPlacementController extends Controller
                 $query->where('id', $request->get('woreda'));
             });
         }
+        $user = Auth::user();
+        if ($user->getCordinatingRegion() != null) {
+            $q->whereHas('approvedApplicant.volunteer.woreda.zone.region', function ($query) use ($user) {
+                $query->where('id', $user->getCordinatingRegion()->id);
+            });
+        }
+        if ($user->getCordinatingZone() != null) {
+            $q->whereHas('approvedApplicant.volunteer.woreda.zone', function ($query) use ($user) {
+                $query->where('id', $user->getCordinatingZone()->id);
+            });
+        }
+        if($request->get('print')){
+            $pdf = PDF::loadView('report.placed_volunteers_list', ['placedVolunteers' => $q->get()]);
+            return $pdf->stream();
+        }
+
         $placedVolunteers = $q->paginate(10);
 
-        return view('placement.index', ['trainingSession'=>$trainingSession,'placedVolunteers' => $placedVolunteers, 'trainingCenterCapacities' =>  TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->get(), 'zones' => Zone::all(), 'woredas' => Woreda::all(), 'regions' => Region::all(), 'training_centers' => TraininingCenter::all()]);
+
+        if ($user->getCordinatingRegion() != null) {
+            $zones = $user->getCordinatingRegion()->zones;
+            $woredas =  Woreda::whereRelation('zone.region', 'id', $user->getCordinatingRegion()->id)->get();
+        } else {
+            $zones = Zone::all();
+            $woredas = $user->getCordinatingZone() != null ? $user->getCordinatingZone()->woredas : Woreda::all();
+        }
+
+
+        return view('placement.index', ['trainingSession' => $trainingSession, 'placedVolunteers' => $placedVolunteers, 'trainingCenterCapacities' =>  TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->get(), 'zones' => $zones, 'woredas' => $woredas, 'regions' => Region::all(), 'training_centers' => TraininingCenter::all()]);
     }
 
     public function placeManually(Request $request)

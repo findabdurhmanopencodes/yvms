@@ -20,6 +20,9 @@ table {
 
     </style>
 
+
+<script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
+
 </head>
 
 <body>
@@ -47,9 +50,11 @@ table {
             <th style="text-align:left;width:5%;"> Sex </th>
             <th style="text-align:left;"> Origin Zone </th>
             <th style="text-align:left;"> CBE Account </th>
-            <th style="text-align:left;"> Tax rate </th>
+            <th style="text-align:left; width:15%"> Date range  </th>
+            <th style="text-align:left;"> Days </th>
             <th style="text-align:right;"> Amount </th>
-            <th style="text-align:left; width:10%">Remark</th>
+            <th style="text-align:right;"> Remark</th>
+
 
             </tr>
         </thead>
@@ -63,13 +68,15 @@ table {
                      <td> {{ $placedVolunteer->gender }} </td>
                      <td>  {{ $placedVolunteer->woreda->zone->name }}  </td>
                      <td> {{ $placedVolunteer->account_number }} </td>
-                     <td> {{ '0%' }} </td>
+                     <td>  {{$sdate ->format("m/d/Y")}} - {{$edate->format("m/d/Y")}} </td>
+
+                     {{-- {{ $sdate ->startDateET() }}  -   {{ $edate->endDateET() }} ዓ.ም --}}
+
+                     <td> {{  $day }}  </td>
+
                      <td style="text-align:right;">   Birr {{ number_format($paymentTypes->amount,2)}}</td>
 
-
-                     <td>  &nbsp; -&nbsp; &nbsp; </td>
-
-
+                     <td> {{ '-' }}  </td>
                 </tr>
 
             @endforeach

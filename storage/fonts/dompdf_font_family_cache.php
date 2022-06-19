@@ -85,5 +85,33 @@ return array (
     '600' => $fontDir . '/poppins_600_9623fbc18c38938c2057a9aae8390a42',
     'bold' => $fontDir . '/poppins_bold_8fe618268f56b4b8f1e70e87a9e99fc0',
   ),
+  'ethiopian' => array(
+    'normal' => $fontDir . '/ethiopian_normal_cfefc06e7159c50589ea382f1f098309',
+  ),
+  'ethiopian12' => array(
+    'normal' => $fontDir . '/ethiopian12_normal_e884b6c3f344f8ccf46067bf5b307504',
+  ),
+  'noto serif ethiopic' => array(
+    'bold' => $fontDir . '/noto_serif_ethiopic_bold_19991e0deed3a2891200281bbe7a698d',
+  ),
+  'roboto serif' => array(
+    'bold' => $fontDir . '/roboto_serif_bold_b6b8e73687041fe636da5add17d24802',
+  ),
+  'eb garamond' => array(
+    'italic' => $fontDir . '/eb_garamond_italic_eb31e5ccf93c7ea8ba449cf6e0fd4e06',
+    '500_italic' => $fontDir . '/eb_garamond_500_italic_387ec7ee240d1fad89a69f1f8f2993d5',
+    '600_italic' => $fontDir . '/eb_garamond_600_italic_b17d466a383bc9966f617140722981f6',
+    'bold_italic' => $fontDir . '/eb_garamond_bold_italic_7ec9e63cb8d4102bd39b9270e0d3f5e1',
+    '800_italic' => $fontDir . '/eb_garamond_800_italic_f7d9c7352a594d226c0597205fccaba8',
+    'normal' => $fontDir . '/eb_garamond_normal_86c4a009fbc52b16742157e2a31cdce9',
+    '500' => $fontDir . '/eb_garamond_500_b1d8ea94cac365bd5c65e3c807d44a4f',
+    '600' => $fontDir . '/eb_garamond_600_a5d91de0acc8ebd639cab6660386b867',
+    'bold' => $fontDir . '/eb_garamond_bold_8867239d5d72342d1d9904170e82fac4',
+    '800' => $fontDir . '/eb_garamond_800_b221ae49c1466040c5bba38de4be6190',
+  ),
+  'droid sans ethiopic' => array(
+    'normal' => $fontDir . '/droid_sans_ethiopic_normal_94f3eb64161a37bcbbbad13223d4f011',
+    'bold' => $fontDir . '/droid_sans_ethiopic_bold_ea5214179bb6f5cd705c0573b934ed7c',
+  ),
 );
 }; ?>

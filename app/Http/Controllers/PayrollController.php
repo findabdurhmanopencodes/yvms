@@ -31,7 +31,7 @@ class PayrollController extends Controller
 
         }
         $last_sessions = TrainingSession::orderBy('id', 'desc')->paginate(1);
-        $training_sessions = TrainingSession::orderBy('id', 'desc')->paginate(30);
+        $training_sessions = TrainingSession::orderBy('id', 'desc')->paginate(10);
          $payrolls = Payroll::orderBy('id', 'desc')->Paginate(1);
 
         return view('payroll.index', compact('payrolls','training_sessions','last_sessions'));
@@ -58,7 +58,9 @@ class PayrollController extends Controller
              $current_year =now()->year;
              $code   = $prefix ."-".$traingSession->id."-".$current_year;
 
-             Payroll::create(['name'=>$code, 'training_session_id'=>$traingSession->id,'user_id'=>Auth::user()->id]);
+             Payroll::create(['name'=>$code,
+             'training_session_id'=>$traingSession->id,
+             'user_id'=>Auth::user()->id]);
 
           return redirect()->route('payroll.index')->with('message', 'Payroll created successfully');
 

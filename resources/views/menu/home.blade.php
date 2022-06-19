@@ -6,7 +6,7 @@
             <div class="container">
                 <div class="py-2 text-center d-flex align-items-stretch flex-column">
                     <div class="row">
-                       
+
                         <div class="col-md-4">
                             <img src="{{ asset('img/peace_logo_max.png') }}" class="mx-auto" width="300" alt="">
                             <h6 style="font-family:serif !important;padding: 0;font-size:25px;margin: 0; line-height: 1; color: #01afee;align-self:center;">በጎነት ለአብሮነት</h6>

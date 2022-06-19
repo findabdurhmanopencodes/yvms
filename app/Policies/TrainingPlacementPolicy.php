@@ -21,7 +21,7 @@ class TrainingPlacementPolicy
         //
         if ($user->hasPermissionTo('TrainingPlacement.index'))
             return true;
-        return false;
+        return true;
     }
 
     /**

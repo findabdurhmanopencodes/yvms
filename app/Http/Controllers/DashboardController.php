@@ -74,7 +74,7 @@ class DashboardController extends Controller
         ));
     }
 
-    public function trainginCenersVolenteerRegionalDistribution()
+    public function trainingCentersVolunteerRegionalDistribution()
     {
         // $ts = TrainingSession::availableSession()->first();
         $ts = request()->route('training_session');
