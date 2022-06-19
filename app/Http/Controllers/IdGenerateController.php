@@ -15,6 +15,7 @@ use App\Models\TraininingCenter;
 use App\Models\User;
 use App\Models\Volunteer;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Symfony\Component\Mailer\Transport\Dsn;
@@ -131,7 +132,7 @@ class IdGenerateController extends Controller
         return view('id.deployment_id', compact('graduated_volunteers'));
     }
 
-    public function pdfDownload(Request $request){
+    public function pdfDownload(Request $request, TrainingSession $trainingSession){
         if ($request->get('checkVal') == 'deployment') {
             $check = $request->get('checkVal');
             $trainer = '';
@@ -157,6 +158,15 @@ class IdGenerateController extends Controller
             }
 
             $html = Volunteer::whereIn('id', $volunteer_id)->get();
+            foreach ($html as $key => $value) {
+                $check_val = IDcount::where('training_session_id', $trainingSession->availableSession()->first()->id)->where('volunteer_id',$value->id)->get();
+                if (count($check_val) > 0) {
+                    $count = $check_val->first()->count + 1;
+                    IDcount::where('training_session_id', $trainingSession->availableSession()->first()->id)->where('volunteer_id', $value->id)->update(['count'=> $count]);
+                }else{
+                    IDcount::create(['volunteer_id' => $value->id, 'training_session_id' => $trainingSession->availableSession()->first()->id, 'count'=> 1]);
+                }
+            }
             $pdf = Pdf::loadView('id.dowlnload_id', compact('html', 'check', 'exp', 'trainer'))->setPaper('letter', 'landscape');
             return $pdf->stream();
         }elseif(($request->get('checkVal') == 'checkedIn') && ($request->get('trainer') == 'trainer')){
@@ -182,10 +192,32 @@ class IdGenerateController extends Controller
         }
     }
 
-    public function certificateDownload(Request $request){
+    public function certificateDownload(Request $request, TrainingSession $trainingSession){
+        $training_session_id = $trainingSession->availableSession()->first()->id;
+        $diff_arr = explode(',',$trainingSession->availableSession()->first()->dateDiff());
+        if ($diff_arr[0] > 0) {
+            $diff_arr_string = $diff_arr[0];
+            $diff_arr_string_am = 'አመት';
+            $diff_arr_string_en = 'year';
+        }elseif($diff_arr[1] > 0){
+            $diff_arr_string = $diff_arr[1];
+            $diff_arr_string_am = 'ወር';
+            $diff_arr_string_en = 'month';
+        }elseif($diff_arr[2] > 0){
+            $diff_arr_string = $diff_arr[2];
+            $diff_arr_string_am = 'ቀን';
+            $diff_arr_string_en = 'day';
+        }else{
+            $diff_arr_string = '0';
+            $diff_arr_string_am = 'ቀን';
+            $diff_arr_string_en = 'day';
+        }
+            $currDateET = $request->get('currDateET');
+            $date_exp = explode(' ',$currDateET);
+
         if ($request->get('certifUsers') == 'volunteers') {
             $certifUsers = $request->get('certifUsers');
-            $currDateET = $request->get('currDateET');
+
             $currDatenow = $request->get('currDatenow');
             $volunteer_id = [];
             $html = json_decode($request->get('htmlVal'));
@@ -194,7 +226,7 @@ class IdGenerateController extends Controller
             }
 
             $html = Volunteer::whereIn('id', $volunteer_id)->get();
-            $pdf = Pdf::loadView('id.download_certificate', compact('html', 'certifUsers', 'currDateET', 'currDatenow'))->setPaper('letter', 'landscape');
+            $pdf = Pdf::loadView('id.download_certificate', compact('html', 'certifUsers', 'currDateET', 'currDatenow', 'diff_arr_string', 'training_session_id', 'diff_arr_string_am', 'diff_arr_string_en', 'date_exp'))->setPaper('letter', 'landscape');
             return $pdf->stream(); 
         } else {
             $certifUsers = $request->get('certifUsers');
@@ -207,7 +239,7 @@ class IdGenerateController extends Controller
             }
 
             $html = TrainingCenterBasedPermission::whereIn('id', $volunteer_id)->get();
-            $pdf = Pdf::loadView('id.download_certificate', compact('html', 'certifUsers', 'currDateET', 'currDatenow'))->setPaper('letter', 'landscape');
+            $pdf = Pdf::loadView('id.download_certificate', compact('html', 'certifUsers', 'currDateET', 'currDatenow', 'diff_arr_string', 'training_session_id', 'diff_arr_string_am', 'diff_arr_string_en', 'date_exp'))->setPaper('letter', 'landscape');
             return $pdf->stream();
         }
                

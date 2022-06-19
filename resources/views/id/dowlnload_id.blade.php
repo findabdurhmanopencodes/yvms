@@ -5,8 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&family=Noto+Serif+Ethiopic:wght@700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Ethiopian';
+            src: url({{ storage_path('fonts/jiret.ttf') }}) format('truetype'), url({{ storage_path('fonts/jiret.woff') }}) format('woff');
+        }
+        td{
+            padding:5px;
+        }
+
+    </style>
 </head>
-<body>
+<body style="">
     @if ($check == 'deployment' && $trainer == null)
     @foreach ($html as $key=>$val)
         <div style="width: 201.6px; height: 326.4px; background-size: cover; background-image: url('img/mopfrontdes.png'); break-after: page; transform: rotate(90deg); transform-origin: 159px 159px; page-break-after: always; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: -43px; margin-left: -35px;">
@@ -31,24 +42,24 @@
             <p style="position: relative; left: 87px; top: 36px; background-color: inherit; font-size: 10px; color: blue;">
                 <strong>{{ $val->approvedApplicant->trainingPlacement->deployment->woredaIntake->woreda->name }}</strong>
             </p>
-            <p style="position: relative;text-align: center; top: 24px; background-color: inherit; font-size: 13px; color: blue;">
-                <strong>
-                    በጎነት ለአብሮነት!
-                </strong>
+            <p style="position: relative;text-align: center; top: 18px; background-color: inherit; font-size: 13px; color: blue;">
+                <strong style="font-family: 'Noto Serif Ethiopic'"> 
+                    በጎነት ለአብሮነት
+                </strong><strong>!</strong>
             </p>
-            <p style="position: relative; left: 5px; top: 23px; background-color: inherit; font-size: 10px; color: blue;">
+            <p style="position: relative; left: 5px; top: 20px; background-color: inherit; font-size: 10px; color: blue;">
                 <strong>Exp. Date: </strong>
             </p>
-            <p style="position: relative; left: 54px; top: 2px; background-color: inherit; font-size: 10px; color: blue;">
+            <p style="position: relative; left: 54px; top: -1px; background-color: inherit; font-size: 10px; color: blue;">
                 <strong>{{ $val->session->end_date_am }}</strong>
             </p>
-            <p style="position: relative; left: 5px; top: 0px; background-color: inherit; font-size: 10px; color: blue;">
+            <p style="position: relative; left: 5px; top: -5px; background-color: inherit; font-size: 10px; color: blue;">
                 <strong>Role: </strong>
             </p>
-            <p style="position: relative; left: 33px; top: -21px; background-color: inherit; font-size: 10px; color: blue;">
+            <p style="position: relative; left: 33px; top: -26px; background-color: inherit; font-size: 10px; color: blue;">
                 <strong>Volunteer</strong>
             </p>
-            <div style="position: relative; float: right; top: -72px;">
+            <div style="position: relative; float: right; top: -79px;">
                 <img src="data:image{{ $exp[$key+1] }}" alt="">
             </div>
         </div>
@@ -130,24 +141,24 @@
                 <p style="position: relative; left: 112px; top: 36px; background-color: inherit; font-size: 10px; color: blue;">
                     <strong>{{ $val->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->code }}</strong>
                 </p>
-                <p style="position: relative;text-align: center; top: 24px; background-color: inherit; font-size: 13px; color: blue;">
-                    <strong>
-                        በጎነት ለአብሮነት!
-                    </strong>
+                <p style="position: relative;text-align: center; top: 18px; background-color: inherit; font-size: 13px; color: blue;">
+                    <strong style="font-family: 'Noto Serif Ethiopic'">
+                        በጎነት ለአብሮነት
+                    </strong><strong>!</strong>
                 </p>
-                <p style="position: relative; left: 5px; top: 23px; background-color: inherit; font-size: 10px; color: blue;">
+                <p style="position: relative; left: 5px; top: 15px; background-color: inherit; font-size: 10px; color: blue;">
                     <strong>Exp. Date: </strong>
                 </p>
-                <p style="position: relative; left: 54px; top: 2px; background-color: inherit; font-size: 10px; color: blue;">
+                <p style="position: relative; left: 54px; top: -6px; background-color: inherit; font-size: 10px; color: blue;">
                     <strong>{{ $val->session->end_date_am }}</strong>
                 </p>
-                <p style="position: relative; left: 5px; top: 0px; background-color: inherit; font-size: 10px; color: blue;">
+                <p style="position: relative; left: 5px; top: -8px; background-color: inherit; font-size: 10px; color: blue;">
                     <strong>Role: </strong>
                 </p>
-                <p style="position: relative; left: 33px; top: -21px; background-color: inherit; font-size: 10px; color: blue;">
+                <p style="position: relative; left: 33px; top: -29px; background-color: inherit; font-size: 10px; color: blue;">
                     <strong>Volunteer</strong>
                 </p>
-                <div style="position: relative; float: right; top: -72px;">
+                <div style="position: relative; float: right; top: -79px;">
                     <img src="data:image{{ $exp[$key+1] }}" alt="">
                 </div>
             </div>
@@ -166,7 +177,7 @@
                     <strong>Development Service Program</strong>
                 </p>
                 <p style="position: relative; left: 39px; top: -211px; background-color: inherit; font-size: 18px; color: rgb(1, 177, 242);">
-                    <strong>{{ ($userType == 'mop user')?'Mop User':'Master Trainer' }}</strong>
+                    <strong>{{ ($userType == 'mop user')?'Mop Coordinator':'Master Trainer' }}</strong>
                 </p>
                 <p style="position: relative; left: 18px; top: -211px; background-color: inherit; font-size: 12.5px; color: rgb(0, 0, 0);">
                     <strong>Full Name: </strong>
@@ -186,11 +197,13 @@
                 <p style="position: relative; left: 79px; top: -296px; background-color: inherit; font-size: 11px; color: rgb(0, 0, 0);">
                     <strong>{{ $end_date }}</strong>
                 </p>
-                <p style="position: relative; left: 2px; top: -287px; background-color: inherit; font-size: 13px; color: rgb(1, 177, 242); text-align: center;">
-                    <strong>ብሔራዊ የበጎ ፈቃድ ማህበረሰብ አገልገሎት</strong>
+                <p style="position: relative; left: 2px; top: -290px; background-color: inherit; font-size: 13px; color: rgb(1, 177, 242); text-align: center;">
+                    <strong style="font-family: 'Noto Serif Ethiopic'">ብሔራዊ የበጎ ፈቃድ ማህበረሰብ አገልገሎት</strong>
                 </p>
-                <p style="position: relative; left: 51px; top: -279px; background-color: inherit; font-size: 19px; color: rgb(1, 177, 242);">
-                    <strong>"በጎነት ለአብሮነት!"</strong>
+                <p style="position: relative; left: 45px; top: -300px; background-color: inherit; font-size: 19px; color: rgb(1, 177, 242);">
+                    <strong>"</strong>
+                    <strong style="font-family: 'Noto Serif Ethiopic'">በጎነት ለአብሮነት</strong>
+                    <strong>"!</strong>
                 </p>
             </div>
         @endforeach
