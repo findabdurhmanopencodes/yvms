@@ -71,6 +71,12 @@ class VolunteerDeploymentController extends Controller
                 $query->where('id', $user->getCordinatingZone()->id);
             });
         }
+
+        if($request->get('print')){
+            $pdf = PDF::loadView('report.placed_volunteers_list', ['placedVolunteers' => $q->get()]);
+            return $pdf->stream();
+        }
+
         $deployedVolunteers = $q->paginate(10);
 
         if ($user->getCordinatingRegion() != null) {

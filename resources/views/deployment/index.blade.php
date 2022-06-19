@@ -126,9 +126,9 @@
                             <i class="fal fa-stamp"></i> Approve Deployment
                         </a>
                     @endif
-                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_PLACEMENT_APPROVE)
+                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_DEPLOYMENT_APPROVED)
                         <a href="#">
-                            <span class="label label-xl label-light-success label-inline">Training Placment Approved</span>
+                            <span class="label label-xl label-light-success label-inline">Volunteer Deployment Approved</span>
                         </a>
                     @endif
 
