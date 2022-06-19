@@ -67,11 +67,11 @@
                 <div class="d-flex">
                     @if (!$check_deployed)
                         <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModal">
-                        <span class="svg-icon svg-icon-md">
-                            <i class="flaticon-medal" id="i_text"></i>
-                        </span>
-                        Graduate Volunteers
-                    </a>
+                            <span class="svg-icon svg-icon-md">
+                                <i class="flaticon-medal" id="i_text"></i>
+                            </span>
+                            Graduate Volunteers
+                        </a>
                     @endif
 
                     @if ($check_deployed)    

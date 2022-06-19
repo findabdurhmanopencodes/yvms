@@ -224,6 +224,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
 
     Route::get('{training_center}/show/volunteers', [TraininingCenterController::class, 'show_all_volunteers'])->name('show.volunteers');
     Route::post('{training_center}/graduate', [TraininingCenterController::class, 'graduateVolunteers'])->name('graduate.volunteers');
+    Route::post('{woreda}/deployment/graduate', [VolunteerDeploymentController::class, 'deployedGraduateVolunteers'])->name('deployment_graduate.volunteers');
 
     Route::get('graduated/list', [TraininingCenterController::class, 'graduationList'])->name('graduation.list');
     Route::get('certificate/graduated', [CertificateGenerate::class, 'certificateGenerate'])->name('certificate.graduate');

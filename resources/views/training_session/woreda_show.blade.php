@@ -12,7 +12,45 @@
     </style>
 @endpush
 @section('content')
-
+<form method="POST" action="{{ route('session.deployment_graduate.volunteers', ['training_session'=>$trainingSession->id, 'woreda'=>$woreda->id]) }}">
+    @csrf
+    {{-- <input type="hidden" name="max_attendance" value="{{ count($arr_unique) }}"> --}}
+    {{-- <input type="hidden" name="training_center" value="{{ $trainingCenter->id }}"> --}}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modalx-lg"  role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Graduate Volunteers</h5>
+                    <button type="button" class="close" data-dismiss="modal" -label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-lg-9">
+                                    <label>Attendace amount</label>
+                                    <input type="number" id="att_amount" class="form-control" name="att_amount" max=""/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-lg-12">
+                                    <label>Pass All</label>
+                                    <input type="checkbox" id="gc_vol" name="gc_vol" class="checkbox"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
     <!-- Modal-->
     <div class="modal fade" id="writeReportModal" data-backdrop="static" tabindex="-1" role="dialog"
         aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -266,6 +304,14 @@
                                     <span class="navi-text">Import Attendance</span>
                                 </a>
                             </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link" data-toggle="modal" data-target="#exampleModal">
+                                    <span class="svg-icon svg-icon-md">
+                                        <i class="flaticon-medal" id="i_text"></i>
+                                    </span>
+                                    Graduate Volunteers
+                                </a>
+                            </li>
                         </ul>
                         <!--end::Navigation-->
                     </div>
@@ -279,6 +325,7 @@
                     <th>#</th>
                     <th>Volunteer ID</th>
                     <th>Full Name</th>
+                    <th>Attendance Count</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -292,6 +339,9 @@
                             </td>
                             <td>
                                 {{ $volunteer->first_name }} {{ $volunteer->father_name }}
+                            </td>
+                            <td>
+                                {{ $att_count[$volunteer->id_number] }}
                             </td>
                         </tr>
                     @empty
@@ -579,6 +629,31 @@
             console.log(reports[0]);
             KTQuilDemos.init();
             quillEditorSetup('contentQuill1', 'content-textarea');
+        });
+    </script>
+    <script>
+        $('#att_amount').on('input', function(){
+            if ($('#att_amount').val()) {
+                $('#gc_vol').attr('disabled',true);
+            }else{
+                $('#gc_vol').attr('disabled',false);
+            }
+        });
+
+        $('#att_amount').on('input', function(){
+            if ($('#att_amount').val()) {
+                $('#gc_vol').attr('disabled',true);
+            }else{
+                $('#gc_vol').attr('disabled',false);
+            }
+        });
+
+        $('#gc_vol').change(function() {
+            if(this.checked) {
+                $('#att_amount').attr('disabled',true);
+            }else{
+                $('#att_amount').attr('disabled',false);
+            }
         });
     </script>
 @endpush

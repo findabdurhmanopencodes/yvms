@@ -36,8 +36,8 @@
                             <th>#   </th>
                             <th> ID Number</th>
                             <th>First Name </th>
-                            <th>Middle Name </th>
-                            <th>Last Name </th>
+                            <th>Father Name </th>
+                            <th>Deployed Center</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,7 +55,7 @@
                                         {{ $applicant->father_name }}
                                     </td>
                                     <td>
-                                        {{ $applicant->grand_father_name }}
+                                        {{ $applicant->approvedApplicant->trainingPlacement->deployment->woredaIntake->woreda->name }}
                                     </td>
                                 </tr>
                             @endforeach

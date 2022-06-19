@@ -208,6 +208,21 @@ class VolunteerDeploymentController extends Controller
         $volunteers = [];
 
         $date_now = Carbon::now();
+        $att_vol = [];
+        $att_volunteer = [];
+        $attendances_vol = DeploymentVolunteerAttendance::where('training_session_id', $trainingSession->id)->where('woreda_id', $woreda->id)->get();
+
+        foreach ($attendances_vol as $key => $att) {
+            array_push($att_vol, json_decode($att->volunteers));
+        }
+
+        foreach ($att_vol as $key => $att) {
+            foreach ($att as $key => $value) {
+                array_push($att_volunteer, $value);
+            }
+        }
+
+        $att_count = array_count_values($att_volunteer);
 
         $attendances = DeploymentVolunteerAttendance::where('training_session_id', $trainingSession->id)->where('woreda_id', $woreda->id)->where('attendance_date', $date_now->format('Y-m-d'))->get()->first();
         if ($attendances) {
@@ -232,6 +247,59 @@ class VolunteerDeploymentController extends Controller
                 }
             }
         }
-        return view('training_session.woreda_show',compact('trainingSession','woreda','reports', 'volunteers', 'date'));
+        return view('training_session.woreda_show',compact('trainingSession','woreda','reports', 'volunteers', 'date', 'att_count'));
+    }
+
+    public function deployedGraduateVolunteers(Request $request, TrainingSession $trainingSession, Woreda $woreda){
+        $att_amount = $request->get('att_amount');
+        $all_vol = $request->get('gc_vol');
+        $max_att = $request->get('max_attendance');
+        $att_count_check = [];
+        $att_vol = [];
+        $att_volunteer = [];
+        $volunteersAtt = [];
+
+        $attendances_vol = DeploymentVolunteerAttendance::where('training_session_id', $trainingSession->id)->where('woreda_id', $woreda->id)->get();
+
+        foreach ($attendances_vol as $key => $att) {
+            array_push($att_vol, json_decode($att->volunteers));
+        }
+
+        foreach ($att_vol as $key => $att) {
+            foreach ($att as $key => $value) {
+                array_push($att_volunteer, $value);
+            }
+        }
+        $att_count = array_count_values($att_volunteer);
+        $att_unique = array_unique($att_volunteer);
+
+        foreach ($att_unique as $key => $value) {
+            array_push($volunteersAtt, Volunteer::where('id_number', $value)->first());
+        }
+
+        if (!$request->get('att_amount') && !$request->get('gc_vol')) {
+            return redirect()->back()->with('error', 'You have not selected anything!');
+        }
+
+        else if ($all_vol) {
+            foreach ($volunteersAtt  as $key => $applicant) {
+                Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_COMPLETED]);
+            }
+        } else {
+            foreach ($volunteersAtt as $key => $applicant) {
+                if ($att_count[$applicant->id_number] >= $att_amount) {
+                    array_push($att_count_check, $applicant);
+                }
+            }
+
+            if (!$att_count_check) {
+                return redirect()->back()->with('error', 'No volunteer meet your requirement!');
+            }else{
+                foreach ($att_count_check as $key => $applicant) {
+                   Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_COMPLETED]);
+                }
+            }
+        }
+        return redirect()->back()->with('message', 'Volunteer Successfully Completed!!!');
     }
 }
