@@ -311,7 +311,7 @@
                                         <span class="menu-text">Check-In</span>
                                     </a>
                                 </li>
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.graduation.list') === 0 ? 'menu-item-active' : '' }}"
+                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.graduation.list') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.graduation.list', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">

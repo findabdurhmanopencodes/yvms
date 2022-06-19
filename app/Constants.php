@@ -13,6 +13,7 @@ class Constants {
     const TRAINING_SESSION_STARTED = 0;
     const TRAINING_SESSION_PLACEMENT_APPROVE = 1;
     const TRAINING_SESSION_GRADUATED = 2;
+    const TRAINING_SESSION_DEPLOYMENT_APPROVED = 3;
 
     const SYSTEM_USER_ROLE= 'system-user';
 
