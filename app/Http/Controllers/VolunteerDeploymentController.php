@@ -21,6 +21,7 @@ use App\Models\HierarchyReport;
 use App\Models\Qouta;
 use App\Models\Region;
 use App\Models\Volunteer;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -73,7 +74,7 @@ class VolunteerDeploymentController extends Controller
         }
 
         if($request->get('print')){
-            $pdf = PDF::loadView('report.placed_volunteers_list', ['placedVolunteers' => $q->get()]);
+            $pdf = PDF::loadView('report.deployed_volunteers_list', ['deployedVolunteers' => $q->get()]);
             return $pdf->stream();
         }
 

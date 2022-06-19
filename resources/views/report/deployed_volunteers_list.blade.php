@@ -17,20 +17,19 @@
 
 <body style="font-family: 'EB Garamond', serif;">
 <header>
-    <table style="border-collapse: collapse;width: 100%;margin:0px;">
+    <table style="border-collapse: collapse;width: 100%;margin:0px;border-spacing:0px;">
         <tbody>
-            <tr>
-                <td>
-                    <div class="">
-                        <img src="img/logo_peace.png" alt="" style="width: 150px; height: 150px;">
+            <tr style="padding:0px;height:50px;background-color:rgb(226, 243, 248);">
+                <td >
+                    <div style="padding:0px;">
+                        <img src="img/logo_peace.png" alt="" style="width: 103px; height: 103px;">
                     </div>
                 </td>
-                <td style="text-align: center;color:#01afee;">
-                    <div>
+                <td style="color:#01afee;padding:0px; margin:0%;">
+                    <div style="height: 30px;">
                         <h1>
-                           <span style="font-family: 'EB Garamond', serif;, serif;font-size:54px;"> Ministry Of Peace</span>
-                           <br/>
-                            <span style="font-size:40px; font-family: 'Noto Serif Ethiopic', serif;">
+                           <span style="font-family: 'EB Garamond', serif;, serif;font-size:30px;"> Ministry Of Peace&nbsp; |</span>
+                            <span style="font-size:30px; font-family: 'Noto Serif Ethiopic', serif;">
                                 የሰላም ሚኒስቴር
                             </span>
                         </h1>
@@ -42,7 +41,7 @@
     <hr />
 </header>
     <p>
-        List of Volunteers Placed for Training
+        List of Deployed Volunteers
     </p>
 <table border="1" style="width: 100%;margin-top:30px;border-collapse:collapse;">
     <thead>
@@ -50,16 +49,17 @@
         <th>Name</th>
         <th>Region</th>
         <th>Zone</th>
-        <th>Training Center</th>
+        <th>Woreda</th>
     </thead>
     <tbody>
-        @foreach ($placedVolunteers as $placedVolunteer)
+        @foreach ($deployedVolunteers as $deployedVolunteer)
             <tr>
-                <td>{{ $loop->index + 1}}</td>
-                <td>{{ $placedVolunteer->approvedApplicant->volunteer->name() }}</td>
-                <td>{{ $placedVolunteer->approvedApplicant->volunteer->woreda->zone->region->name }}</td>
-                <td>{{ $placedVolunteer->approvedApplicant->volunteer->woreda->zone->name }}</td>
-                <td>{{ $placedVolunteer->trainingCenterCapacity->trainingCenter->name }}</td>
+                <td>{{ $loop->index + 1 }}</td>
+                <td>{{ $deployedVolunteer?->trainingPlacement?->approvedApplicant?->volunteer?->name() }}</td>
+                {{-- <td>{{ $placedVolunteer->approvedApplicant->volunteer->father_name }}</td> --}}
+                <td> {{ $deployedVolunteer?->woredaIntake?->woreda?->zone?->region?->name }} </td>
+                <td> {{ $deployedVolunteer->woredaIntake->woreda?->zone?->name }} </td>
+                <td> {{ $deployedVolunteer?->woredaIntake?->woreda?->name }} </td>
             </tr>
         @endforeach
 
