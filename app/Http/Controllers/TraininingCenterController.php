@@ -72,6 +72,8 @@ class TraininingCenterController extends Controller
     {
 
         return view("training_center.create", ['zones' => Zone::all()]);
+
+      //  return view('payrollSheet.create');
     }
 
     /**
@@ -82,15 +84,22 @@ class TraininingCenterController extends Controller
      */
     public function store(StoreTraininingCenterRequest $request)
     {
-
+       // dd($request->get('scale'));
 
         $request->validate([
             'logo' => 'image|mimes:jpg,png,jpeg,svg|max:2048|',
             'name' => 'min:2|required|string|unique:trainining_centers,name',
             'code' => 'required|string|unique:trainining_centers,code',
+            'scale' => 'min:0|required:trainining_centers,scale'
         ]);
         $logoFile = FileController::fileUpload($request->logo, 'training center logos/')->id;
-        $TrainingCenter = TraininingCenter::create(['name' => $request->get('name'), 'code' => $request->get('code'), 'logo' => $logoFile, 'zone_id' => $request->get('zone_id')]);
+        TraininingCenter::create(['name' => $request->get('name'),
+                                  'code' => $request->get('code'),
+                                  'logo' => $logoFile,
+                                  'zone_id' => $request->get('zone_id'),
+                                  'scale'=> $request->get('scale')
+                                                ]);
+
 
         return redirect()->route('TrainingCenter.index')->with('message', 'Training Center created successfully');
     }
@@ -138,12 +147,16 @@ class TraininingCenterController extends Controller
         $TrainingCenter = TraininingCenter::findOrFail($traininingCenter);
         $trainingSession = new TrainingSession();
         $trainingSessionId = $trainingSession->availableSession()[0]->id;
-        TrainingCenterCapacity::create(['capacity' => $request->get('capacity'), 'training_session_id' => $trainingSessionId, 'trainining_center_id' => $TrainingCenter->id]);
-
+        TrainingCenterCapacity::create([
+         'capacity' => $request->get('capacity'),
+         'training_session_id' => $trainingSessionId,
+         'trainining_center_id' => $TrainingCenter->id
+        ]);
         $data = $request->validate([
             'logo' => 'image|mimes:jpg,png,jpeg,svg|max:2048|',
             'name' => 'min:2|required|string|unique:trainining_centers,name,' . $traininingCenter,
-            'code' => 'required|string|unique:trainining_centers,code,' . $traininingCenter
+            'code' => 'required|string|unique:trainining_centers,code,' . $traininingCenter,
+            'scale' => 'min:0|required:trainining_centers,scale,' . $traininingCenter
         ]);
 
         $TrainingCenter->update($data);
@@ -194,15 +207,16 @@ class TraininingCenterController extends Controller
     }
     public function checkInView()
     {
-        return view('training_center.check_in.check_in');
+           return view('training_center.check_in.check_in');
     }
     public function result(Request $request)
     {
         if ($request->ajax()) {
             $output = '';
             $query = $request->get('query');
+            // Auth::user()->getRoleNames()[0]==Constants::SYSTEM_USER_ROLE;//Need This For Permission
             // ->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',Auth::user()->trainingCheckerOf->id);
-            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', $query);
+            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-'.$query);
 
 
             if (count($volunteerQuery->get()) > 0) {

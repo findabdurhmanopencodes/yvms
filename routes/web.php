@@ -2,6 +2,7 @@
 
 use App\Helpers\Helper;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AuditController;
 use App\Http\Controllers\CertificateGenerate;
 use App\Http\Controllers\CindicationRoomController;
 use App\Http\Controllers\DashboardController;
@@ -42,8 +43,10 @@ use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\DistanceController;
 use App\Http\Controllers\HierarchyReportController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\PaymentReportController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PayrollSheetController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VolunteerResourceHistoryController;
 use App\Http\Controllers\TrainingCenterBasedPermissionController;
 use App\Http\Controllers\TrainingDocumentController;
@@ -57,6 +60,7 @@ use App\Models\DeploymentVolunteerAttendance;
 use App\Models\Training;
 use App\Models\Distance;
 use App\Models\Event;
+use App\Models\PaymentReport;
 use App\Models\TrainingMaster;
 use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingPlacement;
@@ -133,12 +137,13 @@ Route::post('application_form/apply', [VolunteerController::class, 'apply'])->na
 Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
 
 Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verified'], 'as' => 'session.'], function () {
-    Route::resource('hierarchy',HierarchyReportController::class);
-    Route::get('deployment-regions',[RegionController::class,'deployment'])->name('deployment.regions');
-    Route::get('deployment-regions/{region}/zones',[VolunteerDeploymentController::class,'zones'])->name('deployment.region.zones');
-    Route::get('deployment-regions/zone/{zone}/woredas',[VolunteerDeploymentController::class,'woredas'])->name('deployment.zone.woredas');
-    Route::get('deployment-regions/woreda/{woreda}/show',[VolunteerDeploymentController::class,'woredaDetail'])->name('deployment.woreda.detail');
-    Route::get('training-center/regional-volunteer-contribution/{id}', [DashboardController::class, 'trainginCenersVolenteerRegionalDistribution'])->name('placed-contribution');
+    Route::get('report/{report_name}', [ReportController::class, 'index'])->name('reports');
+    Route::resource('hierarchy', HierarchyReportController::class);
+    Route::get('deployment-regions', [RegionController::class, 'deployment'])->name('deployment.regions');
+    Route::get('deployment-regions/{region}/zones', [VolunteerDeploymentController::class, 'zones'])->name('deployment.region.zones');
+    Route::get('deployment-regions/zone/{zone}/woredas', [VolunteerDeploymentController::class, 'woredas'])->name('deployment.zone.woredas');
+    Route::get('deployment-regions/woreda/{woreda}/show', [VolunteerDeploymentController::class, 'woredaDetail'])->name('deployment.woreda.detail');
+    Route::get('training-center/regional-volunteer-contribution/{id}', [DashboardController::class, 'trainingCentersVolunteerRegionalDistribution'])->name('placed-contribution');
     Route::any('/volunteer/all', [VolunteerController::class, 'volunteerAll'])->name('volunteer.all');
     Route::get('/volunteer/{volunteer}/detail', [VolunteerController::class, 'volunteerDetail'])->name('volunteer.detail');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -217,10 +222,11 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('{woreda_id}/woreda/capacity', [WoredaController::class, 'woredaIntake'])->name('woreda.intake');
     Route::post('woreda/{woreda_id}/capacity/store', [WoredaController::class, 'woredaIntakeStore'])->name('woreda.intake_store');
     Route::post('/approve_placment', [TrainingSessionController::class, 'approvePlacment'])->name('placment.approve');
-    Route::post('/approve_placment',[TrainingSessionController::class,'approvePlacment'])->name('placment.approve');
+    Route::post('/approve_placment', [TrainingSessionController::class, 'approvePlacment'])->name('placment.approve');
 
     Route::get('{training_center}/show/volunteers', [TraininingCenterController::class, 'show_all_volunteers'])->name('show.volunteers');
     Route::post('{training_center}/graduate', [TraininingCenterController::class, 'graduateVolunteers'])->name('graduate.volunteers');
+    Route::post('{woreda}/deployment/graduate', [VolunteerDeploymentController::class, 'deployedGraduateVolunteers'])->name('deployment_graduate.volunteers');
 
     Route::get('graduated/list', [TraininingCenterController::class, 'graduationList'])->name('graduation.list');
     Route::get('certificate/graduated', [CertificateGenerate::class, 'certificateGenerate'])->name('certificate.graduate');
@@ -271,6 +277,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('transportTarif', TransportTarifController::class);
     Route::resource('distance', DistanceController::class);
     Route::resource('paymentType', PaymentTypeController::class);
+    Route::resource('paymentReport', PaymentReportController::class);
     Route::resource('payroll', PayrollController::class);
     Route::resource('payrollSheet', PayrollSheetController::class);
     Route::get('generatePDF', [PayrollSheetController::class, 'generatePDF'])->name('payrollSheet.generatePDF');
@@ -300,6 +307,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('{training}/training/schedule', [TraininingCenterController::class, 'trainingSchedule'])->name('training.attendance');
     Route::post('{training}/training/schedule/remove', [TraininingCenterController::class, 'trainingScheduleRemove'])->name('training.remove');
     Route::resource('training/{training}/training_document', TrainingDocumentController::class);
+    Route::post('/download/idPDF', [IdGenerateController::class, 'pdfDownload'])->name('id.download');
+    Route::post('/certificatePDF/download', [IdGenerateController::class, 'certificateDownload'])->name('certificate.download');
     Route::get('/dashboard', function () {
 
         if (count(TrainingSession::availableSession()) > 0) {
@@ -328,3 +337,5 @@ Route::get('{training_session}/reset-verification', [VolunteerController::class,
 Route::resource('Events', EventController::class);
 Route::get('/All-Events', [EventController::class, 'allEvents'])->name('event.all');
 Route::get('/Event/{event}', [EventController::class, 'detailEvent'])->name('event.detail');
+Route::any('audits', [AuditController::class, 'index'])
+    ->middleware('auth', \App\Http\Middleware\AllowOnlyAdmin::class)->name('audit.index');

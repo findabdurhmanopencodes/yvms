@@ -42,7 +42,7 @@
                     @method('PATCH')
                 @endisset
                 <div class="card-body row">
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-6">
                         <label>Name</label>
                         <input type="text" name="name" class="form-control "
                             value="{{ old('name') ?? (isset($trainingCenter) ? $trainingCenter->name : '') }}"
@@ -52,7 +52,8 @@
                             <small class="text-danger"><b>{{ $message }}</b></small>
                         @enderror
                     </div>
-                    <div class="form-group col-md-12">
+
+                    <div class="form-group col-md-6">
                         <label>Code</label>
                         <input type="text" name="code" class="form-control "
                             value="{{ old('code') ?? (isset($trainingCenter) ? $trainingCenter->code : '') }}"
@@ -62,7 +63,19 @@
                             <small class="text-danger"><b>{{ $message }}</b></small>
                         @enderror
                     </div>
-                    <div class="col-lg-12">
+
+                    <div class="form-group col-md-6">
+                        <label>Payment Scale</label>
+                        <input type="text" name="scale" class="form-control "
+                            value="{{ old('scale') ?? (isset($trainingCenter) ? $trainingCenter->scale: '') }}"
+                            placeholder="Payment sacle" />ment
+                        <span class="form-text text-muted">Please enter payment Scale</span>
+                        @error('scale')
+                            <small class="text-danger"><b>{{ $message }}</b></small>
+                        @enderror
+                    </div>
+
+                    <div class="col-lg-6">
                         <label>Zone:</label>
                         <br>
                         <select class="form-control select2" id="zone_id" name="zone_id" required>
@@ -75,7 +88,9 @@
                             <small class="text-danger"><b>{{ $message }}</b></small>
                         @enderror
                     </div>
-                    <div class="form-group col-md-12">
+
+
+                    <div class="form-group col-md-6">
                         <label>Logo</label>
                         <div></div>
                         <div class="custom-file">

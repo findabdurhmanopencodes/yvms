@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class TraininingCenter extends Model
+class TraininingCenter extends Model implements Auditable
 {
     use HasFactory;
-    protected $fillable = ['name', 'code', 'logo', 'zone_id'];
+    use \OwenIt\Auditing\Auditable;
+
+    protected $fillable = ['name', 'code', 'logo', 'zone_id','scale'];
 
     protected $append = ['region'];
     public function zone()
@@ -51,6 +54,12 @@ class TraininingCenter extends Model
     public function PayrollSheet(){
         return $this->hasMany(PayrollSheet::class);
     }
+
+
+    public function PaymentReport(){
+        return $this->hasMany(PaymentReport::class);
+    }
+
 
     public function checkers()
     {

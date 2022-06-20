@@ -78,14 +78,28 @@
     <div class="card">
         <div class="card-header">
             <h2>Check-In</h2>
+            <div>
+                <a href="{{ route('session.trainingCenter.checkin.all', ['training_session'=>Request::route('training_session')]) }}" class="btn btn-primary float-right">Checked in All</a>
+
+            </div>
         </div>
+
         <div class="card-body">
-            <h5 class="card-title">Search</h5>
+            {{-- <h5 class="card-title">Search</h5>
             <input type="text" id="search" placeholder="Search Volunteer Using Id Number .."
-                class="typeahead form-control col-12 mb-6" style="background-color: #fdfbfb" value="MoP-">
-                <a href="{{ route('session.trainingCenter.checkin.all', ['training_session'=>Request::route('training_session')]) }}" class="btn btn-primary">Checked in All</a>
-            <div class="card card-custom md-6">
-                <div class="card-header ribbon ribbon-top ribbon-ver">
+                class="typeahead form-control col-12 mb-6" style="background-color: #fdfbfb" value="MoP-"> --}}
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1">MoP-</span>
+                    </div>
+                    <input type="text" id="search" placeholder="Search Volunteer Using Id Number .. Example(Ju-00001/1)" class="typeahead form-control col-12" style="background-color: #fdfbfb" aria-label="id" aria-describedby="basic-addon1">
+                    {{-- <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"> --}}
+                  </div>
+                <div id="check">
+
+                </div>
+                {{-- <div class="card card-custom md-6"> --}}
+                {{-- <div class="card-header ribbon ribbon-top ribbon-ver">
                     <div class="ribbon-target bg-success" style="top: -2px; right: 20px;">
 
                     </div>
@@ -94,23 +108,24 @@
 
                         </div>
                     </h3>
-                </div>
-                <div class="card-body">
-
-
-                    <img src="{{ asset('assets/media/users/default.jpg') }}" class="rounded float-right img-thumbnail"
-                        alt="..." width="200" id="profile">
-                    <h1 id="name">Name</h1>
-                    <h1 id="phone">Phone</h1>
-                    <h1 id="region">Region</h1>
-                    <h1 id="center">Training Center</h1>
-
-                    {{-- <span class="badge badge-pill badge-info mt-4"><h3>Accepted</h3></span> --}}
+                </div> --}}
+                {{-- <div class="card-body">
 
 
 
-                </div>
-            </div>
+                    <span class="badge badge-pill badge-info mt-4"><h3>Accepted</h3></span>
+
+
+
+                </div> --}}
+            {{-- </div> --}}
+
+            <img src="{{ asset('assets/media/users/default.jpg') }}" class="rounded float-right img-thumbnail"
+            alt="..." width="200" id="profile">
+        <h5 id="name">Name</h5>
+        <h5 id="phone">Phone</h5>
+        <h5 id="region">Region</h5>
+        <h5 id="center">Training Center</h5>
         </div>
     </div>
 @endsection
@@ -161,7 +176,7 @@
                         $("#name").html('Name:' + data.data.first_name + data.data.father_name);
                         $("#phone").html('Phone:' + data.data.phone);
                         $("#region").html('Region:' + data.data.woreda.zone.region.name);
-                        $("#center").html('Training Center:' + data.data.woreda.zone.name);
+                        // $("#center").html('Training Center:' + data.data.placment().name);
                         $("#profile").attr("src", data.data.profilePhoto);
                         $("#check").html('<h3><a class="btn btn-primary" href='+'/{{ Request::route('training_session') }}/check-in/action/' + data.data.id + '><i class="fa fa-check"> Check-In</a></h3>');
 

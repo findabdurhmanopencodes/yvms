@@ -76,7 +76,7 @@ class VolunteerController extends Controller
         $user = Auth::user();
         if ($user->hasRole('regional-coordinator')) {
             $region = UserRegion::where('user_id', $user->id)->where('levelable_type', Region::class)->first();
-            dd($region->levelable);
+          //  dd($region->levelable);
             $applicants = $applicants->whereRelation('woreda.zone.region', 'id', $region->levelable_id);
         }
         if ($user->hasRole('zone-coordinator')) {
@@ -226,6 +226,7 @@ class VolunteerController extends Controller
             return view('application.no-open-form');
         }
         $baseFilePath = 'training session/' . $availableSession[0]->id . '/';
+        
         $date =  DateTime::createFromFormat('d/m/Y', $request->get('dob'));
         $year = $date->format('Y');
         $month = $date->format('m');

@@ -178,7 +178,7 @@
                     <th> Code </th>
                     <th> Training Session </th>
                     <th> User </th>
-                    <th>  Created at</th>
+                    <th> Last update </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -194,7 +194,7 @@
                             <td>{{ $payroll->user->first_name }} {{ $payroll->user->father_name }} </td>
                             <td>{{ $payroll->created_at->diffForHumans(); }}</td>
                             <td>
-                            <a href="{{ route('payrollSheet.payroll_list', ['payroll_id'=> $payroll->id]) }}"
+                            <a href="{{ route('payrollSheet.payroll_list', ['payroll_id'=>$payroll->id]) }}"
 
 
                                 class="btn btn-icon">

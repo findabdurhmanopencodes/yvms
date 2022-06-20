@@ -54,7 +54,7 @@
         $( document ).ready(function() {
 
         });
-        $("#reg_quota").on("input", function(){            
+        $("#reg_quota").on("input", function(){
               $.ajax({
                   type: "POST",
                   url: "/region/validate",
@@ -90,6 +90,11 @@
             {
                 field: 'name',
                 title: 'Name',
+                sortable: 'asc',
+            },
+            {
+                field: 'qoutaInpercent',
+                title: 'Quata',
                 sortable: 'asc',
             },
             {

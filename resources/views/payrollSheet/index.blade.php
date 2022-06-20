@@ -83,6 +83,7 @@
         <div class=" ml-1 col-12 p-0">
             <div class="row ">
 
+
                  <div class="form-group col-8">
                     <select name="training_center" id="training_center" class="form-control select2">
                         <option value="">Select Training Center</option>
@@ -173,7 +174,7 @@
         </div>
     </div>
     <div class="card-toolbar">
-        <form method="POST" action="{{ route('payrollSheet.store', ['payroll_id'=>1]) }}">
+        <form method="POST" action="{{ route('payrollSheet.store', []) }}">
                 @csrf
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-md"  role="document">
@@ -184,6 +185,7 @@
                                 <i aria-hidden="true" class="ki ki-close"></i>
                                 </button>
                             </div>
+                            {{-- <input type="text" class="form-control" name="payroll_id" value="{{ $payroll_id }}"> --}}
                             <div class="modal-body">
                                 <div class="card-body">
                                     <div class="form-group col-12">

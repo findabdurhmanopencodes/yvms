@@ -24,7 +24,17 @@
 @endpush
 
 @section('content')
-
+<form method="POST" id="myForm" action="{{ route('id.download') }}">
+    @csrf
+    <input type="hidden" name="checkVal" value="checkedIn">
+    <input type="hidden" name="end_date" value="{{ $train_end_date }}">
+    <input type="hidden" name="center" value="{{ $center_code }}">
+    <input type="hidden" name="userType" value="{{ $userType }}">
+    <input type="hidden" name="trainer" value="{{ $trainer }}">
+    <input type="hidden" id="htmlValue" value="{{ $applicants }}" name="htmlVal">
+    <input type="hidden" id="qrValue" name="qrValue">
+    <input type="hidden" id="barValue" name="barValue">
+</form>
 <div class="row">
     <div class="col-lg-12">
         <div class="card card-custom gutter-b">
@@ -118,6 +128,7 @@
     <script src="{{ asset('js/qrcode.min.js') }}"></script>
     <script>
         var DATAS = [];
+        var obj = [];
         var div = document.createElement('div');
         var myDesign;
         var applicants = @json($applicants);
@@ -133,8 +144,7 @@
                     myDesign.style.height = "339";
                     myDesign.style.backgroundSize = "cover";
                     myDesign.style.backgroundImage = "url({{ asset('img/id_page_1.jpg') }})";
-                    myDesign.style.marginRight = "100px";
-                    myDesign.style.marginBottom = "5vh";
+                    myDesign.style.margin = "2vh";
 
                     var blank_img = document.createElement('img');
                     var div_blank = document.createElement('div');
@@ -295,6 +305,8 @@
                     p3.style.color = '#01b1f2';
                     myDesign.appendChild(p3);
 
+                    myDesign.style.pageBreakAfter = "always";
+                    myDesign.style.pageBreakBefore = "always";
                     div.appendChild(myDesign.cloneNode(true))
 
                     DATAS.push(div);
@@ -308,8 +320,8 @@
                     myDesign.style.height = "339";
                     myDesign.style.backgroundSize = "cover";
                     myDesign.style.backgroundImage = "url({{ asset('img/id_page_1.jpg') }})";
-                    myDesign.style.marginRight = "100px";
-                    myDesign.style.marginBottom = "5vh";
+                    myDesign.style.margin = "4vh";
+                    
                     var p = document.createElement("p");
                     var s = document.createElement("strong");
                     var textToAdd = document.createTextNode(applicant.id_number);
@@ -325,7 +337,7 @@
 
                     var p2 = document.createElement("p");
                     var s2 = document.createElement("strong");
-                    var textToAdd2 = document. createTextNode(applicant.first_name);
+                    var textToAdd2 = document. createTextNode(applicant.first_name+' '+applicant.father_name);
                     s2.appendChild(textToAdd2);
                     p2.appendChild(s2);
                     p2.style.position = "relative";
@@ -450,6 +462,8 @@
                     var src = div__qr_img.children[0].toDataURL("image/png");
                     var qrf_img = document.createElement('img');
 
+                    obj.push(src);
+
                     qrf_img.src = src;
                     div__qr_img_2.style.position = "relative";
                     div__qr_img_2.style.left = '140';
@@ -457,47 +471,17 @@
                     div__qr_img_2.appendChild(qrf_img.cloneNode(true));
                     myDesign.appendChild(div__qr_img_2.cloneNode(true));
 
+                    // myDesign.style.pageBreakAfter = "always";
                     div.appendChild(myDesign.cloneNode(true));
-                    // div.style.pageBreakAfter = "always";
 
                     DATAS.push(div);
 
                 });
             }
-
-            generatePDF(DATAS, paginate_apps);
+            document.getElementById('qrValue').value = obj;
+            document.getElementById("myForm").submit();
+            // generatePDF(DATAS, paginate_apps);
         })
-
-        // $('#print_btn2').on('click', function(event){
-        //     var a = document.getElementById('myDesign');
-            
-        //     var div = document.createElement("div");
-        //     var p = document.createElement("p");
-        //     var s = document.createElement("strong");
-        //     var textToAdd = document.createTextNode("MILKY SEIFU BENTI");
-        //     s.appendChild(textToAdd);
-        //     p.appendChild(s);
-        //     p.style.position = "relative";
-        //     p.style.left = "92px";
-        //     p.style.top = "212px";
-        //     p.style.backgroundColor = "inherit";
-        //     p.style.fontSize = '10px';
-        //     p.style.color = 'blue';
-        //     a.appendChild(p);
-        //     div.appendChild(a.cloneNode(true));
-
-        //     var mywindow = window.open('', 'PRINT', 'height=1000,width=1000');
-
-        //     mywindow.document.write('<html><head>');
-        //     mywindow.document.write('</head><body >');
-        //     mywindow.document.write('<div style="display:flex; flex-wrap: wrap">');
-        //     mywindow.document.write(div.innerHTML);
-        //     mywindow.document.write('</div>');
-        //     mywindow.document.write('</body></html>');
-
-        //     mywindow.document.close();
-        //     mywindow.focus();
-        // })
 
         function generatePDF(abc, applicants){
             var mywindow = window.open('', 'PRINT', 'height=1000,width=1000');

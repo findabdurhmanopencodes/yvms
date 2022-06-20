@@ -72,6 +72,12 @@
                 title: 'Code',
                 sortable: 'asc',
             },
+
+            {
+                field: 'scale',
+                title: 'Payment Scale',
+                sortable: 'asc',
+            },
             {
                 field: 'logo',
                 title: 'Logo',

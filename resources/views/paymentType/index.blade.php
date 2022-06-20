@@ -139,8 +139,8 @@
                                             <div class="card-body">
                                                 <div class="form-group row">
                                                     <div class="col-lg-6">
-                                                        <label>Name type:</label>
-                                                        <input type="text" class="form-control" placeholder="name" name="name"/>
+                                                        <label>Payment type:</label>
+                                                        <input type="text" class="form-control"  name="name"/>
                                                     </div>
 
                                                     <div class="col-lg-6">

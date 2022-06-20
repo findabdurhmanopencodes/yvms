@@ -122,6 +122,7 @@ return [
     */
 
     'key' => env('APP_KEY'),
+    'Carbon' => 'Carbon\Carbon',
 
     'cipher' => 'AES-256-CBC',
 
@@ -199,6 +200,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        OwenIt\Auditing\AuditingServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,

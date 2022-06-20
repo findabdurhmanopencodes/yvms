@@ -4,12 +4,14 @@ namespace App\Exports;
 
 use App\Models\DeploymentVolunteerAttendance;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class DeploymentAttendanceExport implements FromCollection, WithHeadings, WithEvents
+class DeploymentAttendanceExport implements FromCollection, WithHeadings, WithEvents, WithColumnFormatting
 {
     protected $data;
     protected $a;
@@ -75,10 +77,16 @@ class DeploymentAttendanceExport implements FromCollection, WithHeadings, WithEv
                 $event->sheet->getProtection()->setPassword('password');
                 $event->sheet->getProtection()->setSheet(true);
                 $event->sheet->getStyle('E1:E'.count($this->data) + 1)->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
-                $event->sheet->getStyle('F1:F'.count($this->data) + 1)->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
+                $event->sheet->getStyle('F2')->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
      
             },
             
+        ];
+    }
+
+    public function columnFormats(): array{
+        return [
+            // 'F' => NumberFormat::FORMAT_DATE_DDMMYYYY,
         ];
     }
 }

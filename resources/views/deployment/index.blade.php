@@ -17,32 +17,39 @@
 @section('content')
     <!--begin::Card-->
     <div class="card card-custom card-body mb-3">
-        <form action="" method="GET">
+        <form name="filterForm" action="" method="GET">
             <div class=" ml-0 col-12 p-0">
                 <div class="row ">
-                    <div class="form-group col-3">
-                        <select name="region" id="" class="form-control select2">
-                            <option value="">Select Region</option>
-                            @foreach ($regionIntakes as $regionIntake)
-                                <option value="{{ $regionIntake->region->id }}" @if (Request::get('region') == $regionIntake->region->id) selected @endif>
-                                    {{ $regionIntake->region->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group col-3">
-                        <select name="zone" id="" class="form-control select2">
-                            <option value="">Select Zone</option>
-                            @foreach ($zoneIntakes as $zoneIntake)
-                                <option value="{{ $zoneIntake->zone->id }}" @if (Request::get('zone') == $zoneIntake->zone->id) selected @endif>
-                                    {{ $zoneIntake->zone->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    @if (Auth::user()->getCordinatingRegion() == null && Auth::user()->getCordinatingZone() == null)
+                        <div class="form-group col-3">
+                            <select name="region" id="" class="form-control select2">
+                                <option value="">Select Region</option>
+                                @foreach ($regionIntakes as $regionIntake)
+                                    <option value="{{ $regionIntake->region->id }}"
+                                        @if (Request::get('region') == $regionIntake->region->id) selected @endif>
+                                        {{ $regionIntake->region->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
+                    @if (Auth::user()->getCordinatingZone() == null)
+                        <div class="form-group col-3">
+                            <select name="zone" id="" class="form-control select2">
+                                <option value="">Select Zone</option>
+                                @foreach ($zoneIntakes as $zoneIntake)
+                                    <option value="{{ $zoneIntake->zone->id }}"
+                                        @if (Request::get('zone') == $zoneIntake->zone->id) selected @endif>
+                                        {{ $zoneIntake->zone->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
                     <div class="form-group col-3">
                         <select name="woreda" id="" class="form-control select2">
                             <option value="">Select Woreda</option>
                             @foreach ($woredaIntakes as $woredaIntake)
-                                <option value="{{ $woredaIntake->woreda->id }}" @if (Request::get('woreda') == $woredaIntake->woreda->id) selected @endif>
+                                <option value="{{ $woredaIntake->woreda->id }}"
+                                    @if (Request::get('woreda') == $woredaIntake->woreda->id) selected @endif>
                                     {{ $woredaIntake->woreda->name }}</option>
                             @endforeach
                         </select>
@@ -61,6 +68,7 @@
                     <button class="btn btn-primary btn-block"> Filter</button>
                 </div>
             </div>
+            <input type="hidden" name="print" id="print" value="">
         </form>
     </div>
 
@@ -80,8 +88,8 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="woreda_intake_id" class="font-weight-bold">Deployment Woreda</label>
-                            <select name="woreda_intake_id" id="woreda_intake_id"
-                                class="form-control select2" style="width: 100%">
+                            <select name="woreda_intake_id" id="woreda_intake_id" class="form-control select2"
+                                style="width: 100%">
                                 @foreach ($woredaIntakes as $woredaIntake)
                                     <option value="{{ $woredaIntake->id }}">
                                         {{ $woredaIntake->woreda->name }}</option>
@@ -109,23 +117,25 @@
                 <h3 class="card-label"> Volunteers Deployment </h3>
             </div>
             <div class="card-toolbar">
-                <div class="d-flex">
+                <div class="btn-group">
+
                     @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
                         <a class="btn btn-sm btn-info"
                             href="{{ route('session.deployment.reset', [request()->route('training_session')]) }}">
                             <i class="fal fa-recycle"></i> Reset
                         </a>
-                        <a class="btn ml-4 btn-sm btn-success" onclick="approvePlacment()" href="#">
+                        <a class="btn btn-sm btn-success" onclick="approvePlacment()" href="#">
                             <i class="fal fa-stamp"></i> Approve Deployment
                         </a>
                     @endif
-                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_PLACEMENT_APPROVE)
+                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_DEPLOYMENT_APPROVED)
                         <a href="#">
-                            <span class="label label-xl label-light-success label-inline">Training Placment Approved</span>
+                            <span class="label label-xl label-light-success label-inline">Volunteer Deployment Approved</span>
                         </a>
                     @endif
-
-
+                    <a class="btn btn-sm btn-primary" href="#" onclick="document.filterForm.print.value = '1';document.filterForm.submit();">
+                        <i class="fal fa-print"></i> Print
+                    </a>
                 </div>
             </div>
         </div>
@@ -133,7 +143,7 @@
             <table width="100%" class="table table-striped ">
                 <thead>
                     </tr>
-                    <th> #</th>
+                    <th> SNo.</th>
                     <th> Name </th>
                     {{-- <th> Middle Name </th> --}}
                     <th> Region </th>
@@ -146,11 +156,11 @@
                     @foreach ($deployedVolunteers as $key => $deployedVolunteer)
                         <tr>
                             <td>{{ $key + 1 }}</td>
-                            <td>{{ $deployedVolunteer->trainingPlacement->approvedApplicant->volunteer->name() }}</td>
+                            <td>{{ $deployedVolunteer?->trainingPlacement?->approvedApplicant?->volunteer?->name() }}</td>
                             {{-- <td>{{ $placedVolunteer->approvedApplicant->volunteer->father_name }}</td> --}}
-                            <td> {{ $deployedVolunteer->woredaIntake->woreda->zone->region->name }} </td>
-                            <td> {{ $deployedVolunteer->woredaIntake->woreda->zone->name }} </td>
-                            <td> {{ $deployedVolunteer->woredaIntake->woreda->name }} </td>
+                            <td> {{ $deployedVolunteer?->woredaIntake?->woreda?->zone?->region?->name }} </td>
+                            <td> {{ $deployedVolunteer->woredaIntake->woreda?->zone?->name }} </td>
+                            <td> {{ $deployedVolunteer?->woredaIntake?->woreda?->name }} </td>
                             <td>
                                 <a href="#"
                                     data-action="{{ route('session.deployment.change', [request()->route('training_session'), $deployedVolunteer->id]) }}"

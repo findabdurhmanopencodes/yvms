@@ -9,10 +9,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class TrainingSession extends Model
+class TrainingSession extends Model implements Auditable
 {
     use HasFactory;
+    use \OwenIt\Auditing\Auditable;
+
     protected $table = "training_sessions";
 
     /**
@@ -131,9 +134,13 @@ class TrainingSession extends Model
     }
 
     public function payroll()
-{
-    return $this->hasMany(Payroll::class);
-}
+    {
+        return $this->hasMany(Payroll::class);
+    }
+
+   public function PaymentReport(){
+    return $this->hasMany(PaymentReport::class);
+   }
 
     public function sessionWoredas()
     {
@@ -157,5 +164,15 @@ class TrainingSession extends Model
 
     public function attendances(){
         return $this->hasMany(DeploymentVolunteerAttendance::class);
+    }
+
+    public function dateDiff(){
+        $diff = abs(strtotime($this->training_end_date) - strtotime($this->training_start_date));
+
+        $years = floor($diff / (365*60*60*24));
+        $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+        $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+        
+        return $years.','.$months.','.$days;
     }
 }

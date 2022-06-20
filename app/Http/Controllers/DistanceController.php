@@ -32,7 +32,7 @@ class DistanceController extends Controller
       // $price = TransportTarif::all()->sortByDesc('id')->take(1)->toArray();
        $price = DB::table('transport_tarifs')->orderBy('id', 'DESC')->first();
      //  dd($price);
-       $distances = Distance::paginate(10);
+       $distances = Distance::orderBy('id', 'Desc')->Paginate(10);
 
        $training_centers = TraininingCenter::all();
        $zones = Zone::all();
@@ -41,6 +41,18 @@ class DistanceController extends Controller
         //return view::make('distance.index')->with('distances','training_centers','zones',  $price);
 
     }
+
+
+      /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function importExcel()
+    {
+        return view('distance.create');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -59,17 +71,24 @@ class DistanceController extends Controller
      */
     public function store(StoreDistanceRequest $request)
     {
-        Distance::create([
 
+
+
+        if (Distance::where('zone_id',$request->get('zone'))->where('trainining_center_id',$request->get('training_center'))->count() > 0) {
+            return redirect()->route('distance.index')->with('error', 'The record already exist!');
+        }
+
+        Distance::create([
             'zone_id' => $request->get('zone'),
             'km' => $request->get('km'),
             'user_id'=>Auth::user()->id,
             'trainining_center_id'=>$request->get('training_center')
-
         ]);
 
       return redirect()->route('distance.index')->with('message', 'Distance created successfully');
+
     }
+
 
     /**
      * Display the specified resource.
