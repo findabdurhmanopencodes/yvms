@@ -143,7 +143,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('deployment-regions/{region}/zones', [VolunteerDeploymentController::class, 'zones'])->name('deployment.region.zones');
     Route::get('deployment-regions/zone/{zone}/woredas', [VolunteerDeploymentController::class, 'woredas'])->name('deployment.zone.woredas');
     Route::get('deployment-regions/woreda/{woreda}/show', [VolunteerDeploymentController::class, 'woredaDetail'])->name('deployment.woreda.detail');
-    Route::get('training-center/regional-volunteer-contribution/{id}', [DashboardController::class, 'trainginCenersVolenteerRegionalDistribution'])->name('placed-contribution');
+    Route::get('training-center/regional-volunteer-contribution/{id}', [DashboardController::class, 'trainingCentersVolunteerRegionalDistribution'])->name('placed-contribution');
     Route::any('/volunteer/all', [VolunteerController::class, 'volunteerAll'])->name('volunteer.all');
     Route::get('/volunteer/{volunteer}/detail', [VolunteerController::class, 'volunteerDetail'])->name('volunteer.detail');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -226,6 +226,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
 
     Route::get('{training_center}/show/volunteers', [TraininingCenterController::class, 'show_all_volunteers'])->name('show.volunteers');
     Route::post('{training_center}/graduate', [TraininingCenterController::class, 'graduateVolunteers'])->name('graduate.volunteers');
+    Route::post('{woreda}/deployment/graduate', [VolunteerDeploymentController::class, 'deployedGraduateVolunteers'])->name('deployment_graduate.volunteers');
 
     Route::get('graduated/list', [TraininingCenterController::class, 'graduationList'])->name('graduation.list');
     Route::get('certificate/graduated', [CertificateGenerate::class, 'certificateGenerate'])->name('certificate.graduate');
@@ -307,6 +308,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('{training}/training/schedule/remove', [TraininingCenterController::class, 'trainingScheduleRemove'])->name('training.remove');
     Route::resource('training/{training}/training_document', TrainingDocumentController::class);
     Route::post('/download/idPDF', [IdGenerateController::class, 'pdfDownload'])->name('id.download');
+    Route::post('/certificatePDF/download', [IdGenerateController::class, 'certificateDownload'])->name('certificate.download');
     Route::get('/dashboard', function () {
 
         if (count(TrainingSession::availableSession()) > 0) {

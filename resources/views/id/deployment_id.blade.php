@@ -24,6 +24,16 @@
 @endpush
 
 @section('content')
+<<<<<<< HEAD
+=======
+<form method="POST" id="myForm" action="{{ route('id.download') }}">
+    @csrf
+    <input type="hidden" name="checkVal" value="deployment">
+    <input type="hidden" id="htmlValue" value="{{ $graduated_volunteers }}" name="htmlVal">
+    <input type="hidden" id="qrValue" name="qrValue">
+    <input type="hidden" id="barValue" name="barValue">
+</form>
+>>>>>>> fb808f37a0676f933fc1bd6052c42ef674d8d0c8
 <div class="row">
     <div class="col-lg-12">
         <div class="card card-custom gutter-b">
@@ -102,9 +112,11 @@
     <script src="{{ asset('js/JsBarcode.all.min.js') }}"></script>
     <script>
         var DATAS = [];
+        var obj = [];
+        var objBarCode = [];
         $('#print_btn').on('click', function(){
             var applicants = @json($graduated_volunteers);
-            applicants.forEach(applicant => {
+            Object.keys(applicants).forEach(key => {
                 myDesign = document.createElement("div");
                 // myDesign.setAttribute('id', 'myDesign'+key);
                 myDesign.style.width = "201.6px";
@@ -154,7 +166,7 @@
 
                 var p = document.createElement("p");
                 var s = document.createElement("strong");
-                var textToAdd = document.createTextNode(applicant.id_number);
+                var textToAdd = document.createTextNode(applicants[key].id_number);
                 s.appendChild(textToAdd);
                 p.appendChild(s);
                 p.style.position = "relative";
@@ -180,7 +192,7 @@
 
                 var p2 = document.createElement("p");
                 var s2 = document.createElement("strong");
-                var textToAdd2 = document. createTextNode(applicant.first_name+' '+applicant.father_name);
+                var textToAdd2 = document. createTextNode(applicants[key].first_name+' '+applicants[key].father_name);
                 s2.appendChild(textToAdd2);
                 p2.appendChild(s2);
                 p2.style.position = "relative";
@@ -206,7 +218,7 @@
 
                 var p = document.createElement("p");
                 var s = document.createElement("strong");
-                var textToAdd = document. createTextNode(applicant.approved_applicant.training_placement.deployment.woreda_intake.woreda.name);
+                var textToAdd = document. createTextNode(applicants[key].approved_applicant.training_placement.deployment.woreda_intake.woreda.name);
                 s.appendChild(textToAdd);
                 p.appendChild(s);
                 p.style.position = "relative";
@@ -269,7 +281,7 @@
 
                 var e_date_text = document.createElement("p");
                 var se_date_text = document.createElement("strong");
-                var setextToAddText = document. createTextNode(applicant.session.end_date_am);
+                var setextToAddText = document. createTextNode(applicants[key].session.end_date_am);
                 se_date_text.appendChild(setextToAddText);
                 e_date_text.appendChild(se_date_text);
                 e_date_text.style.position = "relative";
@@ -316,7 +328,7 @@
                 // myDesign.appendChild(div__qr_img);
 
                 var qrcode = new QRCode(div__qr_img, {
-                    text: applicant.id_number,
+                    text: applicants[key].id_number,
                     width: 50,
                     height: 44.7,
                     colorDark : "#000000",
@@ -327,6 +339,8 @@
                 var img = qrcode._el.children[1];
                 var src = div__qr_img.children[0].toDataURL("image/png");
                 var qrf_img = document.createElement('img');
+
+                obj.push(src);
 
                 qrf_img.src = src;
                 div__qr_img_2.style.position = "relative";
@@ -400,7 +414,7 @@
 
                 var pback5 = document.createElement("p");
                 var sback5 = document.createElement("strong");
-                var textToAddback5 = document.createTextNode(applicant.first_name+' '+applicant.father_name);
+                var textToAddback5 = document.createTextNode(applicants[key].first_name+' '+applicants[key].father_name);
                 sback5.appendChild(textToAddback5);
                 pback5.appendChild(sback5);
                 pback5.style.position = "relative";
@@ -458,7 +472,7 @@
 
                 var pback9 = document.createElement("p");
                 var sback9 = document.createElement("strong");
-                var textToAddback9 = document.createTextNode(applicant.approved_applicant.training_placement.deployment.issued_date_am);
+                var textToAddback9 = document.createTextNode(applicants[key].approved_applicant.training_placement.deployment.issued_date_am);
                 sback9.appendChild(textToAddback9);
                 pback9.appendChild(sback9);
                 pback9.style.position = "relative";
@@ -487,7 +501,7 @@
 
                 var pback11 = document.createElement("p");
                 var sback11 = document.createElement("strong");
-                var textToAddback11 = document.createTextNode(applicant.approved_applicant.training_placement.deployment.woreda_intake.woreda.name);
+                var textToAddback11 = document.createTextNode(applicants[key].approved_applicant.training_placement.deployment.woreda_intake.woreda.name);
                 sback11.appendChild(textToAddback11);
                 pback11.appendChild(sback11);
                 pback11.style.position = "relative";
@@ -516,7 +530,7 @@
 
                 var pback13 = document.createElement("p");
                 var sback13 = document.createElement("strong");
-                var textToAddback13 = document.createTextNode(applicant.session.end_date_am);
+                var textToAddback13 = document.createTextNode(applicants[key].session.end_date_am);
                 sback13.appendChild(textToAddback13);
                 pback13.appendChild(sback13);
                 pback13.style.position = "relative";
@@ -533,7 +547,7 @@
 
                 JsBarcode(div__bar_img)
                     .options({font: "OCR-B", displayValue: true, width:0.9, height: 15, background: "white"})
-                    .CODE128(applicant.id_number, {fontSize: 11, textMargin: 2, textPosition: "top", color:'inherit'})
+                    .CODE128(applicants[key].id_number, {fontSize: 11, textMargin: 2, textPosition: "top", color:'inherit'})
                     .render();
 
                 div__bar_img_2.style.position = "relative";
@@ -541,6 +555,9 @@
                 div__bar_img_2.style.left = '142px';
                 div__bar_img_2.style.top = '-216px';
                 div__bar_img.style.color = "black";
+                console.log(div__bar_img.src);
+                
+                objBarCode.push(div__bar_img.src);
 
                 div__bar_img_2.appendChild(div__bar_img.cloneNode(true));
                 myDesignBack.appendChild(div__bar_img_2.cloneNode(true));
@@ -592,7 +609,18 @@
                 DATAS.push(div);
             });
 
+<<<<<<< HEAD
             generatePDF(DATAS);
+=======
+            // console.log(obj)
+
+            document.getElementById('qrValue').value = obj;
+            document.getElementById('barValue').value = objBarCode;
+
+            document.getElementById("myForm").submit();
+            
+            // generatePDF(DATAS);
+>>>>>>> fb808f37a0676f933fc1bd6052c42ef674d8d0c8
         });
 
         function generatePDF(div){
@@ -607,9 +635,20 @@
             console.log(mywindow.document.body);
             mywindow.document.write('</body></html>');
 
+<<<<<<< HEAD
             var allDocument = mywindow.document;
 
             mywindow.document.close();
+=======
+            var allDocument = mywindow.document.body.innerHTML;
+
+            // document.getElementById('htmlValue').value = allDocument;
+
+            // document.getElementById("myForm").submit();
+            // mywindow.document.close();
+            
+
+>>>>>>> fb808f37a0676f933fc1bd6052c42ef674d8d0c8
             mywindow.focus();
 
             setTimeout(() => {

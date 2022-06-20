@@ -165,4 +165,14 @@ class TrainingSession extends Model implements Auditable
     public function attendances(){
         return $this->hasMany(DeploymentVolunteerAttendance::class);
     }
+
+    public function dateDiff(){
+        $diff = abs(strtotime($this->training_end_date) - strtotime($this->training_start_date));
+
+        $years = floor($diff / (365*60*60*24));
+        $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+        $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+        
+        return $years.','.$months.','.$days;
+    }
 }

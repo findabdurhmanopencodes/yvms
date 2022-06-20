@@ -86,7 +86,7 @@ return array (
     'bold' => $fontDir . '/poppins_bold_8fe618268f56b4b8f1e70e87a9e99fc0',
   ),
   'ethiopian' => array(
-    'normal' => $fontDir . '/ethiopian_normal_cfefc06e7159c50589ea382f1f098309',
+    'normal' => $fontDir . '/ethiopian_normal_8392003a324c14b0170315f41b1a255c',
   ),
   'ethiopian12' => array(
     'normal' => $fontDir . '/ethiopian12_normal_e884b6c3f344f8ccf46067bf5b307504',
@@ -108,6 +108,10 @@ return array (
     '600' => $fontDir . '/eb_garamond_600_a5d91de0acc8ebd639cab6660386b867',
     'bold' => $fontDir . '/eb_garamond_bold_8867239d5d72342d1d9904170e82fac4',
     '800' => $fontDir . '/eb_garamond_800_b221ae49c1466040c5bba38de4be6190',
+  ),
+  'droid sans ethiopic' => array(
+    'normal' => $fontDir . '/droid_sans_ethiopic_normal_94f3eb64161a37bcbbbad13223d4f011',
+    'bold' => $fontDir . '/droid_sans_ethiopic_bold_ea5214179bb6f5cd705c0573b934ed7c',
   ),
 );
 }; ?>
