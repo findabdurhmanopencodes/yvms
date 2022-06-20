@@ -134,9 +134,13 @@ class TrainingSession extends Model implements Auditable
     }
 
     public function payroll()
-{
-    return $this->hasMany(Payroll::class);
-}
+    {
+        return $this->hasMany(Payroll::class);
+    }
+
+   public function PaymentReport(){
+    return $this->hasMany(PaymentReport::class);
+   }
 
     public function sessionWoredas()
     {

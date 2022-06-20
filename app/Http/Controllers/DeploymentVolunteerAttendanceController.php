@@ -98,7 +98,10 @@ class DeploymentVolunteerAttendanceController extends Controller
         $past_url = url()->previous();
         if ($users->first() == null) {
             return redirect($past_url)->with('error', 'No Volunteer available!!');
-        }else{
+
+        }
+        else{
+
             return Excel::download(new DeploymentAttendanceExport($users, ['ID Number', 'First Name', 'Father Name', 'Grand Father Name', 'Status', 'Date']), $woreda->name.' attendance.xlsx');
         }
 

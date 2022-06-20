@@ -16,11 +16,12 @@ use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\Woreda;
 use App\Models\PaymentType;
-
+use App\Constants;
 use Andegna\DateTimeFactory;
 use App\Models\Distance;
 use App\Models\Volunteer;
 use App\Models\ApprovedApplicant;
+use App\Models\PaymentReport;
 use App\Models\Status;
 use App\Models\Zone;
 use Illuminate\Contracts\Session\Session;
@@ -51,8 +52,9 @@ class PayrollSheetController extends Controller
     {
 
         $training_centers = TraininingCenter::all();
-       $training_sessions = TrainingSession::all();
+        $training_sessions = TrainingSession::all();
         $payroll_sheets = PayrollSheet::orderBy('id', 'Desc')->Paginate(10);
+       // $payroll =  = Payroll::orderBy('id', 'Desc')->Paginate(10);
 
         return view('payrollSheet.index', compact('payroll_sheets','training_centers', 'training_sessions'));
 
@@ -60,12 +62,12 @@ class PayrollSheetController extends Controller
 
     public function payroll_list($payroll_id){
 
-
+             $payroll_id = $payroll_id;
         $training_centers = TraininingCenter::all();
         $training_sessions = TrainingSession::all();
-        $payroll_sheets = PayrollSheet::select('*')->where('id', '=',$payroll_id)->paginate(10);
+        $payroll_sheets = PayrollSheet::select('*')->where('payroll_id', '=',$payroll_id)->paginate(10);
 
-        return view('payrollSheet.index', compact('payroll_sheets','training_centers', 'training_sessions'));
+        return view('payrollSheet.index', compact('payroll_sheets','training_centers','payroll_id', 'training_sessions'));
 
     }
 
@@ -109,7 +111,7 @@ class PayrollSheetController extends Controller
        public function getPayee($training_session_id,$trainining_center_id){
 
         $results = [];
-        $results = Volunteer::whereRelation('status','acceptance_status',5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainining_center_id)->whereRelation('approvedApplicant', 'training_session_id', $training_session_id)->get();
+        $results = Volunteer::whereRelation('status','acceptance_status', Constants:: VOLUNTEER_STATUS_CHECKEDIN)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainining_center_id)->whereRelation('approvedApplicant', 'training_session_id', $training_session_id)->get();
 
         return $results;
 
@@ -117,20 +119,23 @@ class PayrollSheetController extends Controller
 
     public function generatePDF(Request $request)
     {
-       $placedVolunteers = Volunteer::whereRelation('status','acceptance_status',5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
 
-       $total_volunteers = Volunteer::whereRelation('status','acceptance_status',5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->count();
 
-       $tarif = TransportTarif::select('price')->get()->last()->price;
-       $km = [];
+         $tarif = TransportTarif::select('price')->get()->last()->price;
+         $km = [];
         $paymentTypes  = PaymentType::where('id', 1)->first();
+         $date = DateTimeFactory::fromDateTime(new Carbon('now'))->format('d/m/Y h:i:s');
 
-        $year = Carbon::now()->format('Y');
-        $date = DateTimeFactory::fromDateTime(new Carbon('now'))->format('d/m/Y h:i:s');
+        $traingSession     = TrainingSession::availableSession()->first();
+        $prefix ='MoP-YVMS-Payroll';
+        $current_year = now()->year;
+        $code   = $prefix ."-".$traingSession->id."-".$current_year;
+
         $title = 'Trainee  payroll Payment report';
-        $session = 'MoP-YVMS-01-2014';
+        $session = $prefix ."-".$traingSession->id."-".$current_year;
         $center = 'Name';
 
+        $year = Carbon::now()->format('Y');
         $date =  DateTime::createFromFormat('d/m/Y', $request->get('sdate'));
         $year = $date->format('Y');
         $month = $date->format('m');
@@ -146,8 +151,40 @@ class PayrollSheetController extends Controller
 
         $day = $request->get('day');
 
+        $volunteers = Volunteer::whereRelation('status','acceptance_status', Constants:: VOLUNTEER_STATUS_CHECKEDIN)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
+
+
+           foreach ($volunteers  as $key => $value) {
+            $center=$value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->get()->first();
+             }
+
+
    ///////////////////////////////////////////////////////////////////////////////
         if ($request->get('payment_type') == '1' ) {  // for pocket  money payment
+           // $paymentType = PaymentType::where('id', 1)->first();
+            $placedVolunteers = Volunteer::whereRelation('status','acceptance_status', Constants:: VOLUNTEER_STATUS_CHECKEDIN)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
+            $total_volunteers = Volunteer::whereRelation('status','acceptance_status', Constants:: VOLUNTEER_STATUS_CHECKEDIN)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->count();
+
+
+            ////////// to count total payable volunteers /////////
+            $total =0;
+            foreach ($placedVolunteers as $placedVolunteer) {
+            $total = $total+1;
+
+            }
+               $payment= PaymentReport::create([
+                    'trainining_center_id' =>$center->id,
+                    'training_session_id' =>$traingSession->id,
+                    'payment_type_id'=>1,
+                    'user_id'=>Auth::user()->id,
+                    'total_amount'=>12000,
+                    'total_payee'=>$total
+                ]);
+
+               if(!$payment->save()){
+                    return redirect()->route('payrollSheet.index')->with('error', 'Report not successfull!');
+                }
+
             if ($request->get('format') != null and $request->get('format') == 'pdf') {
                 $pdf = PDF::loadView('payrollSheet.pocket_money_pdf', compact(
                     'placedVolunteers',
@@ -168,15 +205,36 @@ class PayrollSheetController extends Controller
         }
 
         elseif ($request->get('payment_type') == '2') { // for perdiem payment
+            $placedVolunteers = Volunteer::whereRelation('status','acceptance_status', Constants:: VOLUNTEER_STATUS_CHECKEDIN)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
+            $total_volunteers = Volunteer::whereRelation('status','acceptance_status', Constants:: VOLUNTEER_STATUS_CHECKEDIN)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->count();
+
             $totals = [];
             $scale = [];
 
             foreach ($placedVolunteers as $key => $value) {
 
-                array_push($totals, $this->calculate($value->woreda->zone->id, $value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->id));
+                array_push($totals, $this->calculate($value->woreda->zone->id,
+                $value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->id));
                 array_push($scale,$value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->scale);
 
+                  }
+           $total =0;
+            foreach ($placedVolunteers as $placedVolunteer) {
+            $total = $total+1;
 
+            }
+
+            $payment= PaymentReport::create([
+                'trainining_center_id' =>$center->id,
+                'training_session_id' =>$traingSession->id,
+                'payment_type_id'=>2,
+                'user_id'=>Auth::user()->id,
+                'total_amount'=>0,
+                'total_payee'=>$total
+            ]);
+
+           if(!$payment->save()){
+                return redirect()->route('payrollSheet.index')->with('error', 'Report not successfull!');
             }
 
             if ($request->get('format') != null and $request->get('format') == 'pdf') {
@@ -196,7 +254,7 @@ class PayrollSheetController extends Controller
                 ))->setPaper('a4', 'landscape');
 
                 return $pdf->download('perdiem_payment' . $year . 'pdf');
-            } else {
+            }  else {
 
                 return redirect()->route('payrollSheet.index')->with('message', 'Sorry currently We have no Ms exceel file');
             }
@@ -205,18 +263,39 @@ class PayrollSheetController extends Controller
 
         //////////////////////////////////////////////////////////////////////////
         elseif ($request->get('payment_type') == '3') { // for transport payment
+            $placedVolunteers = Volunteer::whereRelation('status','acceptance_status', Constants:: VOLUNTEER_STATUS_CHECKEDIN)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
+            $total_volunteers = Volunteer::whereRelation('status','acceptance_status', Constants:: VOLUNTEER_STATUS_CHECKEDIN)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->count();
+
             $totals = [];
             $scale = [];
             $km = [];
             $tarif = TransportTarif::select('price')->get()->last()->price;
+
             foreach ($placedVolunteers as $key => $value) {
 
                 array_push($totals, $this->calculate($value->woreda->zone->id, $value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->id));
                 array_push($scale,$value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->scale);
                 array_push($km,$this->getKm($value->woreda->zone->id,  $value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->id));
-
-
             }
+               $total =0;
+               foreach ($placedVolunteers as $placedVolunteer) {
+               $total = $total+1;
+
+               }
+          ////////////////// insert record report table ////////////////////
+               $payment= PaymentReport::create([
+                'trainining_center_id' =>$center->id,
+                'training_session_id' =>$traingSession->id,
+                'payment_type_id'=>3,
+                'user_id'=>Auth::user()->id,
+                'total_amount'=>0,
+                'total_payee'=>$total
+            ]);
+
+            if(!$payment->save()){
+                return redirect()->route('payrollSheet.index')->with('error', 'Report not successfull!');
+            }
+         ///////////////////////////////////////////////////////////////////////
             if ($request->get('format') != null and $request->get('format') == 'pdf') {
                 $pdf = PDF::loadView('payrollSheet.transport_payment_pdf', compact(
                     'placedVolunteers',
@@ -244,13 +323,42 @@ class PayrollSheetController extends Controller
      //////////////////////////////////////////////////////////////////////////
         elseif ($request->get('payment_type') == '4') { // for Deployment payment
 
+            $placedVolunteers = Volunteer::whereRelation('status','acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
+            $total_volunteers = Volunteer::whereRelation('status','acceptance_status',7)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->count();
              $kms = [];
+             $zones = [];
              $tarif = TransportTarif::select('price')->get()->last()->price;
             foreach ($placedVolunteers as $key => $value) {
 
-                //(((((((((((((((((((((  this can't work the relation b/n deployed zone id of volunter )))))))))))))))))))))
-                array_push($kms,$this->getKm($value->woreda->attendances->woreda->zone->id,  $value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->id));
+                array_push($kms,$this->getKm(  $value->approvedApplicant->trainingPlacement->deployment->woreda->zone->id, $value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->id
+                ));
+
+                if($kms==null) {
+
+                   $kms = 0;
+                }
+
+
+               }
+            $total =0;
+            foreach ($placedVolunteers as $placedVolunteer) {
+            $total = $total+1;
+
             }
+             ////////////////// insert record report table ////////////////////
+             $payment= PaymentReport::create([
+                'trainining_center_id' =>$center->id,
+                'training_session_id' =>$traingSession->id,
+                'payment_type_id'=>4,
+                'user_id'=>Auth::user()->id,
+                'total_amount'=>0,
+                'total_payee'=>$total
+            ]);
+
+            if(!$payment->save()){
+                return redirect()->route('payrollSheet.index')->with('error', 'Report not successfull!');
+            }
+
             if ($request->get('format') != null and $request->get('format') == 'pdf') {
                 $pdf = PDF::loadView('payrollSheet.deployment_payment_pdf', compact(
                     'placedVolunteers',
@@ -263,7 +371,7 @@ class PayrollSheetController extends Controller
                     'day',
                     'tarif',
                     'kms'
-                ))->setPaper('a4', 'landscape');
+                ))->setPaper('A4', 'landscape');
 
                 return $pdf->download('deployment_payment' . $year . 'pdf');
             } else {
@@ -281,14 +389,15 @@ class PayrollSheetController extends Controller
 
  public function payee($payroll_sheet_id) {
 
-        $training_session_id  = PayrollSheet::select('training_session_id')->where('id', '=',$payroll_sheet_id)->get()->first()->training_session_id;
-        $trainining_center_id  = PayrollSheet::select('trainining_center_id')->where('id', '=',$payroll_sheet_id)->get()->first()->trainining_center_id;
-        $placedVolunteers = $this->getPayee($training_session_id,$trainining_center_id);
-        $center = TraininingCenter::where('id', $trainining_center_id)->get()->first();
-        $PaymentType  = PaymentType::where('id', 1)->first();
+        $training_session_id    = PayrollSheet::select('training_session_id')->where('id', '=',$payroll_sheet_id)->get()->first()->training_session_id;
+        $trainining_center_id   = PayrollSheet::select('trainining_center_id')->where('id', '=',$payroll_sheet_id)->get()->first()->trainining_center_id;
+        $placedVolunteers       = $this->getPayee($training_session_id,$trainining_center_id);
+        $center                 = TraininingCenter::where('id', $trainining_center_id)->get()->first();
+
+        //  $PaymentType  = PaymentType::where('id', 1)->first(); // It should be checked the value of ID
         return view('payrollSheet.trainee_list', [
             'placedVolunteers' => $placedVolunteers,
-            'PaymentType' => $PaymentType,
+          //  'PaymentType' => $PaymentType,
             'total_vol' =>   DB::table('volunteers')->count(),
             'payment_types' => PaymentType::all(),
             'center' => $center,
@@ -303,13 +412,23 @@ class PayrollSheetController extends Controller
      */
     public function create()
     {
+
+
         // creating eduycational level setting
         return view('payrollSheet.create');
     }
-    public function store(Request $request)
-    {
+public function store(Request $request) {
+     //   public function store(Request $request) {
+
+        $training_session_id = TrainingSession::availableSession()->last()->id;
+
+        if (PayrollSheet::where('training_session_id',$training_session_id )->where('trainining_center_id',$request->training_center)->count() > 0) {
+            return redirect()->route('payrollSheet.index')->with('error', ' This payroll sheet aleardy exist!');
+        }
+
         $payroll_sheet = new PayrollSheet();
-        $payroll_sheet->payroll_id = 1;
+      //  $payroll_sheet->payroll_id =$request->payroll_id;
+        $payroll_sheet->payroll_id =1;
         $payroll_sheet->trainining_center_id = $request->training_center;
         $payroll_sheet->training_session_id = TrainingSession::availableSession()->last()->id;
         $payroll_sheet->user_id = Auth::user()->id;

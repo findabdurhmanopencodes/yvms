@@ -55,6 +55,12 @@ class TraininingCenter extends Model implements Auditable
         return $this->hasMany(PayrollSheet::class);
     }
 
+
+    public function PaymentReport(){
+        return $this->hasMany(PaymentReport::class);
+    }
+
+
     public function checkers()
     {
         return $this->hasMany(User::class);

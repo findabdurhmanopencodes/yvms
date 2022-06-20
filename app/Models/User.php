@@ -135,6 +135,10 @@ class User extends Authenticatable implements MustVerifyEmail
     return $this->hasMany(PayrollSheet::class);
     }
 
+    public function PaymentReport(){
+        return $this->hasMany(PaymentReport::class);
+    }
+
     public function payrolls(){
         return $this->hasMany(Payroll::class);
     }
