@@ -65,7 +65,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-lg-6">
+                            {{-- <div class="col-lg-6">
                                 <label>Zone Quota:</label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="qoutaInpercent" value="{{ $zone->qoutaInpercent*100 }}"/>
@@ -73,7 +73,7 @@
                                         <span class="input-group-text">%</span>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="form-group row">

@@ -42,7 +42,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        {{-- <div class="form-group row">
                             <div class="col-lg-6">
                                 <label>Region Quota:</label>
                                 <div class="input-group">
@@ -53,7 +53,7 @@
                                 </div>
                             </div>
 
-                        </div>
+                        </div> --}}
 
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Active: </label>
