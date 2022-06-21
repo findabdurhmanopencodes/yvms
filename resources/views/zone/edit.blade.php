@@ -58,9 +58,9 @@
                                 <label>Region:</label>
                                 <br>
                                 <select class="form-control select2" name="region" id="region" required>
-                                    <option value="{{ $zone->region->id }}">{{ $zone->region->code }}</option>
+                                    <option value="{{ $zone->region->id }}">{{ $zone->region->name }}</option>
                                     @foreach ($regions as $region)
-                                        <option value="{{ $region->id }}">{{ $region->code }}</option>
+                                        <option value="{{ $region->id }}">{{ $region->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

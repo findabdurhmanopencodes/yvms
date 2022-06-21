@@ -58,9 +58,9 @@
                                 <label>Zone:</label>
                                 <br>
                                 <select class="form-control select2" name="zone"  id="zone" required>
-                                    <option value="{{ $woreda->zone->id }}">{{ $woreda->zone->code }}</option>
+                                    <option value="{{ $woreda->zone->id }}">{{ $woreda->zone->name }}</option>
                                     @foreach ($zones as $zone)
-                                        <option value="{{ $zone->id }}">{{ $zone->code }}</option>
+                                        <option value="{{ $zone->id }}">{{ $zone->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
