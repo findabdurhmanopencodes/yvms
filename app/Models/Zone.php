@@ -48,6 +48,9 @@ class Zone extends Model implements Auditable
     public function level(){
         return $this->morphOne(UserRegion::class, 'levelable');
     }
+    public function report(){
+        return $this->morphOne(HierarchyReport::class, 'reportable');
+    }
 
     public function sessionZones(){
         return $this->hasMany(SessionZone::class);

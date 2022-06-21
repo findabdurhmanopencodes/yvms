@@ -25,8 +25,8 @@ class StoreHierarchyReportRequest extends FormRequest
     {
         return [
             'content'=>['required','string','min:0'],
-            'reporter_type'=>['required','string','min:0','max:100'],
-            'reporter_id'=>['required','numeric']
+            'reportable_type'=>['required','string','min:0','max:100'],
+            'reportable_id'=>['required','numeric']
         ];
     }
 }

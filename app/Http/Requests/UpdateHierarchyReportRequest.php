@@ -13,7 +13,7 @@ class UpdateHierarchyReportRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class UpdateHierarchyReportRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'content'=>['required','string','min:0'],
+            'reportable_type'=>['required','string','min:0','max:100'],
+            'reportable_id'=>['required','numeric','min:0']
         ];
     }
 }

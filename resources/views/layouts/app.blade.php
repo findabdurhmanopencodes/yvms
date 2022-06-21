@@ -353,7 +353,7 @@
                                     <a href="{{ route('session.training_session.quota', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
                                         <i class="menu-icon fab fa-quora"></i>
-                                        <span class="menu-text">Regional Quota</span>
+                                        <span class="menu-text">Region Status</span>
                                     </a>
                                 </li>
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'resources') === 0 ? 'menu-item-active' : '' }}"

@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@section('action_title','Quota Allocation')
-@section('title','Quota Allocation')
-@section('breadcrumbTitle','Quota Allocation')
+@section('action_title', 'Quota Allocation')
+@section('title', 'Quota Allocation')
+@section('breadcrumbTitle', 'Quota Allocation')
 @section('breadcrumbList')
-<li class="breadcrumb-item">
-    <a  href="{{ route('training_session.index', []) }}">All Program</a>
-</li>
-<li class="active">Quota Allocation</li>
+    <li class="breadcrumb-item">
+        <a href="{{ route('training_session.index', []) }}">All Program</a>
+    </li>
+    <li class="active">Quota Allocation</li>
 @endsection
 @push('js')
     <!--begin::Page Scripts(used by this page)-->
@@ -20,7 +20,8 @@
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
                 <h3 class="card-label">Youth Volunteer
-                <span class="d-block text-muted pt-2 font-size-sm">Youth Volunteer Qouta</span></h3>
+                    <span class="d-block text-muted pt-2 font-size-sm">Youth Volunteer Qouta</span>
+                </h3>
             </div>
         </div>
         <div class="card-body">
@@ -32,7 +33,8 @@
                         <div class="row align-items-center">
                             <div class="col-md-4 my-2 my-md-0">
                                 <div class="input-icon">
-                                    <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query" />
+                                    <input type="text" class="form-control" placeholder="Search..."
+                                        id="kt_datatable_search_query" />
                                     <span>
                                         <i class="flaticon2-search-1 text-muted"></i>
                                     </span>
@@ -52,85 +54,90 @@
 @endsection
 
 @push('js')
-<script>
+    <script>
+        var sub_column = [{
+                field: 'id',
+                title: 'ID',
+                // template: function(row) {
+                // 	return '<span>' + row.b + ' - ' + row.c + '</span>';
+                // },
+            },
+            {
+                field: 'region_name',
+                title: 'Zone',
+                width: 100
+            },
+            {
+                field: 'quantity',
+                title: 'Quantity',
+                width: 100
+            },
+        ];
 
-    var sub_column = [
-				{
-					field: 'id',
-					title: 'ID',
-					// template: function(row) {
-					// 	return '<span>' + row.b + ' - ' + row.c + '</span>';
-					// },
-				},
-				{
-					field: 'region_name',
-					title: 'Zone',
-					width: 100
-				},
-				{
-					field: 'quantity',
-					title: 'Quantity',
-					width: 100
-				},
-            ];
+        var main_column = [{
+                field: 'key',
+                title: '#',
+            },
+            {
+                field: 'name',
+                title: 'Region',
 
-     var main_column = [
-				// {
-				// 	field: 'id',
-				// 	title: '',
-				// 	sortable: false,
-				// 	width: 30,
-				// 	textAlign: 'center',
-				// },
-				{
-					field: 'key',
-					title: '#',
-				},
-				{
-					field: 'name',
-					title: 'Region',
-				},
-                {
-					field: 'region_quantity',
-					title: 'Number of volunteer allowed',
-				},
+                template: function(row) {
+                    return `<a href='/1/deployment-regions/${row.key}/zones'>${row.name}</a>`;
+                },
+            },
+            {
+                field: 'region_quantity',
+                title: 'Number of volunteer allowed',
+            },
 
-			];
+            // {
+            // 	field: 'id',
+            // 	title: 'ds',
+            // 	sortable: false,
+            // 	width: 30,
+            // 	textAlign: 'center',
+            // },
 
-            var regions = @json($regions);
-            var quota = @json($quota);
-            console.log(quota);
-            // var DATAS;
-            var DATAS = [];
-            var a = [];
-            var SUB_DATAS = [];
+        ];
 
-            quota.forEach(element => {
-                if (element.quotable_type == "App\\Models\\Region") {
-                    DATAS.push({"key": element.quotable.id, "name":element.quotable.name, "region_quantity":element.quantity, "zone":SUB_DATAS});
-                }
+        var regions = @json($regions);
+        var quota = @json($quota);
+        console.log(quota);
+        // var DATAS;
+        var DATAS = [];
+        var a = [];
+        var SUB_DATAS = [];
 
-                // if (element.quotable_type == "App\\Models\\Zone") {
-                //     SUB_DATAS.push({"id":ele.id, "region_name":ele.name, "quantity":ele.quotas});
-                // }
-            });
+        quota.forEach(element => {
+            if (element.quotable_type == "App\\Models\\Region") {
+                DATAS.push({
+                    "key": element.quotable.id,
+                    "name": element.quotable.name,
+                    "region_quantity": element.quantity,
+                    "zone": SUB_DATAS
+                });
+            }
 
-
-
-            // DATAS.push({"id":1, "key": element.id, "name":element.name, "region_quantity":element.quantity.quantity, "zone":[{"id":ele.id, "region_name":ele.name, "quantity":ele.quotas}]});
-
-            // regions.forEach(element => {
-            //     element.zones.forEach(ele => {
-            //         DATAS.push({"id":1, "key": element.id, "name":element.name, "region_quantity":element.quotas[0].quantity, "zone":[{"id":ele.id, "region_name":ele.name, "quantity":ele.quotas}]});
-            //         // SUB_DATAS.push();
-            //     });
+            // if (element.quotable_type == "App\\Models\\Zone") {
+            //     SUB_DATAS.push({"id":ele.id, "region_name":ele.name, "quantity":ele.quotas});
+            // }
+        });
 
 
 
-            //     // SUB_DATAS = [];
-            // });
+        // DATAS.push({"id":1, "key": element.id, "name":element.name, "region_quantity":element.quantity.quantity, "zone":[{"id":ele.id, "region_name":ele.name, "quantity":ele.quotas}]});
+
+        // regions.forEach(element => {
+        //     element.zones.forEach(ele => {
+        //         DATAS.push({"id":1, "key": element.id, "name":element.name, "region_quantity":element.quotas[0].quantity, "zone":[{"id":ele.id, "region_name":ele.name, "quantity":ele.quotas}]});
+        //         // SUB_DATAS.push();
+        //     });
 
 
-</script>
-<script src="{{ asset('assets/js/pages/crud/ktdatatable/child/data-local.js') }}"></script>
+
+        //     // SUB_DATAS = [];
+        // });
+    </script>
+    <script src="{{ asset('assets/js/pages/crud/ktdatatable/child/data-local.js') }}"></script>
 @endpush
