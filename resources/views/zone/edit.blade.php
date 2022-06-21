@@ -65,15 +65,16 @@
                                 </select>
                             </div>
 
-                            {{-- <div class="col-lg-6">
+                            <div class="col-lg-6">
                                 <label>Zone Quota:</label>
                                 <div class="input-group">
-                                    <input type="number" class="form-control" name="qoutaInpercent" value="{{ $zone->qoutaInpercent*100 }}"/>
+                                    <input type="number" class="form-control" name="qoutaInpercent" value="{{ $zone->qoutaInpercent*100 }}" id="zon_quota"/>
                                     <div class="input-group-append">
                                         <span class="input-group-text">%</span>
                                     </div>
                                 </div>
-                            </div> --}}
+                                <small class="text-danger"><b id="message"></b></small>
+                            </div>
                         </div>
 
                         <div class="form-group row">
@@ -109,6 +110,33 @@
                 placeholder: "Select a region"
             });
 
+        });
+
+        var prv_val = $('#zon_quota').val();
+        $("#zon_quota").on("input", function(){
+            value = $('#region').val();
+              if (value) {
+                $.ajax({
+                  type: "POST",
+                  url: "/zone/validate",
+                //   method: 'post',
+                  data: {
+                      'region_id': value,
+                     'qouta': $('#zon_quota').val(),
+                     'prv_val': prv_val,
+                     "_token": $('meta[name="csrf-token"]').attr('content'),
+                  },
+                  success: function(result){
+                      if (result.limit == false) {
+                          $('#message').html('you reached max qouta');
+                          $(":submit").attr("disabled", true);
+                      }else{
+                        $('#message').html('');
+                        $(":submit").removeAttr("disabled");
+                      }
+                  },
+                });
+              }
         });
     </script>
 @endpush

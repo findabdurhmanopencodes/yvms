@@ -42,18 +42,18 @@
                             </div>
                         </div>
 
-                        {{-- <div class="form-group row">
+                        <div class="form-group row">
                             <div class="col-lg-6">
                                 <label>Region Quota:</label>
                                 <div class="input-group">
-                                    <input type="number" class="form-control" name="qoutaInpercent" value="{{ $regions->qoutaInpercent*100 }}"/>
+                                    <input type="number" class="form-control" name="qoutaInpercent" value="{{ $regions->qoutaInpercent*100 }}" id="reg_quota"/>
                                     <div class="input-group-append">
                                         <span class="input-group-text">%</span>
                                     </div>
                                 </div>
+                                <small class="text-danger"><b id="message"></b></small>
                             </div>
-
-                        </div> --}}
+                        </div>
 
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Active: </label>
@@ -78,3 +78,30 @@
     </div>
 </div>
 @endsection
+
+@push('js')
+<script>
+    var prv_val = $("#reg_quota").val();
+    $("#reg_quota").on("input", function(){
+        $.ajax({
+            type: "POST",
+            url: "/region/validate",
+        //   method: 'post',
+            data: {
+                'qouta': $('#reg_quota').val(),
+                'prv_val': prv_val,
+                "_token": $('meta[name="csrf-token"]').attr('content'),
+            },
+            success: function(result){
+                if (result.limit == false) {
+                    $('#message').html('you reached max qouta');
+                    $(":submit").attr("disabled", true);
+                }else{
+                $('#message').html('');
+                $(":submit").removeAttr("disabled");
+                }
+            },
+        });
+    })
+</script>
+@endpush
