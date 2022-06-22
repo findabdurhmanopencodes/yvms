@@ -39,7 +39,7 @@ class TraininingCenter extends Model implements Auditable
 
     public function getLogo()
     {
-        return $this->photo?->file_path ?? asset('user.png');
+        return $this->photo?->file_path ?? asset('ju_logo.png');
     }
 
     public function capacities()

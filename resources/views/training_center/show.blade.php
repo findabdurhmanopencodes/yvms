@@ -79,7 +79,8 @@
         @if (count($capaityAddedInCenter) < 1)
             <div>
                 <a class="btn btn-primary btn-sm float-right mx-2 my-2" data-toggle="modal" data-target="#addCapacity"><i
-                        class="fa  fa-plus"></i>Add Capacity For Session</a>
+                        class="fa  fa-plus"></i>
+                        Add Capacity For Session</a>
             </div>
         @endif
 
@@ -93,7 +94,6 @@
                     <th>Actions</th>
                 </thead>
                 <tbody>
-
                     @foreach ($trainingCenter->capacities as $capacityHistory)
                         <tr>
                             <td> {{ $capacityHistory->capacity }} Volunter</td>
@@ -114,14 +114,8 @@
                     @endforeach
                 </tbody>
             </table>
-
         </div>
-
-
-
     </div>
-
-
     <div class="modal fade" id="addCapacity" tabindex="-1" role="dialog" aria-labelledby="addCapacityLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -137,7 +131,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="col-lg-6">
-                            <label>Capacity:</label>
+                            <label> Capacity: </label>
                             <input type="number" class="form-control" placeholder="Capacity" name="capacity" required />
                         </div>
                     </div>
