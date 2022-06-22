@@ -80,6 +80,7 @@
                   data: {
                      'zone_id': value,
                      'qouta': $('#woreda_quota').val(),
+                     'prv_val': 0,
                      "_token": $('meta[name="csrf-token"]').attr('content'),
                   },
                   success: function(result){

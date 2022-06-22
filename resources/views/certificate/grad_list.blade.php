@@ -55,7 +55,7 @@
                                         {{ $applicant->father_name }}
                                     </td>
                                     <td>
-                                        {{ $applicant->approvedApplicant->trainingPlacement->deployment->woredaIntake->woreda->name }}
+                                        {{ $applicant->approvedApplicant->trainingPlacement->deployment?->woredaIntake->woreda->name }}
                                     </td>
                                 </tr>
                             @endforeach

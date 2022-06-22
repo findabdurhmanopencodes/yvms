@@ -330,14 +330,14 @@
                                         <span class="menu-text">Volunteer Deployments </span>
                                     </a>
                                 </li>
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.hierarchy.index') === 0 ? 'menu-item-active' : '' }}"
+                                {{-- <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.hierarchy.index') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.hierarchy.index', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
                                         <i class="menu-icon fal fa-university"></i>
                                         <span class="menu-text">Hierarchial Reports</span>
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.certificate.graduate') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.certificate.graduate', ['training_session' => Request::route('training_session')]) }}"
@@ -353,7 +353,7 @@
                                     <a href="{{ route('session.training_session.quota', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
                                         <i class="menu-icon fab fa-quora"></i>
-                                        <span class="menu-text">Regional Quota</span>
+                                        <span class="menu-text">Region Status</span>
                                     </a>
                                 </li>
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'resources') === 0 ? 'menu-item-active' : '' }}"

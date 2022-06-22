@@ -31,6 +31,9 @@ class Woreda extends Model implements Auditable
         return $this->belongsTo(Zone::class);
     }
 
+    public function reports(){
+        return $this->morphMany(HierarchyReport::class, 'reportable');
+    }
 
 
     public function getRegionAttribute()

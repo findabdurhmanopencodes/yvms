@@ -24,8 +24,6 @@
 @endpush
 
 @section('content')
-<<<<<<< HEAD
-=======
 <form method="POST" id="myForm" action="{{ route('id.download') }}">
     @csrf
     <input type="hidden" name="checkVal" value="deployment">
@@ -33,7 +31,6 @@
     <input type="hidden" id="qrValue" name="qrValue">
     <input type="hidden" id="barValue" name="barValue">
 </form>
->>>>>>> fb808f37a0676f933fc1bd6052c42ef674d8d0c8
 <div class="row">
     <div class="col-lg-12">
         <div class="card card-custom gutter-b">
@@ -609,9 +606,6 @@
                 DATAS.push(div);
             });
 
-<<<<<<< HEAD
-            generatePDF(DATAS);
-=======
             // console.log(obj)
 
             document.getElementById('qrValue').value = obj;
@@ -620,7 +614,6 @@
             document.getElementById("myForm").submit();
             
             // generatePDF(DATAS);
->>>>>>> fb808f37a0676f933fc1bd6052c42ef674d8d0c8
         });
 
         function generatePDF(div){
@@ -635,11 +628,6 @@
             console.log(mywindow.document.body);
             mywindow.document.write('</body></html>');
 
-<<<<<<< HEAD
-            var allDocument = mywindow.document;
-
-            mywindow.document.close();
-=======
             var allDocument = mywindow.document.body.innerHTML;
 
             // document.getElementById('htmlValue').value = allDocument;
@@ -648,7 +636,6 @@
             // mywindow.document.close();
             
 
->>>>>>> fb808f37a0676f933fc1bd6052c42ef674d8d0c8
             mywindow.focus();
 
             setTimeout(() => {
