@@ -13,8 +13,12 @@ class TraininingCenter extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
+    public static $status = [
+        0 => 'Disactive',
+        1 => 'Active',
+    ];
 
-    protected $fillable = ['name', 'code', 'logo', 'zone_id','scale'];
+    protected $fillable = ['name', 'code', 'logo', 'zone_id','scale','status'];
 
     protected $append = ['region'];
     public function zone()
