@@ -169,7 +169,6 @@ class PayrollSheetController extends Controller
             $total =0;
             foreach ($placedVolunteers as $placedVolunteer) {
             $total = $total+1;
-
             }
                $payment= PaymentReport::create([
                     'trainining_center_id' =>$center->id,
