@@ -81,73 +81,13 @@
                                 </div>
                             @enderror
                         </div>
-                        <input type="hidden" name="reporter_type" value="{{ \App\Models\Woreda::class }}">
-                        <input type="hidden" name="reporter_id" value="{{ $woreda->id }}">
+                        <input type="hidden" name="reportable_type" value="{{ \App\Models\Woreda::class }}">
+                        <input type="hidden" name="reportable_id" value="{{ $woreda->id }}">
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
                     <button type="button" onclick="$('#reportForm').submit()" class="btn btn-primary font-weight-bold">Write
-                        Report</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--view report modal-->
-    <div class="modal fade" id="viewReportModal" data-backdrop="static" tabindex="-1" role="dialog"
-        aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered  modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Report View Form</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div id="reportViewDiv"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="editReportModal" data-backdrop="static" tabindex="-1" role="dialog"
-        aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered  modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Report Form</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="reportEditForm" action="" method="POST">
-                        @csrf
-                        @method('PATCH')
-                        <div class="">
-                            <label for="">Report Text</label>
-                            <div id="contentQuill1" style="height: 325px">
-                            </div>
-                            <textarea name="content" id="content-textarea1" class="d-none">{{ old('content') }}</textarea>
-                            @error('content')
-                                <div class="fv-plugins-message-container">
-                                    <div data-field="content" data-validator="stringLength" class="fv-help-block">
-                                        {{ $message }}
-                                    </div>
-                                </div>
-                            @enderror
-                        </div>
-                        <input type="hidden" name="reporter_type" value="{{ \App\Models\Woreda::class }}">
-                        <input type="hidden" name="reporter_id" value="{{ $woreda->id }}">
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-                    <button type="button" onclick="$('#reportForm').submit()"
-                        class="btn btn-primary font-weight-bold">Update
                         Report</button>
                 </div>
             </div>
@@ -159,10 +99,6 @@
                 <h3 class="card-label">{{ $woreda->name }} Hierarchila Reports</h3>
             </div>
             <div class="card-tool">
-
-                {{-- <a href="#" data-toggle="modal" data-target="#writeReportModal" class="btn btn-primary">
-
-        </a> --}}
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#writeReportModal">
                     <i class="fal fa-plus "></i>
                     Write hierarchial report
@@ -186,20 +122,18 @@
                                 {{ $key + 1 }}
                             </td>
                             <td>
-                                {{ $report->created_at->diffForHumans() }}
+                                {{ \App\Constants::convertDateToEt($report->created_at)->format('d-m-Y') }}
                             </td>
                             <td>
                                 <div class="d-flex justify-content-between">
-                                    {{-- <a class="" href="#"
-                                onclick="$('#reportViewDiv').html('{!! $report->content !!}');" data-toggle="modal"
-                                data-target="#viewReportModal">
-                                <i class="fa text-primary fa-eye">
-                                </i>
-                            </a> --}}
-                                    {{-- <a class="" href="#" onclick="$('#reportEditForm').attr('action','{{ route('session.hierarchy.update',['training_session'=>Request::route('training_session')->id,'hierarchy'=>$report->id]) }}');$('#contentQuill1 .ql-editor').html('{!! $report->content !!}')" data-toggle="modal" data-target="#editReportModal">
-                                <i class="fa text-primary fa-pen">
-                                </i>
-                            </a> --}}
+                                    <a class="" href="{{ route('session.hierarchy.show', ['training_session'=>Request::route('training_session')->id,'hierarchy'=>$report->id]) }}">
+                                        <i class="fa text-primary fa-eye">
+                                        </i>
+                                    </a>
+                                    <a class="" href="{{ route('session.hierarchy.edit', ['training_session'=>Request::route('training_session')->id,'hierarchy'=>$report->id]) }}">
+                                        <i class="fa text-primary fa-pen">
+                                        </i>
+                                    </a>
                                     <a class="" href="#"
                                         onclick="confirmDeleteReport('{{ route('session.hierarchy.destroy', ['training_session' => Request::route('training_session')->id, 'hierarchy' => $report->id]) }}')">
                                         <i class="fa text-danger fa-trash">
@@ -222,7 +156,7 @@
         action="{{ route('session.import.deployment_attendance', ['training_session' => Request::route('training_session')->id, 'woreda' => Request::route('woreda')->id]) }}"
         enctype="multipart/form-data">
         @csrf
-        <div style="z-index: 9999999;" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+        <div style="z-index: 9999999;" class="modal fade" id="exampleModal1" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -297,7 +231,7 @@
                             </li>
                             <li class="navi-item">
                                 <a href="" class="navi-link" data-toggle="modal"
-                                    data-target="#exampleModal">
+                                    data-target="#exampleModal1">
                                     <span class="navi-icon">
                                         <i class="fa fa-users"></i>
                                     </span>
@@ -625,8 +559,6 @@
         }();
 
         jQuery(document).ready(function() {
-            var reports = @json($reports->toJson());
-            console.log(reports[0]);
             KTQuilDemos.init();
             quillEditorSetup('contentQuill1', 'content-textarea');
         });

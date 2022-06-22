@@ -46,24 +46,24 @@ class PayrollController extends Controller
     {
           // creating eduycational level setting
           return view('payroll.create');
-
     }
     public function store()
     {
+        $traingSession     = TrainingSession::availableSession()->first();
+       // dd( $traingSession );
+        $prefix ='MoP-YVMS-Payroll';
+        $current_year = now()->year;
+        $code   = $prefix ."-".$traingSession->id."-".$current_year;
 
-       // dd('hello');
-         //   $request->validate(['name' => 'required|string|unique:payrols,name']);
-             $traingSession     = TrainingSession::availableSession()->last();
-             $prefix ='MoP-YVMS-Payroll';
-             $current_year =now()->year;
-             $code   = $prefix ."-".$traingSession->id."-".$current_year;
+        if (Payroll::where('training_session_id',$traingSession->id)->where('name',$code)->count() > 0) {
+            return redirect()->route('payroll.index')->with('error', ' This session round has been created payroll alreay!');
+        }
 
-             Payroll::create(['name'=>$code,
+              Payroll::create(['name'=>$code,
              'training_session_id'=>$traingSession->id,
              'user_id'=>Auth::user()->id]);
 
           return redirect()->route('payroll.index')->with('message', 'Payroll created successfully');
-
     }
 
     /**

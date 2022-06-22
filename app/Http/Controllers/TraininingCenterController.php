@@ -115,16 +115,16 @@ class TraininingCenterController extends Controller
      */
     public function show($traininingCenter)
     {
-        $traininingCenter = TraininingCenter::with('capacities.trainningSession')->find($traininingCenter);
-        $trainingSession = new TrainingSession();
-        $trainingSessionId = $trainingSession->availableSession()->first()->id;
-
-        $capaityAddedInCenter = TrainingCenterCapacity::where('training_session_id', $trainingSessionId)->where('trainining_center_id', $traininingCenter->id)->get();
-        // dd($capaityAddedInCenter);
-
-        return view('training_center.show', ['trainingCenter' => $traininingCenter, 'capaityAddedInCenter' => $capaityAddedInCenter, 'users' => User::all()]);
+        $traininingCenter     = TraininingCenter::with('capacities.trainningSession')->find($traininingCenter);
+        $trainingSession      = new TrainingSession();
+        $trainingSessionId    = $trainingSession->availableSession()->first()->id;
+        $capaityAddedInCenter = TrainingCenterCapacity::where('training_session_id',
+                                                               $trainingSessionId)->where('trainining_center_id',
+                                                               $traininingCenter->id)->get();
+        return view('training_center.show', ['trainingCenter' => $traininingCenter,
+                                             'capaityAddedInCenter' => $capaityAddedInCenter,
+                                             'users' => User::all()]);
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -133,11 +133,9 @@ class TraininingCenterController extends Controller
      */
     public function edit($TrainingCenter)
 
-    {
-
-        return view('training_center.create', ['trainingCenter' => TraininingCenter::findOrFail($TrainingCenter), 'zones' => Zone::all()]);
+    {  return view('training_center.create', ['trainingCenter' => TraininingCenter::findOrFail($TrainingCenter),
+                'zones' => Zone::all()]);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -246,6 +244,7 @@ class TraininingCenterController extends Controller
             // echo json_encode($data);
         }
     }
+
     public function checkIn($training_session, $id)
     {
         Volunteer::find($id)->status->update(['acceptance_status' => 5]);

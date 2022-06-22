@@ -17,7 +17,7 @@
 @section('content')
     <!--begin::Card-->
     <div class="card card-custom card-body mb-3">
-        <form action="" method="GET">
+        <form name="filterForm" action="" method="GET">
             <div class=" ml-0 col-12 p-0">
                 <div class="row ">
                     @if (Auth::user()->getCordinatingRegion() == null && Auth::user()->getCordinatingZone() == null)
@@ -68,6 +68,7 @@
                     <button class="btn btn-primary btn-block"> Filter</button>
                 </div>
             </div>
+            <input type="hidden" name="print" id="print" value="">
         </form>
     </div>
 
@@ -116,23 +117,25 @@
                 <h3 class="card-label"> Volunteers Deployment </h3>
             </div>
             <div class="card-toolbar">
-                <div class="d-flex">
+                <div class="btn-group">
+
                     @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
                         <a class="btn btn-sm btn-info"
                             href="{{ route('session.deployment.reset', [request()->route('training_session')]) }}">
                             <i class="fal fa-recycle"></i> Reset
                         </a>
-                        <a class="btn ml-4 btn-sm btn-success" onclick="approvePlacment()" href="#">
+                        <a class="btn btn-sm btn-success" onclick="approvePlacment()" href="#">
                             <i class="fal fa-stamp"></i> Approve Deployment
                         </a>
                     @endif
-                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_PLACEMENT_APPROVE)
+                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_DEPLOYMENT_APPROVED)
                         <a href="#">
-                            <span class="label label-xl label-light-success label-inline">Training Placment Approved</span>
+                            <span class="label label-xl label-light-success label-inline">Volunteer Deployment Approved</span>
                         </a>
                     @endif
-
-
+                    <a class="btn btn-sm btn-primary" href="#" onclick="document.filterForm.print.value = '1';document.filterForm.submit();">
+                        <i class="fal fa-print"></i> Print
+                    </a>
                 </div>
             </div>
         </div>
@@ -140,7 +143,7 @@
             <table width="100%" class="table table-striped ">
                 <thead>
                     </tr>
-                    <th> #</th>
+                    <th> SNo.</th>
                     <th> Name </th>
                     {{-- <th> Middle Name </th> --}}
                     <th> Region </th>

@@ -74,14 +74,50 @@
     <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
 @endpush
 
+
+
+<div class="card-toolbar">
+    <form method="POST" action="{{ route('payrollSheet.store', [ ]) }}">
+            @csrf
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-md"  role="document">
+                          <div class="modal-content">
+                           <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Create payroll sheet</h5>
+                            <button type="button" class="close" data-dismiss="modal" -label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                            </button>
+                        </div>
+                       {{-- <input type="hidden" class="form-control" name="payroll_id" value="{{ $payroll->id }}"> --}}
+                        <div class="modal-body">
+                            <div class="card-body">
+                                <div class="form-group col-12">
+                                    <select name="training_center" id="center" class="form-control select2">
+                                        <option value="">Select Training Center</option>
+                                        @foreach ($training_centers as $training_center)
+                                            <option value="{{ $training_center->id }}">{{ $training_center->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary font-weight-bold"> Save </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    <!--end::Button-->
+</div>
+
     <div class="card card-custom card-body mb-3">
 
-
-
-
-        <form action=""  id="form" method="GET">
+  <form action=""  id="form" method="GET">
         <div class=" ml-1 col-12 p-0">
             <div class="row ">
+
 
                  <div class="form-group col-8">
                     <select name="training_center" id="training_center" class="form-control select2">
@@ -118,6 +154,7 @@
                 <!--end::Svg Icon-->
 
       <i class="fa fa-usd"> </i> New sheet
+      {{-- for {{ $payroll->name }} --}}
     </a>
 
 </div>
@@ -172,38 +209,5 @@
             {{ $payroll_sheets->withQueryString()->links() }}
         </div>
     </div>
-    <div class="card-toolbar">
-        <form method="POST" action="{{ route('payrollSheet.store', ['payroll_id'=>1]) }}">
-                @csrf
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-md"  role="document">
-                              <div class="modal-content">
-                               <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Create payroll sheet</h5>
-                                <button type="button" class="close" data-dismiss="modal" -label="Close">
-                                <i aria-hidden="true" class="ki ki-close"></i>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="card-body">
-                                    <div class="form-group col-12">
-                                        <select name="training_center" id="center" class="form-control select2">
-                                            <option value="">Select Training Center</option>
-                                            @foreach ($training_centers as $training_center)
-                                                <option value="{{ $training_center->id }}">{{ $training_center->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary font-weight-bold"> Save </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        <!--end::Button-->
-    </div>
+
 @endsection

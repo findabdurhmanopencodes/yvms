@@ -19,8 +19,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(TrainingSession::class);
             $table->text('content');
-            $table->string('reporter_type');
-            $table->integer('reporter_id');
+            $table->string('reportable_type');
+            $table->integer('reportable_id');
             $table->integer('status')->default(0);
             $table->timestamps();
         });

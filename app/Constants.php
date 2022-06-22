@@ -1,6 +1,8 @@
 <?php
 namespace App;
 
+use Andegna\DateTimeFactory;
+
 class Constants {
 
     const VOLUNTEER_STATUS_PLACED = 4;
@@ -13,11 +15,14 @@ class Constants {
     const TRAINING_SESSION_STARTED = 0;
     const TRAINING_SESSION_PLACEMENT_APPROVE = 1;
     const TRAINING_SESSION_GRADUATED = 2;
+    const TRAINING_SESSION_DEPLOYMENT_APPROVED = 3;
 
     const SYSTEM_USER_ROLE= 'system-user';
 
     const HIERARCHY_REPORT_DRAFT = 0;
     const HIERARCHY_REPORT_SENT = 1;
 
-
+    static function convertDateToEt($date){
+        return DateTimeFactory::fromDateTime($date);
+    }
 }

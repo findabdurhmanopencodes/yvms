@@ -320,10 +320,10 @@ class TrainingSessionController extends Controller
     public function edit(TrainingSession $training_session)
     {
         // dd($training_session->start_date->format('d/m/y'));
-        $start_date = DateTimeFactory::fromDateTime(new DateTime($training_session->start_date))->format('d/m/y');
-        $end_date = DateTimeFactory::fromDateTime(new DateTime($training_session->end_date))->format('d/m/y');
-        $registration_start_date = DateTimeFactory::fromDateTime(new DateTime($training_session->registration_start_date))->format('d/m/y');
-        $registration_dead_line = DateTimeFactory::fromDateTime(new DateTime($training_session->registration_dead_line))->format('d/m/y');
+        $start_date = DateTimeFactory::fromDateTime(new DateTime($training_session->start_date))->format('d/m/Y');
+        $end_date = DateTimeFactory::fromDateTime(new DateTime($training_session->end_date))->format('d/m/Y');
+        $registration_start_date = DateTimeFactory::fromDateTime(new DateTime($training_session->registration_start_date))->format('d/m/Y');
+        $registration_dead_line = DateTimeFactory::fromDateTime(new DateTime($training_session->registration_dead_line))->format('d/m/Y');
 
         $data = [$start_date, $end_date, $registration_start_date, $registration_dead_line];
 
@@ -340,14 +340,14 @@ class TrainingSessionController extends Controller
     public function update(UpdateTrainingSessionRequest $request, TrainingSession $trainingSession, Qouta $qouta)
     {
         $date_now = Carbon::now();
-        $date_now_et = DateTimeFactory::fromDateTime($trainingSession->start_date)->format('d/m/y');
+        $date_now_et = DateTimeFactory::fromDateTime($trainingSession->start_date)->format('d/m/Y');
 
         $data = $request->validate([
             'name' => 'required',
-            'start_date' => ['date_format:d/m/y', 'after_or_equal:' . $date_now_et],
-            'end_date' => ['date_format:d/m/y', 'after_or_equal:start_date'],
-            'registration_start_date' => ['required', 'date_format:d/m/y', 'after_or_equal:start_date', 'before_or_equal:end_date'],
-            'registration_dead_line' => ['required', 'date_format:d/m/y', 'after_or_equal:registration_start_date', 'before_or_equal:end_date'],
+            'start_date' => ['date_format:d/m/Y', 'after_or_equal:' . $date_now_et],
+            'end_date' => ['date_format:d/m/Y', 'after_or_equal:start_date'],
+            'registration_start_date' => ['required', 'date_format:d/m/Y', 'after_or_equal:start_date', 'before_or_equal:end_date'],
+            'registration_dead_line' => ['required', 'date_format:d/m/Y', 'after_or_equal:registration_start_date', 'before_or_equal:end_date'],
             'quantity' => 'required'
         ]);
 
@@ -378,10 +378,10 @@ class TrainingSessionController extends Controller
                 array_push($regs, $reg_new);
             }
 
-            $date_start_gc =  DateTime::createFromFormat('d/m/y', $data['start_date']);
-            $date_end_gc =  DateTime::createFromFormat('d/m/y', $data['end_date']);
-            $date_start_reg_gc =  DateTime::createFromFormat('d/m/y', $data['registration_start_date']);
-            $date_end_reg_gc =  DateTime::createFromFormat('d/m/y', $data['registration_dead_line']);
+            $date_start_gc =  DateTime::createFromFormat('d/m/Y', $data['start_date']);
+            $date_end_gc =  DateTime::createFromFormat('d/m/Y', $data['end_date']);
+            $date_start_reg_gc =  DateTime::createFromFormat('d/m/Y', $data['registration_start_date']);
+            $date_end_reg_gc =  DateTime::createFromFormat('d/m/Y', $data['registration_dead_line']);
 
             $d_s_t_g = DateTimeFactory::of($date_start_gc->format('Y'), $date_start_gc->format('m'), $date_start_gc->format('d'))->toGregorian();
 
@@ -942,7 +942,7 @@ class TrainingSessionController extends Controller
     }
     public function allResource()
     {
-
+        return view('training_session.resource.index', ['resources' => Resource::all()]);
         return view('training_session.resource.index', ['resources' => Resource::paginate(10)]);
     }
 

@@ -197,7 +197,7 @@
                                  @endif
                                 </td>
 
-                                 <td> {{ $distance->created_at }} </td>
+                                 <td> {{ $distance->created_at}} </td>
                             </td>
                             <td>
                                 <a href="javascript:;" onclick="deleteDistance('+id',$(this))" class="btn btn-sm btn-clean btn-icon" class="btn btn-icon">

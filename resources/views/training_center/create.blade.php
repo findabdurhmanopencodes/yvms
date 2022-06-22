@@ -101,7 +101,7 @@
                             <small class="text-danger"><b>{{ $message }}</b></small>
                         @enderror
                     </div>
-                    <div class="form-group col-lg-6 ">
+                    <div class="form-group col-md-6 ">
                         <label class="col-2 col-form-label">status: </label>
                         <div class="col-3">
                             <span class="switch switch-icon">

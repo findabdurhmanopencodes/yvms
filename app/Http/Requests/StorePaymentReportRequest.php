@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateHierarchyReportRequest extends FormRequest
+class StorePaymentReportRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class UpdateHierarchyReportRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -24,9 +24,7 @@ class UpdateHierarchyReportRequest extends FormRequest
     public function rules()
     {
         return [
-            'content'=>['required','string','min:0'],
-            'reportable_type'=>['required','string','min:0','max:100'],
-            'reportable_id'=>['required','numeric','min:0']
+            //
         ];
     }
 }

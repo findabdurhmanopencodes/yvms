@@ -78,6 +78,7 @@
                   data: {
                       'region_id': value,
                      'qouta': $('#zon_quota').val(),
+                     'prv_val': 0,
                      "_token": $('meta[name="csrf-token"]').attr('content'),
                   },
                   success: function(result){
@@ -91,7 +92,7 @@
                   },
                 });
               }
-        })
+        });
 
         var COLUMNS = [{
                 field: 'id',

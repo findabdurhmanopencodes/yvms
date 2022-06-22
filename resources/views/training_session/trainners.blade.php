@@ -12,7 +12,7 @@
         @csrf
         @method('DELETE')
     </form>
-    <div class="card card-custom mb-2">
+    {{-- <div class="card card-custom mb-2">
         <div class="card-body">
             <form method="POST"
                 action="{{ route('session.training_master_placement.store', ['training_session' => Request::route('training_session')]) }}"
@@ -69,7 +69,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> --}}
     <div class="card card-custom">
         <div class="card-header flex-wrap  pt-6 ">
             <div class="card-title mr-0">
@@ -79,7 +79,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table width="100%" class="table table-striped ">
+            <table width="100%" class="table  ">
                 <thead>
                     </tr>
                     <th> # </th>
@@ -94,26 +94,36 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>
-                                <a href="{{ route('training_master.show', ['training_master' => $trainingMasterPlacement->master->id]) }}">
+                                <a
+                                    href="{{ route('training_master.show', ['training_master' => $trainingMasterPlacement->master->id]) }}">
                                     {{ $trainingMasterPlacement->master->user->name() }}
                                 </a>
                             </td>
                             <td>
-                                {{$trainingMasterPlacement->training->name}}
+                                {{ $trainingMasterPlacement->training->name }}
                             </td>
                             <td>
-                                <a href="{{ route('TrainingCenter.show', ['TrainingCenter' => $trainingMasterPlacement->center->id]) }}">
+                                <a
+                                    href="{{ route('TrainingCenter.show', ['TrainingCenter' => $trainingMasterPlacement->center->id]) }}">
                                     {{ $trainingMasterPlacement->center->name }}
                                 </a>
                             </td>
                             <td>
-                                <a href="#" onclick="confirmDeleteMasterPlacement({{ $trainingMasterPlacement->id }})"
+                                <a href="#"
+                                    onclick="confirmDeleteMasterPlacement({{ $trainingMasterPlacement->id }})"
                                     class="btn btn-icon">
                                     <span class="fa fa-trash"></span>
                                 </a>
                             </td>
                         </tr>
                     @endforeach
+                    @if ($trainingMasterPlacements)
+                        <tr>
+                            <td colspan="5" style="text-align: center;">
+                                No assigned master trainers
+                            </td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>

@@ -21,6 +21,7 @@ use App\Models\HierarchyReport;
 use App\Models\Qouta;
 use App\Models\Region;
 use App\Models\Volunteer;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -71,6 +72,12 @@ class VolunteerDeploymentController extends Controller
                 $query->where('id', $user->getCordinatingZone()->id);
             });
         }
+
+        if ($request->get('print')) {
+            $pdf = PDF::loadView('report.deployed_volunteers_list', ['deployedVolunteers' => $q->get()]);
+            return $pdf->stream();
+        }
+
         $deployedVolunteers = $q->paginate(10);
 
         if ($user->getCordinatingRegion() != null) {
@@ -99,7 +106,8 @@ class VolunteerDeploymentController extends Controller
         return redirect()->back()->with(['message' => 'Successfully Cleared Deployment']);
     }
 
-    public function printPDF(){
+    public function printPDF()
+    {
         // Dompdf
     }
 
@@ -183,21 +191,24 @@ class VolunteerDeploymentController extends Controller
     }
     public function zones(TrainingSession $trainingSession, Region $region)
     {
+        $reports = HierarchyReport::where('reportable_type', Region::class)->where('reportable_id', $region->id)->get(['id', 'content', 'status', 'created_at']);
         $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type', Zone::class)->pluck('quotable_id');
         $zones = Zone::where('region_id', $region->id)->with(['woredas', 'quotas'])->whereIn('id', $quota)->get();
-        return view('training_session.zones', compact('trainingSession', 'region', 'zones'));
+        return view('training_session.zones', compact('trainingSession', 'region', 'zones', 'reports'));
     }
     public function woredas(TrainingSession $trainingSession, Zone $zone)
     {
         $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type', Woreda::class)->pluck('quotable_id');
         $woredas = Woreda::where('zone_id', $zone->id)->with(['quotas'])->whereIn('id', $quota)->get();
-        return view('training_session.woredas', compact('trainingSession', 'woredas', 'zone'));
+
+        $reports = HierarchyReport::where('reportable_type', Zone::class)->where('reportable_id', $zone->id)->get(['id', 'content', 'status', 'created_at']);
+        return view('training_session.woredas', compact('trainingSession', 'woredas', 'zone', 'reports'));
     }
 
-    public function woredaDetail(Request $request, TrainingSession $trainingSession,Woreda $woreda)
+    public function woredaDetail(Request $request, TrainingSession $trainingSession, Woreda $woreda)
     {
         $date = '';
-        $reports = HierarchyReport::where('reporter_type',Woreda::class)->where('reporter_id',$woreda->id)->get(['id','content','status','created_at']);
+        $reports = HierarchyReport::where('reportable_type', Woreda::class)->where('reportable_id', $woreda->id)->get(['id', 'content', 'status', 'created_at']);
 
         $volunteers = [];
 
@@ -223,7 +234,7 @@ class VolunteerDeploymentController extends Controller
             $volunteersID = json_decode($attendances->volunteers);
 
             foreach ($volunteersID as $key => $value) {
-                array_push($volunteers ,Volunteer::where('id_number', $value)->get()->first());
+                array_push($volunteers, Volunteer::where('id_number', $value)->get()->first());
             }
         }
 
@@ -237,14 +248,18 @@ class VolunteerDeploymentController extends Controller
                 $volunteersID = json_decode($attendances->volunteers);
 
                 foreach ($volunteersID as $key => $value) {
-                    array_push($volunteers ,Volunteer::where('id_number', $value)->get()->first());
+                    array_push($volunteers, Volunteer::where('id_number', $value)->get()->first());
                 }
             }
         }
-        return view('training_session.woreda_show',compact('trainingSession','woreda','reports', 'volunteers', 'date', 'att_count'));
+
+        return view('training_session.woreda_show', compact('trainingSession', 'woreda', 'reports', 'volunteers', 'date', 'att_count'));
     }
 
-    public function deployedGraduateVolunteers(Request $request, TrainingSession $trainingSession, Woreda $woreda){
+
+
+    public function deployedGraduateVolunteers(Request $request, TrainingSession $trainingSession, Woreda $woreda)
+    {
         $att_amount = $request->get('att_amount');
         $all_vol = $request->get('gc_vol');
         $max_att = $request->get('max_attendance');
@@ -273,9 +288,7 @@ class VolunteerDeploymentController extends Controller
 
         if (!$request->get('att_amount') && !$request->get('gc_vol')) {
             return redirect()->back()->with('error', 'You have not selected anything!');
-        }
-
-        else if ($all_vol) {
+        } else if ($all_vol) {
             foreach ($volunteersAtt  as $key => $applicant) {
                 Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_COMPLETED]);
             }
@@ -288,9 +301,9 @@ class VolunteerDeploymentController extends Controller
 
             if (!$att_count_check) {
                 return redirect()->back()->with('error', 'No volunteer meet your requirement!');
-            }else{
+            } else {
                 foreach ($att_count_check as $key => $applicant) {
-                   Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_COMPLETED]);
+                    Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_COMPLETED]);
                 }
             }
         }

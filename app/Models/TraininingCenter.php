@@ -43,7 +43,7 @@ class TraininingCenter extends Model implements Auditable
 
     public function getLogo()
     {
-        return $this->photo?->file_path ?? asset('user.png');
+        return $this->photo?->file_path ?? asset('ju_logo.png');
     }
 
     public function capacities()
@@ -58,6 +58,12 @@ class TraininingCenter extends Model implements Auditable
     public function PayrollSheet(){
         return $this->hasMany(PayrollSheet::class);
     }
+
+
+    public function PaymentReport(){
+        return $this->hasMany(PaymentReport::class);
+    }
+
 
     public function checkers()
     {

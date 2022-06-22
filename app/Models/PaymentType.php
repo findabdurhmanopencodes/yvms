@@ -16,6 +16,11 @@ class PaymentType extends Model implements Auditable
 protected $fillable = [ 'name','amount'];
 
 
+
+public function PaymentReport(){
+    return $this->hasMany(PaymentReport::class);
+   }
+
 // public function volunteers(){
 
 //     return $this->hasMany(Volunteer::class);

@@ -321,7 +321,7 @@
                 var div__qr_img_2 = document.createElement("div");
 
                 // div__qr_img.setAttribute('id', 'qrcode'+key);
-                
+
                 // myDesign.appendChild(div__qr_img);
 
                 var qrcode = new QRCode(div__qr_img, {
@@ -332,7 +332,7 @@
                     colorLight : "#ffffff",
                     correctLevel : QRCode.CorrectLevel.H,
                 });
-                
+
                 var img = qrcode._el.children[1];
                 var src = div__qr_img.children[0].toDataURL("image/png");
                 var qrf_img = document.createElement('img');
@@ -345,7 +345,7 @@
                 div__qr_img_2.style.top = '-66px';
                 div__qr_img_2.appendChild(qrf_img.cloneNode(true));
                 myDesign.appendChild(div__qr_img_2.cloneNode(true));
-                
+
                 myDesignBack = document.createElement("div");
                 myDesignBack.style.width = "324px";
                 myDesignBack.style.height = "210px";
@@ -541,7 +541,7 @@
 
                 var div__bar_img_2 = document.createElement("div");
                 var div__bar_img = document.createElement("img");
-                
+
                 JsBarcode(div__bar_img)
                     .options({font: "OCR-B", displayValue: true, width:0.9, height: 15, background: "white"})
                     .CODE128(applicants[key].id_number, {fontSize: 11, textMargin: 2, textPosition: "top", color:'inherit'})
@@ -622,10 +622,10 @@
             mywindow.document.write('<html><head>');
             mywindow.document.write('</head><body >');
             div.forEach(element => {
-                mywindow.document.write(element.innerHTML); 
+                mywindow.document.write(element.innerHTML);
             });
 
-            // console.log(mywindow.document.body);
+            console.log(mywindow.document.body);
             mywindow.document.write('</body></html>');
 
             var allDocument = mywindow.document.body.innerHTML;
