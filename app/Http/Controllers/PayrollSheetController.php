@@ -50,24 +50,23 @@ class PayrollSheetController extends Controller
 
     public function index(Request $request)
     {
-
+       // $payroll=  Payroll::findOrFail($payroll_id);
         $training_centers = TraininingCenter::all();
         $training_sessions = TrainingSession::all();
-        $payroll_sheets = PayrollSheet::orderBy('id', 'Desc')->Paginate(10);
-       // $payroll =  = Payroll::orderBy('id', 'Desc')->Paginate(10);
-
+        $payroll_sheets = PayrollSheet::orderBy('id', 'desc')->Paginate(10);
         return view('payrollSheet.index', compact('payroll_sheets','training_centers', 'training_sessions'));
 
     }
 
     public function payroll_list($payroll_id){
 
-             $payroll_id = $payroll_id;
+
+       $payroll=  Payroll::findOrFail($payroll_id);
+
         $training_centers = TraininingCenter::all();
         $training_sessions = TrainingSession::all();
         $payroll_sheets = PayrollSheet::select('*')->where('payroll_id', '=',$payroll_id)->paginate(10);
-
-        return view('payrollSheet.index', compact('payroll_sheets','training_centers','payroll_id', 'training_sessions'));
+        return view('payrollSheet.index', compact('payroll_sheets','training_centers','payroll', 'training_sessions'));
 
     }
 
@@ -160,10 +159,10 @@ class PayrollSheetController extends Controller
 
 
    ///////////////////////////////////////////////////////////////////////////////
-        if ($request->get('payment_type') == '1' ) {  // for pocket  money payment
-           // $paymentType = PaymentType::where('id', 1)->first();
-            $placedVolunteers = Volunteer::whereRelation('status','acceptance_status', Constants:: VOLUNTEER_STATUS_CHECKEDIN)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
-            $total_volunteers = Volunteer::whereRelation('status','acceptance_status', Constants:: VOLUNTEER_STATUS_CHECKEDIN)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->count();
+        if ($request->get('payment_type') == '1' ) {  // for monthly  money payment
+             $fixedAmount = PaymentType::where('id', 1)->first();
+            $placedVolunteers = Volunteer::whereRelation('status','acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
+            $total_volunteers = Volunteer::whereRelation('status','acceptance_status',  Constants::VOLUNTEER_STATUS_DEPLOYED)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->count();
 
 
             ////////// to count total payable volunteers /////////
@@ -177,7 +176,7 @@ class PayrollSheetController extends Controller
                     'training_session_id' =>$traingSession->id,
                     'payment_type_id'=>1,
                     'user_id'=>Auth::user()->id,
-                    'total_amount'=>12000,
+                    'total_amount'=>$fixedAmount , // to get monthly payment
                     'total_payee'=>$total
                 ]);
 
@@ -418,16 +417,16 @@ class PayrollSheetController extends Controller
         return view('payrollSheet.create');
     }
 public function store(Request $request) {
-     //   public function store(Request $request) {
 
-        $training_session_id = TrainingSession::availableSession()->last()->id;
+     //   $payroll =  Payroll::findOrFail($payroll_id);
+ $training_session_id = TrainingSession::availableSession()->last()->id;
 
         if (PayrollSheet::where('training_session_id',$training_session_id )->where('trainining_center_id',$request->training_center)->count() > 0) {
             return redirect()->route('payrollSheet.index')->with('error', ' This payroll sheet aleardy exist!');
         }
 
         $payroll_sheet = new PayrollSheet();
-      //  $payroll_sheet->payroll_id =$request->payroll_id;
+        //$payroll_sheet->payroll_id =$request->payroll_id;
         $payroll_sheet->payroll_id =1;
         $payroll_sheet->trainining_center_id = $request->training_center;
         $payroll_sheet->training_session_id = TrainingSession::availableSession()->last()->id;

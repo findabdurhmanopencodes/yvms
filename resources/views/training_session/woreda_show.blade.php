@@ -156,7 +156,7 @@
         action="{{ route('session.import.deployment_attendance', ['training_session' => Request::route('training_session')->id, 'woreda' => Request::route('woreda')->id]) }}"
         enctype="multipart/form-data">
         @csrf
-        <div style="z-index: 9999999;" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+        <div style="z-index: 9999999;" class="modal fade" id="exampleModal1" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -231,7 +231,7 @@
                             </li>
                             <li class="navi-item">
                                 <a href="" class="navi-link" data-toggle="modal"
-                                    data-target="#exampleModal">
+                                    data-target="#exampleModal1">
                                     <span class="navi-icon">
                                         <i class="fa fa-users"></i>
                                     </span>

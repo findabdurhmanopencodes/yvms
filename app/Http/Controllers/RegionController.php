@@ -175,10 +175,12 @@ class RegionController extends Controller
     {
         $limit = false;
         $reg = $region::all();
-        $sum = $request->qouta / 100;
+        $sum = $request->qouta;
         foreach ($reg as $key => $value) {
-            $sum += $value->qoutaInpercent;
+            $a = $value->qoutaInpercent * 100;
+            $sum += $a;
         }
+        $sum = ($sum - $request->prv_val)/100;
 
         if ($sum <= 1) {
             $limit = true;

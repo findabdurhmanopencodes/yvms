@@ -51,6 +51,8 @@
         }
     </script>
 
+
+
 @push('css')
 <style>
     .select2,
@@ -194,13 +196,15 @@
                             <td>{{ $payroll->user->first_name }} {{ $payroll->user->father_name }} </td>
                             <td>{{ $payroll->created_at->diffForHumans(); }}</td>
                             <td>
+
                             <a href="{{ route('payrollSheet.payroll_list', ['payroll_id'=>$payroll->id]) }}"
 
 
                                 class="btn btn-icon">
                                 <span class="fa fa-list"></span>
                             </a>
-                            <a href="javascript:;" onclick="deletePayroll(' +payroll+ ',$(this))" class="btn btn-sm btn-clean btn-icon"
+                            <?php  $payroll =  $payroll->id; ?>
+                            <a href="javascript:;" onclick="deletePayroll(' +payroll->id+ ',$(this))" class="btn btn-sm btn-clean btn-icon"
                                 class="btn btn-icon">
                                 <span class="fa fa-trash"></span>
                             </a>

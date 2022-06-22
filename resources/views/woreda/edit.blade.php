@@ -58,9 +58,9 @@
                                 <label>Zone:</label>
                                 <br>
                                 <select class="form-control select2" name="zone"  id="zone" required>
-                                    <option value="{{ $woreda->zone->id }}">{{ $woreda->zone->code }}</option>
+                                    <option value="{{ $woreda->zone->id }}">{{ $woreda->zone->name }}</option>
                                     @foreach ($zones as $zone)
-                                        <option value="{{ $zone->id }}">{{ $zone->code }}</option>
+                                        <option value="{{ $zone->id }}">{{ $zone->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -68,11 +68,12 @@
                             <div class="col-lg-6">
                                 <label>Woreda Quota:</label>
                                 <div class="input-group">
-                                    <input type="number" class="form-control" name="qoutaInpercent" value="{{ $woreda->qoutaInpercent*100 }}"/>
+                                    <input type="number" class="form-control" name="qoutaInpercent" value="{{ $woreda->qoutaInpercent*100 }}" id="woreda_quota"/>
                                     <div class="input-group-append">
                                         <span class="input-group-text">%</span>
                                     </div>
                                 </div>
+                                <small class="text-danger"><b id="message"></b></small>
                             </div>
                         </div>
 
@@ -110,5 +111,32 @@
             });
 
         });
+
+        var prv_val = $('#woreda_quota').val();
+        $("#woreda_quota").on("input", function(){  
+            value = $('#zone').val();
+              if (value) {
+                $.ajax({
+                  type: "POST",
+                  url: "/woreda/validate",
+                //   method: 'post',
+                  data: {
+                     'zone_id': value,
+                     'qouta': $('#woreda_quota').val(),
+                     'prv_val':prv_val,
+                     "_token": $('meta[name="csrf-token"]').attr('content'),
+                  },
+                  success: function(result){
+                      if (result.limit == false) {
+                          $('#message').html('you reached max qouta');
+                          $(":submit").attr("disabled", true);
+                      }else{
+                        $('#message').html('');
+                        $(":submit").removeAttr("disabled");
+                      }
+                  },
+                });
+              }
+        })
     </script>
 @endpush
