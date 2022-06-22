@@ -39,8 +39,6 @@ class AuditController extends Controller
             $model = $request->get('model');
            $modelName="App\\".basename(dirname($model)) . "\\" . basename($model);
 
-            // dd($modelName);
-            // // // dd(ucfirst($model));
 
             if (!empty($user)) {
                 $audits = $audits->where('user_id', $user);
@@ -48,7 +46,7 @@ class AuditController extends Controller
             if (!empty($action)) {
                 $audits = $audits->where('event', $action);
             }
-            if (!empty($modelName)) {
+            if (!empty($model)) {
                 $audits = $audits->where('auditable_type', $modelName);
             }
         }

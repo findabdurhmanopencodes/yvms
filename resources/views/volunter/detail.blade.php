@@ -454,7 +454,7 @@
                     <li>Placement Place
                         <strong
                             class="{{ $volunteer->placment() != null ? '' : 'text-danger' }}">{{ $volunteer->placment() != null ? $volunteer->placment()->name : 'Not Placed' }}
-                            ({{ $volunteer->placment()->code }})</strong>
+                            ({{ $volunteer->placment()?->code }})</strong>
                     </li>
                 </div>
             </div>
