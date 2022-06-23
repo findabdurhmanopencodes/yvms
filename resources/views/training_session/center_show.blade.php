@@ -436,7 +436,7 @@
                         <div class="row">
                             <div class="form-group col-md-12">
                                 <input type="hidden" name="permission_id"
-                                    value="{{ Spatie\Permission\Models\Permission::findOrCreate('centerCooridnator')->id }}">
+                                    value="{{ Spatie\Permission\Models\Permission::findOrCreate(Database\Seeders\PermissionSeeder::CENTER_COORIDNATOR)->id }}">
                                 <input type="hidden" name="training_center_id" value="{{ $trainingCenter->id }}">
                                 <input type="hidden" name="training_session_id"
                                     value="{{ Request::route('training_session')->id }}">

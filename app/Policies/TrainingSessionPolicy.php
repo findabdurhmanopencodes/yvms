@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Constants;
 use App\Models\TrainingSession;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -105,5 +106,17 @@ class TrainingSessionPolicy
     public function forceDelete(User $user, TrainingSession $trainingSession)
     {
         //
+    }
+
+    public function trainingCenterIndex(User $user)
+    {
+        if($user->can('session.detail')){
+            return true;
+        }
+
+        if($user->can('session.detail.based')){
+            return true;
+        }
+        return false;
     }
 }

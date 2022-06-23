@@ -30,7 +30,7 @@ class StoreTrainingMasterRequest extends FormRequest
             'dob' => ['required', 'date_format:d/m/Y'],
             'gender' => ['required', 'string', 'in:M,F'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'bank_account' => ['required','string','min:13'],
+            'bank_account' => ['required','string','digits:13'],
         ];
     }
 }

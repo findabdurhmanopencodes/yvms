@@ -147,8 +147,7 @@
                                         </li>
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'training_session.index') === 0 ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
-                                            <a href="{{ route('training_session.index', []) }}"
-                                                class="menu-link">
+                                            <a href="{{ route('training_session.index', []) }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
                                                 </i>
@@ -157,8 +156,7 @@
                                         </li>
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'training_session.create') === 0 ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
-                                            <a href="{{ route('training_session.create', []) }}"
-                                                class="menu-link">
+                                            <a href="{{ route('training_session.create', []) }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
                                                 </i>
@@ -169,14 +167,16 @@
                                 </div>
                             </li>
                             @if (Request::route('training_session'))
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_center.index') === 0 ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('session.training_center.index', ['training_session' => Request::route('training_session')]) }}"
-                                        class="menu-link">
-                                        <i class="menu-icon fal fa-university"></i>
-                                        <span class="menu-text">Session Detail</span>
-                                    </a>
-                                </li>
+                                @can('session.detail')
+                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_center.index') === 0 ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('session.training_center.index', ['training_session' => Request::route('training_session')]) }}"
+                                            class="menu-link">
+                                            <i class="menu-icon fal fa-university"></i>
+                                            <span class="menu-text">Session Detail</span>
+                                        </a>
+                                    </li>
+                                @endcan
 
                                 <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'session.volunteer.index') === 0 || strpos(Route::currentRouteName(), 'session.volunteer.all') === 0 || strpos(Route::currentRouteName(), 'session.applicant.verified') === 0 || strpos(Route::currentRouteName(), 'session.applicant.selected') === 0 || strpos(Route::currentRouteName(), 'session.applicant.email.unVerified') === 0 ? 'menu-item-open' : '' }}"
                                     aria-haspopup="true" data-menu-toggle="hover">
@@ -311,7 +311,7 @@
                                         <span class="menu-text">Check-In</span>
                                     </a>
                                 </li>
-                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.graduation.list') === 0 ? 'menu-item-active' : '' }}"
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.graduation.list') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('session.graduation.list', ['training_session' => Request::route('training_session')]) }}"
                                         class="menu-link">
@@ -401,8 +401,7 @@
                                         </li>
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'training_master') === 0 ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
-                                            <a href="{{ route('training_master.index', []) }}"
-                                                class="menu-link">
+                                            <a href="{{ route('training_master.index', []) }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
                                                 </i>
@@ -502,44 +501,44 @@
                                 </div>
                             </li>
                             <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'Events') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'feild_of_study') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
-                            aria-haspopup="true" data-menu-toggle="hover">
-                            <a href="javascript:;" class="menu-link menu-toggle">
-                                {{-- <i class="menu-icon flaticon-file"></i> --}}
-                                <i class=" menu-icon fa fa-file-magnifying-glass"></i>
-                                <span class="menu-text">Events</span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                            <div class="menu-submenu">
-                                <i class="menu-arrow"></i>
-                                <ul class="menu-subnav">
-                                    <li class="menu-item menu-item-parent" aria-haspopup="true">
-                                        <span class="menu-link">
-                                            <span class="menu-text">Events</span>
-                                        </span>
-                                    </li>
+                                aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    {{-- <i class="menu-icon flaticon-file"></i> --}}
+                                    <i class=" menu-icon fa fa-file-magnifying-glass"></i>
+                                    <span class="menu-text">Events</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                            <span class="menu-link">
+                                                <span class="menu-text">Events</span>
+                                            </span>
+                                        </li>
 
 
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'audits') === 0 ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('Events.create', []) }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot">
-                                                <span></span>
-                                            </i>
-                                            <span class="menu-text">New Event </span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'audits') === 0 ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('Events.index', []) }}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot">
-                                                <span></span>
-                                            </i>
-                                            <span class="menu-text">All Event </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'audits') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('Events.create', []) }}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">New Event </span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'audits') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('Events.index', []) }}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">All Event </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
                             <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'audits') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'feild_of_study') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
                                 aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
