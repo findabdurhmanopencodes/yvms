@@ -8,6 +8,7 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionSeeder extends Seeder
 {
+    const CENTER_COORIDNATOR = 'centerCooridnator';
     /**
      * Run the database seeds.
      *
@@ -15,7 +16,6 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-
         Permission::create(['name'=>'dashboard.index']);
 
         Permission::create(['name'=>'Disablity.index']);
@@ -184,5 +184,12 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'Zone.destroy']);
         Permission::create(['name'=>'Zone.fetch']);
         Permission::create(['name'=>'Zone.validate.form']);
+        $this->abdi();
+    }
+
+    public function abdi()
+    {
+        Permission::create(['name' => PermissionSeeder::CENTER_COORIDNATOR]);
     }
 }
+

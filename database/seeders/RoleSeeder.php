@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Constants;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
@@ -16,10 +17,10 @@ class RoleSeeder extends Seeder
     public function run()
     {
         //
-        $volunteerRole = Role::create(['name' => 'volunteer']);
-        $superAdminRole = Role::create(['name' => 'super-admin']);
-        $regionalCordinatorRole = Role::create(['name' => 'regional-coordinator']);
-        $systemUserCordinatorRole = Role::create(['name' => 'system-user']);
-        $zoneCordinatorRole = Role::create(['name' => 'zone-coordinator']);
+        $volunteerRole = Role::create(['name' => Constants::VOLUNTEER]);
+        $superAdminRole = Role::create(['name' => Constants::SUPER_ADMIN]);
+        $regionalCordinatorRole = Role::create(['name' => Constants::REGIONAL_COORDINATOR]);
+        $systemUserCordinatorRole = Role::create(['name' => Constants::SYSTEM_USER]);
+        $zoneCordinatorRole = Role::create(['name' => Constants::ZONE_COORDINATOR]);
     }
 }

@@ -26,6 +26,7 @@ use App\Models\Volunteer;
 use App\Models\Woreda;
 use App\Models\Zone;
 use Carbon\Carbon;
+use Database\Seeders\PermissionSeeder;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -41,9 +42,39 @@ use Spatie\Permission\Models\Role;
 
 class TrainingSessionController extends Controller
 {
+
+    /**
+     * Get the map of resource methods to ability names.
+     *
+     * @return array
+     */
+    // protected function resourceAbilityMap()
+    // {
+
+    //     return [
+    //         'show' => 'view',
+    //         'create' => 'create',
+    //         'store' => 'create',
+    //         'edit' => 'update',
+    //         'update' => 'update',
+    //         'destroy' => 'delete',
+    //         'trainingCenterIndex' => 'trainingCenterIndex',
+    //     ];
+    // }
+
+    // /**
+    //  * Get the list of resource methods which do not have model parameters.
+    //  *
+    //  * @return array
+    //  */
+    // protected function resourceMethodsWithoutModels()
+    // {
+    //     return ['index', 'create', 'store','trainingCenterIndex'];
+    // }
+
     public function __construct()
     {
-        $this->authorizeResource(TrainingSession::class, 'trainingSession');
+        // $this->authorizeResource(TrainingSession::class, 'trainingSession');
     }
     /**
      * Display a listing of the resource.
@@ -156,10 +187,10 @@ class TrainingSessionController extends Controller
 
         $end_date_am = $trainingSession->endDateET();
 
-        $trainingSession->update(['end_date_am'=>$end_date_am]);
+        $trainingSession->update(['end_date_am' => $end_date_am]);
 
-        foreach (Status::where('acceptance_status',1)->get() as $key => $stat) {
-            Volunteer::where('id', $stat->volunteer_id)->update(['training_session_id'=>$trainingSession->id]);
+        foreach (Status::where('acceptance_status', 1)->get() as $key => $stat) {
+            Volunteer::where('id', $stat->volunteer_id)->update(['training_session_id' => $trainingSession->id]);
         }
 
         $regions = Region::all();
@@ -353,7 +384,7 @@ class TrainingSessionController extends Controller
 
         $end_date_am = $trainingSession->endDateET();
 
-        $trainingSession->update(['end_date_am'=>$end_date_am]);
+        $trainingSession->update(['end_date_am' => $end_date_am]);
 
         $regions = Region::all();
         $zones = Zone::all();
@@ -753,7 +784,7 @@ class TrainingSessionController extends Controller
 
             return redirect()->back()->withErrors('Reseting Screening Is Not Allowed Because Training Placement is Already Done!!  Reset Training Placement To do this Task ');
         } else {
-            foreach (Volunteer::whereRelation('approvedApplicant','training_session_id', $training_session_id)->get() as $volunteer) {
+            foreach (Volunteer::whereRelation('approvedApplicant', 'training_session_id', $training_session_id)->get() as $volunteer) {
                 foreach (Status::all() as $status) {
                     if ($volunteer->id == $status->volunteer_id) {
                         Status::find($status->id)->update(['acceptance_status' => 1]);
@@ -892,7 +923,18 @@ class TrainingSessionController extends Controller
 
     public function trainingCenterIndex(TrainingSession $trainingSession)
     {
-        $trainingCenterCapacities = TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->get();
+        // $user = Auth::user();
+        // if($user->can('session.detail.based')){
+        //     dd('sd');
+        //     // $center = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id',$user->id)->where('permission_id',);
+        //     dd($center->get());
+        //     dd('sd');
+        //     // $trainingCenterCapacities = TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->whereIn('trainining_center_id',)->get();
+        // }
+        // else{
+            $trainingCenterCapacities = TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->get();
+        // }
+
         return view('training_session.centers', compact('trainingSession', 'trainingCenterCapacities'));
     }
 
@@ -905,7 +947,7 @@ class TrainingSessionController extends Controller
         $totalVolunteers = count($volunteers);
         $totalTrainingMasters = TrainingMasterPlacement::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->count();
         $trainings = Training::whereIn('id', TrainingSessionTraining::where('training_session_id', $trainingSession->id)->pluck('id'))->get();
-        $coordinatorPermission = Permission::findOrCreate('centerCooridnator');
+        $coordinatorPermission = Permission::findOrCreate(PermissionSeeder::CENTER_COORIDNATOR);
         $centerCoordinatorQuery = User::whereIn('id', TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $coordinatorPermission->id)->pluck('user_id'));
         $centerCoordinators = $centerCoordinatorQuery->get();
         $centerCoordinatorUsers =  User::doesntHave('volunteer')->doesntHave('trainner')->permission($coordinatorPermission->id)->whereNotIn('id', $centerCoordinatorQuery->pluck('id'))->get();
@@ -960,6 +1002,6 @@ class TrainingSessionController extends Controller
         $trainingSession->update(['status' => Constants::TRAINING_SESSION_PLACEMENT_APPROVE]);
         $trainingSession->save();
         Artisan::call('id:generate');
-        return redirect()->back()->with('message','Placment approved successfully');
+        return redirect()->back()->with('message', 'Placment approved successfully');
     }
 }
