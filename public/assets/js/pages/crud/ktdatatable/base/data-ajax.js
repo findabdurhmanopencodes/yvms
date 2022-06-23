@@ -31,7 +31,7 @@ var KTDatatableRemoteAjaxDemo = function() {
                 },
                 pageSize: 10,
                 serverPaging: true,
-                serverFiltering: true,
+                serverFiltering: false,
                 serverSorting: true,
             },
 
@@ -224,7 +224,7 @@ var KTDatatableRemoteAjaxDemo = function() {
 
 
 		$('#kt_datatable_search_status').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'Status');
+            datatable.search($(this).val().toLowerCase(), 'region');
         });
 
         $('#kt_datatable_search_type').on('change', function() {

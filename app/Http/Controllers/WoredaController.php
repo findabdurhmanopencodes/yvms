@@ -131,9 +131,10 @@ class WoredaController extends Controller
      */
     public function destroy(Woreda $woreda, Request $request)
     {
+        // dd($woreda);
         $woreda->delete();
         // if ($request->ajax()) {
-        //     return response()->json(array('msg' => 'deleted successfully'), 200);
+        return response()->json(array('msg' => 'deleted successfully'), 200);
         // }
     }
     public function fetch(Zone $zone)

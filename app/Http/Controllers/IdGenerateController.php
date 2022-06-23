@@ -96,7 +96,7 @@ class IdGenerateController extends Controller
         $search_var = $request->search;
         $applicant = [];
 
-        $applicants = Volunteer::with('status')->with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->training_center_id)->where('id_number', 'like', '%' . $search_var . '%')->paginate(10);
+        $applicants = Volunteer::with('status')->with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->training_center_id)->where('id_number', 'like', '%' . $search_var . '%')->orWhere('first_name', 'like', '%' . $search_var . '%')->paginate(10);
 
         return response()->json(['applicants'=>$applicants]);
     }

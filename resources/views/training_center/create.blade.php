@@ -68,7 +68,7 @@
                         <label>Payment Scale</label>
                         <input type="text" name="scale" class="form-control "
                             value="{{ old('scale') ?? (isset($trainingCenter) ? $trainingCenter->scale: '') }}"
-                            placeholder="Payment sacle" />ment
+                            placeholder="Payment sacle" />
                         <span class="form-text text-muted">Please enter payment Scale</span>
                         @error('scale')
                             <small class="text-danger"><b>{{ $message }}</b></small>
@@ -78,10 +78,10 @@
                     <div class="col-lg-6">
                         <label>Zone:</label>
                         <br>
-                        <select class="form-control select2" id="zone_id" name="zone_id" required>
+                        <select class="form-control select2" id="zone_id" name="zone_id" required >
                             <option value=""></option>
                             @foreach ($zones as $zone)
-                                <option value="{{ $zone->id }}">{{ $zone->name }}</option>
+                                <option value="{{ $zone->id }}" {{  isset($trainingCenter) ?($trainingCenter?->zone->id==$zone->id?'selected':'' ):''}}>{{ $zone->name }}</option>
                             @endforeach
                         </select>
                         @error('zone_id')
@@ -90,7 +90,7 @@
                     </div>
 
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-lg-6">
                         <label>Logo</label>
                         <div></div>
                         <div class="custom-file">
@@ -101,6 +101,19 @@
                             <small class="text-danger"><b>{{ $message }}</b></small>
                         @enderror
                     </div>
+                    <div class="form-group col-md-6 ">
+                        <label class="col-2 col-form-label">status: </label>
+                        <div class="col-3">
+                            <span class="switch switch-icon">
+                                <label>
+
+                                    <input type="checkbox" checked="{{isset($trainingCenter)?($trainingCenter->status==1?'checked':''):'checked'}}" name="status"/>
+                                    <span></span>
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+
 
                 </div>
         </div>

@@ -348,8 +348,11 @@ Route::get('{training_session}/reset-verification', [VolunteerController::class,
 //     }
 //     dd('stop');
 // });
-Route::resource('Events', EventController::class);
+Route::resource('Events', EventController::class)->except(['index']);;
 Route::get('/All-Events', [EventController::class, 'allEvents'])->name('event.all');
+Route::any('/Events', [EventController::class, 'index'])->name('Events.index');
 Route::get('/Event/{event}', [EventController::class, 'detailEvent'])->name('event.detail');
+Route::get('/Event/image-remove/{eventImage}', [EventController::class, 'removeImage'])->name('event.image.remove');
 Route::any('audits', [AuditController::class, 'index'])
     ->middleware('auth', \App\Http\Middleware\AllowOnlyAdmin::class)->name('audit.index');
+
