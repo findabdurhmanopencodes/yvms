@@ -596,7 +596,7 @@ class TrainingSessionController extends Controller
         // dd($status_table);
         if ($status_table) {
             foreach ($status_table as $key => $stat) {
-                array_push($arr, Volunteer::where('id', $stat->volunteer_id)->get()[0]);
+                array_push($arr, Volunteer::where('id', $stat->volunteer_id)->get()->first());
             }
             $grouped_array_male = array();
             $grouped_array_female = [];
@@ -621,36 +621,45 @@ class TrainingSessionController extends Controller
             }
 
             foreach ($grouped_array_male as $key => $group) {
-                $quota_woreda = Qouta::where('training_session_id', $id)->where('quotable_id', $key)->where('quotable_type', 'App\Models\Woreda')->get()[0]->quantity;
-                // dump($quota_woreda);
+                $quota_woreda = Qouta::where('training_session_id', $id)->where('quotable_id', $key)->where('quotable_type', 'App\Models\Woreda')->get()->first();
 
-                if ($quota_woreda >= sizeof($group)) {
-                    // dump('true');
-                    foreach ($group as $key => $vol) {
-                        array_push($accepted_arr, $vol);
+                if ($quota_woreda) {
+                    $quota_woreda = $quota_woreda->quantity;
+                    if ($quota_woreda >= sizeof($group)) {
+                        // dump('true');
+                        foreach ($group as $key => $vol) {
+                            array_push($accepted_arr, $vol);
+                        }
+                    } else {
+                        // dump('false');
+                        sort($group);
+                        $new_arr = array_slice($group, 0, $quota_woreda);
+                        foreach ($new_arr as $key => $value) {
+                            array_push($accepted_arr, $value);
+                        }
                     }
-                } else {
-                    // dump('false');
-                    sort($group);
-                    $new_arr = array_slice($group, 0, $quota_woreda);
-                    foreach ($new_arr as $key => $value) {
-                        array_push($accepted_arr, $value);
-                    }
+                }else{
+                    return redirect()->back()->with('error', 'Check Your Woreda Quota');
                 }
             }
 
             foreach ($grouped_array_female as $key => $group) {
-                $quota_woreda = Qouta::where('training_session_id', $id)->where('quotable_id', $key)->where('quotable_type', 'App\Models\Woreda')->get()[0]->quantity;
-                if ($quota_woreda >= sizeof($group)) {
-                    foreach ($group as $key => $vol) {
-                        array_push($accepted_arr, $vol);
+                $quota_woreda = Qouta::where('training_session_id', $id)->where('quotable_id', $key)->where('quotable_type', 'App\Models\Woreda')->get()->first();
+                if ($quota_woreda) {
+                    $quota_woreda = $quota_woreda->quantity;
+                    if ($quota_woreda >= sizeof($group)) {
+                        foreach ($group as $key => $vol) {
+                            array_push($accepted_arr, $vol);
+                        }
+                    } else {
+                        sort($group);
+                        $new_arr = array_slice($group, 0, $quota_woreda);
+                        foreach ($new_arr as $key => $value) {
+                            array_push($accepted_arr, $value);
+                        }
                     }
-                } else {
-                    sort($group);
-                    $new_arr = array_slice($group, 0, $quota_woreda);
-                    foreach ($new_arr as $key => $value) {
-                        array_push($accepted_arr, $value);
-                    }
+                }else{
+                    return redirect()->back()->with('error', 'Check Your Woreda Quota');
                 }
             }
 
@@ -726,7 +735,7 @@ class TrainingSessionController extends Controller
 
             foreach ($accepted_arr as $key => $accepted) {
                 $approved_applicant = new ApprovedApplicant();
-                $status = Status::where('volunteer_id', $accepted->id)->get()[0];
+                $status = Status::where('volunteer_id', $accepted->id)->get()->first();
                 $status->acceptance_status = 3;
                 $status->save();
                 $approved_applicant->training_session_id = $id;
