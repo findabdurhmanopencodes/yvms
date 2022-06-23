@@ -68,7 +68,6 @@
                     <tr>
                         <th>No.</th>
                         <th>Name</th>
-                        {{-- <th>Content</th> --}}
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -77,10 +76,16 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $event->title }}</td>
-                            {{-- <td> {!! $event->content !!}</td> --}}
-                            <td><a class="btn btn-info" href="{{ route('Events.show', ['Event'=>$event->id]) }}"><i class="fa fa-eye"></i>Detail</a></td>
-                            <td><a class="btn btn-warning" href="{{ route('Events.edit', ['Event'=>$event->id]) }}"><i class="fa fa-edit"></i>Edit</a></td>
-                            {{-- <td><a class="btn btn-danger" href="{{ route('Events.Delete', ['Event'=>$event->id]) }}"><i class="fa fa-eye"></i>Detail</a></td> --}}
+                            <td>
+                                <form action="{{ route('Events.destroy',['Event'=>$event]) }}" method="post">
+
+                                <a class="btn btn-info" href="{{ route('Events.show', ['Event'=>$event->id]) }}"><i class="fa fa-eye"></i>Detail</a>
+                                <a class="btn btn-warning" href="{{ route('Events.edit', ['Event'=>$event->id]) }}"><i class="fa fa-edit"></i>Edit</a>
+                                    <input class="btn btn-danger" type="submit" value="Delete" />
+                                    @method('delete')
+                                    @csrf
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                     @if (count($events) < 1)

@@ -34,7 +34,7 @@
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary mr-2"><i class="fa fa-plus"></i>
                         {{ isset($resource) ? 'Update resource' : 'Add resource' }}</button>
-                    <button type="reset" class="btn btn-secondary">Cancel</button>
+                    <a href="{{ route('resource.index') }}" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>

@@ -20,16 +20,12 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $events = Event::query();
-
-
         $title = $request->get('title');
         if ($request->has('filter')) {
             if (!empty($title)) {
                 $events = $events->where('tilte', $title);
             }
-
         }
-
         return view('event.index', ['events' => $events->with('images')->paginate(10)]);
     }
 
@@ -139,9 +135,10 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Event $event)
+    public function destroy($event)
     {
-        //
+        Event::find($event)->delete();
+        return redirect()->back();
     }
     public function allEvents()
     {

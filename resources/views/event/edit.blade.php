@@ -103,11 +103,11 @@
                     </div>
                 </div>
                 <div class="">
-                    <label for="">Desription</label>
+                    <label for="">Description</label>
                     <div id="contentQuill" style="height: 325px">
                         {!! old('content') ?? $event->content!!}
                     </div>
-                    <textarea name="content" id="content-textarea" class="d-none">{{ old('content') }}</textarea>
+                    <textarea name="content" id="content-textarea" class="d-none">{{ old('content')  ?? $event->content}}</textarea>
                     @error('content')
                         <div class="fv-plugins-message-container">
                             <div data-field="content" data-validator="stringLength" class="fv-help-block">
