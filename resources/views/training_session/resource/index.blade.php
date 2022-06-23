@@ -52,7 +52,7 @@
             </table>
         </div>
         <div class="m-auto col-6 mt-3">
-            {{ $resources->withQueryString()->links() }}
+            {{ $resources->links() }}
         </div>
     </div>
 @endsection

@@ -110,7 +110,7 @@
                                                 <span class="navi-icon">
                                                     <i class="fa fa-users"></i>
                                                 </span>
-                                                <span class="navi-text">Checked In List</span>
+                                                <span class="navi-text">Checked In List/ID </span>
                                             </a>
                                         </li>
                                         <li class="navi-item">
@@ -118,7 +118,7 @@
                                                 <span class="navi-icon">
                                                     <i class="flaticon2-shopping-cart-1"></i>
                                                 </span>
-                                                <span class="navi-text">Trainners List</span>
+                                                <span class="navi-text">Trainners List/ID</span>
                                             </a>
                                         </li>
                                         <li class="navi-item">
@@ -134,7 +134,7 @@
                                                 <span class="navi-icon">
                                                     <i class="fal fas fa-graduation-cap"></i>
                                                 </span>
-                                                <span class="navi-text">Graduate Volunteers</span>
+                                                <span class="navi-text">Graduate Volunteers/ID</span>
                                             </a>
                                         </li>
                                     </ul>

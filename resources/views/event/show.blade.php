@@ -15,7 +15,16 @@
                         <small>{{ $event->created_at->diffForHumans() }}</small>
                     </h3>
                     @foreach ($event->images as $image)
-                        <img src="{{ asset($image->url) }}" alt="images">
+                    <div >
+                        <img src="{{ asset($image->url) }}"class="my-11" width="700" height="300" alt="event Image not Found">
+                        <p>created At:{{ $image->created_at }}</p>
+
+                    </div>
+                    <div>
+                            <a class="btn btn-danger" href="{{ route('event.image.remove', ['eventImage'=>$image->id]) }}" onclick="alert('are you sure to delete');">Delete Image</a>
+
+                        </div>
+
                     @endforeach
                 </div>
             </div>

@@ -52,7 +52,7 @@
                                         {{ $applicant->id }}
                                     </td>
                                     <td>
-                                        {{ $applicant->master->user->first_name }}
+                                        {{ $applicant->master->user->first_name }} {{ $applicant->master->user->father_name }}
                                     </td>
                                     <td>
                                         Master Trainer
@@ -117,7 +117,7 @@
                                         {{ $applicant->id }}
                                     </td>
                                     <td>
-                                        {{ $applicant->user->first_name }} {{ $applicant->user->first_name }}
+                                        {{ $applicant->user->first_name }} {{ $applicant->user->father_name }}
                                     </td>
                                     <td>
                                         Mop Users

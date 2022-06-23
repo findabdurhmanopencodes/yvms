@@ -65,6 +65,11 @@
                 }
             },
             {
+                field: 'moto',
+                title: 'Program name',
+                sortable: 'asc',
+            },
+            {
                 field: 'start_date_et',
                 title: 'Program start date',
                 sortable: 'asc',
