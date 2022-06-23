@@ -13,8 +13,12 @@ class TraininingCenter extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
+    public static $status = [
+        0 => 'Disactive',
+        1 => 'Active',
+    ];
 
-    protected $fillable = ['name', 'code', 'logo', 'zone_id','scale'];
+    protected $fillable = ['name', 'code', 'logo', 'zone_id','scale','status'];
 
     protected $append = ['region'];
     public function zone()
@@ -39,7 +43,7 @@ class TraininingCenter extends Model implements Auditable
 
     public function getLogo()
     {
-        return $this->photo?->file_path ?? asset('user.png');
+        return $this->photo?->file_path ?? asset('ju_logo.png');
     }
 
     public function capacities()

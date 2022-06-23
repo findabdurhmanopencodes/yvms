@@ -10,6 +10,7 @@ class Event extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
+    protected $fillable=['title','content'];
 
     public function images()
     {

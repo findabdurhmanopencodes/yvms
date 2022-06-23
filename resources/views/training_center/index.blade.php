@@ -102,7 +102,7 @@
                                                     </a>\
                                                     \
                                                     <a href="/TrainingCenter/' + trainingCenterId + '" class="btn btn-sm btn-clean btn-icon" >\
-                                                        <i class="far fa-eye"></i>\
+                                                        <i class="far fa-"></i>\
                                                     </a>\
                                                     <a href="/TrainingCenter/' + trainingCenterId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                                         <i class="far fa-pen"></i>\

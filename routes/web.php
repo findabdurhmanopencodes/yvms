@@ -129,36 +129,41 @@ Route::get('adb', function () {
     // $markdown = new \Illuminate\Mail\Markdown(view(), config('mail.markdown'));
     // return $markdown->render($notification->markdown, $notification->data());
 });
-// Route::get('send',[NotificationController::class,'sendApplicantPlacmentEmail']);
-Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
-//Role & Permission
-Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
-Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
-Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
+    // Route::get('send',[NotificationController::class,'sendApplicantPlacmentEmail']);
 
-Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verified'], 'as' => 'session.'], function () {
+     Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
+     Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
+     Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
+     Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
+
+    Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verified'], 'as' => 'session.'], function () {
     Route::get('report/{report_name}', [ReportController::class, 'index'])->name('reports');
     Route::resource('hierarchy', HierarchyReportController::class);
     Route::get('deployment-regions', [RegionController::class, 'deployment'])->name('deployment.regions');
+
     Route::get('deployment-regions/{region}/zones', [VolunteerDeploymentController::class, 'zones'])->name('deployment.region.zones');
     Route::get('deployment-regions/zone/{zone}/woredas', [VolunteerDeploymentController::class, 'woredas'])->name('deployment.zone.woredas');
     Route::get('deployment-regions/woreda/{woreda}/show', [VolunteerDeploymentController::class, 'woredaDetail'])->name('deployment.woreda.detail');
     Route::get('training-center/regional-volunteer-contribution/{id}', [DashboardController::class, 'trainingCentersVolunteerRegionalDistribution'])->name('placed-contribution');
     Route::any('/volunteer/all', [VolunteerController::class, 'volunteerAll'])->name('volunteer.all');
+
     Route::get('/volunteer/{volunteer}/detail', [VolunteerController::class, 'volunteerDetail'])->name('volunteer.detail');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/quota', [TrainingSessionController::class, 'showQuota'])->name('training_session.quota');
     Route::any('volunteer/', [VolunteerController::class, 'index'])->name('volunteer.index');
+
     Route::resource('/volunteer', VolunteerController::class, ['names' => 'applicant'])->parameters(['volunteer' => 'applicant'])->except(['index']);
     Route::post('applicant/{volunteer}/screen', [VolunteerController::class, 'Screen'])->name('applicant.screen');
     Route::get('volunteer/unverified/email/download', [PrintController::class, 'unverifiedEmail'])->name('volunteer.unverified.email.download');
     // Route::get('/training',[TrainingSessionController::class,'trainings'])->name('training.index');
     Route::resource('/user_attendances', UserAttendanceController::class);
     Route::resource('/attendance', AttendanceController::class);
+
     Route::get('volunteer/{volunteer}/attendances', [VolunteerController::class, 'atend     ance'])->name('volunteer.attendance');
     Route::get('import/View/{training_center}', [ImportExportController::class, 'importView'])->name('volunteer.import.view');
     Route::get('bank/test/import/{training_center}', [ImportExportController::class, 'exportVolunteers'])->name('volunteer.export');
     Route::any('bank/test/{training_center}', [ImportExportController::class, 'importVolunteers'])->name('volunteer.import');
+
     Route::post('applicant/place', [TrainingPlacementController::class, 'place'])->name('applicant.place');
     Route::get('applicants/email/unverified', [VolunteerController::class, 'emailUnverified'])->name('applicant.email.unVerified');
     Route::get('/reset-screen', [TrainingSessionController::class, 'resetScreen'])->name('aplication.resetScreen');
@@ -181,34 +186,44 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedule');
     Route::post('/schedules', [TrainingSessionController::class, 'setSchedule'])->name('schedule.set');
     Route::post('/addSchedule', [ScheduleController::class, 'addSchedule'])->name('schedule.add');
+
     Route::delete('/training_schedule/{training_schedule}', [TrainingScheduleController::class, 'destroy'])->name('trainingschedule.destroy');
     Route::get('training_center', [TrainingSessionController::class, 'trainingCenterIndex'])->name('training_center.index');
     Route::get('training_center/{training_center}', [TrainingSessionController::class, 'trainingCenterShow'])->name('training_center.show');
+
     Route::get('center_base/{training_center}/{cindication_room}/{user}/{permission}/remove', [TrainingCenterBasedPermissionController::class, 'remove'])->name('training_center_based_permission.remove');
     Route::resource('training_center_based_permission', TrainingCenterBasedPermissionController::class);
     Route::post('training_center/{training_center}/assign_checker', [TraininingCenterController::class, 'assignChecker'])->name('training_center.assign_checker');
     Route::post('resource/assign', [TrainingSessionController::class, 'resourceAssignToTrainingCenter'])->name('resource.assign');
+
     Route::post('resource/update', [TrainingSessionController::class, 'updateResourceAssignToTrainingCenter'])->name('resource.update');
     Route::get('/resources', [TrainingSessionController::class, 'allResource'])->name('resource.all');
     Route::get('/resource/{resource}', [TrainingSessionController::class, 'showResource'])->name('resource.show');
     Route::any('/training-center/{training_center_id}/resource-assign', [TraininingCenterController::class, 'giveResource'])->name('resource.assign.volunteer');
+
     Route::any('/training-center/{training_center_id}/resource-assign/volunteer/{volunteer}', [TraininingCenterController::class, 'giveResourceDetail'])->name('resource.assign.volunteer.detail');
     Route::get('check-in/', [TraininingCenterController::class, 'checkInView'])->name('TrainingCenter.CheckIn');
     Route::get('result/', [TraininingCenterController::class, 'result'])->name('result');
+
     Route::get('/check-in/action/{id}', [TraininingCenterController::class, 'checkIn'])->name('TrainingCenter.checked');
     Route::get('/checkin_all', [TraininingCenterController::class, 'checkInAll'])->name('trainingCenter.checkin.all');
+
     Route::any('/check-in/reports/', [TraininingCenterController::class, 'indexChecking'])->name('TrainingCenter.index.checked');
     Route::get('training_center', [TrainingSessionController::class, 'trainingCenterIndex'])->name('training_center.index');
+
     Route::get('training_center/{training_center}', [TrainingSessionController::class, 'trainingCenterShow'])->name('training_center.show');
     Route::get('training_center/{training_center}/training/{training}', [TraininingCenterController::class, 'trainingShow'])->name('training_center.training.show');
     Route::post('training_center/{training_center}/place', [TraininingCenterController::class, 'placeVolunteers'])->name('training_center.placement');
 
     Route::post('{training_center}/id/print', [IdGenerateController::class, 'idGenerate'])->name('training_center.generate');
     Route::get('{training_center}/checkedIn/list', [IdGenerateController::class, 'checkedInList'])->name('training_center.checkedIn_list');
+
     Route::resource('VolunteerResourceHistory', VolunteerResourceHistoryController::class);
     Route::get('{training_center}/{cindication_room}/{training}/volunteers', [CindicationRoomController::class, 'volunteers'])->name('cinidcation_room.training.volunteers');
+
     Route::resource('{training_center}/cindication_room', CindicationRoomController::class);
     Route::resource('training_master_placement', TrainingMasterPlacementController::class);
+
     Route::get('{training_center}/trainer/list', [IdGenerateController::class, 'TrainerList'])->name('training_center.trainer_list');
     Route::get('{training_center}/{cindication_room}/attendance_export/{schedule_id}', [TraininingCenterController::class, 'get_attendance_data'])->name('attendance.export');
     Route::post('{training_center}/{cindication_room}/attendance_import', [TraininingCenterController::class, 'fileImport'])->name('attendance.import');
@@ -221,6 +236,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
 
     Route::get('{woreda_id}/woreda/capacity', [WoredaController::class, 'woredaIntake'])->name('woreda.intake');
     Route::post('woreda/{woreda_id}/capacity/store', [WoredaController::class, 'woredaIntakeStore'])->name('woreda.intake_store');
+
     Route::post('/approve_placment', [TrainingSessionController::class, 'approvePlacment'])->name('placment.approve');
     Route::post('/approve_placment', [TrainingSessionController::class, 'approvePlacment'])->name('placment.approve');
 
@@ -237,9 +253,6 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verifi
     Route::get('{woreda}/deployment/attendance_export', [DeploymentVolunteerAttendanceController::class, 'get_attendance_data'])->name('deployment_attendance.export');
     Route::post('{woreda}/import/deployment', [DeploymentVolunteerAttendanceController::class, 'fileImport'])->name('import.deployment_attendance');
 });
-
-
-
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
 Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
@@ -283,6 +296,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('generatePDF', [PayrollSheetController::class, 'generatePDF'])->name('payrollSheet.generatePDF');
 
     Route::get('{payroll_id}/payroll_list', [PayrollSheetController::class, 'payroll_list'])->name('payrollSheet.payroll_list');
+    //Route::get('{payroll_id}/payroll_index', [PayrollSheetController::class, 'payroll_index'])->name('payrollSheet.payroll_index');
     Route::get('{payroll_sheet_id}/payee_list', [PayrollSheetController::class, 'payee'])->name('payrollSheet.payee');
 
     ////////////////////////////////////////////////////////////////////
@@ -337,5 +351,6 @@ Route::get('{training_session}/reset-verification', [VolunteerController::class,
 Route::resource('Events', EventController::class);
 Route::get('/All-Events', [EventController::class, 'allEvents'])->name('event.all');
 Route::get('/Event/{event}', [EventController::class, 'detailEvent'])->name('event.detail');
+Route::get('/Event/image-remove/{eventImage}', [EventController::class, 'removeImage'])->name('event.image.remove');
 Route::any('audits', [AuditController::class, 'index'])
     ->middleware('auth', \App\Http\Middleware\AllowOnlyAdmin::class)->name('audit.index');

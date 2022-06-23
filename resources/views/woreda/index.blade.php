@@ -70,7 +70,7 @@
             });
         });
 
-        $("#woreda_quota").on("input", function(){  
+        $("#woreda_quota").on("input", function(){
             value = $('#zone').val();
               if (value) {
                 $.ajax({
@@ -123,6 +123,7 @@
                 title: 'Zone',
                 sortable: 'asc',
             },
+            
             {
                 field: 'Actions',
                 title: 'Actions',

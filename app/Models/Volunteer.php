@@ -99,7 +99,7 @@ class Volunteer extends Model implements Auditable
     public function placment()
     {
         $tp = TrainingPlacement::whereRelation('approvedApplicant','volunteer_id',$this->id)->first();
-        return $tp->trainingCenterCapacity->trainingCenter;
+        return $tp?->trainingCenterCapacity?->trainingCenter;
     }
 
     public function approvedApplicant()

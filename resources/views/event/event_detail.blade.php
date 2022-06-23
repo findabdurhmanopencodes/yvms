@@ -132,7 +132,7 @@ function carousel() {
                         <img src="" width="800" height="300" alt="event Image not Found">
                     @endif
                     @foreach ($event->images as $img)
-                        <img src="{{ asset('storage/' . $img->url) }}" width="700" height="300" alt="event Image not Found" class="mySlides">
+                        <img src="{{ asset($img->url) }}" width="700" height="300" alt="event Image not Found" class="mySlides">
                     @endforeach
                     <p>{!! $event->content !!}</p>
 
@@ -142,10 +142,10 @@ function carousel() {
             <div class="rightcolumn">
                 <div class="card">
                     <article class="forecast">
-                        <h1>Popular Events</h1>
+                        <h1>Recent Events</h1>
                         @foreach ($featuredEvents as $featureEvent)
                             <article class="day-forecast">
-                                <h2>{{ $featureEvent->created_at->diffForHumans() }}</h2>
+                                <h2>{{ $featureEvent->updated_at->diffForHumans() }}</h2>
                                 <p><a
                                         href="{{ route('event.detail', ['event' => $featureEvent->id]) }}">{{ $featureEvent->title }}</a>
                                 </p>

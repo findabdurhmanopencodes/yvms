@@ -33,7 +33,7 @@ table {
         <span style="text-align:center;">
             <p style="font-size: 19px"> <b>  Ministery of Peace </b> </p>
             <p style="font-size: 14px"><b>   Youth Volunterism Managment System </b></p>
-            <p style="font-size: 12px"><b>   Trainee Pocket Maney Payment</b></p>
+            <p style="font-size: 12px"><b>   Volunter Monthly Payment Payment</b></p>
 
         </span>
 
