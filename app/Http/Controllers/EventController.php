@@ -17,10 +17,20 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $events = Event::query();
 
-        return view('event.index', ['events' => Event::with('images')->paginate(10)]);
+
+        $title = $request->get('title');
+        if ($request->has('filter')) {
+            if (!empty($title)) {
+                $events = $events->where('tilte', $title);
+            }
+
+        }
+
+        return view('event.index', ['events' => $events->with('images')->paginate(10)]);
     }
 
     /**
