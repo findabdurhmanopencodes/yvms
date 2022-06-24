@@ -197,23 +197,25 @@
                         @foreach ($events as $event)
                             <div class="blog_item col-3 mx-1">
                                 <div class="blog_image">
-                                    <img class="img-fluid" src="{{ asset('storage/' . $event->images()->first()?->url) }}"
+                                    <img class="img-fluid" src="{{ asset( $event->images()->first()?->url) }}"
                                         alt="images not found">
                                     <span><i class="icon ion-md-create"></i></span>
                                 </div>
                                 <div class="blog_details">
                                     <div class="blog_title">
-                                        <h5><a href="#">{{ $event->title }}.</a></h5>
+                                        <h5><a href="#">{{ $event->title }}</a></h5>
                                     </div>
                                     <ul>
                                         <li><i class="icon ion-md-person"></i>Alexa</li>
                                         <li><i class="icon ion-md-calendar"></i>{{ $event->created_at->diffForHumans() }}</li>
                                     </ul>
-                                    <p> {!! Str::limit($event->content, 100) !!} </p>
-                                    <a href="{{ route('event.detail', ['event' => $event->id]) }}">Read More<i
-                                            class="icofont-long-arrow-right"></i></a>
+                                    <h6> {!! Str::limit($event->content, 100) !!} </h6>
+
                                 </div>
+                                <a href="{{ route('event.detail', ['event' => $event->id]) }}">Read More</a>
+
                             </div>
+
                         @endforeach
                     </div>
                 </div>

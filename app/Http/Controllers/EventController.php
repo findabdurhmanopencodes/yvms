@@ -23,7 +23,8 @@ class EventController extends Controller
         $title = $request->get('title');
         if ($request->has('filter')) {
             if (!empty($title)) {
-                $events = $events->where('tilte', $title);
+                $events = $events->where('title','like', '%' . $title . '%');
+
             }
         }
         return view('event.index', ['events' => $events->with('images')->paginate(10)]);

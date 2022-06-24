@@ -27,7 +27,7 @@
 
                 <form
                     action="{{ route('Events.index') }}"
-                    method="post">
+                    method="POST">
                     @csrf
                     <div class="col-sm-4">
                         <label for="title" class=" col-sm-12 col-form-label">Event Title</label>
@@ -90,7 +90,7 @@
                     @endforeach
                     @if (count($events) < 1)
                         <tr>
-                            <td class="text-capitalize text-danger font-size-h4">No Applicants Found</td>
+                            <td class="text-capitalize text-danger font-size-h4">No Events Found</td>
                         </tr>
                     @endif
                 </tbody>
