@@ -78,7 +78,7 @@ table {
                 <td colspan="8">
                     <?php $sum = 0 ?>
                     @foreach ($placedVolunteers as $key => $placedVolunteer)
-                    <?php $sum =  $sum + $totals[$key]; ?>
+                    <?php $sum =  $sum + $scale[$key]; ?>
                     @endforeach
                       Total:    <span style="border-bottom: 3px  double;">  Birr {{  number_format($sum,2)}}</span>
                 </td>

@@ -38,6 +38,21 @@ class PaymentReportController extends Controller
         $payment_reports = PaymentReport::orderBy('id', 'desc')->Paginate(10);
         // $paymentReports = PaymentReport::all();
 
+
+        if ($request->has('filter')) {
+            $ts = $request->get('training_session');
+            $tc = $request->get('training_center');
+
+            if (!empty($ts)) {
+                $payment_reports = $payment_reports->where('training_session_id', '=', $ts);
+               // $payment_reports = $payment_reports->where('first_name', 'like', '%' . $first_name . '%');
+            }
+            if (!empty($tc)) {
+                $payment_reports = $payment_reports->where('trainining_center_id', '=', $tc);
+            }
+
+        }
+
         return view('payrollSheet.payment_report', compact('payment_reports','training_sessions','training_centers'));
     }
 
@@ -73,7 +88,6 @@ class PaymentReportController extends Controller
     {
         //
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -92,11 +106,14 @@ class PaymentReportController extends Controller
      * @param  \App\Models\PaymentReport  $paymentReport
      * @return \Illuminate\Http\Response
      */
+
     public function update(UpdatePaymentReportRequest $request, PaymentReport $paymentReport)
     {
+        $data = $request->validate(['status' => 'required:payment_reports,name,' . $paymentReport->id]);
+        $paymentReport->update($data);
+        return redirect()->route('payrollSheet.payment_report')->with('message', 'Payment approved successfully');
         //
     }
-
     /**
      * Remove the specified resource from storage.
      *

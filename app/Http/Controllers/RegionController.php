@@ -120,6 +120,7 @@ class RegionController extends Controller
         $region = Region::find($id);
         $region->name = $request->get('name');
         $region->code = $request->get('code');
+        
         $region->qoutaInpercent = $request->get('qoutaInpercent') / 100;
         if ($request->get('status')) {
             if ($request->get('status') == 'on') {

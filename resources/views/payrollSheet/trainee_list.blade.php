@@ -130,7 +130,7 @@ $('#sdate').calendarsPicker({
 
         </div>
         <div class="m-auto col-6 mt-3">
-            {{-- {{ $placedVolunteers->withQueryString()->links() }} --}}
+    {{-- {{ $placedVolunteers->withQueryString()->links() }} --}}
         </div>
     </div>
 

@@ -203,9 +203,9 @@
                                 class="btn btn-icon">
                                 <span class="fa fa-list"></span>
                             </a>
-                            <?php  $payroll =  $payroll->id; ?>
-                            <a href="javascript:;" onclick="deletePayroll(' +payroll->id+ ',$(this))" class="btn btn-sm btn-clean btn-icon"
-                                class="btn btn-icon">
+
+
+                            <a href="javascript:;" onclick="deletePayroll({{ $payroll->id  }},$(this))" class="btn btn-sm btn-clean btn-icon" class="btn btn-icon">
                                 <span class="fa fa-trash"></span>
                             </a>
                             </td>

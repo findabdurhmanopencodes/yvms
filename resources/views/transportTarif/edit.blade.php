@@ -19,14 +19,14 @@
 
                 <div class="card-body">
 
-                    <form action="{{ url('transportTarif/'.$tarifs->id) }}" method="POST">
+                    <form action="{{ url('transportTarif/'.$transportTarif->id) }}" method="POST">
                         @csrf
                         @method('PUT')
 
                         <div class="form-group row">
                             <div class="col-lg-12">
                                 <label>Tarif per 1 KM :</label>
-                                <input type="text" class="form-control"  required name="price" value="{{ $transportTarifs->price }}"/>
+                                <input type="text" class="form-control"  required name="price" value="{{ $transportTarif->price }}"/>
                             </div>
 
                         </div>

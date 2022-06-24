@@ -32,10 +32,7 @@ class ZoneController extends Controller
                 return $zone->region->name;
             })->make(true);
         }
-        // $user = Auth::user();
-        // if(!$user->hasRole('super-admin') && !$user->hasPermissionTo('role.viewAll')){
-        //     abort(403);
-        // }
+   
         $zones = Zone::all();
         $regions = Region::all();
         return view('zone.index', compact(['zones', 'regions', 'trainingSession_id']));

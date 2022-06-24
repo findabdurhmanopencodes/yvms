@@ -70,9 +70,7 @@
             <div id="collapseThree6" class="collapse" data-parent="#accordionExample6">
                 <div class="card-body">
 
-                    <form
-                        action="{{ route('session.volunteer.all', ['training_session' => Request::route('training_session')]) }}"
-                        method="post">
+                    <form action="{{ route('session.volunteer.all', ['training_session' => Request::route('training_session')]) }}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-sm-4">
