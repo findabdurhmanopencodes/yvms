@@ -73,9 +73,6 @@
     </script>
     <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
 @endpush
-
-
-
 <div class="card-toolbar">
     <form method="POST" action="{{ route('payrollSheet.store', ['payroll_id'=>$payroll->id]) }}">
             @csrf

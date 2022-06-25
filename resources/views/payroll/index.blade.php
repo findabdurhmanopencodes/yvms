@@ -70,8 +70,6 @@
       });
 
   });
-
-
 </script>
 
     <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
@@ -80,11 +78,7 @@
     <!--begin::Card-->
 
     <div class="card card-custom card-body mb-3">
-
-
-
-
-        <form action=""  id="form" method="GET">
+    <form action=""  id="form" method="GET">
         <div class=" ml-1 col-12 p-0">
             <div class="row ">
 
