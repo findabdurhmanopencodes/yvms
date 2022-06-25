@@ -73,7 +73,7 @@ class TraininingCenterController extends Controller
 
         return view("training_center.create", ['zones' => Zone::all()]);
 
-      //  return view('payrollSheet.create');
+        //  return view('payrollSheet.create');
     }
 
     /**
@@ -84,19 +84,26 @@ class TraininingCenterController extends Controller
      */
     public function store(StoreTraininingCenterRequest $request)
     {
-             $request->validate([
+        // dd($request->get('scale'));
+
+        $request->validate([
             'logo' => 'image|mimes:jpg,png,jpeg,svg|max:2048|',
             'name' => 'min:2|required|string|unique:trainining_centers,name',
             'code' => 'required|string|unique:trainining_centers,code',
-            'scale' => 'min:0|required:trainining_centers,scale'
-          ]);
-        $logoFile = FileController::fileUpload($request->logo, 'training center logos/')->id;
-        TraininingCenter::create(['name'    => $request->get('name'),
-                                  'code'    => $request->get('code'),
-                                  'logo'    => $logoFile,
-                                  'zone_id' => $request->get('zone_id'),
-                                  'scale'   => $request->get('scale')
+            'scale' => 'min:0|required:trainining_centers,scale',
+            'status' => 'required'
         ]);
+        $logoFile = FileController::fileUpload($request->logo, 'training center logos/')->id;
+        TraininingCenter::create([
+            'name' => $request->get('name'),
+            'code' => $request->get('code'),
+            'logo' => $logoFile,
+            'zone_id' => $request->get('zone_id'),
+            'scale' => $request->get('scale'),
+            'status' => $request->get('status')
+        ]);
+
+
         return redirect()->route('TrainingCenter.index')->with('message', 'Training Center created successfully');
     }
 
@@ -138,24 +145,31 @@ class TraininingCenterController extends Controller
      */
     public function update(UpdateTraininingCenterRequest $request,  $traininingCenter)
     {
-        $TrainingCenter = TraininingCenter::findOrFail($traininingCenter);
-        $trainingSession = new TrainingSession();
-        $trainingSessionId = $trainingSession->availableSession()[0]->id;
 
-        TrainingCenterCapacity::create([
-         'capacity'            => $request->get('capacity'),
-         'training_session_id' =>$trainingSessionId,
-         'trainining_center_id' =>$TrainingCenter->id
-        ]);
+        $TrainingCenter = TraininingCenter::findOrFail($traininingCenter);
+        // $trainingSession = new TrainingSession();
+        // $trainingSessionId = $trainingSession->availableSession()[0]->id;
+        // TrainingCenterCapacity::create([
+        //     'capacity' => $request->get('capacity'),
+        //     'training_session_id' => $trainingSessionId,
+        //     'trainining_center_id' => $TrainingCenter->id
+        // ]);
         $data = $request->validate([
             'logo' => 'image|mimes:jpg,png,jpeg,svg|max:2048|',
             'name' => 'min:2|required|string|unique:trainining_centers,name,' . $traininingCenter,
             'code' => 'required|string|unique:trainining_centers,code,' . $traininingCenter,
-            'scale' => 'min:0|required:trainining_centers,scale,'. $traininingCenter
+            'scale' => 'min:0|required:trainining_centers,scale,' . $traininingCenter,
+            // 'status' => 'required'
         ]);
+        // dd($request);
+
 
         $TrainingCenter->update($data);
-
+        if ($request->get('status') == 'on') {
+            $TrainingCenter->status = 1;
+        } else {
+            $TrainingCenter->status = 0;
+        }
         return redirect()->route('TrainingCenter.index')->with('message', 'Training Center updated successfully');
     }
 
@@ -203,7 +217,7 @@ class TraininingCenterController extends Controller
     }
     public function checkInView()
     {
-           return view('training_center.check_in.check_in');
+        return view('training_center.check_in.check_in');
     }
     public function result(Request $request)
     {
@@ -212,7 +226,9 @@ class TraininingCenterController extends Controller
             $query = $request->get('query');
             // Auth::user()->getRoleNames()[0]==Constants::SYSTEM_USER_ROLE;//Need This For Permission
             // ->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',Auth::user()->trainingCheckerOf->id);
-            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-'.$query);
+            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query);
+
+
             if (count($volunteerQuery->get()) > 0) {
                 $data = $volunteerQuery->whereRelation('status', 'acceptance_status', 4)->first();
                 $accepted = $volunteerQuery->whereRelation('status', 'acceptance_status', 5)->first();
@@ -240,7 +256,7 @@ class TraininingCenterController extends Controller
         foreach ($volunteers as $volunteer) {
             Volunteer::find($volunteer->id)->status->update(['acceptance_status' => 5]);
         }
-        return redirect()->back()->with('message','All applicant checked in successfully');
+        return redirect()->back()->with('message', 'All applicant checked in successfully');
     }
     public function indexChecking($training_session, Request $request)
     {
@@ -349,13 +365,13 @@ class TraininingCenterController extends Controller
         $x = 0;
         $volunteerGroups = array_values($volunteerGroups->toArray());
         $numberOfRegions = count($volunteerGroups);
-        foreach($cindicationRooms as $cindicationRoom){
+        foreach ($cindicationRooms as $cindicationRoom) {
             $roomCapacity = $cindicationRoom->number_of_volunteers;
             $placed = 0;
             $x = 0;
-            while($roomCapacity > $placed ){
+            while ($roomCapacity > $placed) {
                 $row = $x % $numberOfRegions;
-                if(count($volunteerGroups[$row])>0){
+                if (count($volunteerGroups[$row]) > 0) {
                     $volunteer = Volunteer::find($volunteerGroups[$row][0]['id']);
                     $volunteer->update([
                         'cindication_room_id' => $cindicationRoom->id,
@@ -366,7 +382,7 @@ class TraininingCenterController extends Controller
                     $placed++;
                 }
                 $x++;
-                if($x > 2000){
+                if ($x > 2000) {
                     // dd('Contact Abdurhman for this error');
                     break;
                 }
@@ -411,9 +427,7 @@ class TraininingCenterController extends Controller
 
         if (!$request->get('att_amount') && !$request->get('gc_vol')) {
             return redirect()->back()->with('error', 'You have not selected anything!');
-        }
-
-        else if ($all_vol) {
+        } else if ($all_vol) {
             foreach ($applicants as $key => $applicant) {
                 Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_GRADUATED]);
             }
@@ -427,9 +441,9 @@ class TraininingCenterController extends Controller
 
             if (!$att_count) {
                 return redirect()->back()->with('error', 'No volunteer meet your requirement!');
-            }else{
+            } else {
                 foreach ($att_count as $key => $applicant) {
-                   Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_GRADUATED]);
+                    Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_GRADUATED]);
                 }
             }
         }

@@ -5,6 +5,16 @@ use Andegna\DateTimeFactory;
 
 class Constants {
 
+    const REGIONAL_COORDINATOR = 'regional-coordinator';
+    const ZONE_COORDINATOR = 'zone-coordinator';
+    const WOREDA_COORDINATOR = 'regional-coordinator';
+    const CENTER_COORDINATOR = 'regional-coordinator';
+    const CO_FACILITATOR = 'regional-coordinator';
+    const SYSTEM_USER = 'system-user';
+    const VOLUNTEER = 'volunteer';
+    const SUPER_ADMIN = 'super-admin';
+
+
     const VOLUNTEER_STATUS_PLACED = 4;
     const VOLUNTEER_STATUS_GRADUATED = 6;
     const VOLUNTEER_STATUS_DEPLOYED = 7;

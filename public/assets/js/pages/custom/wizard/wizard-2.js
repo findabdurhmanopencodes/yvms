@@ -204,13 +204,13 @@ var KTWizard2 = function () {
 
                     password_confirmation: {
                         validators: {
-
                             notEmpty: {
                                 message: 'Password confirm is required'
                             },
                             identical: {
                                 compare: function () {
-                                    return form.querySelector('[name="password"]').value;
+                                    return $('#password').val();
+                                    // return form.querySelector('[name="password"]').value;
                                 },
                                 message: 'The password and its confirm are not the same',
                             },

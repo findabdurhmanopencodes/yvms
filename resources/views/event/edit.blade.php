@@ -1,68 +1,6 @@
 @extends('layouts.app')
-@push('title', 'Post Events')
+@push('title', 'Edit Events')
 @push('jsPage')
-    <script>
-        var avatar5 = new KTImageInput('featured_image');
-
-        avatar5.on('cancel', function(imageInput) {
-            swal.fire({
-                title: 'Image successfully changed !',
-                type: 'success',
-                buttonsStyling: false,
-                confirmButtonText: 'Awesome!',
-                confirmButtonClass: 'btn btn-primary font-weight-bold'
-            });
-        });
-
-        avatar5.on('change', function(imageInput) {
-            swal.fire({
-                title: 'Image successfully changed !',
-                type: 'success',
-                buttonsStyling: false,
-                confirmButtonText: 'Awesome!',
-                confirmButtonClass: 'btn btn-primary font-weight-bold'
-            });
-        });
-
-        avatar5.on('remove', function(imageInput) {
-            swal.fire({
-                title: 'Image successfully removed !',
-                type: 'error',
-                buttonsStyling: false,
-                confirmButtonText: 'Got it!',
-                confirmButtonClass: 'btn btn-primary font-weight-bold'
-            });
-        });
-    </script>
-    <script>
-        function validate() {
-            FormValidation.formValidation(
-                document.getElementById('blog-form'), {
-                    fields: {
-                        // content: {
-                        //     validators: {
-                        //         notEmpty: {
-                        //             message: 'Content is required'
-                        //         },
-                        //         // emailAddress: {
-                        //         //     message: 'The value is not a valid email address'
-                        //         // }
-                        //     }
-                        // },
-                    },
-                    plugins: {
-                        trigger: new FormValidation.plugins.Trigger(),
-                        bootstrap: new FormValidation.plugins.Bootstrap(),
-                        submitButton: new FormValidation.plugins.SubmitButton(),
-                        defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-                    }
-                }
-            );
-        }
-        $(function() {
-            validate();
-        })
-    </script>
     <script>
         // Class definition
         var KTQuilDemos = function() {
@@ -127,16 +65,15 @@
         </div>
         <div class="card-body">
 
-            <form method="POST" action="{{ route('Events.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('Events.update',['Event'=>$event->id]) }}" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
                 <label class="text-right col-form-label ">Title</label>
                 <div class="row">
                     <div class="col-md-12 form-group d-flex">
-
-
                         <div class="col-md-11">
                             <input class="form-control @error('title') is-invalid @enderror" type="text" placeholder="Title"
-                                id="title" name="title" value="{{ old('title') }}" />
+                                id="title" name="title" value="{{ old('title') ?? $event->title }}" />
                             @error('title')
                                 <div class="fv-plugins-message-container">
                                     <div data-field="title" data-validator="stringLength" class="fv-help-block">
@@ -166,11 +103,11 @@
                     </div>
                 </div>
                 <div class="">
-                    <label for="">Desription</label>
+                    <label for="">Description</label>
                     <div id="contentQuill" style="height: 325px">
-                        {!! old('content') !!}
+                        {!! old('content') ?? $event->content!!}
                     </div>
-                    <textarea name="content" id="content-textarea" class="d-none">{{ old('content') }}</textarea>
+                    <textarea name="content" id="content-textarea" class="d-none">{{ old('content')  ?? $event->content}}</textarea>
                     @error('content')
                         <div class="fv-plugins-message-container">
                             <div data-field="content" data-validator="stringLength" class="fv-help-block">
@@ -182,8 +119,8 @@
         </div>
         <div class="card-footer">
             <div class="d-flex">
-                <button type="submit" class="px-5 mr-2 btn btn-success">Post Event</button>
-                <a href="{{ route('Events.index') }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="px-5 mr-2 btn btn-success">Update blog</button>
+                <button type="reset" class="btn btn-secondary">Cancel</button>
             </div>
         </form>
         </div>

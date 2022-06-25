@@ -54,7 +54,7 @@
                                     {{ $applicant->id_number }}
                                 </td>
                                 <td>
-                                    {{ $applicant->first_name }}
+                                    {{ $applicant->first_name }} {{ $applicant->father_name }}
                                 </td>
                                 <td>
                                     @if ($applicant->idCount)
@@ -120,8 +120,9 @@
                     if (data.length > 0) {
                         $('#search_table tbody').html('');
                         data.forEach(element => {
+                            var count = element.idCount || 0;
                             var input = `<input type="checkbox" name="applicant[]" value="${element.id}" id="checkbox"/>`;
-                            $('#search_table tbody').append("<tr>"+getTableCell(input)+getTableCell(element.id_number)+getTableCell(element.first_name)+getTableCell(element.approved_applicant.training_placement.training_center_capacity.training_center.code)+"</tr>");
+                            $('#search_table tbody').append("<tr>"+getTableCell(input)+getTableCell(element.id_number)+getTableCell(element.first_name+' ' +element.father_name)+getTableCell(count)+getTableCell(element.approved_applicant.training_placement.training_center_capacity.training_center.code)+"</tr>");
                         });
                         $("#paginate").hide();
                     }else{

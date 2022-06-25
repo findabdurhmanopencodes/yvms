@@ -142,7 +142,7 @@ class TrainingMasterController extends Controller
         ]);
         $user->save();
         $trainingMaster->save();
-        return redirect()->back()->with('message','Training master information updated successfully');
+        return redirect()->route('training_master.index')->with('message','Training master information updated successfully');
     }
 
     /**
