@@ -370,7 +370,7 @@
 
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <i class="menu-icon flaticon-users"></i>
-                                    <span class="menu-text">User</span>
+                                    <span class="menu-text">User Managment</span>
                                     <i class="menu-arrow"></i>
                                 </a>
                                 <div class="menu-submenu">
@@ -381,6 +381,7 @@
                                                 <span class="menu-text">User</span>
                                             </span>
                                         </li>
+
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'user.index') === 0 ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
                                             <a href="{{ route('user.index', []) }}" class="menu-link">
@@ -390,6 +391,7 @@
                                                 <span class="menu-text">All Users</span>
                                             </a>
                                         </li>
+
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'user.create') === 0 ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
                                             <a href="{{ route('user.create', []) }}" class="menu-link">
@@ -399,6 +401,8 @@
                                                 <span class="menu-text">Add User</span>
                                             </a>
                                         </li>
+
+
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'training_master') === 0 ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
                                             <a href="{{ route('training_master.index', []) }}" class="menu-link">
@@ -408,6 +412,26 @@
                                                 <span class="menu-text">Master Trainers</span>
                                             </a>
                                         </li>
+
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'role.index') === 0 ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('role.index', []) }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="menu-text">Roles</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'permission.index') === 0 ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('permission.index', []) }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="menu-text">Permissions</span>
+                                        </a>
+                                    </li>
                                     </ul>
                                 </div>
                             </li>
@@ -419,7 +443,7 @@
                                 </a>
                             </li>
 
-                            <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0 ? 'menu-item-open' : '' }}"
+                            {{-- <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0 ? 'menu-item-open' : '' }}"
                                 aria-haspopup="true" data-menu-toggle="hover">
 
                                 <a href="javascript:;" class="menu-link menu-toggle">
@@ -435,6 +459,7 @@
                                                 <span class="menu-text">Roles &amp; Permissions</span>
                                             </span>
                                         </li>
+
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'role.index') === 0 ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
                                             <a href="{{ route('role.index', []) }}" class="menu-link">
@@ -444,6 +469,7 @@
                                                 <span class="menu-text">Roles</span>
                                             </a>
                                         </li>
+
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'permission.index') === 0 ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
                                             <a href="{{ route('permission.index', []) }}" class="menu-link">
@@ -453,9 +479,10 @@
                                                 <span class="menu-text">Permissions</span>
                                             </a>
                                         </li>
+
                                     </ul>
                                 </div>
-                            </li>
+                            </li> --}}
 
                             @include('aside.ms_aside')
                             @include('aside.placement')
