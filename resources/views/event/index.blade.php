@@ -27,7 +27,7 @@
 
                 <form
                     action="{{ route('Events.index') }}"
-                    method="post">
+                    method="POST">
                     @csrf
                     <div class="col-sm-4">
                         <label for="title" class=" col-sm-12 col-form-label">Event Title</label>
@@ -68,7 +68,6 @@
                     <tr>
                         <th>No.</th>
                         <th>Name</th>
-                        {{-- <th>Content</th> --}}
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -77,15 +76,21 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $event->title }}</td>
-                            {{-- <td> {!! $event->content !!}</td> --}}
-                            <td><a class="btn btn-info" href="{{ route('Events.show', ['Event'=>$event->id]) }}"><i class="fa fa-eye"></i>Detail</a></td>
-                            <td><a class="btn btn-warning" href="{{ route('Events.edit', ['Event'=>$event->id]) }}"><i class="fa fa-edit"></i>Edit</a></td>
-                            {{-- <td><a class="btn btn-danger" href="{{ route('Events.Delete', ['Event'=>$event->id]) }}"><i class="fa fa-eye"></i>Detail</a></td> --}}
+                            <td>
+                                <form action="{{ route('Events.destroy',['Event'=>$event]) }}" method="post">
+
+                                <a class="btn btn-info" href="{{ route('Events.show', ['Event'=>$event->id]) }}"><i class="fa fa-eye"></i>Detail</a>
+                                <a class="btn btn-warning" href="{{ route('Events.edit', ['Event'=>$event->id]) }}"><i class="fa fa-edit"></i>Edit</a>
+                                    <input class="btn btn-danger" type="submit" value="Delete" />
+                                    @method('delete')
+                                    @csrf
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                     @if (count($events) < 1)
                         <tr>
-                            <td class="text-capitalize text-danger font-size-h4">No Applicants Found</td>
+                            <td class="text-capitalize text-danger font-size-h4">No Events Found</td>
                         </tr>
                     @endif
                 </tbody>

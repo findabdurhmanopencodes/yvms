@@ -182,8 +182,8 @@
         </div>
         <div class="card-footer">
             <div class="d-flex">
-                <button type="submit" class="px-5 mr-2 btn btn-success">Post blog</button>
-                <button type="reset" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="px-5 mr-2 btn btn-success">Post Event</button>
+                <a href="{{ route('Events.index') }}" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
         </div>

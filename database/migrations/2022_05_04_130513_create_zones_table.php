@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('code')->nullable();
             $table->foreignIdFor(Region::class)->constrained();
             $table->double('qoutaInpercent')->nullable();
+            $table->string('region_code')->nullable();
             $table->smallInteger('status');
             $table->timestamps();
         });

@@ -79,10 +79,9 @@ class TransportTarifController extends Controller
      * @param  \App\Models\TransportTarif  $transportTarif
      * @return \Illuminate\Http\Response
      */
-    public function edit(TransportTarif $id)
+    public function edit(TransportTarif $transportTarif)
     {
-        $transportTarifs = TransportTarif::find($id);
-        return view('transportTarif.edit', compact('transportTarifs'));
+        return view('transportTarif.edit', compact('transportTarif'));
     }
 
     /**
@@ -92,20 +91,14 @@ class TransportTarifController extends Controller
      * @param  \App\Models\TransportTarif  $transportTarif
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTransportTarifRequest $request, TransportTarif $id)
+    public function update(UpdateTransportTarifRequest $request, TransportTarif $transportTarif)
 
     {
-
-        $transportTarif =TransportTarif::find($id);
         $transportTarif->price = $request->get('price');
-
-
         $data =  $request->validate(['price' => 'required|numeric|min:0:transport_tarifs,price']);
-
-      //  $transportTarif->update($data);
         $transportTarif->save($data);
 
-        return redirect()->route('transportTarif.edit')->with('message', 'TransportTarif updated successfully');
+        return redirect()->route('transportTarif.index')->with('message', 'TransportTarif updated successfully');
     }
 
     /**

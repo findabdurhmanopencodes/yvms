@@ -44,17 +44,23 @@ class PayrollSheetController extends Controller
     public function __construct()
     {
 
-        // $this->authorizeResource(Payroll::class,'Payroll');
+         $this->authorizeResource(Payroll::class,'Payroll');
 
     }
 
-    public function index(Request $request)
+    public function index(Payroll $payroll, Request $request)
     {
-       // $payroll=  Payroll::findOrFail($payroll_id);
+      //  $trainingSession_id = TrainingSession::availableSession()[0]->id;
+        if ($request->ajax()) {
+            return datatables()->of(PayrollSheet::select())->addColumn('payroll', function (PayrollSheet $payrollSheet) {
+                return $payrollSheet->payroll->name;
+            })->make(true);
+        }
+     //   $payroll_sheets=  PayrollSheet::findOrFail($payroll);
         $training_centers = TraininingCenter::all();
         $training_sessions = TrainingSession::all();
         $payroll_sheets = PayrollSheet::orderBy('id', 'desc')->Paginate(10);
-        return view('payrollSheet.index', compact('payroll_sheets','training_centers', 'training_sessions'));
+        return view('payrollSheet.index', compact('payroll_sheets','payroll','training_centers', 'training_sessions'));
 
     }
 
@@ -169,13 +175,14 @@ class PayrollSheetController extends Controller
             $total =0;
             foreach ($placedVolunteers as $placedVolunteer) {
             $total = $total+1;
-
             }
                $payment= PaymentReport::create([
                     'trainining_center_id' =>$center->id,
                     'training_session_id' =>$traingSession->id,
                     'payment_type_id'=>1,
                     'user_id'=>Auth::user()->id,
+                    'status'=>1,
+                    'approved_by '=>null,
                     'total_amount'=>$fixedAmount , // to get monthly payment
                     'total_payee'=>$total
                 ]);
@@ -212,8 +219,7 @@ class PayrollSheetController extends Controller
 
             foreach ($placedVolunteers as $key => $value) {
 
-                array_push($totals, $this->calculate($value->woreda->zone->id,
-                $value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->id));
+                array_push($totals, $this->calculate($value->woreda->zone->id,  $value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->id));
                 array_push($scale,$value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->scale);
 
                   }
@@ -229,6 +235,9 @@ class PayrollSheetController extends Controller
                 'payment_type_id'=>2,
                 'user_id'=>Auth::user()->id,
                 'total_amount'=>0,
+                'status'=>1,
+                'approved_by '=>null,
+                'scale'=>  $scale,
                 'total_payee'=>$total
             ]);
 
@@ -287,6 +296,8 @@ class PayrollSheetController extends Controller
                 'training_session_id' =>$traingSession->id,
                 'payment_type_id'=>3,
                 'user_id'=>Auth::user()->id,
+                'status'=>1,
+                'approved_by '=>null,
                 'total_amount'=>0,
                 'total_payee'=>$total
             ]);
@@ -341,16 +352,23 @@ class PayrollSheetController extends Controller
                }
             $total =0;
             foreach ($placedVolunteers as $placedVolunteer) {
-            $total = $total+1;
+            $paid =  $kms * $tarif;
 
             }
+
+            foreach ($placedVolunteers as $placedVolunteer) {
+                $total = $total+1;
+
+                }
              ////////////////// insert record report table ////////////////////
              $payment= PaymentReport::create([
                 'trainining_center_id' =>$center->id,
                 'training_session_id' =>$traingSession->id,
                 'payment_type_id'=>4,
                 'user_id'=>Auth::user()->id,
-                'total_amount'=>0,
+                'status'=>1,
+                'approved_by '=>null,
+                'total_amount'=>$paid, // It  should be checked
                 'total_payee'=>$total
             ]);
 
@@ -403,7 +421,6 @@ class PayrollSheetController extends Controller
             'training_session_id'=>$training_session_id
         ]);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -411,29 +428,25 @@ class PayrollSheetController extends Controller
      */
     public function create()
     {
-
-
-        // creating eduycational level setting
+         // creating eduycational level setting
         return view('payrollSheet.create');
     }
-public function store(Request $request) {
+   public function store(Payroll $payroll_id,Request $request) {
+        $training_session_id = TrainingSession::availableSession()->first()->id;
 
-     //   $payroll =  Payroll::findOrFail($payroll_id);
- $training_session_id = TrainingSession::availableSession()->last()->id;
+     //  dd($training_session_id);
 
         if (PayrollSheet::where('training_session_id',$training_session_id )->where('trainining_center_id',$request->training_center)->count() > 0) {
-            return redirect()->route('payrollSheet.index')->with('error', ' This payroll sheet aleardy exist!');
+            return redirect()->route('payrollSheet.index')->with('error', ' This payroll sheet alreardy exist!');
         }
-
         $payroll_sheet = new PayrollSheet();
-        //$payroll_sheet->payroll_id =$request->payroll_id;
-        $payroll_sheet->payroll_id =1;
+        $payroll_sheet->payroll_id =$request->payroll_id;
         $payroll_sheet->trainining_center_id = $request->training_center;
         $payroll_sheet->training_session_id = TrainingSession::availableSession()->last()->id;
         $payroll_sheet->user_id = Auth::user()->id;
         $payroll_sheet->save();
-        return redirect()->route('payrollSheet.index')->with('message', 'PayrollSheet created successfully');
-    }
+        return redirect()->route('payrollSheet.index',['payroll_id'=>$payroll_id])->with('message', 'PayrollSheet created successfully');
+         }
     /**
      * Display the specified resource.
      *
@@ -446,7 +459,6 @@ public function store(Request $request) {
             'PayrollSheet' => PayrollSheet::findOrFail($payrollsheet_id)
         ]);
     }
-
     /**
      * Show the form for editing the specified resource.
      *

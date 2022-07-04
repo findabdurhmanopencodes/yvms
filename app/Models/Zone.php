@@ -57,6 +57,7 @@ class Zone extends Model implements Auditable
     }
 
     public function zoneIntakes(){
+
         return $this->hasMany(ZoneIntake::class);
     }
 

@@ -11,18 +11,21 @@ class PaymentType extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
+   // protected $table = "paymentTypes";
 
 
-protected $fillable = [ 'name','amount'];
+protected $fillable = [
+    'name',
+    'amount',
+    'updated_at',
+    'created_at'
+];
 
 
 
 public function PaymentReport(){
+
     return $this->hasMany(PaymentReport::class);
    }
 
-// public function volunteers(){
-
-//     return $this->hasMany(Volunteer::class);
-//     }
 }

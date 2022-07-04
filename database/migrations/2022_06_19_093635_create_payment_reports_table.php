@@ -27,7 +27,9 @@ return new class extends Migration
              $table->foreignIdFor(User::class)->constrained();
              $table->decimal('total_amount',10,2)->nullable();
              $table->integer('total_payee')->nullable();
-            $table->timestamps();
+             $table->integer('status')->nullable();
+             $table->foreignId('approved_by')->nullable()->constrained('users','id')->nullOnDelete()->cascadeOnUpdate();
+             $table->timestamps();
         });
     }
 

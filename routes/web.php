@@ -196,8 +196,8 @@ Route::get('adb', function () {
     Route::post('training_center/{training_center}/assign_checker', [TraininingCenterController::class, 'assignChecker'])->name('training_center.assign_checker');
     Route::post('resource/assign', [TrainingSessionController::class, 'resourceAssignToTrainingCenter'])->name('resource.assign');
 
+    Route::any('/resources', [TrainingSessionController::class, 'allResource'])->name('resource.all');
     Route::post('resource/update', [TrainingSessionController::class, 'updateResourceAssignToTrainingCenter'])->name('resource.update');
-    Route::get('/resources', [TrainingSessionController::class, 'allResource'])->name('resource.all');
     Route::get('/resource/{resource}', [TrainingSessionController::class, 'showResource'])->name('resource.show');
     Route::any('/training-center/{training_center_id}/resource-assign', [TraininingCenterController::class, 'giveResource'])->name('resource.assign.volunteer');
 
@@ -252,6 +252,9 @@ Route::get('adb', function () {
 
     Route::get('{woreda}/deployment/attendance_export', [DeploymentVolunteerAttendanceController::class, 'get_attendance_data'])->name('deployment_attendance.export');
     Route::post('{woreda}/import/deployment', [DeploymentVolunteerAttendanceController::class, 'fileImport'])->name('import.deployment_attendance');
+
+    Route::get('volunteer_export', [VolunteerController::class, 'exportVolunteers'])->name('export.volunteers');
+    Route::post('volunteer_import', [VolunteerController::class, 'importVolunteers'])->name('import.volunteers');
 });
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -348,10 +351,10 @@ Route::get('{training_session}/reset-verification', [VolunteerController::class,
 //     }
 //     dd('stop');
 // });
+Route::any('/Events', [EventController::class, 'index'])->name('Events.index');
 Route::resource('Events', EventController::class)->except(['index']);;
 Route::get('/All-Events', [EventController::class, 'allEvents'])->name('event.all');
-Route::any('/Events', [EventController::class, 'index'])->name('Events.index');
-Route::get('/Event/{event}', [EventController::class, 'detailEvent'])->name('event.detail');
+Route::get('/Event/{event}/', [EventController::class, 'detailEvent'])->name('event.detail');
 Route::get('/Event/image-remove/{eventImage}', [EventController::class, 'removeImage'])->name('event.image.remove');
 Route::any('audits', [AuditController::class, 'index'])
     ->middleware('auth', \App\Http\Middleware\AllowOnlyAdmin::class)->name('audit.index');

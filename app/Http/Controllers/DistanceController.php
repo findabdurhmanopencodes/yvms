@@ -110,7 +110,7 @@ class DistanceController extends Controller
      */
     public function edit(Distance $distance)
     {
-        return view('distance.edit',compact('distances'));
+        return view('distance.edit',compact('distance'));
     }
 
     /**
@@ -122,13 +122,12 @@ class DistanceController extends Controller
      */
     public function update(UpdateDistanceRequest $request, Distance $distance)
     {
-        //
 
-      //  $data = $request->validate(['name' => 'required|string|unique:educational_levels,name,'.$educationalLevel->id]);
-         $distance->update();
-      //  $distance->update($data);
-        return redirect()->route('distance.index')->with('message', ' Updated successfully');
-        //
+            $request->validate(['km' => 'required|numeric:distances,km,' . $distance->id]);
+            $distance->fill($request->all());
+            $distance->save();
+            return redirect()->route('distance.index')->with('message', ' Updated successfully');
+
     }
 
     /**

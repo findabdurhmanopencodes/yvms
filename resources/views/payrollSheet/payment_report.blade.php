@@ -3,6 +3,49 @@
 @section('content')
 @push('js')
 
+
+@push('js')
+    <script>
+        var HOST_URL = "{{ route('payrollSheet.index') }}";
+
+        function ApprovePayment(reportID, parent) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure to approve this payment?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, approve it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/payrollSheet/'+reportID,
+                        data: {
+                            "id": reportID,
+                            "_method": 'DELETE',
+                            "_token": $('meta[name="csrf-token"]').attr('content'),
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            $(parent).closest('tr')[0].remove();
+                            Swal.fire(
+                                "Deleted!",
+                                "Payroll sheet has been approved.",
+                                "success"
+                            )
+                        },
+                        error: function(data) {
+                            if (data.status) {
+                                Swal.fire("Forbidden!", "You can't delete this payroll sheet", "error");
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+
       @push('css')
       <style>
           .select2,
@@ -35,16 +78,51 @@
     <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
 @endpush
 
+
+
+<div class="card-toolbar">
+    {{-- <form method="POST" action="{{ route('paymentReport.update', ['paymentReport'=>$paymentReport->id]) }}"> --}}
+
+        <form method="POST" action="">
+            @csrf
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-md"  role="document">
+                          <div class="modal-content">
+                           <div class="modal-header">
+                            <span class="modal-title" id="exampleModalLabel">    <i class="fa fa-check"> </i>  Are you sure to approve this payment?</span>
+
+                            <button type="button" class="close" data-dismiss="modal" -label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                            </button>
+                        </div>
+                        <p style="font-size:16px;color:red; text-align:center;">  <br> You won't be able to revert this!</p>
+
+                        <input type="text" class="form-control" name="status" value="2">
+                        <input type="text" class="form-control" name="approved_by" value="{{ Auth::user()->id }}">
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary font-weight-bold">Yes, Approve it </button>
+                            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Cancel</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    <!--end::Button-->
+</div>
+
+
     <div class="card card-custom card-body mb-3">
 
 
 
 
-        <form action=""  id="form" method="GET">
+        {{-- <form action="{{ route('payrollSheet.payment_report',[]) }}"  id="form" method="GET"> --}}
+            <form action=""  id="form" method="GET">
         <div class=" ml-1 col-12 p-0">
             <div class="row ">
 
-                 <div class="form-group col4-">
+                 <div class="form-group col4-5">
                     <select name="training_center" id="training_center" class="form-control select2" required>
                         <option value="">Select Training Center</option>
                         @foreach ($training_centers as $training_center)
@@ -53,7 +131,7 @@
                     </select>
                 </div>
 
-                <div class="form-group col-4">
+                <div class="form-group col-5">
                     <select name="training_session" id="training_session" class="form-control select2" required>
                         <option value="">Select Training Session</option>
                         @foreach ($training_sessions as $training_session)
@@ -86,10 +164,6 @@
              <h5> <i class=" fa fa-list"></i> &nbsp;  Active payment reports</h5>
             </div>
             <div class="card-title mr-0">
-            <a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
-
-      <i class="fa fa-check"> </i> Approval
-    </a>
 
 </div>
 </div>
@@ -108,7 +182,7 @@
                     <th> Creared by </th>
                     <th> Created at </th>
 
-                    {{-- <th>Action </th> --}}
+                     <th>Action </th>
 
                     </tr>
                 </thead>
@@ -129,17 +203,40 @@
                                 <td> Birr  {{  number_format($payment_report->total_amount,2) }} </td>
 
                                  <td> {{ $payment_report->user->first_name }}  {{ $payment_report->user->father_name }}  </td>
+
+
+                                 {{-- <td>
+                                    @if($payment_report->approved_by==null)
+
+                                   -
+
+                               @else
+                               {{ $payment_report->approved_by->first_name }}  {{ $payment_report->approved_by->father_name }}  </td>
+
+                               @endif --}}
+
+
                                  <td>{{ Carbon\Carbon::parse($payment_report->created_at)->format(' D M, Y') }} </td>
                             </td>
-                            {{-- <td>
-                                <a href="javascript:;" onclick="deletePayrollSheet('payment_report ',$(this))" class="btn btn-sm btn-clean btn-icon" class="btn btn-icon">
-                                <span class="fa fa-trash"></span>
-                                </a>
 
-                                 <a href="{{ route('payrollSheet.payee', ['payment_report_id'=> $payment_report->id]) }}" class="btn btn-icon">
-                                    <span class="fa fa-list"></span>
-                                </a>
-                            </td> --}}
+                            <td>
+                                @if($payment_report->status==1)
+
+
+
+                                <a title="Need to approval"  href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
+                                    <i class="fa fa-check"> </i> Pending
+                                    </a>
+                               @else
+                               <a title=" It has been approved"  href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="">
+                                <i class="fa fa-list"> </i>
+                                 Approved
+                                   </a>
+                                @endif
+
+
+
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
