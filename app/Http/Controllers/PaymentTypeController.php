@@ -17,6 +17,8 @@ class PaymentTypeController extends Controller
         $this->authorizeResource(PaymentType::class,'paymentType');
 
     }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -25,6 +27,8 @@ class PaymentTypeController extends Controller
 
     public function index(Request $request)
     {
+
+
         if ($request->ajax()) {
             return datatables()->of(PaymentType::select())->make(true);
         }
@@ -81,8 +85,8 @@ class PaymentTypeController extends Controller
      */
     public function edit(PaymentType $paymentType)
     {
-        $paymentTypes = PaymentType::find($paymentType);
-        return view('paymentType.edit', compact('paymentTypes'));
+
+        return view('paymentType.edit', compact('paymentType'));
     }
     /**
      * Update the specified resource in storage.
@@ -93,10 +97,11 @@ class PaymentTypeController extends Controller
      */
     public function update(UpdatePaymentTypeRequest $request, PaymentType $paymentType){
 
-        $data =  $request->validate(['name' => 'required|string|unique:payment_types,name']);
+        $request->validate(['name' => 'required|string|unique:payment_types,name,' . $paymentType->id]);
+        $paymentType->fill($request->all());
+           $paymentType->save();
 
-        $paymentType->update($data);
-        return redirect()->route('resource.index')->with('message', 'payment type updated successfully');
+        return redirect()->route('paymentType.index')->with('message', 'Payment type updated successfully');
     }
 
     /**

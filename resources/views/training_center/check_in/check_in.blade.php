@@ -35,7 +35,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <h1 class="text text-danger">This Id Is Not Accepted !!</h1>
+                    <h1 class="text text-danger">This Id Is already Cheked In !!</h1>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

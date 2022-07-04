@@ -84,9 +84,6 @@
                                                     <i class="far fa-trash"></i>\
                                                 </a>\
                                                 \
-                                                <a href="/resource/' + resourceId + '" class="btn btn-sm btn-clean btn-icon" >\
-                                                    <i class="far fa-eye"></i>\
-                                                </a>\
                                                 <a href="/resource/' + resourceId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-pen"></i>\
                                                 </a>\

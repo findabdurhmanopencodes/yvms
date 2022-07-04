@@ -36,9 +36,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionSeeder::class,
             RoleSeeder::class,
+            AbdiSeeder::class,
             // BaseSeeder::class,
             // FakeDataSeeder::class,
         ]);
+        // dd('abdi for testing');
         $superUser = User::create(
             [
                 'first_name' => 'Super',
