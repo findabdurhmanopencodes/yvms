@@ -252,6 +252,9 @@ Route::get('adb', function () {
 
     Route::get('{woreda}/deployment/attendance_export', [DeploymentVolunteerAttendanceController::class, 'get_attendance_data'])->name('deployment_attendance.export');
     Route::post('{woreda}/import/deployment', [DeploymentVolunteerAttendanceController::class, 'fileImport'])->name('import.deployment_attendance');
+
+    Route::get('volunteer_export', [VolunteerController::class, 'exportVolunteers'])->name('export.volunteers');
+    Route::post('volunteer_import', [VolunteerController::class, 'importVolunteers'])->name('import.volunteers');
 });
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
 Route::middleware(['auth', 'verified'])->group(function () {

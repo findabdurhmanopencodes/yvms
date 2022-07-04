@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('code')->nullable();
             $table->double('qoutaInpercent')->nullable();
+            $table->string('country_id')->nullable();
+            $table->string('region_type')->nullable();
             $table->smallInteger('status');
             $table->timestamps();
         });

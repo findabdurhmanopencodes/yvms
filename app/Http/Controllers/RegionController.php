@@ -42,7 +42,7 @@ class RegionController extends Controller
      */
     public function index(Request $request)
     {
-        $trainingSession_id = TrainingSession::availableSession()[0]->id;
+        $trainingSession_id = TrainingSession::availableSession()->first()->id;
         if ($request->ajax()) {
             return datatables()->of(Region::select())->make(true);
         }

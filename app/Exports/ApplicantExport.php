@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Exports;
+
+use App\Models\Applicants;
+use App\Models\Volunteer;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Events\AfterSheet;
+
+class ApplicantExport implements FromCollection, WithHeadings, WithEvents
+{
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+   protected $data;
+   protected $a;
+
+
+   public function __construct($data, $a)
+   {
+       $this->data = $data;
+       $this->a = $a;
+   }
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function collection()
+    {
+        return collect($this->data);
+    }
+    public function headings(): array
+   {
+       return $this->a;
+   }
+   public function registerEvents(): array
+   {
+       return [
+           AfterSheet::class => function(AfterSheet $event) {
+
+               $event->sheet->getDelegate()->getColumnDimension('A')->setWidth(30);
+               $event->sheet->getDelegate()->getColumnDimension('B')->setWidth(30);
+               $event->sheet->getDelegate()->getColumnDimension('C')->setWidth(30);
+               $event->sheet->getDelegate()->getColumnDimension('D')->setWidth(30);
+               $event->sheet->getDelegate()->getColumnDimension('E')->setWidth(30);
+               $event->sheet->getDelegate()->getColumnDimension('F')->setWidth(30);
+               $event->sheet->getDelegate()->getColumnDimension('H')->setWidth(30);
+               $event->sheet->getDelegate()->getColumnDimension('J')->setWidth(30);
+               $event->sheet->getDelegate()->getColumnDimension('K')->setWidth(30);
+               $event->sheet->getProtection()->setPassword('password');
+               $event->sheet->getProtection()->setSheet(true);
+            //    $event->sheet->getStyle("E1:E".count($this->data)+1)->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
+
+           },
+       ];
+   }
+}
