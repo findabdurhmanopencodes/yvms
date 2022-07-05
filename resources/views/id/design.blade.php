@@ -213,8 +213,7 @@
                     var p6 = document.createElement("p");
                     var s6 = document.createElement("strong");
 
-                    var textToAdd6 = '';
-                    // var textToAdd6 = document.createTextNode("{{ $userType }}" == 'mop user' ? applicant.user.first_name+' '+applicant.user.father_name : applicant.master.user.first_name+' '+applicant.master.user.father_name);
+                    var textToAdd6 = document.createTextNode("{{ $userType }}" == 'mop user' ? applicant.user.first_name+' '+applicant.user.father_name : applicant.master.user.first_name+' '+applicant.master.user.father_name);
                     s6.appendChild(textToAdd6);
                     p6.appendChild(s6);
                     p6.style.position = "relative";
@@ -225,7 +224,7 @@
                     p6.style.fontSize = '11px';
                     p6.style.color = '#000000';
                     myDesign.appendChild(p6);
-                    myDesign.marginRight = "100px"
+                    myDesign.marginRight = "100px";
                     
                     var p7 = document.createElement("p");
                     var s7 = document.createElement("strong");
@@ -325,8 +324,7 @@
                     
                     var p = document.createElement("p");
                     var s = document.createElement("strong");
-                    var textToAdd = '';
-                    // var textToAdd = document.createTextNode(applicant.id_number);
+                    var textToAdd = document.createTextNode(applicant.id_number);
                     s.appendChild(textToAdd);
                     p.appendChild(s);
                     p.style.position = "relative";
@@ -339,8 +337,7 @@
 
                     var p2 = document.createElement("p");
                     var s2 = document.createElement("strong");
-                    var textToAdd2 = '';
-                    // var textToAdd2 = document. createTextNode(applicant.first_name+' '+applicant.father_name);
+                    var textToAdd2 = document. createTextNode(applicant.first_name+' '+applicant.father_name);
                     s2.appendChild(textToAdd2);
                     p2.appendChild(s2);
                     p2.style.position = "relative";
@@ -353,8 +350,7 @@
 
                     var p = document.createElement("p");
                     var s = document.createElement("strong");
-                    var textToAdd = '';
-                    // var textToAdd = document. createTextNode(applicant.approved_applicant.training_placement.training_center_capacity.training_center.code);
+                    var textToAdd = document. createTextNode(applicant.approved_applicant.training_placement.training_center_capacity.training_center.code);
                     s.appendChild(textToAdd);
                     p.appendChild(s);
                     p.style.position = "relative";

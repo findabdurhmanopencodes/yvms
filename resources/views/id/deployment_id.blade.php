@@ -163,8 +163,7 @@
 
                 var p = document.createElement("p");
                 var s = document.createElement("strong");
-                var textToAdd = '';
-                // var textToAdd = document.createTextNode(applicants[key].id_number);
+                var textToAdd = document.createTextNode(applicants[key].id_number);
                 s.appendChild(textToAdd);
                 p.appendChild(s);
                 p.style.position = "relative";
@@ -190,8 +189,7 @@
 
                 var p2 = document.createElement("p");
                 var s2 = document.createElement("strong");
-                var textToAdd2 = '';
-                // var textToAdd2 = document. createTextNode(applicants[key].first_name+' '+applicants[key].father_name);
+                var textToAdd2 = document. createTextNode(applicants[key].first_name+' '+applicants[key].father_name);
                 s2.appendChild(textToAdd2);
                 p2.appendChild(s2);
                 p2.style.position = "relative";
@@ -217,7 +215,7 @@
 
                 var p = document.createElement("p");
                 var s = document.createElement("strong");
-                var textToAdd = '';
+                var textToAdd ='';
                 // var textToAdd = document. createTextNode(applicants[key].approved_applicant.training_placement.deployment.woreda_intake.woreda.name);
                 s.appendChild(textToAdd);
                 p.appendChild(s);
@@ -281,8 +279,7 @@
 
                 var e_date_text = document.createElement("p");
                 var se_date_text = document.createElement("strong");
-                var setextToAddText = '';
-                // var setextToAddText = document.createTextNode(applicants[key].session.end_date_am);
+                var setextToAddText = document. createTextNode(applicants[key].session.end_date_am);
                 se_date_text.appendChild(setextToAddText);
                 e_date_text.appendChild(se_date_text);
                 e_date_text.style.position = "relative";
@@ -415,8 +412,7 @@
 
                 var pback5 = document.createElement("p");
                 var sback5 = document.createElement("strong");
-                var textToAddback5 = '';
-                // var textToAddback5 = document.createTextNode(applicants[key].first_name+' '+applicants[key].father_name);
+                var textToAddback5 = document.createTextNode(applicants[key].first_name+' '+applicants[key].father_name);
                 sback5.appendChild(textToAddback5);
                 pback5.appendChild(sback5);
                 pback5.style.position = "relative";
@@ -474,8 +470,7 @@
 
                 var pback9 = document.createElement("p");
                 var sback9 = document.createElement("strong");
-                var textToAddback9 = '';
-                // var textToAddback9 = document.createTextNode(applicants[key].approved_applicant.training_placement.deployment.issued_date_am);
+                var textToAddback9 = document.createTextNode(applicants[key].approved_applicant.training_placement.deployment.issued_date_am);
                 sback9.appendChild(textToAddback9);
                 pback9.appendChild(sback9);
                 pback9.style.position = "relative";
@@ -534,8 +529,7 @@
 
                 var pback13 = document.createElement("p");
                 var sback13 = document.createElement("strong");
-                var textToAddback13 = '';
-                // var textToAddback13 = document.createTextNode(applicants[key].session.end_date_am);
+                var textToAddback13 = document.createTextNode(applicants[key].session.end_date_am);
                 sback13.appendChild(textToAddback13);
                 pback13.appendChild(sback13);
                 pback13.style.position = "relative";
