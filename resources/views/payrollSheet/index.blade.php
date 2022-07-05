@@ -5,7 +5,7 @@
     <script>
         var HOST_URL = "{{ route('payrollSheet.index') }}";
 
-        function deletepayrollSheet(id, parent) {
+        function DeleteSheet(payrollsheetId, parent) {
             event.preventDefault();
             Swal.fire({
                 title: "Are you sure to delete this payroll sheet?",
@@ -17,9 +17,9 @@
                 if (result.value) {
                     $.ajax({
                         type: "POST",
-                        url: '/payrollSheet/'+id,
+                        url: '/payrollSheet/'+payrollsheetId,
                         data: {
-                            "id": id,
+                            "id": payrollsheetId,
                             "_method": 'DELETE',
                             "_token": $('meta[name="csrf-token"]').attr('content'),
                         },
@@ -73,11 +73,8 @@
     </script>
     <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
 @endpush
-
-
-
 <div class="card-toolbar">
-    <form method="POST" action="{{ route('payrollSheet.store', [ ]) }}">
+    <form method="POST" action="{{ route('payrollSheet.store', ['payroll_id'=>$payroll->id]) }}">
             @csrf
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-md"  role="document">
@@ -88,11 +85,11 @@
                             <i aria-hidden="true" class="ki ki-close"></i>
                             </button>
                         </div>
-                       {{-- <input type="hidden" class="form-control" name="payroll_id" value="{{ $payroll->id }}"> --}}
+                     <input type="hidden" class="form-control" name="payroll_id" value="{{ $payroll->id }}">
                         <div class="modal-body">
                             <div class="card-body">
                                 <div class="form-group col-12">
-                                    <select name="training_center" id="center" class="form-control select2">
+                                    <select name="training_center" id="center" class="form-control select2" required>
                                         <option value="">Select Training Center</option>
                                         @foreach ($training_centers as $training_center)
                                             <option value="{{ $training_center->id }}">{{ $training_center->name }}</option>
@@ -144,7 +141,7 @@
     <div class="card card-custom">
         <div class="card-header flex-wrap  pt-6 ">
             <div class="card-title mr-0">
-             <h5> <i class=" fa fa-list"></i> &nbsp; List of payroll sheets per training center </h5>
+             <h5> <i class=" fa fa-list"></i> &nbsp; List of payroll sheets for <u>{{ $payroll->name }}</u> </h5>
             </div>
             <div class="card-title mr-0">
             <a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
@@ -154,7 +151,7 @@
                 <!--end::Svg Icon-->
 
       <i class="fa fa-usd"> </i> New sheet
-      {{-- for {{ $payroll->name }} --}}
+
     </a>
 
 </div>
@@ -169,7 +166,9 @@
                     <th> Training Center </th>
                     <th> Payroll code </th>
                     <th> User </th>
-                    <th> Created at </th>
+
+
+                    <th> Last update </th>
 
 
                     <th>Action </th>
@@ -184,21 +183,24 @@
 
                                  <td> {{ $key + 1 }}</td>
                                  <td> {{ $payroll_sheet->traininingCenter->name }} </td>
-                                 <td> {{ $payroll_sheet->payroll->name }}
-
-                                 </td>
+                                 <td> {{ $payroll_sheet->payroll->name }}   </td>
 
                                  <td> {{ $payroll_sheet->user->first_name }}  {{ $payroll_sheet->user->father_name }}  </td>
-                                 <td> {{ $payroll_sheet->created_at }} </td>
+                                 <td> {{ $payroll_sheet->created_at->diffForHumans(); }} </td>
                             </td>
                             <td>
-                                <a href="javascript:;" onclick="deletePayrollSheet('payroll_sheet ',$(this))" class="btn btn-sm btn-clean btn-icon" class="btn btn-icon">
-                                <span class="fa fa-trash"></span>
-                                </a>
+
+
 
                                  <a href="{{ route('payrollSheet.payee', ['payroll_sheet_id'=> $payroll_sheet->id]) }}" class="btn btn-icon">
                                     <span class="fa fa-list"></span>
                                 </a>
+
+
+                                <a href="javascript:;" onclick="DeleteSheet({{ $payroll_sheet->id  }},$(this))" class="btn btn-sm btn-clean btn-icon">
+                                    <span class="fa fa-trash"></span>
+                                </a>
+
                             </td>
                         </tr>
                     @endforeach

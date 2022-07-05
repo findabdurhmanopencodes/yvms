@@ -27,7 +27,7 @@
                         type: "POST",
                         url: '/paymentType/' + paymentTypeId,
                         data: {
-                            "id": paymentType,
+                            "id": paymentTypeId,
                             "_method": 'DELETE',
                             "_token": $('meta[name="csrf-token"]').attr('content'),
                         },
@@ -75,8 +75,12 @@
             {
                 field: 'amount',
                 title: 'Amount',
-             ,
             },
+            {
+                field: 'created_at',
+                title: 'Last update',
+            },
+
             {
                 field: 'Actions',
                 title: 'Actions',
@@ -85,14 +89,14 @@
                 overflow: 'visible',
                 autoHide: false,
                 template: function(row) {
-                    var paymentType= row.id;
+                    var paymentTypeId = row.id;
                     return '\
                                                <div class="d-flex">\
-                                                <a href="javascript:;" onclick="deletepaymentType(' +paymentType + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
+                                                <a href="javascript:;" onclick="deletepaymentType(' +paymentTypeId+ ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-trash"></i>\
                                                 </a>\
                                                 \
-                                                <a href="/paymentType/' + paymentType+ '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                                                <a href="/paymentType/' +paymentTypeId+ '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-pen"></i>\
                                                 </a>\
                                                 \
@@ -164,7 +168,7 @@
         </div>
         <div class="card-body">
 
-            <table width="100%" class="table table-striped ">
+            {{-- <table width="100%" class="table table-striped ">
                 <thead>
                     </tr>
                     <th> #</th>
@@ -200,9 +204,9 @@
                         </tr>
                     @endforeach
                 </tbody>
-            </table>
+            </table> --}}
             <!--begin: Datatable-->
-            {{-- <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div> --}}
+        <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
             <!--end: Datatable-->
         </div>
     </div>

@@ -636,9 +636,9 @@ class TrainingSessionController extends Controller
             $arr_male = [];
 
             foreach ($arr as $key => $value) {
-                if ($value->gender == 'F') {
+                if ($value->gender == 'F' || $value->gender == 'Female') {
                     array_push($arr_female, $value);
-                } elseif ($value->gender == 'M') {
+                } elseif ($value->gender == 'M' || $value->gender == 'Male') {
                     array_push($arr_male, $value);
                 }
             }

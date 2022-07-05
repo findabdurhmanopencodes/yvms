@@ -162,9 +162,7 @@
                             <td> {{ $deployedVolunteer->woredaIntake->woreda?->zone?->name }} </td>
                             <td> {{ $deployedVolunteer?->woredaIntake?->woreda?->name }} </td>
                             <td>
-                                <a href="#"
-                                    data-action="{{ route('session.deployment.change', [request()->route('training_session'), $deployedVolunteer->id]) }}"
-                                    class="btn btn-icon"
+                                <a href="#" data-action="{{ route('session.deployment.change', [request()->route('training_session'), $deployedVolunteer->id]) }}" class="btn btn-icon"
                                     onclick="$('#changeDeploymentForm').attr('action',this.dataset.action);onSubmit();">
                                     <span class="fa fa-edit"></span>
                                 </a>

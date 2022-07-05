@@ -57,26 +57,7 @@
             });
         }
 
-        // {
-        //         field: 'Actions',
-        //         title: 'Actions',
-        //         sortable: false,
-        //         width: 100,
-        //         overflow: 'visible',
-        //         autoHide: false,
-        //         template: function(row) {
-        //             var zoneId = row.id;
-        //             return '\
-        //                             <div class="d-flex">\
-        //                                         <a href="javascript:;" onclick="deleteZone(' + zoneId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
-        //                                             <i class="far fa-trash"></i>\
-        //                                         </a>\
-        //                                         \
 
-        //                                     </div>\
-        //                                     ';
-        //         },
-        //     }
     </script>
     <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
      <script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
@@ -200,10 +181,10 @@
                                  <td> {{ $distance->created_at}} </td>
                             </td>
                             <td>
-                                <a href="javascript:;" onclick="deleteDistance('+id',$(this))" class="btn btn-sm btn-clean btn-icon" class="btn btn-icon">
+                                <a href="javascript:;" onclick="deleteDistance({{ $distance->id  }},$(this))" class="btn btn-sm btn-clean btn-icon" class="btn btn-icon">
                                 <span class="fa fa-trash"></span>
                                 </a>
-                                <a href="#"  class="btn btn-sm btn-clean btn-icon" class="btn btn-icon">
+                                <a href="{{ route('distance.edit', ['distance'=>$distance->id]) }}"  class="btn btn-sm btn-clean btn-icon" class="btn btn-icon">
                                     <span class="fa fa-edit"></span>
                                 </a>
 
