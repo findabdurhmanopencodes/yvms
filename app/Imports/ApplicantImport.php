@@ -53,7 +53,12 @@ class ApplicantImport implements ToCollection, WithStartRow
                 $date = strtotime ((string)$value[3]);
                 $d = date('d/m/Y' , $date);
                 
-                // $applicant = new Volunteer();
+                $applicant = new Volunteer();
+                $applcant_exist = $applicant->where('first_name', $fi_name)->where('father_name', $fathe_name)->where('grand_father_name', $gr_name)->where('phone', (string)$value[11])->get()->first();
+                if ($applcant_exist == null) {
+                    $applicant = Volunteer::create(['first_name' => $fi_name, 'father_name' => $fathe_name, 'grand_father_name'=> $gr_name, 'email'=>'', 'dob'=> new DateTime('01/01/1991'), 'gender'=>$value[2], 'phone'=>(string)$value[11], 'contact_name'=>'UNKNOWN', 'contact_phone'=> 'UNKNOWN', 'gpa'=>$gpa, 'password'=> Hash::make('12345678'),'training_session_id'=>$this->trainingSession->id, 'woreda_id'=>$woreda->id]);
+                    Status::create(['volunteer_id'=> $applicant->id, 'acceptance_status'=>1]);
+                }
                 // $applicant->first_name = $fi_name;
                 // $applicant->father_name = $fathe_name;
                 // $applicant->grand_father_name = $gr_name;
@@ -65,11 +70,15 @@ class ApplicantImport implements ToCollection, WithStartRow
                 // $applicant->contact_phone = 'UNKNOWN';
                 // $applicant->gpa = $gpa;
                 // $applicant->password = Hash::make('12345678');
-                // array_push($aaa, $applicant);
                 // $applicant->save();
 
-                $applicant = Volunteer::create(['first_name' => $fi_name, 'father_name' => $fathe_name, 'grand_father_name'=> $gr_name, 'email'=>'', 'dob'=> new DateTime('01/01/1991'), 'gender'=>$value[2], 'phone'=>(string)$value[11], 'contact_name'=>'UNKNOWN', 'contact_phone'=> 'UNKNOWN', 'gpa'=>$gpa, 'password'=> Hash::make('12345678'),'training_session_id'=>$this->trainingSession->id, 'woreda_id'=>$woreda->id]);
-                Status::create(['volunteer_id'=> $applicant->id, 'acceptance_status'=>1]);
+                // $status = new Status();
+                // $status->volunteer_id = $applicant->id;
+                // $status->acceptance_status = 1;
+                // $status->save();
+
+                // $applicant = Volunteer::create(['first_name' => $fi_name, 'father_name' => $fathe_name, 'grand_father_name'=> $gr_name, 'email'=>'', 'dob'=> new DateTime('01/01/1991'), 'gender'=>$value[2], 'phone'=>(string)$value[11], 'contact_name'=>'UNKNOWN', 'contact_phone'=> 'UNKNOWN', 'gpa'=>$gpa, 'password'=> Hash::make('12345678'),'training_session_id'=>$this->trainingSession->id, 'woreda_id'=>$woreda->id]);
+                // Status::create(['volunteer_id'=> $applicant->id, 'acceptance_status'=>1]);
             }
         }
     }
