@@ -29,6 +29,7 @@
 @endpush
 
 @section('content')
+<div class="col-sm-12">
     <div class="accordion accordion-solid accordion-toggle-plus " id="accordionExample6">
 
         <div class="card ">
@@ -86,86 +87,93 @@
         </div>
     </div>
     <div class="card">
-        <div class="card-body">
+        <div class="card-body ">
             <h5 class="card-title">All Model Audits</h5>
-            <table class="table table-reponsive table-bordered" width="100">
-                <thead class="thead-light-dark">
-                    <tr>
-                        <th scope="col">Model</th>
-                        <th scope="col">Action</th>
-                        <th scope="col">Responsible User</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Old Values</th>
-                        <th scope="col">New Values</th>
-                    </tr>
-                </thead>
-                <tbody id="audits">
-                    @foreach ($audits as $audit)
-                        <tr>
-                            <td>{{ $audit->auditable_type }} (id: {{ $audit->auditable_id }})</td>
-                            <td>{{ $audit->event }}</td>
-                            <td>{{ $audit->user?->name }}</td>
-                            <td>{{ $audit->created_at }}</td>
-                            <td>
-                                <table class="table">
-                                    @foreach ($audit->old_values as $attribute => $value)
-                                        <tr class="text text-danger font-bold">
-                                            <td><b>{{ $attribute }}</b></td>
-                                            @if (strlen($value) > 20)
-                                                <td>
-                                                    <details>
-                                                        <summary> {{ str_limit($value, 20) }}
-                                                        </summary>
-                                                        {{ $value }}
-                                                    </details>
-                                                </td>
-                                            @else
-                                                <td>
-                                                    {{ $value }}
-                                                </td>
-                                            @endif
-                                        </tr>
-                                    @endforeach
-                                </table>
-                            </td>
-                            <td>
-                                <table class="table">
-                                    @foreach ($audit->new_values as $attribute => $value)
-                                        <tr class="text text-success font-bold">
-                                            <td><b>{{ $attribute }}</b></td>
-                                            @if (strlen($value) > 10)
-                                                <td>
-                                                    <details>
-                                                        <summary> {{ str_limit($value, 10) }}
-                                                        </summary>
-                                                        {{ $value }}
-                                                    </details>
-                                                </td>
-                                            @else
-                                                <td>
-                                                    {{ $value }}
-                                                </td>
-                                            @endif
-                                        </tr>
-                                    @endforeach
+                <div class="table-responsive text-nowrap table-bordered">
+                    <table class="table" width="100">
+                        <thead class="thead-light-dark">
+                            <tr>
+                                <th scope="col">Ip Address</th>
+                                <th scope="col">User Agent</th>
+                                <th scope="col">Model</th>
+                                <th scope="col">Action</th>
+                                <th scope="col">Responsible User</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Old Values</th>
+                                <th scope="col">New Values</th>
+                            </tr>
+                        </thead>
+                        <tbody id="audits">
+                            @foreach ($audits as $audit)
+                                <tr scope="row">
+                                    <td>{{ $audit->ip_address }}</td>
+                                    <td>{{ $audit->user_agent }}</td>
+                                    <td>{{ $audit->auditable_type }} (id: {{ $audit->auditable_id }})</td>
+                                    <td>{{ $audit->event }}</td>
+                                    <td>{{ $audit->user?->name }}</td>
+                                    <td>{{ $audit->created_at }}</td>
+                                    <td>
+                                        <table class="table">
+                                            @foreach ($audit->old_values as $attribute => $value)
+                                                <tr class="text text-danger font-bold">
+                                                    <td><b>{{ $attribute }}</b></td>
+                                                    @if (strlen($value) > 20)
+                                                        <td>
+                                                            <details>
+                                                                <summary> {{ str_limit($value, 20) }}
+                                                                </summary>
+                                                                {{ $value }}
+                                                            </details>
+                                                        </td>
+                                                    @else
+                                                        <td>
+                                                            {{ $value }}
+                                                        </td>
+                                                    @endif
+                                                </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table class="table">
+                                            @foreach ($audit->new_values as $attribute => $value)
+                                                <tr class="text text-success font-bold">
+                                                    <td><b>{{ $attribute }}</b></td>
+                                                    @if (strlen($value) > 10)
+                                                        <td>
+                                                            <details>
+                                                                <summary> {{ str_limit($value, 10) }}
+                                                                </summary>
+                                                                {{ $value }}
+                                                            </details>
+                                                        </td>
+                                                    @else
+                                                        <td>
+                                                            {{ $value }}
+                                                        </td>
+                                                    @endif
+                                                </tr>
+                                            @endforeach
 
 
 
-                                </table>
-                            </td>
-                        </tr>
-                    @endforeach
-                    @if (count($audits) < 1)
-                        <tr>
-                            <td class="text text-danger">No Data Found!!</td>
-                        </tr>
-                    @endif
-                </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            @if (count($audits) < 1)
+                                <tr>
+                                    <td class="text text-danger">No Data Found!!</td>
+                                </tr>
+                            @endif
+                        </tbody>
 
-            </table>
+                    </table>
+                </div>
             <div class="d-flex justify-content-center">
                 {!! $audits->links() !!}
             </div>
         </div>
     </div>
+</div>
 @endsection
