@@ -1007,8 +1007,8 @@ class TrainingSessionController extends Controller
     {
         $trainingSessionId = $trainingSession->id;
         Artisan::call('id:generate '.$trainingSessionId);
-        // $trainingSession->update(['status' => Constants::TRAINING_SESSION_PLACEMENT_APPROVE]);
-        // $trainingSession->save();
+        $trainingSession->update(['status' => Constants::TRAINING_SESSION_PLACEMENT_APPROVE]);
+        $trainingSession->save();
         return redirect()->back()->with('message', 'Placment approved successfully');
     }
 }

@@ -55,38 +55,14 @@ class IdNumberGenerate extends Command
             ->join('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')
             ->join('training_center_capacities', 'training_center_capacities.id', '=', 'training_placements.training_center_capacity_id')
             ->join('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
-            ->take(10)->get();
-        $volunteerIds = [];
-        foreach ($volunteers as $volunteer) {
-            // $idNumber = 'MoP-' . $placement->trainingCenterCapacity?->trainingCenter?->code . '-' . str_pad($key+1, 5, "0", STR_PAD_LEFT) . '/' . TrainingSession::find(1)->id;
-            array_push($volunteerIds,['id_number'=>'MoP-'.strtoupper($volunteer->code).'-'.str_pad($start+1, 5, "0", STR_PAD_LEFT) .'/'.$trainingSessionId]);
-            $start++;
-        }
-        dump($volunteerIds);
-        // dump(count($volunteers));
-        // dump($start);
-        dd('new one');
-        // ('training_placements')
-        // ->select('approved_applicants.volunteer_id')
-        // ->where('training_placements.training_session_id',$trainingSessionId)
-        // ->join('approved_applicants', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')
-        // ->first(1)
-        // dd(DB::table('training_placements')
-        // ->select('approved_applicants.volunteer_id')
-        // ->where('training_placements.training_session_id',$trainingSessionId)
-        // ->join('approved_applicants', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')
-        // ->first(1));
-        // foreach(TrainingPlacement::join('id') as $key => $placement){
-        //     dump($placement->id);
-        // }
-        dd('sd');
-
-        // foreach (TrainingPlacement::all() as $key=>$placement) {
-        //     if( Volunteer::find($placement->approvedApplicant?->volunteer?->id)->id_number==null){
-        //         $idNumber = 'MoP-' . $placement->trainingCenterCapacity?->trainingCenter?->code . '-' . str_pad($key+1, 5, "0", STR_PAD_LEFT) . '/' . TrainingSession::find(1)->id;
-        //         Volunteer::find($placement->approvedApplicant?->volunteer?->id)->update(['id_number'=>$idNumber]);
-        //     }
-        // }
+            ->get();
+        DB::transaction(function() use ($start,$volunteers,$trainingSessionId){
+            foreach($volunteers as $volunteer){
+                $data = ['id_number'=>'MoP-'.strtoupper($volunteer->code).'-'.str_pad($start+1, 5, "0", STR_PAD_LEFT) .'/'.$trainingSessionId];
+                Volunteer::where('id',$volunteer->volunteerId)->update($data);
+                $start++;
+            }
+        });
         // Artisan::call('volunteer:placment:notify:all');
     }
 }
