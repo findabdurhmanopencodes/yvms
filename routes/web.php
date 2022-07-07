@@ -351,7 +351,7 @@ Route::get('{training_session}/reset-verification', [VolunteerController::class,
 //     }
 //     dd('stop');
 // });
-Route::any('/Events', [EventController::class, 'index'])->name('Events.index');
+Route::any('/Event/All', [EventController::class, 'index'])->name('Events.index');
 Route::resource('Events', EventController::class)->except(['index']);;
 Route::get('/All-Events', [EventController::class, 'allEvents'])->name('event.all');
 Route::get('/Event/{event}/', [EventController::class, 'detailEvent'])->name('event.detail');
