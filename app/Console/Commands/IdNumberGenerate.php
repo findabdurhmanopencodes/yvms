@@ -35,15 +35,21 @@ class IdNumberGenerate extends Command
         $trainingSessionId = $this->argument('trainingSessionId');
         $volunteerWithId =[];
         $volunteerWithoutId = [];
-        dd(
-            DB::table('volunteers')
-            ->select('*')
-            ->where('volunteers.training_session_id','=',$trainingSessionId)
-            ->join('approved_applicants','volunteers.id','=','approved_applicants.volunteer_id')
-            ->join('training_placements','approved_applicants.id','=','training_placements.approved_applicant_id')
-            ->orderBy('id_number','desc')
-            ->first()
-        );
+        $lastId = DB::table('volunteers')
+        ->select('*')
+        ->where('volunteers.training_session_id','=',$trainingSessionId)
+        ->join('approved_applicants','volunteers.id','=','approved_applicants.volunteer_id')
+        ->join('training_placements','approved_applicants.id','=','training_placements.approved_applicant_id')
+        ->orderBy('id_number','desc')
+        ->first();
+        $start = 1;
+        if($lastId->id_number!=null){
+	$exploded = explode('/',$lastId->id_number);
+	$exploded = explode('-',$exploded[0]);
+	$start = (int)$exploded[2];
+	$start++;
+        }
+        dd('new one');
         // ('training_placements')
         // ->select('approved_applicants.volunteer_id')
         // ->where('training_placements.training_session_id',$trainingSessionId)
