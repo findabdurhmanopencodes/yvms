@@ -98,7 +98,13 @@
                     @if (count($applicants) > 0)
                         @foreach ($applicants as $key => $applicant)
                             <tr>
-                                <td><input type="checkbox" name="applicant[]" value="{{ $applicant->id }}" id="checkbox"/></td>
+                                <td>
+                                    @if ($applicant->status->acceptance_status == 7)
+                                        <input type="checkbox" name="applicant[]" value="{{ $applicant->id }}" id="checkbox"/></td>
+                                    @else
+                                        {{ $key + 1 }}
+                                    @endif
+                                   
                                 <td>
                                     {{ $applicant->id_number }}
                                 </td>
@@ -106,7 +112,7 @@
                                     {{ $applicant->first_name }} {{ $applicant->father_name }}
                                 </td>
                                 <td>
-                                    {{ $userAttendance->where('user_id', $applicant->user->id)->count() }}
+                                    {{ $userAttendance->where('user_id', $applicant->user?->id)->count() }}
                                 </td>
                                 <td>
                                     @if ($applicant->status->acceptance_status == 6)

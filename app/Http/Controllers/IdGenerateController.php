@@ -14,6 +14,7 @@ use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\User;
 use App\Models\Volunteer;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
@@ -23,15 +24,17 @@ use Symfony\Component\Mailer\Transport\Dsn;
 class IdGenerateController extends Controller
 {
     public function checkedInList(Request $request, TrainingSession $trainingSession, $training_center_id){
-        $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $training_center_id)->whereRelation('status','acceptance_status', Constants::VOLUNTEER_STATUS_CHECKEDIN)->paginate(10);
+        $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $training_center_id)->whereRelation('status','acceptance_status', Constants::VOLUNTEER_STATUS_CHECKEDIN)->paginate(20);
         return view('id.checkedIn', compact('applicants', 'training_center_id'));
     }
     public function idGenerate(TrainingSession $trainingSession , Request $request, $training_center_id){
+        set_time_limit(1000);
         $trainer = '';
         $userType ='';
-        if ( $request->get('applicant')) {
+        if ($request->get('applicant')) {
             $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()[0];
             $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->whereRelation('status','acceptance_status', Constants::VOLUNTEER_STATUS_CHECKEDIN)->find($request->get('applicant'));
+            dd($applicants);
             $applicant_count = Volunteer::whereRelation('status','acceptance_status', Constants::VOLUNTEER_STATUS_CHECKEDIN)->find($request->get('applicant'));
             $paginate_apps = Volunteer::whereIn('id', $request->get('applicant'))->whereRelation('status','acceptance_status', Constants::VOLUNTEER_STATUS_CHECKEDIN)->take(5)->get();
         }elseif($request->get('trainer_list') && $request->get('trainer_list_all')){
@@ -133,6 +136,9 @@ class IdGenerateController extends Controller
     }
 
     public function pdfDownload(Request $request, TrainingSession $trainingSession){
+        set_time_limit(2000);
+        // $qr = QrCode::generate('1234');
+        // dd($qr);
         if ($request->get('checkVal') == 'deployment') {
             $check = $request->get('checkVal');
             $trainer = '';
