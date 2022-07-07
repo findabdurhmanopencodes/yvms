@@ -14,6 +14,7 @@ use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
 use App\Models\User;
 use App\Models\Volunteer;
+use App\Models\VolunteerDeployment;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Contracts\Session\Session;
@@ -201,11 +202,12 @@ class IdGenerateController extends Controller
         return view('id.deployment_id', compact('graduated_volunteers'));
     }
 
-    public function pdfDownload(Request $request, TrainingSession $trainingSession){
+    public function pdfDownload(Request $request, TrainingSession $trainingSession, VolunteerDeployment $volunteerDeployment){
         set_time_limit(2000);
         // $qr = QrCode::generate('1234');
         // dd($qr);
         if ($request->get('checkVal') == 'deployment') {
+            $issued_date = $volunteerDeployment->IssuedDate();
             $check = $request->get('checkVal');
             $trainer = '';
             $volunteer_id = [];
@@ -216,7 +218,7 @@ class IdGenerateController extends Controller
                 array_push($volunteer_id, $value->id);
             }
             $html = Volunteer::whereIn('id', $volunteer_id)->get();
-            $pdf = Pdf::loadView('id.dowlnload_id', compact('html', 'exp', 'expBar', 'check', 'trainer'))->setPaper('letter', 'landscape');
+            $pdf = Pdf::loadView('id.dowlnload_id', compact('html', 'exp', 'expBar', 'check', 'trainer','issued_date'))->setPaper('letter', 'landscape');
             return $pdf->stream();
         }elseif(($request->get('checkVal') == 'checkedIn') && ($request->get('trainer') == '')){
             $check = $request->get('checkVal');
