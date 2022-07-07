@@ -238,7 +238,7 @@ Route::get('adb', function () {
     Route::post('woreda/{woreda_id}/capacity/store', [WoredaController::class, 'woredaIntakeStore'])->name('woreda.intake_store');
 
     Route::post('/approve_placment', [TrainingSessionController::class, 'approvePlacment'])->name('placment.approve');
-    Route::post('/approve_placment', [TrainingSessionController::class, 'approvePlacment'])->name('placment.approve');
+    // Route::post('/approve_placment', [TrainingSessionController::class, 'approvePlacment'])->name('placment.approve');
 
     Route::get('{training_center}/show/volunteers', [TraininingCenterController::class, 'show_all_volunteers'])->name('show.volunteers');
     Route::post('{training_center}/graduate', [TraininingCenterController::class, 'graduateVolunteers'])->name('graduate.volunteers');
