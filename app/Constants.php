@@ -15,6 +15,7 @@ class Constants {
     const SUPER_ADMIN = 'super-admin';
 
 
+    const VOLUNTEER_STATUS_SELECTED = 3;
     const VOLUNTEER_STATUS_PLACED = 4;
     const VOLUNTEER_STATUS_GRADUATED = 6;
     const VOLUNTEER_STATUS_DEPLOYED = 7;
