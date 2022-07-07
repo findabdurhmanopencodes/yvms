@@ -40,7 +40,7 @@
                 <strong>Dep. Place: </strong>
             </p>
             <p style="position: relative; left: 87px; top: 36px; background-color: inherit; font-size: 10px; color: blue;">
-                <strong>{{ $val->approvedApplicant->trainingPlacement->deployment->woredaIntake->woreda->name }}</strong>
+                <strong>{{ $val->approvedApplicant->trainingPlacement->deployment->woredaIntake?->woreda->name }}</strong>
             </p>
             <p style="position: relative;text-align: center; top: 18px; background-color: inherit; font-size: 13px; color: blue;">
                 <strong style="font-family: 'Noto Serif Ethiopic'"> 
@@ -102,7 +102,7 @@
                 <strong>Deployment place</strong>
             </p>
             <p style="position: relative; left: 200px; top: -169px; background-color: inherit; font-size: 10px; color: black; letter-spacing: 0.5px;">
-                <strong>{{ $val->approvedApplicant->trainingPlacement->deployment->woredaIntake->woreda->name }}</strong>
+                <strong>{{ $val->approvedApplicant->trainingPlacement->deployment->woredaIntake?->woreda->name }}</strong>
             </p>
             <p style="position: relative; left: 200px; top: -174px; background-color: inherit; font-size: 10px; color: black; font-style: italic; letter-spacing: 0.5px;">
                 <strong>Exp. Date</strong>
