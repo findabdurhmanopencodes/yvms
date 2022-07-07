@@ -181,7 +181,7 @@ class RegionController extends Controller
             $a = $value->qoutaInpercent * 100;
             $sum += $a;
         }
-        $sum = ($sum - $request->prv_val)/100;
+        $sum = ($sum - $request->prv_val) / 100;
 
         if ($sum <= 1) {
             $limit = true;
@@ -206,30 +206,40 @@ class RegionController extends Controller
     }
     public function import()
     {
-        $binRegions = ImporterFiles::REGION_IMPORTS;
-        function filter($var)
-        {
-            return $var !== NULL && $var !== FALSE && $var !== '' && $var !== "";
-        }
-        $regions = [];
-        foreach ($binRegions as $bin) {
-            $filterResult = filter($bin[0]);
-            if ($filterResult) {
-                array_push($regions, $bin[0]);
-            }
-        }
-        foreach ($regions as $region) {
-            Region::where('name', $region)->firstOr(function () use ($region) {
+        $binRegions =  ImporterFiles::REGION_IMPORTS;
+        $totalRegions = 0;
+        foreach ($binRegions as $region) {
+            $region = $region[0];
+            Region::where('name', $region)->firstOr(function () use ($region,&$totalRegions) {
                 Region::create(['name' => $region, 'status' => 0]);
+                $totalRegions++;
             });
         }
+        dump($totalRegions . ' Region imported successfully');
+        // $binRegions = ImporterFiles::REGION_IMPORTS;
+        // function filter($var)
+        // {
+        //     return $var !== NULL && $var !== FALSE && $var !== '' && $var !== "";
+        // }
+        // $regions = [];
+        // foreach ($binRegions as $bin) {
+        //     $filterResult = filter($bin[0]);
+        //     if ($filterResult) {
+        //         array_push($regions, $bin[0]);
+        //     }
+        // }
+        // foreach ($regions as $region) {
+        //     Region::where('name', $region)->firstOr(function () use ($region) {
+        //         Region::create(['name' => $region, 'status' => 0]);
+        //     });
+        // }
         // dd('Region Imported successfully');
     }
 
     public function deployment(TrainingSession $trainingSession)
     {
-        $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type',Region::class)->pluck('quotable_id');
-        $regions = Region::with(['zones', 'quotas'])->whereIn('id',$quota)->get();
-        return view('training_session.regions',compact('trainingSession','regions'));
+        $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type', Region::class)->pluck('quotable_id');
+        $regions = Region::with(['zones', 'quotas'])->whereIn('id', $quota)->get();
+        return view('training_session.regions', compact('trainingSession', 'regions'));
     }
 }
