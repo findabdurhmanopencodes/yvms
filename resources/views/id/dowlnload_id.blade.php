@@ -60,7 +60,7 @@
                 <strong>Volunteer</strong>
             </p>
             <div style="position: relative; float: right; top: -79px;">
-                {{-- <img src="data:image{{ $exp[$key+1] }}" alt=""> --}}
+                <img src="data:image{{ $exp[$key+1] }}" alt="">
             </div>
         </div>
 
@@ -83,8 +83,8 @@
             <p style="position: relative; left: 8px; top: -18px; background-color: inherit; font-size: 10px; color: black; letter-spacing: 0.5px;">
                 <strong>{{ $val->first_name }}  {{ $val->father_name }}</strong>
             </p>
-            <div style="position: relative; left: 142px; top: -63px;">
-                {{-- <img src="data:image{{ $expBar[$key+1] }}" style="color: black"> --}}
+            <div style="position: relative; left: 142px; top: -60px;">
+                <img src="data:image{{ $expBar[$key+1] }}" style="color: black">
             </div>
             <p style="position: relative; left: 8px; top: -80px; background-color: inherit; font-size: 10px; color: black; font-style: italic; letter-spacing: 0.5px;">
                 <strong>Nationality:</strong>
@@ -98,19 +98,19 @@
             <p style="position: relative; left: 8px; top: -102px; background-color: inherit; font-size: 10px; color: black; letter-spacing: 0.5px;">
                 <strong>{{ $val->approvedApplicant->trainingPlacement->deployment->issued_date_am }}</strong>
             </p>
-            <p style="position: relative; left: 200px; top: -164px; background-color: inherit; font-size: 10px; color: black; font-style: italic; letter-spacing: 0.5px;">
+            <p style="position: relative; left: 200px; top: -150px; background-color: inherit; font-size: 10px; color: black; font-style: italic; letter-spacing: 0.5px;">
                 <strong>Deployment place</strong>
             </p>
-            <p style="position: relative; left: 200px; top: -173px; background-color: inherit; font-size: 10px; color: black; letter-spacing: 0.5px;">
+            <p style="position: relative; left: 200px; top: -159px; background-color: inherit; font-size: 10px; color: black; letter-spacing: 0.5px;">
                 <strong>{{ $val->approvedApplicant->trainingPlacement->deployment->woredaIntake->woreda->name }}</strong>
             </p>
-            <p style="position: relative; left: 200px; top: -178px; background-color: inherit; font-size: 10px; color: black; font-style: italic; letter-spacing: 0.5px;">
+            <p style="position: relative; left: 200px; top: -164px; background-color: inherit; font-size: 10px; color: black; font-style: italic; letter-spacing: 0.5px;">
                 <strong>Exp. Date</strong>
             </p>
-            <p style="position: relative; left: 200px; top: -186px; background-color: inherit; font-size: 10px; color: black; letter-spacing: 0.5px;">
+            <p style="position: relative; left: 200px; top: -172px; background-color: inherit; font-size: 10px; color: black; letter-spacing: 0.5px;">
                 <strong>{{ $val->session->end_date_am }}</strong>
             </p>
-            <div style="left: 30px; top: -205px; width: 180px; background-color: inherit; position: relative;">
+            <div style="left: 30px; top: -191px; width: 180px; background-color: inherit; position: relative;">
                 <p style="text-align: center; font-size: 9px; position: relative; color: rgb(131, 218, 209); letter-spacing: 0.5px;">
                     <strong>I certify that bearer of this Id card is an employee of Jimma University</strong>
                 </p>

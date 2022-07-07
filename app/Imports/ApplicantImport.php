@@ -36,7 +36,7 @@ class ApplicantImport implements ToCollection, WithStartRow
      */
     public function collection(Collection $rows)
     {
-        $centerPlacement = TraininingCenter::   ($this->placement);
+        $centerPlacement = TraininingCenter::($this->placement);
         $volunteerData = [];
         foreach ($rows as $key => $value) {
             $fi_name = '';

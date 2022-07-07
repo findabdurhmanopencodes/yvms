@@ -99,8 +99,8 @@
                         @foreach ($applicants as $key => $applicant)
                             <tr>
                                 <td>
-                                    @if ($applicant->status->acceptance_status == 7)
-                                        <input type="checkbox" name="applicant[]" value="{{ $applicant->id }}" id="checkbox"/></td>
+                                    @if ($applicant->acceptance_status == 7)
+                                        <input type="checkbox" name="applicant[]" value="{{ $applicant->volunteer_id }}" id="checkbox"/></td>
                                     @else
                                         {{ $key + 1 }}
                                     @endif
@@ -112,18 +112,18 @@
                                     {{ $applicant->first_name }} {{ $applicant->father_name }}
                                 </td>
                                 <td>
-                                    {{ $userAttendance->where('user_id', $applicant->user?->id)->count() }}
+                                    {{-- {{ $userAttendance->where('user_id', $applicant->user?->id)->count() }} --}}
                                 </td>
                                 <td>
-                                    @if ($applicant->status->acceptance_status == 6)
+                                    @if ($applicant->acceptance_status == 6)
                                         <span class="badge badge-pill badge-success">
                                             Graduated
                                         </span>
-                                    @elseif ($applicant->status->acceptance_status == 5)
+                                    @elseif ($applicant->acceptance_status == 5)
                                         <span class="badge badge-pill badge-warning">
                                             Graduate
                                         </span>
-                                    @elseif ($applicant->status->acceptance_status == 7)
+                                    @elseif ($applicant->acceptance_status == 7)
                                         <span class="badge badge-pill badge-success">
                                             Deployed
                                         </span>
@@ -180,9 +180,10 @@
                     if (data.length > 0) {
                         $('#search_table tbody').html('');
                         data.forEach(element => {
+                            console.log(element);
                             var count = element.idCount || 0;
                             var input = `<input type="checkbox" name="applicant[]" value="${element.id}" id="checkbox"/>`;
-                            $('#search_table tbody').append("<tr>"+getTableCell(input)+getTableCell(element.id_number)+getTableCell(element.first_name)+getTableCell(count)+getTableCell(((element.status.acceptance_status == '6')?'<span class="badge badge-pill badge-success">Graduated</span>':(element.status.acceptance_status == '5')?'<span class="badge badge-pill badge-warning">Graduate</span>': (element.status.acceptance_status == '7')? '<span class="badge badge-pill badge-success">Deployed</span>' : ''))+"</tr>");
+                            $('#search_table tbody').append("<tr>"+getTableCell(input)+getTableCell(element.id_number)+getTableCell(element.first_name+' '+element.father_name)+getTableCell(count)+getTableCell(((element.status.acceptance_status == '6')?'<span class="badge badge-pill badge-success">Graduated</span>':(element.status.acceptance_status == '5')?'<span class="badge badge-pill badge-warning">Graduate</span>': (element.status.acceptance_status == '7')? '<span class="badge badge-pill badge-success">Deployed</span>' : ''))+"</tr>");
                         });
                         $("#paginate").hide();
                     }else{
