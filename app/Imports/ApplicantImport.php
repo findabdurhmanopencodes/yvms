@@ -36,7 +36,7 @@ class ApplicantImport implements ToCollection, WithStartRow
      */
     public function collection(Collection $rows)
     {
-        $centerPlacement = TraininingCenter::findOrFail($this->placement);
+        $centerPlacement = TraininingCenter::($this->placement);
         $volunteerData = [];
         foreach ($rows as $key => $value) {
             $fi_name = '';
@@ -44,7 +44,7 @@ class ApplicantImport implements ToCollection, WithStartRow
             $gr_name = '';
             $woredas_app = ltrim(rtrim(strtoupper($value[8])));
             $woreda = Woreda::Where('name', $woredas_app)->get()->first();
-            if ($woreda) {
+            
                 $name_val = str_replace('  ', ' ', ltrim(rtrim($value[1])));
                 $name = explode(' ', $name_val);
                 if (count($name) >= 1) {
@@ -61,7 +61,6 @@ class ApplicantImport implements ToCollection, WithStartRow
                 $d = date('d/m/Y', $date);
                 $data = ['first_name' => $fi_name, 'father_name' => $fathe_name, 'grand_father_name' => $gr_name, 'email' => '', 'dob' => new DateTime('01/01/1991'), 'gender' => $value[2], 'phone' => (string)$value[11], 'contact_name' => 'UNKNOWN', 'contact_phone' => 'UNKNOWN', 'gpa' => $gpa, 'password' => Hash::make('12345678'), 'training_session_id' => $this->trainingSession, 'woreda_id' => $woreda->id];
                 array_push($volunteerData, $data);
-            }
         }
         Volunteer::insert($volunteerData);
         $lastIds = Volunteer::orderBy('id', 'desc')->take(count($volunteerData))->pluck('id');
