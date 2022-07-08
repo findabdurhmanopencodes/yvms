@@ -18,6 +18,7 @@
     </style>
 </head>
 <body style="">
+    {{QrCode::generate('Hello!')}}
     @if ($check == 'deployment' && $trainer == null)
     @foreach ($html as $key=>$val)
         <div style="width: 201.6px; height: 326.4px; background-size: cover; background-image: url('img/mopfrontdes.png'); break-after: page; transform: rotate(90deg); transform-origin: 159px 159px; page-break-after: always; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: -43px; margin-left: -35px;">
@@ -120,9 +121,9 @@
     @elseif($check == 'checkedIn' && $trainer == null)
         @foreach ($html as $key=>$val)
         
-        @if ($key%4 === 0)
-        <div style="clear: both; margin-top:25px;"></div>
-        @endif
+            @if ($key%4 === 0)
+            <div style="clear: both; margin-top:25px;"></div>
+            @endif
             @if ($key%8 !== 0 || $key == 0)
                 <div style="width: 201.6px; height: 326.4px; background-size: cover; background-image: url('img/mopfrontdes.png'); float: left; margin-right: 30px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: -30px;">
                     <div style="position: relative; left: 54px; top: 120px;">

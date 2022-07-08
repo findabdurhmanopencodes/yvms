@@ -53,7 +53,7 @@ class IdGenerateController extends Controller
                 ->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')
                 ->leftJoin('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
                 ->where('trainining_centers.id', $training_center_id)
-                ->where('statuses.acceptance_status',Constants::VOLUNTEER_STATUS_CHECKEDIN)
+                // ->where('statuses.acceptance_status',Constants::VOLUNTEER_STATUS_CHECKEDIN)
                 ->whereIn('volunteers.id', $request->get('applicant'))
                 ->select('*')
                 ->get();
@@ -66,7 +66,7 @@ class IdGenerateController extends Controller
                 ->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')
                 ->leftJoin('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
                 ->where('trainining_centers.id', $training_center_id)
-                ->where('statuses.acceptance_status',Constants::VOLUNTEER_STATUS_CHECKEDIN)
+                // ->where('statuses.acceptance_status',Constants::VOLUNTEER_STATUS_CHECKEDIN)
                 ->whereIn('volunteers.id', $request->get('applicant'))
                 ->select('*')
                 ->paginate(5);
