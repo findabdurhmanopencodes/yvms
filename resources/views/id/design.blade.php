@@ -65,7 +65,7 @@
                                                 {{ $key + 1 }}
                                             </td>
                                             <td>
-                                                @if ($applicant->getTable() == 'volunteers')
+                                                @if ($table_name == 'volunteers')
                                                     {{ $applicant->first_name }}
                                                 @elseif ($userType == 'mop user')
                                                     {{ $applicant->user->first_name.' '.$applicant->user->father_name }}
@@ -132,7 +132,8 @@
         var div = document.createElement('div');
         var myDesign;
         var applicants = @json($applicants);
-        var paginate_apps = @json($applicant_count);
+        // var paginate_apps = @json($applicants);
+        // console.log(paginate_apps);
         $('#print_btn').on('click', function(event){
             if ('{{ $trainer }}' == 'trainer') {
                 applicants.forEach((applicant, key) => {
@@ -224,7 +225,7 @@
                     // p6.style.fontSize = '11px';
                     // p6.style.color = '#000000';
                     // myDesign.appendChild(p6);
-                    // myDesign.marginRight = "100px"
+                    // myDesign.marginRight = "100px";
                     
                     // var p7 = document.createElement("p");
                     // var s7 = document.createElement("strong");
@@ -309,7 +310,7 @@
                     // myDesign.style.pageBreakBefore = "always";
                     // div.appendChild(myDesign.cloneNode(true))
 
-                    DATAS.push(div);
+                    // DATAS.push(div);
                     
                 });
             } else {
@@ -440,14 +441,14 @@
                     // r_date_text.style.color = 'blue';
                     // myDesign.appendChild(r_date_text);
 
-                    // generateQR(applicant);
+            //         // generateQR(applicant);
                     var div__qr_img = document.createElement("div");
 
                     var div__qr_img_2 = document.createElement("div");
 
                     div__qr_img.setAttribute('id', 'qrcode'+key);
                     
-                    // myDesign.appendChild(div__qr_img);
+            //         // myDesign.appendChild(div__qr_img);
 
                     var qrcode = new QRCode(div__qr_img, {
                         text: applicant.id_number,
@@ -469,12 +470,12 @@
                     div__qr_img_2.style.left = '140';
                     div__qr_img_2.style.top = '-20';
                     div__qr_img_2.appendChild(qrf_img.cloneNode(true));
-                    myDesign.appendChild(div__qr_img_2.cloneNode(true));
+                    // myDesign.appendChild(div__qr_img_2.cloneNode(true));
 
                     // myDesign.style.pageBreakAfter = "always";
-                    div.appendChild(myDesign.cloneNode(true));
+                    // div.appendChild(myDesign.cloneNode(true));
 
-                    DATAS.push(div);
+                    // DATAS.push(div);
 
                 });
             }

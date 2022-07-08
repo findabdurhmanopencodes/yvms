@@ -115,7 +115,7 @@
             var applicants = @json($graduated_volunteers);
             Object.keys(applicants).forEach(key => {
                 // myDesign = document.createElement("div");
-                // myDesign.setAttribute('id', 'myDesign'+key);
+                // // myDesign.setAttribute('id', 'myDesign'+key);
                 // myDesign.style.width = "201.6px";
                 // myDesign.style.height = "326.4px";
                 // myDesign.style.backgroundSize = "cover";
@@ -315,14 +315,14 @@
                 // r_date_text.style.color = 'blue';
                 // myDesign.appendChild(r_date_text);
 
-                // // generateQR(applicant);
+                // // // generateQR(applicant);
                 var div__qr_img = document.createElement("div");
 
                 var div__qr_img_2 = document.createElement("div");
 
-                // div__qr_img.setAttribute('id', 'qrcode'+key);
+                div__qr_img.setAttribute('id', 'qrcode'+key);
 
-                // myDesign.appendChild(div__qr_img);
+                // // myDesign.appendChild(div__qr_img);
 
                 var qrcode = new QRCode(div__qr_img, {
                     text: applicants[key].id_number,
@@ -344,7 +344,7 @@
                 div__qr_img_2.style.left = '149px';
                 div__qr_img_2.style.top = '-66px';
                 div__qr_img_2.appendChild(qrf_img.cloneNode(true));
-                myDesign.appendChild(div__qr_img_2.cloneNode(true));
+                // myDesign.appendChild(div__qr_img_2.cloneNode(true));
 
                 // myDesignBack = document.createElement("div");
                 // myDesignBack.style.width = "324px";
@@ -547,17 +547,16 @@
                     .CODE128(applicants[key].id_number, {fontSize: 11, textMargin: 2, textPosition: "top", color:'inherit'})
                     .render();
 
-                div__bar_img_2.style.position = "relative";
+                // div__bar_img_2.style.position = "relative";
                 // div__bar_img_2.style.float = "right";
-                div__bar_img_2.style.left = '142px';
-                div__bar_img_2.style.top = '-216px';
+                // div__bar_img_2.style.left = '142px';
+                // div__bar_img_2.style.top = '-216px';
                 div__bar_img.style.color = "black";
-                console.log(div__bar_img.src);
                 
                 objBarCode.push(div__bar_img.src);
 
-                div__bar_img_2.appendChild(div__bar_img.cloneNode(true));
-                myDesignBack.appendChild(div__bar_img_2.cloneNode(true));
+                // div__bar_img_2.appendChild(div__bar_img.cloneNode(true));
+                // myDesignBack.appendChild(div__bar_img_2.cloneNode(true));
 
                 // var pbackdiv = document.createElement("div");
                 // var pback14 = document.createElement("p");

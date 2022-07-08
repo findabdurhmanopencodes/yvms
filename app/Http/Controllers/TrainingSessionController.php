@@ -619,6 +619,19 @@ class TrainingSessionController extends Controller
 
     public function screen($id)
     {
+        // set_time_limit(1000);
+        // foreach (Volunteer::all() as $key => $value) {
+        //     $approved_applicant = new ApprovedApplicant();
+        //     $status = Status::where('volunteer_id', $value->id)->get()->first();
+        //     $status->acceptance_status = 3;
+        //     $status->save();
+        //     $approved_applicant->training_session_id = $id;
+        //     $approved_applicant->volunteer_id = $value->id;
+        //     $approved_applicant->status = 1;
+        //     $approved_applicant->save();
+        // }
+        // dd('fssdf');
+        set_time_limit(1000);
         $arr = [];
         $accepted_arr = [];
         $sum = 0;
@@ -1005,9 +1018,10 @@ class TrainingSessionController extends Controller
 
     public function approvePlacment(TrainingSession $trainingSession)
     {
-        $trainingSession->update(['status' => Constants::TRAINING_SESSION_PLACEMENT_APPROVE]);
-        $trainingSession->save();
-        Artisan::call('id:generate');
+        $trainingSessionId = $trainingSession->id;
+        Artisan::call('id:generate '.$trainingSessionId);
+        // $trainingSession->update(['status' => Constants::TRAINING_SESSION_PLACEMENT_APPROVE]);
+        // $trainingSession->save();
         return redirect()->back()->with('message', 'Placment approved successfully');
     }
 }

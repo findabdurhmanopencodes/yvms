@@ -482,7 +482,7 @@ class VolunteerController extends Controller
         return Excel::download(new ApplicantExport($all_volunteers, ['ID Number', 'First Name', 'Father Name', 'Grand Father Name', 'Phone Number', 'E-mail', 'Gender', 'Date of Birth', 'GPA', 'Contact Name', 'Contact Phone']), 'Round'.$trainingSession->id.'.xlsx');
     }
     public function importVolunteers(Request $request, TrainingSession $trainingSession){
-        Excel::import(new ApplicantImport($trainingSession), $request->file('attendance')->store('temp'));
+        // Excel::import(new ApplicantImport($trainingSession), $request->file('attendance')->store('temp'));
         $past_url = url()->previous();
         return redirect($past_url)->with('success', 'Successfully Imported!!!');
     }
