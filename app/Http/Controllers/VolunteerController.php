@@ -398,7 +398,7 @@ class VolunteerController extends Controller
                 $volunteer->update();
                 $volunteer->save();
                 $verifyVolunteer->delete();
-                Auth::login($user);
+                // Auth::login($user);
                 dispatch(new SendEmailJob($volunteer->email, new VolunteerAppliedMail($volunteer)));
                 return redirect(route('home'))->with('message', 'Your Service Request Form will be reviewed shortly and a response made to the email address');
             } else {
