@@ -23,6 +23,8 @@ use App\Models\TrainingSessionTraining;
 use App\Models\User;
 use App\Models\UserAttendance;
 use App\Models\Volunteer;
+use App\Models\Woreda;
+use App\Models\WoredaIntake;
 use Database\Seeders\UserAttendanceSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -394,11 +396,22 @@ class TraininingCenterController extends Controller
     public function show_all_volunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter, UserAttendance $userAttendance)
     {
         $check_deployed = [];
-        $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->paginate(10);
+        
+        $applicants = DB::table('volunteers')
+        ->join('statuses', 'statuses.volunteer_id','=', 'volunteers.id')
+        // ->join('users', 'users.id','=', 'volunteers.user_id')
+        ->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')
+        ->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')
+        ->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')
+        ->leftJoin('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
+        ->where('trainining_centers.id', $trainingCenter->id)
+        ->select('*')
+        ->paginate(10);
+
         $trainingSchedules = TrainingSchedule::all();
 
         foreach ($applicants as $key => $applicant) {
-            if ($applicant->status->acceptance_status == 7) {
+            if ($applicant->acceptance_status == 7) {
                 array_push($check_deployed, $applicant);
             }
         }

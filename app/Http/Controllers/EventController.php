@@ -49,6 +49,7 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         //
         $this->validate($request, [
             'title' => 'required|string|max:255',

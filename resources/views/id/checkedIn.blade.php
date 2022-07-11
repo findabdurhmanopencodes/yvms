@@ -49,7 +49,7 @@
                     @if (count($applicants) > 0)
                         @foreach ($applicants as $key => $applicant)
                             <tr>
-                                <td><input type="checkbox" name="applicant[]" value="{{ $applicant->id }}" id="checkbox"/></td>
+                                <td><input type="checkbox" name="applicant[]" value="{{ $applicant->volunteer_id }}" id="checkbox"/></td>
                                 <td>
                                     {{ $applicant->id_number }}
                                 </td>
@@ -57,17 +57,17 @@
                                     {{ $applicant->first_name }} {{ $applicant->father_name }}
                                 </td>
                                 <td>
-                                    @if ($applicant->idCount)
+                                    {{-- @if ($applicant->idCount)
                                         {{ $applicant?->idCount?->count }}
-                                    @else
+                                    @else --}}
                                         0
-                                    @endif
+                                    {{-- @endif --}}
                                 </td>
                                 {{-- <td>
                                     {{ $applicant?->idCount?->count }}
                                 </td> --}}
                                 <td>
-                                    {{ $applicant->approvedApplicant?->trainingPlacement?->trainingCenterCapacity?->trainingCenter?->code }}
+                                    {{ $applicant->code }}
                                 </td>
                             </tr>
                         @endforeach

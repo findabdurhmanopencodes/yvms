@@ -4,7 +4,1168 @@ namespace App;
 
 class ImporterFiles
 {
+    const REGION_IMPORTS = [
+        [
+            "A.A"
+        ],
+        [
+            "AA"
+        ],
+        [
+            "Afar"
+        ],
+        [
+            "Somali"
+        ],
+        [
+            "Gambell"
+        ],
+        [
+            "SWPR"
+        ],
+        [
+            "Benishangul Gumuz"
+        ],
+        [
+            "Dire Dawa"
+        ],
+        [
+            "Harar "
+        ],
+        [
+            "Ahmara"
+        ],
+        [
+            "Oromia"
+        ],
+        [
+            "Amhara"
+        ],
+        [
+            "Amahara"
+        ],
+        [
+            "Amhara "
+        ],
+        [
+            "SNNPR"
+        ],
+        [
+            "SNNP"
+        ],
+        [
+            "Oromia "
+        ],
+        [
+            "oromiya"
+        ],
+        [
+            "Ormia "
+        ],
+        [
+            "Oro"
+        ],
+        [
+            "Oromi'a "
+        ],
+        [
+            " Oromia"
+        ],
+        [
+            "Sidama"
+        ],
+        [
+            "Somali "
+        ],
+        [
+            "Gambella"
+        ],
+        [
+            "Accounting"
+        ],
+        [
+            "Accounting "
+        ],
+        [
+            "Management"
+        ],
+        [
+            "Amhaea"
+        ],
+        [
+            "S.N.N.P."
+        ],
+        [
+            "S.N.N.P.R"
+        ],
+        [
+            "Oromiy"
+        ],
+        [
+            "A A"
+        ],
+        [
+            "Oromiq"
+        ],
+        [
+            "Degree"
+        ]
+    ];
 
+    const ZONE_IMPORTS = [
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali ",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Somali",
+            "Fafan"
+        ],
+        [
+            "Amhara",
+            "North shewa"
+        ],
+        [
+            "Amhara",
+            "South Gonder"
+        ],
+        [
+            "Amhara",
+            "Awi"
+        ],
+        [
+            "Amhaea",
+            "Awi"
+        ],
+        [
+            "Amhara ",
+            "Awi"
+        ],
+        [
+            "Amhara ",
+            "Awi "
+        ],
+        [
+            "Amhara ",
+            "North Gonder"
+        ],
+        [
+            "Amhara",
+            "west gojjam"
+        ],
+        [
+            "Amhara ",
+            "west gojjam"
+        ],
+        [
+            "Amhara",
+            "Centeral gondar"
+        ],
+        [
+            "Amhara",
+            "oromo"
+        ],
+        [
+            "Amhara",
+            "Gonder city"
+        ],
+        [
+            "Amhara",
+            "South wollo"
+        ],
+        [
+            "Amhara",
+            "North wollo"
+        ],
+        [
+            "Amhara",
+            "east gojjam"
+        ],
+        [
+            "Amhara",
+            "West Gondar"
+        ],
+        [
+            "Amhara",
+            "Dessie"
+        ],
+        [
+            "Amhara",
+            "W/gojjam"
+        ],
+        [
+            "Amhara",
+            "B/dar"
+        ],
+        [
+            "Amhara",
+            "N/wollo"
+        ],
+        [
+            "Amhara",
+            "S/gonder"
+        ],
+        [
+            "Amhara",
+            "S/ gonder"
+        ],
+        [
+            "Amhara",
+            "B/bar"
+        ],
+        [
+            "Amhara",
+            "Waghimra"
+        ],
+        [
+            "Amhara",
+            "waghimera"
+        ]
+    ];
+    const WOREDA_IMPORTS = [
+        [
+            "Fafan",
+            "Jigjiga"
+        ],
+        [
+            "Fafan",
+            "Jigjga"
+        ],
+        [
+            "Fafan",
+            "Kebridar"
+        ],
+
+        [
+            "North shewa",
+            "Shewarobit"
+        ],
+        [
+            "North shewa",
+            "Tarmaber"
+        ],
+        [
+            "North shewa",
+            "Gishe"
+        ],
+        [
+            "North shewa",
+            "Efrata"
+        ],
+        [
+            "North shewa",
+            "Ataye"
+        ],
+        [
+            "North shewa",
+            "Moja"
+        ],
+        [
+            "North shewa",
+            "Antsokya"
+        ],
+        [
+            "North shewa",
+            "An/tera"
+        ],
+        [
+            "North shewa",
+            "Merhabete"
+        ],
+        [
+            "North shewa",
+            "Berhet"
+        ],
+        [
+            "North shewa",
+            "S.wayu"
+        ],
+        [
+            "North shewa",
+            "Minjar shenkora"
+        ],
+        [
+            "North shewa",
+            "M/jiru"
+        ],
+        [
+            "North shewa",
+            "Alemketema"
+        ],
+        [
+            "North shewa",
+            "Debrebrhan"
+        ],
+        [
+            "North shewa",
+            "Menzgera"
+        ],
+        [
+            "North shewa",
+            "Menzkeya"
+        ],
+        [
+            "North shewa",
+            "Deberebrhan"
+        ],
+        [
+            "South Gonder",
+            "Andabet"
+        ],
+        [
+            "South Gonder",
+            "Dera"
+        ],
+        [
+            "South Gonder",
+            "Ebinat"
+        ],
+        [
+            "South Gonder",
+            "Farta"
+        ],
+        [
+            "South Gonder",
+            "Fogera"
+        ],
+        [
+            "South Gonder",
+            "Woreta"
+        ],
+        [
+            "South Gonder",
+            "Layigayint"
+        ],
+        [
+            "South Gonder",
+            "Semada"
+        ],
+        [
+            "South Gonder",
+            "Tach Gayint"
+        ],
+        [
+            "South Gonder",
+            "D/Tabor"
+        ],
+        [
+            "South Gonder",
+            "Sediemuja"
+        ],
+        [
+            "South Gonder",
+            "Guna"
+        ],
+        [
+            "South Gonder",
+            "L/Kemkem"
+        ],
+        [
+            "South Gonder",
+            "A/Zemen"
+        ],
+        [
+            "South Gonder",
+            "Estie"
+        ],
+        [
+            "Awi",
+            "Dangila"
+        ],
+        [
+            "Awi",
+            "Chagni"
+        ],
+        [
+            "Awi",
+            "Ayu/Guagusa"
+        ],
+        [
+            "Awi",
+            "Tilily"
+        ],
+        [
+            "Awi",
+            "Fagta"
+        ],
+        [
+            "Awi",
+            "Fegata"
+        ],
+        [
+            "Awi",
+            "fageta"
+        ],
+        [
+            "Awi",
+            "Injibara"
+        ],
+        [
+            "Awi",
+            "Ankesha guagusa"
+        ],
+        [
+            "Awi",
+            "Guangua"
+        ],
+        [
+            "Awi",
+            "Zigem"
+        ],
+        [
+            "Awi",
+            "Banja"
+        ],
+        [
+            "Awi",
+            "Jawi"
+        ],
+        [
+            "Awi ",
+            "Jawi"
+        ],
+        [
+            "North Gonder",
+            "adiarkay"
+        ],
+        [
+            "North Gonder",
+            "Dabat"
+        ],
+        [
+            "North Gonder",
+            "Beyda"
+        ],
+        [
+            "North Gonder",
+            "Debark ketema"
+        ],
+        [
+            "North Gonder",
+            "janamora"
+        ],
+        [
+            "North Gonder",
+            "Debarkworeda"
+        ],
+        [
+            "west gojjam",
+            "Womberema"
+        ],
+        [
+            "west gojjam",
+            "sekela"
+        ],
+        [
+            "west gojjam",
+            "Finote Selam"
+        ],
+        [
+            "west gojjam",
+            "Gonji Qolela"
+        ],
+        [
+            "west gojjam",
+            "Jiga"
+        ],
+        [
+            "west gojjam",
+            "Qarite"
+        ],
+        [
+            "west gojjam",
+            "Burei ketma"
+        ],
+        [
+            "west gojjam",
+            "jabietehnan"
+        ],
+        [
+            "west gojjam",
+            "y/densa"
+        ],
+        [
+            "west gojjam",
+            "Debube Achfe"
+        ],
+        [
+            "west gojjam",
+            "Semen Achfer"
+        ],
+        [
+            "west gojjam",
+            "Bahir dar zur"
+        ],
+        [
+            "west gojjam",
+            "Semen mecha"
+        ],
+        [
+            "west gojjam",
+            "Debeb Mecha"
+        ],
+        [
+            "west gojjam",
+            "Dega damote"
+        ],
+        [
+            "west gojjam",
+            "Dembcha"
+        ],
+        [
+            "west gojjam",
+            "Buri zuria"
+        ],
+        [
+            "Centeral gondar",
+            "Takussa"
+        ],
+        [
+            "Centeral gondar",
+            "Go/Zuria "
+        ],
+        [
+            "Centeral gondar",
+            "Tach armachiho "
+        ],
+        [
+            "Centeral gondar",
+            "East Belesa"
+        ],
+        [
+            "Centeral gondar",
+            "Alefa "
+        ],
+        [
+            "Centeral gondar",
+            "Alefa"
+        ],
+        [
+            "Centeral gondar",
+            "Wogera"
+        ],
+        [
+            "Centeral gondar",
+            "Wogera Wogera"
+        ],
+        [
+            "Centeral gondar",
+            "W Wogera ogera"
+        ],
+        [
+            "Centeral gondar",
+            "west/denbiya"
+        ],
+        [
+            "Centeral gondar",
+            "Tegedie"
+        ],
+        [
+            "Centeral gondar",
+            "T Tegedie egedie"
+        ],
+        [
+            "Centeral gondar",
+            "Tegedie Tegedie"
+        ],
+        [
+            "Centeral gondar",
+            "Lay armacheho"
+        ],
+        [
+            "Centeral gondar",
+            "East/denbiya"
+        ],
+        [
+            "Centeral gondar",
+            "East denbiya"
+        ],
+        [
+            "Centeral gondar",
+            "Kinfaz"
+        ],
+        [
+            "Centeral gondar",
+            "Merab belesa"
+        ],
+        [
+            "Centeral gondar",
+            "Merab belesa Merab belesa"
+        ],
+        [
+            "Centeral gondar",
+            "GoderZuriya"
+        ],
+        [
+            "Centeral gondar",
+            "Misrak Belesa "
+        ],
+        [
+            "Centeral gondar",
+            "C/armachho"
+        ],
+        [
+            "oromo",
+            "Kemise"
+        ],
+        [
+            "oromo",
+            "Dewa Cheffa"
+        ],
+        [
+            "oromo",
+            "Bati"
+        ],
+        [
+            "Gonder city",
+            "azezo"
+        ],
+        [
+            "Gonder city",
+            "arada"
+        ],
+        [
+            "Gonder city",
+            "marki"
+        ],
+        [
+            "Gonder city",
+            "Gondar"
+        ],
+        [
+            "Gonder city",
+            "fassil"
+        ],
+        [
+            "Gonder city",
+            "fasil"
+        ],
+        [
+            "Gonder city",
+            "Jantekel"
+        ],
+        [
+            "Gonder city",
+            "zobil"
+        ],
+        [
+            "South wollo",
+            "legehida"
+        ],
+        [
+            "South wollo",
+            "Woreilu "
+        ],
+        [
+            "South wollo",
+            "kutber"
+        ],
+        [
+            "South wollo",
+            "Kombolcha"
+        ],
+        [
+            "South wollo",
+            "Tenta "
+        ],
+        [
+            "South wollo",
+            "Mekdela"
+        ],
+        [
+            "South wollo",
+            "kallu"
+        ],
+        [
+            "South wollo",
+            "Legambo"
+        ],
+        [
+            "South wollo",
+            "Borena"
+        ],
+        [
+            "South wollo",
+            "Werebabo"
+        ],
+        [
+            "South wollo",
+            "Delanta "
+        ],
+        [
+            "South wollo",
+            "Albuko"
+        ],
+        [
+            "South wollo",
+            "Am/Sayint"
+        ],
+        [
+            "South wollo",
+            "M/Sayint"
+        ],
+        [
+            "South wollo",
+            "Ambassel "
+        ],
+        [
+            "South wollo",
+            "D/zuriya"
+        ],
+        [
+            "South wollo",
+            "kellala"
+        ],
+        [
+            "South wollo",
+            "Wegdi"
+        ],
+        [
+            "South wollo",
+            "Tehuledere"
+        ],
+        [
+            "North wollo",
+            "kobo"
+        ],
+        [
+            "North wollo",
+            "Angot"
+        ],
+        [
+            "North wollo",
+            "laibela"
+        ],
+        [
+            "North wollo",
+            "lasta"
+        ],
+        [
+            "North wollo",
+            "gedan"
+        ],
+        [
+            "North wollo",
+            "Gubalafto"
+        ],
+        [
+            "North wollo",
+            "haberu"
+        ],
+        [
+            "North wollo",
+            "bugena"
+        ],
+        [
+            "North wollo",
+            "dawunet"
+        ],
+        [
+            "North wollo",
+            "gazo"
+        ],
+        [
+            "North wollo",
+            "raya kobo"
+        ],
+        [
+            "North wollo",
+            "meket"
+        ],
+        [
+            "North wollo",
+            "Wadila"
+        ],
+        [
+            "North wollo",
+            "woldiya"
+        ],
+        [
+            "east gojjam",
+            "D/markos"
+        ],
+        [
+            "east gojjam",
+            "gozamen"
+        ],
+        [
+            "east gojjam",
+            "sinan"
+        ],
+        [
+            "east gojjam",
+            "Bibugn"
+        ],
+        [
+            "east gojjam",
+            "machakel"
+        ],
+        [
+            "east gojjam",
+            "D/ealias"
+        ],
+        [
+            "east gojjam",
+            "Debay tilat"
+        ],
+        [
+            "east gojjam",
+            "Aneded"
+        ],
+        [
+            "east gojjam",
+            "Dejen"
+        ],
+        [
+            "east gojjam",
+            "Enemay"
+        ],
+        [
+            "east gojjam",
+            "Enarji"
+        ],
+        [
+            "east gojjam",
+            "goncha"
+        ],
+        [
+            "east gojjam",
+            "Enebssie"
+        ],
+        [
+            "east gojjam",
+            "enbssie"
+        ],
+        [
+            "east gojjam",
+            "motta"
+        ],
+        [
+            "east gojjam",
+            "Basso liben"
+        ],
+        [
+            "east gojjam",
+            "Awabal"
+        ],
+        [
+            "east gojjam",
+            "shebel"
+        ],
+        [
+            "east gojjam",
+            "hulet eju"
+        ],
+        [
+            "east gojjam",
+            "sedie"
+        ],
+        [
+            "West Gondar",
+            "Genda wuha"
+        ],
+        [
+            "West Gondar",
+            " quara"
+        ],
+        [
+            "West Gondar",
+            "quara "
+        ],
+        [
+            "West Gondar",
+            "quara"
+        ],
+        [
+            "West Gondar",
+            "W/armaco"
+        ],
+        [
+            "Dessie",
+            "Dessie"
+        ],
+        [
+            "W/gojjam",
+            "B/dar"
+        ],
+        [
+            "B/dar",
+            "B/dar"
+        ],
+        [
+            "W/gojjam",
+            "N/Achefer"
+        ],
+        [
+            "W/gojjam",
+            "Mecha"
+        ],
+        [
+            "W/gojjam",
+            "Gonje Kollela"
+        ],
+        [
+            "N/wollo",
+            "Lalebela"
+        ],
+        [
+            "W/gojjam",
+            "N/Mecha"
+        ],
+        [
+            "S/gonder",
+            "Libokemkem"
+        ],
+        [
+            "S/ gonder",
+            "Libokemkem"
+        ],
+        [
+            "B/bar",
+            "B/dar"
+        ],
+        [
+            "S/gonder",
+            "Libo Kemkem"
+        ],
+        [
+            "S/gonder",
+            "Libo Kemke"
+        ],
+        [
+            "S/gonder",
+            "Fogera"
+        ],
+        [
+            "S/gonder",
+            "libo Kemkam"
+        ],
+        [
+            "Waghimra",
+            "Sekota ketema"
+        ],
+        [
+            "waghimra",
+            "ziquala"
+        ],
+        [
+            "waghimra",
+            "abergela"
+        ],
+        [
+            "waghimra",
+            "s/zuria"
+        ],
+        [
+            "waghimra",
+            "tagebeji"
+        ],
+        [
+            "waghimra",
+            "sehala"
+        ],
+        [
+            "waghimra",
+            "sehal"
+        ],
+        [
+            "waghimera",
+            "gazegibela"
+        ],
+        [
+            "North wollo",
+            "welidia"
+        ]
+    ];
+    /*backup regions
     const REGION_IMPORTS = [
         // [
         //     "Addis Ababa"
@@ -5052,4 +6213,6 @@ class ImporterFiles
             null
         ]
     ];
+
+    */
 }

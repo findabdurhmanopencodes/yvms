@@ -58,8 +58,42 @@
 
 
 @section('content')
+<form method="POST"
+    action="{{ route('session.import.volunteers', ['training_session' => Request::route('training_session')]) }}"
+    enctype="multipart/form-data">
+    @csrf
+    <div style="z-index: 9999999;" class="modal fade" id="import" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Import File</h5>
+                    <button type="button" class="close" data-dismiss="modal" -label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-lg-6">
+                                    <label>Attendance File: </label>
+                                    <input type="file" name="attendance" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold"
+                        data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
     <div class="accordion accordion-solid accordion-toggle-plus " id="accordionExample6">
-
         <div class="card ">
             <div id="headingThree6" class="card-header text-white" style="background-color: rgba(15, 69, 105, 0.6);">
                 <div class="card-title collapsed text-white" data-toggle="collapse" data-target="#collapseThree6"
@@ -70,7 +104,7 @@
             <div id="collapseThree6" class="collapse" data-parent="#accordionExample6">
                 <div class="card-body">
 
-                    <form action="{{ route('session.volunteer.all', ['training_session' => Request::route('training_session')]) }}" method="post">
+                    <form  method="GET" action="{{ route('session.volunteer.all', ['training_session' => Request::route('training_session')]) }}" >
                         @csrf
                         <div class="row">
                             <div class="col-sm-4">
@@ -204,11 +238,38 @@
                         {{ $trainingSession?->moto }}</span>
                         <div class="">
 
-
                         </div>
                 </h3>
-
-
+            </div>
+            <div class="card-toolbar">
+                <div class="dropdown dropdown-inline">
+                    <a href="#" class="px-5 btn btn-sm btn-primary font-weight-bolder dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</a>
+                    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="">
+                        <!--begin::Navigation-->
+                        <ul class="navi navi-hover">
+                            <li class="navi-item">
+                                <a href="{{ route('session.export.volunteers',[Request::route('training_session')]) }}"
+                                    class="navi-link">
+                                    <span class="navi-icon">
+                                        <i class="flaticon2-shopping-cart-1"></i>
+                                    </span>
+                                    <span class="navi-text">Export to Excel</span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" data-toggle="modal" data-target="#import"
+                                    class="navi-link">
+                                    <span class="navi-icon">
+                                        <i class="fa fa-file-import"></i>
+                                    </span>
+                                    <span class="navi-text">Import from Excel</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <!--end::Navigation-->
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -278,7 +339,7 @@
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-center">
-                    {!! $volunters->links() !!}
+                    {!! $volunters->withQueryString()->links() !!}
                 </div>
             </div>
             <!--end: Datatable-->

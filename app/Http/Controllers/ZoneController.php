@@ -161,7 +161,7 @@ class ZoneController extends Controller
             $sum += $a;
         }
 
-        $sum = ($sum - $request->prv_val)/100;
+        $sum = ($sum - $request->prv_val) / 100;
 
         if ($sum <= 1) {
             $limit = true;
@@ -188,22 +188,23 @@ class ZoneController extends Controller
     public function import()
     {
         $binZones = ImporterFiles::ZONE_IMPORTS;
-        $zones = [];
         $region = null;
+        $totalZones = 0;
         foreach ($binZones as $bin) {
-            if($bin[0] != null){
+            if ($bin[0] != null) {
                 $region = $bin[0];
             }
-            if($region == 'Addis Ababa')
-            {
-                continue;
-            }
+            // if($region == 'Addis Ababa')
+            // {
+            //     continue;
+            // }
             $zoneName = $bin[1];
-            $re = Region::where('name',$region)->first();
-            Zone::where('name', $zoneName)->firstOr(function () use ($zoneName,$re) {
-                Zone::create(['name' => $zoneName, 'status' => 1,'region_id'=>$re->id]);
+            $re = Region::where('name', $region)->first();
+            Zone::where('name', $zoneName)->firstOr(function () use ($zoneName, $re,&$totalZones) {
+                Zone::create(['name' => $zoneName, 'status' => 1, 'region_id' => $re->id]);
+                $totalZones++;
             });
         }
-        // dd('Zone imported successfully');
+        dump($totalZones . ' Zones imported successfully');
     }
 }

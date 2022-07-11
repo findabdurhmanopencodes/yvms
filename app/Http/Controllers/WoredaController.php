@@ -180,23 +180,23 @@ class WoredaController extends Controller
     {
         $binWoredas =ImporterFiles::WOREDA_IMPORTS;
         $woredas = [];
+        $totalWoredas = 0;
         $zone = null;
         foreach ($binWoredas as $bin) {
             if ($bin[0] != null) {
                 $zone = $bin[0];
             }
-
             $woredaName = $bin[1];
             if ($woredaName == null) {
                 dump($zone . ' - null found');
             } else {
                 $zo = Zone::where('name', $zone)->first();
-
-                Woreda::where('name', $woredaName)->firstOr(function () use ($woredaName, $zo) {
+                Woreda::where('name', $woredaName)->firstOr(function () use ($woredaName, $zo,&$totalWoredas) {
                     Woreda::create(['name' => $woredaName, 'status' => 1, 'zone_id' => $zo->id]);
+                    $totalWoredas++;
                 });
             }
         }
-        // dd('Woreda Imported successfully');
+        dump($totalWoredas.' Woreda Imported successfully');
     }
 }

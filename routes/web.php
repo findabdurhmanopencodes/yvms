@@ -238,7 +238,7 @@ Route::get('adb', function () {
     Route::post('woreda/{woreda_id}/capacity/store', [WoredaController::class, 'woredaIntakeStore'])->name('woreda.intake_store');
 
     Route::post('/approve_placment', [TrainingSessionController::class, 'approvePlacment'])->name('placment.approve');
-    Route::post('/approve_placment', [TrainingSessionController::class, 'approvePlacment'])->name('placment.approve');
+    // Route::post('/approve_placment', [TrainingSessionController::class, 'approvePlacment'])->name('placment.approve');
 
     Route::get('{training_center}/show/volunteers', [TraininingCenterController::class, 'show_all_volunteers'])->name('show.volunteers');
     Route::post('{training_center}/graduate', [TraininingCenterController::class, 'graduateVolunteers'])->name('graduate.volunteers');
@@ -252,6 +252,9 @@ Route::get('adb', function () {
 
     Route::get('{woreda}/deployment/attendance_export', [DeploymentVolunteerAttendanceController::class, 'get_attendance_data'])->name('deployment_attendance.export');
     Route::post('{woreda}/import/deployment', [DeploymentVolunteerAttendanceController::class, 'fileImport'])->name('import.deployment_attendance');
+
+    Route::get('volunteer_export', [VolunteerController::class, 'exportVolunteers'])->name('export.volunteers');
+    Route::post('volunteer_import', [VolunteerController::class, 'importVolunteers'])->name('import.volunteers');
 });
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -348,7 +351,7 @@ Route::get('{training_session}/reset-verification', [VolunteerController::class,
 //     }
 //     dd('stop');
 // });
-Route::any('/Events', [EventController::class, 'index'])->name('Events.index');
+Route::any('/Event/All', [EventController::class, 'index'])->name('Events.index');
 Route::resource('Events', EventController::class)->except(['index']);;
 Route::get('/All-Events', [EventController::class, 'allEvents'])->name('event.all');
 Route::get('/Event/{event}/', [EventController::class, 'detailEvent'])->name('event.detail');

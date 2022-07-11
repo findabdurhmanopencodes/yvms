@@ -20,7 +20,7 @@ class Volunteer extends Model implements Auditable
     protected $appends = ["profilePhoto"];
 
     public function getProfilePhotoAttribute() {
-         return asset($this->picture()->file_path);
+         return asset($this->picture()?->file_path);
     }
 
     /**

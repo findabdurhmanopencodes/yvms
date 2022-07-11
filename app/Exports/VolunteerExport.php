@@ -41,9 +41,6 @@ class VolunteerExport implements FromCollection ,WithHeadings,WithEvents
    }
    public function registerEvents(): array
    {
-// dd(count($this->data));
-    // $objPHPExcel = new PHPExcel;
-    // $objSheet = $objPHPExcel->getActiveSheet();
        return [
            AfterSheet::class => function(AfterSheet $event) {
 
