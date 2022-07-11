@@ -148,7 +148,7 @@ class EventController extends Controller
     }
     public function detailEvent($event)
     {
-        return view('event\event_detail', ['event' => Event::find($event), 'featuredEvents' => Event::latest()->take(5)->get()]);
+        return view('event.event_detail', ['event' => Event::find($event), 'featuredEvents' => Event::latest()->take(5)->get()]);
     }
     public function removeImage($eventImage)
     {
