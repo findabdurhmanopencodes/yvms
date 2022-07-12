@@ -72,8 +72,8 @@
 
                     <form
                         action="{{ route('session.volunteer.index', ['training_session' => Request::route('training_session')]) }}"
-                        method="post">
-                        @csrf
+                        method="GET">
+                        {{-- @csrf --}}
                         <div class="row">
                             <div class="col-sm-4">
                                 <label for="name" class=" col-sm-12 col-form-label">First Name</label>
@@ -283,7 +283,7 @@
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-center">
-                    {!! $volunters->links() !!}
+                    {!! $volunters->withQueryString()->links() !!}
                 </div>
             </div>
             <!--end: Datatable-->
