@@ -1,6 +1,6 @@
-<li class="menu-item {{ strpos(Route::currentRouteName(), 'feild_of_study.index') === 0 ? 'menu-item-active' : '' }}"
+<li class="menu-item {{ strpos(Route::currentRouteName(), 'FeildOfStudy.index') === 0 ? 'menu-item-active' : '' }}"
     aria-haspopup="true">
-    <a href="{{ route('feild_of_study.index', []) }}" class="menu-link">
+    <a href="{{ route('FeildOfStudy.index', []) }}" class="menu-link">
         <i class="menu-bullet menu-bullet-dot">
             <span></span>
         </i>

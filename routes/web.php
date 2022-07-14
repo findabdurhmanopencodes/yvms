@@ -286,7 +286,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('user/{user}/permission/give', [UserController::class, 'givePermission'])->name('user.permission.give');
     Route::post('user/{user}/permission/revoke', [UserController::class, 'revokePermission'])->name('user.permission.revoke');
     Route::resource('educational_level', EducationalLevelController::class);
-    Route::resource('feild_of_study', FeildOfStudyController::class);
+    Route::resource('FeildOfStudy', FeildOfStudyController::class);
     Route::resource('disablity', DisablityController::class);
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
     Route::get('training_sessions', [RegionController::class, 'place'])->name('region.place');

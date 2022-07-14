@@ -153,7 +153,7 @@ class TrainingSessionController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'start_date' => ['date_format:d/m/Y', 'after:' . $date_now_et],
+            'start_date' => ['date_format:d/m/Y', 'after_or_equal:' . $date_now_et],
             'end_date' => ['date_format:d/m/Y', 'after_or_equal:start_date'],
             'registration_start_date' => ['required', 'date_format:d/m/Y', 'after_or_equal:start_date', 'before_or_equal:end_date'],
             'registration_dead_line' => ['required', 'date_format:d/m/Y', 'after_or_equal:registration_start_date', 'before_or_equal:end_date'],
@@ -960,9 +960,20 @@ class TrainingSessionController extends Controller
     {
         $cindicationRooms = CindicationRoom::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->get();
         $miniSide = 'aside-minimize';
-        $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->get();
+        // $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->count();
+        $tcId = $trainingCenter->id;
+        $tsId = $trainingSession->id;
+        $totalVolunteers = collect(DB::select("select COUNT(tp.id) AS count from training_placements tp left join training_center_capacities tcc on tp.training_center_capacity_id =  tcc.id left join trainining_centers tc on  tcc.trainining_center_id = tc.id where tc.id = $tcId and tp.training_session_id = $tsId"))->pluck('count')->first();
+        // dd($volunteersAll);
+        $volunteers = [];
+        // foreach ($volunteersAll as $key => $value) {
+        //     if ($value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter == $trainingCenter) {
+        //         array_push($volunteers, $value);
+        //     }
+        // }
+        // dd(count($volunteers));
         $checkedInVolunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->whereRelation('status', 'acceptance_status', 5)->get();
-        $totalVolunteers = count($volunteers);
+        // $totalVolunteers = count($volunteers);
         $totalTrainingMasters = TrainingMasterPlacement::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->count();
         $trainings = Training::whereIn('id', TrainingSessionTraining::where('training_session_id', $trainingSession->id)->pluck('id'))->get();
         $coordinatorPermission = Permission::findOrCreate(PermissionSeeder::CENTER_COORIDNATOR);
@@ -1025,8 +1036,8 @@ class TrainingSessionController extends Controller
     {
         $trainingSessionId = $trainingSession->id;
         Artisan::call('id:generate '.$trainingSessionId);
-        // $trainingSession->update(['status' => Constants::TRAINING_SESSION_PLACEMENT_APPROVE]);
-        // $trainingSession->save();
+        $trainingSession->update(['status' => Constants::TRAINING_SESSION_PLACEMENT_APPROVE]);
+        $trainingSession->save();
         return redirect()->back()->with('message', 'Placment approved successfully');
     }
 }
