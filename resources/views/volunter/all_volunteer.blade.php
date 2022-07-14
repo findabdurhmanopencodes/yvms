@@ -104,7 +104,7 @@
             <div id="collapseThree6" class="collapse" data-parent="#accordionExample6">
                 <div class="card-body">
 
-                    <form action="{{ route('session.volunteer.all', ['training_session' => Request::route('training_session')]) }}" method="post">
+                    <form  method="GET" action="{{ route('session.volunteer.all', ['training_session' => Request::route('training_session')]) }}" >
                         @csrf
                         <div class="row">
                             <div class="col-sm-4">
@@ -339,7 +339,7 @@
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-center">
-                    {!! $volunters->links() !!}
+                    {!! $volunters->withQueryString()->links() !!}
                 </div>
             </div>
             <!--end: Datatable-->

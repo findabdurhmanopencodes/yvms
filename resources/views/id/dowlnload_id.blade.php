@@ -18,11 +18,12 @@
     </style>
 </head>
 <body style="">
+    {{QrCode::generate('Hello!')}}
     @if ($check == 'deployment' && $trainer == null)
     @foreach ($html as $key=>$val)
         <div style="width: 201.6px; height: 326.4px; background-size: cover; background-image: url('img/mopfrontdes.png'); break-after: page; transform: rotate(90deg); transform-origin: 159px 159px; page-break-after: always; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: -43px; margin-left: -35px;">
             <div style="position: relative; left: 54px; top: 120px;">
-                <img src="img/meti.jpg" style="width: 91px; height: 89.7px; border-radius: 50%;">
+                <img src="img/profile_empty.jpg" style="width: 91px; height: 89.7px; border-radius: 50%;">
             </div>
             <p style="position: relative; left: 56px; top: 110px; background-color: inherit; font-size: 10px; color: blue;">
                 <strong>ID: </strong>
@@ -40,7 +41,7 @@
                 <strong>Dep. Place: </strong>
             </p>
             <p style="position: relative; left: 87px; top: 36px; background-color: inherit; font-size: 10px; color: blue;">
-                <strong>{{ $val->approvedApplicant->trainingPlacement->deployment->woredaIntake->woreda->name }}</strong>
+                <strong>{{ $val->approvedApplicant->trainingPlacement->deployment->woredaIntake?->woreda->name }}</strong>
             </p>
             <p style="position: relative;text-align: center; top: 18px; background-color: inherit; font-size: 13px; color: blue;">
                 <strong style="font-family: 'Noto Serif Ethiopic'"> 
@@ -75,7 +76,7 @@
                 +251(0)471117588
             </p>
             <div style="position: relative; float: right; top: -68px;">
-                <img src="img/meti.jpg" alt="" style="width: 67px; height: 61px; border-radius: 5%;">
+                <img src="img/profile_empty.jpg" alt="" style="width: 67px; height: 61px; border-radius: 5%;">
             </div>
             <p style="position: relative; left: 8px; top: -10px; background-color: inherit; font-size: 10px; color: black; font-style: italic; letter-spacing: 0.5px;">
                 <strong>Full Name:</strong>                
@@ -83,7 +84,7 @@
             <p style="position: relative; left: 8px; top: -18px; background-color: inherit; font-size: 10px; color: black; letter-spacing: 0.5px;">
                 <strong>{{ $val->first_name }}  {{ $val->father_name }}</strong>
             </p>
-            <div style="position: relative; left: 142px; top: -63px;">
+            <div style="position: relative; left: 142px; top: -60px;">
                 <img src="data:image{{ $expBar[$key+1] }}" style="color: black">
             </div>
             <p style="position: relative; left: 8px; top: -80px; background-color: inherit; font-size: 10px; color: black; font-style: italic; letter-spacing: 0.5px;">
@@ -96,21 +97,21 @@
                 <strong>Date of Issue:</strong>
             </p>
             <p style="position: relative; left: 8px; top: -102px; background-color: inherit; font-size: 10px; color: black; letter-spacing: 0.5px;">
-                <strong>{{ $val->approvedApplicant->trainingPlacement->deployment->issued_date_am }}</strong>
+                <strong>{{ $issued_date }}</strong>
             </p>
-            <p style="position: relative; left: 200px; top: -164px; background-color: inherit; font-size: 10px; color: black; font-style: italic; letter-spacing: 0.5px;">
+            <p style="position: relative; left: 200px; top: -160px; background-color: inherit; font-size: 10px; color: black; font-style: italic; letter-spacing: 0.5px;">
                 <strong>Deployment place</strong>
             </p>
-            <p style="position: relative; left: 200px; top: -173px; background-color: inherit; font-size: 10px; color: black; letter-spacing: 0.5px;">
-                <strong>{{ $val->approvedApplicant->trainingPlacement->deployment->woredaIntake->woreda->name }}</strong>
+            <p style="position: relative; left: 200px; top: -169px; background-color: inherit; font-size: 10px; color: black; letter-spacing: 0.5px;">
+                <strong>{{ $val->approvedApplicant->trainingPlacement->deployment->woredaIntake?->woreda->name }}</strong>
             </p>
-            <p style="position: relative; left: 200px; top: -178px; background-color: inherit; font-size: 10px; color: black; font-style: italic; letter-spacing: 0.5px;">
+            <p style="position: relative; left: 200px; top: -174px; background-color: inherit; font-size: 10px; color: black; font-style: italic; letter-spacing: 0.5px;">
                 <strong>Exp. Date</strong>
             </p>
-            <p style="position: relative; left: 200px; top: -186px; background-color: inherit; font-size: 10px; color: black; letter-spacing: 0.5px;">
+            <p style="position: relative; left: 200px; top: -182px; background-color: inherit; font-size: 10px; color: black; letter-spacing: 0.5px;">
                 <strong>{{ $val->session->end_date_am }}</strong>
             </p>
-            <div style="left: 30px; top: -205px; width: 180px; background-color: inherit; position: relative;">
+            <div style="left: 10px; top: -205px; width: 180px; background-color: inherit; position: relative;">
                 <p style="text-align: center; font-size: 9px; position: relative; color: rgb(131, 218, 209); letter-spacing: 0.5px;">
                     <strong>I certify that bearer of this Id card is an employee of Jimma University</strong>
                 </p>
@@ -119,50 +120,103 @@
     @endforeach
     @elseif($check == 'checkedIn' && $trainer == null)
         @foreach ($html as $key=>$val)
-            <div style="width: 201.6px; height: 326.4px; background-size: cover; background-image: url('img/mopfrontdes.png'); break-after: page; page-break-after: always; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                <div style="position: relative; left: 54px; top: 120px;">
-                    <img src="img/meti.jpg" style="width: 91px; height: 89.7px; border-radius: 50%;">
+        
+            @if ($key%4 === 0)
+            <div style="clear: both; margin-top:25px;"></div>
+            @endif
+            @if ($key%8 !== 0 || $key == 0)
+                <div style="width: 201.6px; height: 326.4px; background-size: cover; background-image: url('img/mopfrontdes.png'); float: left; margin-right: 30px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: -30px;">
+                    <div style="position: relative; left: 54px; top: 120px;">
+                        <img src="img/profile_empty.jpg" style="width: 91px; height: 89.7px; border-radius: 50%;">
+                    </div>
+                    <p style="position: relative; left: 56px; top: 110px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>ID: </strong>
+                    </p>
+                    <p style="position: relative; left: 76px; top: 88.3px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>{{ $val->id_number }}</strong>
+                    </p>
+                    <p style="position: relative; left: 42px; top: 84px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>Name: </strong> 
+                    </p>
+                    <p style="position: relative; left: 76px; top: 62.5px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>{{ $val->first_name }}  {{ $val->father_name }}</strong>
+                    </p>
+                    <p style="position: relative; left: 33px; top: 57px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>Training Center: </strong>
+                    </p>
+                    <p style="position: relative; left: 112px; top: 36px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>{{ $val->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->code }}</strong>
+                    </p>
+                    <p style="position: relative;text-align: center; top: 18px; background-color: inherit; font-size: 13px; color: blue;">
+                        <strong style="font-family: 'Noto Serif Ethiopic'">
+                            በጎነት ለአብሮነት
+                        </strong><strong>!</strong>
+                    </p>
+                    <p style="position: relative; left: 5px; top: 15px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>Exp. Date: </strong>
+                    </p>
+                    <p style="position: relative; left: 54px; top: -6px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>{{ $val->session->end_date_am }}</strong>
+                    </p>
+                    <p style="position: relative; left: 5px; top: -8px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>Role: </strong>
+                    </p>
+                    <p style="position: relative; left: 33px; top: -29px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>Volunteer</strong>
+                    </p>
+                    <div style="position: relative; float: right; top: -79px;">
+                        <img src="data:image{{ $exp[$key+1] }}" alt="">
+                    </div>
                 </div>
-                <p style="position: relative; left: 56px; top: 110px; background-color: inherit; font-size: 10px; color: blue;">
-                    <strong>ID: </strong>
-                </p>
-                <p style="position: relative; left: 76px; top: 88.3px; background-color: inherit; font-size: 10px; color: blue;">
-                    <strong>{{ $val->id_number }}</strong>
-                </p>
-                <p style="position: relative; left: 42px; top: 84px; background-color: inherit; font-size: 10px; color: blue;">
-                    <strong>Name: </strong> 
-                </p>
-                <p style="position: relative; left: 76px; top: 62.5px; background-color: inherit; font-size: 10px; color: blue;">
-                    <strong>{{ $val->first_name }}  {{ $val->father_name }}</strong>
-                </p>
-                <p style="position: relative; left: 33px; top: 57px; background-color: inherit; font-size: 10px; color: blue;">
-                    <strong>Training Center: </strong>
-                </p>
-                <p style="position: relative; left: 112px; top: 36px; background-color: inherit; font-size: 10px; color: blue;">
-                    <strong>{{ $val->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->code }}</strong>
-                </p>
-                <p style="position: relative;text-align: center; top: 18px; background-color: inherit; font-size: 13px; color: blue;">
-                    <strong style="font-family: 'Noto Serif Ethiopic'">
-                        በጎነት ለአብሮነት
-                    </strong><strong>!</strong>
-                </p>
-                <p style="position: relative; left: 5px; top: 15px; background-color: inherit; font-size: 10px; color: blue;">
-                    <strong>Exp. Date: </strong>
-                </p>
-                <p style="position: relative; left: 54px; top: -6px; background-color: inherit; font-size: 10px; color: blue;">
-                    <strong>{{ $val->session->end_date_am }}</strong>
-                </p>
-                <p style="position: relative; left: 5px; top: -8px; background-color: inherit; font-size: 10px; color: blue;">
-                    <strong>Role: </strong>
-                </p>
-                <p style="position: relative; left: 33px; top: -29px; background-color: inherit; font-size: 10px; color: blue;">
-                    <strong>Volunteer</strong>
-                </p>
-                <div style="position: relative; float: right; top: -79px;">
-                    <img src="data:image{{ $exp[$key+1] }}" alt="">
+            @else
+                <div style="break-after: page; page-break-after: always;">
                 </div>
-            </div>
+                <div style="width: 201.6px; height: 326.4px; background-size: cover; background-image: url('img/mopfrontdes.png'); float: left; margin-right: 30px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: -30px;">
+                    <div style="position: relative; left: 54px; top: 120px;">
+                        <img src="img/profile_empty.jpg" style="width: 91px; height: 89.7px; border-radius: 50%;">
+                    </div>
+                    <p style="position: relative; left: 56px; top: 110px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>ID: </strong>
+                    </p>
+                    <p style="position: relative; left: 76px; top: 88.3px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>{{ $val->id_number }}</strong>
+                    </p>
+                    <p style="position: relative; left: 42px; top: 84px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>Name: </strong> 
+                    </p>
+                    <p style="position: relative; left: 76px; top: 62.5px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>{{ $val->first_name }}  {{ $val->father_name }}</strong>
+                    </p>
+                    <p style="position: relative; left: 33px; top: 57px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>Training Center: </strong>
+                    </p>
+                    <p style="position: relative; left: 112px; top: 36px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>{{ $val->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->code }}</strong>
+                    </p>
+                    <p style="position: relative;text-align: center; top: 18px; background-color: inherit; font-size: 13px; color: blue;">
+                        <strong style="font-family: 'Noto Serif Ethiopic'">
+                            በጎነት ለአብሮነት
+                        </strong><strong>!</strong>
+                    </p>
+                    <p style="position: relative; left: 5px; top: 15px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>Exp. Date: </strong>
+                    </p>
+                    <p style="position: relative; left: 54px; top: -6px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>{{ $val->session->end_date_am }}</strong>
+                    </p>
+                    <p style="position: relative; left: 5px; top: -8px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>Role: </strong>
+                    </p>
+                    <p style="position: relative; left: 33px; top: -29px; background-color: inherit; font-size: 10px; color: blue;">
+                        <strong>Volunteer</strong>
+                    </p>
+                    <div style="position: relative; float: right; top: -79px;">
+                        <img src="data:image{{ $exp[$key+1] }}" alt="">
+                    </div>
+                </div>
+            @endif
         @endforeach
+        {{-- @dd('sdfsdfds') --}}
 
     @elseif($check == 'checkedIn' && $trainer == 'trainer')
         @foreach ($html as $key=>$val)

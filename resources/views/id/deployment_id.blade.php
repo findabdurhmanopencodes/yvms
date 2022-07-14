@@ -136,17 +136,17 @@
                 // div_img.style.top = '120px';
                 // myDesign.appendChild(div_img);
 
-                // // var blank_img = document.createElement('img');
-                // // var div_blank = document.createElement('div');
-                // // blank_img.src = '{{ asset("img/blank.png") }}';
-                // // blank_img.style.width = '66px';
-                // // blank_img.style.height = '39.7px';
+                // var blank_img = document.createElement('img');
+                // var div_blank = document.createElement('div');
+                // blank_img.src = '{{ asset("img/blank.png") }}';
+                // blank_img.style.width = '66px';
+                // blank_img.style.height = '39.7px';
 
-                // // div_blank.appendChild(blank_img);
-                // // div_blank.style.position = "relative";
-                // // div_blank.style.left = '54px';
-                // // div_blank.style.top = '119.123px';
-                // // myDesign.appendChild(div_blank);
+                // div_blank.appendChild(blank_img);
+                // div_blank.style.position = "relative";
+                // div_blank.style.left = '54px';
+                // div_blank.style.top = '119.123px';
+                // myDesign.appendChild(div_blank);
 
                 // var p = document.createElement("p");
                 // var s = document.createElement("strong");
@@ -320,7 +320,7 @@
 
                 var div__qr_img_2 = document.createElement("div");
 
-                // // div__qr_img.setAttribute('id', 'qrcode'+key);
+                div__qr_img.setAttribute('id', 'qrcode'+key);
 
                 // // myDesign.appendChild(div__qr_img);
 
@@ -339,11 +339,11 @@
 
                 obj.push(src);
 
-                // qrf_img.src = src;
-                // div__qr_img_2.style.position = "relative";
-                // div__qr_img_2.style.left = '149px';
-                // div__qr_img_2.style.top = '-66px';
-                // div__qr_img_2.appendChild(qrf_img.cloneNode(true));
+                qrf_img.src = src;
+                div__qr_img_2.style.position = "relative";
+                div__qr_img_2.style.left = '149px';
+                div__qr_img_2.style.top = '-66px';
+                div__qr_img_2.appendChild(qrf_img.cloneNode(true));
                 // myDesign.appendChild(div__qr_img_2.cloneNode(true));
 
                 // myDesignBack = document.createElement("div");
@@ -547,10 +547,10 @@
                     .CODE128(applicants[key].id_number, {fontSize: 11, textMargin: 2, textPosition: "top", color:'inherit'})
                     .render();
 
-                div__bar_img_2.style.position = "relative";
+                // div__bar_img_2.style.position = "relative";
                 // div__bar_img_2.style.float = "right";
-                div__bar_img_2.style.left = '142px';
-                div__bar_img_2.style.top = '-216px';
+                // div__bar_img_2.style.left = '142px';
+                // div__bar_img_2.style.top = '-216px';
                 div__bar_img.style.color = "black";
                 
                 objBarCode.push(div__bar_img.src);

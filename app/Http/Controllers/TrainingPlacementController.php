@@ -34,7 +34,7 @@ class TrainingPlacementController extends Controller
     public function index(Request $request)
     {
         $trainingSession = TrainingSession::availableSession()->first();
-        $q = TrainingPlacement::query()->where('training_placements.training_session_id', $trainingSession->id);
+        $q               = TrainingPlacement::query()->where('training_placements.training_session_id', $trainingSession->id);
 
         if ($request->get('training_center') != null) {
             $q->whereHas('trainingCenterCapacity.trainingCenter', function ($query) use ($request) {
@@ -73,9 +73,7 @@ class TrainingPlacementController extends Controller
         }
 
         $placedVolunteers = $q->paginate(10);
-
-
-        if ($user->getCordinatingRegion() != null) {
+         if ($user->getCordinatingRegion() != null) {
             $zones = $user->getCordinatingRegion()->zones;
             $woredas =  Woreda::whereRelation('zone.region', 'id', $user->getCordinatingRegion()->id)->get();
         } else {

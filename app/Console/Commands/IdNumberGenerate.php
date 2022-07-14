@@ -33,6 +33,7 @@ class IdNumberGenerate extends Command
      */
     public function handle()
     {
+
         $trainingSessionId = $this->argument('trainingSessionId');
         $lastVolunteer = DB::table('volunteers')
             ->select('*')

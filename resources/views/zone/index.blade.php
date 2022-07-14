@@ -69,29 +69,34 @@
         });
 
         $("#zon_quota").on("input", function(){
-            value = $('#region').val();
-              if (value) {
-                $.ajax({
-                  type: "POST",
-                  url: "/zone/validate",
-                //   method: 'post',
-                  data: {
-                      'region_id': value,
-                     'qouta': $('#zon_quota').val(),
-                     'prv_val': 0,
-                     "_token": $('meta[name="csrf-token"]').attr('content'),
-                  },
-                  success: function(result){
-                      if (result.limit == false) {
-                          $('#message').html('you reached max qouta');
-                          $(":submit").attr("disabled", true);
-                      }else{
-                        $('#message').html('');
-                        $(":submit").removeAttr("disabled");
-                      }
-                  },
-                });
-              }
+            if ($("#zon_quota").val() >= 0) {
+                value = $('#region').val();
+                if (value) {
+                    $.ajax({
+                    type: "POST",
+                    url: "/zone/validate",
+                    //   method: 'post',
+                    data: {
+                        'region_id': value,
+                        'qouta': $('#zon_quota').val(),
+                        'prv_val': 0,
+                        "_token": $('meta[name="csrf-token"]').attr('content'),
+                    },
+                    success: function(result){
+                        if (result.limit == false) {
+                            $('#message').html('you reached max qouta');
+                            $(":submit").attr("disabled", true);
+                        }else{
+                            $('#message').html('');
+                            $(":submit").removeAttr("disabled");
+                        }
+                    },
+                    });
+                }
+            } else {
+                $('#message').html('Invalid Number!!!');
+                $(":submit").attr("disabled", true);
+            }
         });
 
         var COLUMNS = [{
@@ -220,7 +225,7 @@
                                                     <div class="col-lg-6">
                                                         <label>Zone/Subcity Quota(%):</label>
                                                         <div class="input-group">
-                                                            <input type="number" class="form-control" placeholder="Zone quota in percent" name="zone_quota" id="zon_quota"/>
+                                                            <input type="number" class="form-control" placeholder="Zone quota in percent" name="zone_quota" id="zon_quota" min="0"/>
                                                             <div class="input-group-append">
                                                                 <span class="input-group-text">%</span>
                                                             </div>
