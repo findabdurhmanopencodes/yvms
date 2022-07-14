@@ -120,12 +120,18 @@ class TraininingCenterController extends Controller
         $traininingCenter     = TraininingCenter::with('capacities.trainningSession')->find($traininingCenter);
         $trainingSession      = new TrainingSession();
         $trainingSessionId    = $trainingSession->availableSession()->first()->id;
-        $capaityAddedInCenter = TrainingCenterCapacity::where('training_session_id',
-                                                               $trainingSessionId)->where('trainining_center_id',
-                                                               $traininingCenter->id)->get();
-        return view('training_center.show', ['trainingCenter' => $traininingCenter,
-                                             'capaityAddedInCenter' => $capaityAddedInCenter,
-                                             'users' => User::all()]);
+        $capaityAddedInCenter = TrainingCenterCapacity::where(
+            'training_session_id',
+            $trainingSessionId
+        )->where(
+            'trainining_center_id',
+            $traininingCenter->id
+        )->get();
+        return view('training_center.show', [
+            'trainingCenter' => $traininingCenter,
+            'capaityAddedInCenter' => $capaityAddedInCenter,
+            'users' => User::all()
+        ]);
     }
     /**
      * Show the form for editing the specified resource.
@@ -135,8 +141,11 @@ class TraininingCenterController extends Controller
      */
     public function edit($TrainingCenter)
 
-    {  return view('training_center.create', ['trainingCenter' => TraininingCenter::findOrFail($TrainingCenter),
-                'zones' => Zone::all()]);
+    {
+        return view('training_center.create', [
+            'trainingCenter' => TraininingCenter::findOrFail($TrainingCenter),
+            'zones' => Zone::all()
+        ]);
     }
     /**
      * Update the specified resource in storage.
@@ -384,10 +393,10 @@ class TraininingCenterController extends Controller
                     $placed++;
                 }
                 $x++;
-                if ($x > 2000) {
+                // if ($x > 2000) {
                     // dd('Contact Abdurhman for this error');
-                    break;
-                }
+                    // break;
+                // }
             }
         }
         return redirect()->back()->with('message', 'Volunteer placment finnished');
@@ -396,17 +405,17 @@ class TraininingCenterController extends Controller
     public function show_all_volunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter, UserAttendance $userAttendance)
     {
         $check_deployed = [];
-        
+
         $applicants = DB::table('volunteers')
-        ->join('statuses', 'statuses.volunteer_id','=', 'volunteers.id')
-        // ->join('users', 'users.id','=', 'volunteers.user_id')
-        ->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')
-        ->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')
-        ->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')
-        ->leftJoin('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
-        ->where('trainining_centers.id', $trainingCenter->id)
-        ->select('*')
-        ->paginate(10);
+            ->join('statuses', 'statuses.volunteer_id', '=', 'volunteers.id')
+            // ->join('users', 'users.id','=', 'volunteers.user_id')
+            ->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')
+            ->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')
+            ->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')
+            ->leftJoin('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
+            ->where('trainining_centers.id', $trainingCenter->id)
+            ->select('*')
+            ->paginate(10);
 
         $trainingSchedules = TrainingSchedule::all();
 
