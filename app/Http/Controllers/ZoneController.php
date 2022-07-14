@@ -175,14 +175,52 @@ class ZoneController extends Controller
         $today = Carbon::today();
         $curr_sess = TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
         $intake_exist = ZoneIntake::where('training_session_id', $trainingSession->id)->where('zone_id', $zone_id)->get();
-        $zone = Zone::where('id', $zone_id)?->get()[0];
-        return view('zone.zone_capacity', compact('zone', 'trainingSession', 'intake_exist', 'curr_sess'));
+        $region = Zone::where('id',$zone_id)->get()->first()->region;
+        $zoneAllIntake = 0;
+        foreach (Zone::where('status',1)->get() as $key => $value) {
+            // $zoneAllIntake
+            $region_this = Zone::where('id',$value->id)->get()->first()->region;
+            if (($region_this == $region) && ($value->zoneIntakes?->where('training_session_id',$trainingSession->id)->last())) {
+                $zoneAllIntake+=$value->zoneIntakes->where('training_session_id',$trainingSession->id)->last()->intake;
+            }
+        }
+        if ($region->regionIntakes?->last()) {
+            $zoneAllIntake = $region->regionIntakes?->where('training_session_id',$trainingSession->id)->last()->intake - $zoneAllIntake;
+            $zone = Zone::where('id', $zone_id)?->get()[0];
+            return view('zone.zone_capacity', compact('zone', 'trainingSession', 'intake_exist', 'curr_sess', 'zoneAllIntake'));
+        }else{
+            return redirect()->route('zone.index')->with('error', 'Specify Region First!!');
+        }
+        
     }
 
     public function zoneIntakeStore(Request $request, TrainingSession $trainingSession, $zone_id)
     {
         ZoneIntake::create(['training_session_id' => $trainingSession->id, 'zone_id' => $zone_id, 'intake' => $request->get('capacity')]);
         return redirect()->route('session.zone.intake', ['training_session' => $trainingSession->id, 'zone_id' => $zone_id])->with('message', 'Zone Intake created successfully');
+    }
+
+    public function zoneIntakeEdit(TrainingSession $trainingSession, $zone_id){
+        $zones = Zone::find($zone_id);
+        $zoneIntake = $zones->zoneIntakes->where('training_session_id', $trainingSession->id)->last();
+        $region = Zone::where('id',$zone_id)->get()->first()->region;
+        $zoneAllIntake = 0;
+        foreach (Zone::where('status',1)->get() as $key => $value) {
+            // $zoneAllIntake
+            $region_this = Zone::where('id',$value->id)->get()->first()->region;
+            if (($region_this == $region) && ($value->zoneIntakes?->where('training_session_id',$trainingSession->id)->last())) {
+                $zoneAllIntake+=$value->zoneIntakes->where('training_session_id',$trainingSession->id)->last()->intake;
+            }
+        }
+        $zoneAllIntake = ($region->regionIntakes?->where('training_session_id',$trainingSession->id)->last()->intake - $zoneAllIntake) + $zoneIntake->intake;
+        return view('zone.zoneIntake', compact('zoneIntake', 'zones', 'trainingSession', 'zoneAllIntake'));
+    }
+    public function zoneIntakeUpdate(Request $request, TrainingSession $trainingSession, $zone_id){
+        $zones = Zone::find($zone_id);
+        $zoneIntake = $zones->zoneIntakes->where('training_session_id',$trainingSession->id)->last();
+        $zoneIntake->intake = $request->get('capacity');
+        $zoneIntake->save();
+        return redirect()->route('session.zone.intake', ['training_session' => $trainingSession->id, 'zone_id' => $zone_id])->with('message', 'Zone Intake updated successfully');
     }
 
     public function import()

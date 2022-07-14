@@ -204,6 +204,18 @@ class RegionController extends Controller
         RegionIntake::create(['training_session_id' => $trainingSession->id, 'region_id' => $region_id, 'intake' => $request->get('capacity')]);
         return redirect()->route('session.region.intake', ['training_session' => $trainingSession->id, 'region_id' => $region_id])->with('message', 'Region created successfully');
     }
+    public function regionIntakeEdit(TrainingSession $trainingSession, $region_id){
+        $regions = Region::find($region_id);
+        $regionIntake = $regions->regionIntakes->last();
+        return view('region.regionIntake', compact('regionIntake', 'regions', 'trainingSession'));
+    }
+    public function regionIntakeUpdate(Request $request, TrainingSession $trainingSession, $region_id){
+        $regions = Region::find($region_id);
+        $regionIntake = $regions->regionIntakes->last();
+        $regionIntake->intake = $request->get('capacity');
+        $regionIntake->save();
+        return redirect()->route('session.region.intake', ['training_session' => $trainingSession->id, 'region_id' => $region_id])->with('message', 'Region Intake updated successfully');
+    }
     public function import()
     {
         $binRegions =  ImporterFiles::REGION_IMPORTS;

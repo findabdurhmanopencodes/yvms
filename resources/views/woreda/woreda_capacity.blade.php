@@ -83,7 +83,7 @@
         @endif
 
         <div class="card-body">
-            <h5 class="card-title">{{ $woreda->name }} Woreda</h5>
+            <h5 class="card-title">{{ $trainingSession->moto }} - {{ $woreda->name }} Woreda ({{ $woredaAllIntake }} more)</h5>
 
             <table class="table table-light">
                 <thead>
@@ -95,7 +95,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach ($woreda->woredaIntakes as $key => $woredaIntake)
+                    @foreach ($intake_exist as $key => $woredaIntake)
                         <tr>
                             <td>{{ $key+1 }}</td>
                             <td>{{ $trainingSession->moto }}</td>
@@ -106,7 +106,8 @@
                                 {{ $capacityHistory->trainningSession?->end_date }}</td>
                             <td> --}}
                             <td>    
-                                <span class="badge badge-danger badge-pill">Can't Change Capacity</span>
+                                <a class="btn" href="{{ route('session.woreda.intake_edit', ['training_session'=>$trainingSession->id,'woreda_id'=>$woreda->id]) }}"><i class="fa fa-edit"></i></a>
+                                {{-- <span class="badge badge-danger badge-pill">Can't Change Capacity</span> --}}
                             </td>
                         </tr>
                     @endforeach
@@ -133,7 +134,7 @@
                     <div class="modal-body">
                         <div class="col-lg-6">
                             <label>Capacity:</label>
-                            <input type="number" class="form-control" placeholder="Capacity" name="capacity" required />
+                            <input type="number" class="form-control" placeholder="Capacity" name="capacity" min="0" max="{{ $woredaAllIntake }}" required />
                         </div>
                     </div>
                     <div class="modal-footer">

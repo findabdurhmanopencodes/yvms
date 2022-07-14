@@ -75,7 +75,6 @@
 
         </div>
 
-
         @if (count($intake_exist) < 1 && count($curr_sess) > 0)
             <div>
                 <a class="btn btn-primary btn-sm float-right mx-2 my-2" data-toggle="modal" data-target="#addCapacity"><i class="fa  fa-plus"></i>Add zone Intake</a>
@@ -83,7 +82,7 @@
         @endif
 
         <div class="card-body">
-            <h5 class="card-title">{{ $zone->name }} Zone</h5>
+            <h5 class="card-title">{{ $trainingSession->moto }} - {{ $zone->name }} Zone ({{ $zoneAllIntake }} more)</h5>
 
             <table class="table table-light">
                 <thead>
@@ -95,7 +94,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach ($zone->zoneIntakes as $key => $zoneIntake)
+                    @foreach ($intake_exist as $key => $zoneIntake)
                         <tr>
                             <td>{{ $key+1 }}</td>
                             <td>{{ $trainingSession->moto }}</td>
@@ -106,7 +105,9 @@
                                 {{ $capacityHistory->trainningSession?->end_date }}</td>
                             <td> --}}
                             <td>    
-                                <span class="badge badge-danger badge-pill">Can't Change Capacity</span>
+                                
+                                <a class="btn" href="{{ route('session.zone.intake_edit', ['training_session'=>$trainingSession->id,'zone_id'=>$zone->id]) }}"><i class="fa fa-edit"></i></a>
+                                {{-- <span class="badge badge-danger badge-pill">Can't Change Capacity</span> --}}
                             </td>
                         </tr>
                     @endforeach
@@ -133,7 +134,7 @@
                     <div class="modal-body">
                         <div class="col-lg-6">
                             <label>Capacity:</label>
-                            <input type="number" class="form-control" placeholder="Capacity" name="capacity" required />
+                            <input type="number" class="form-control" placeholder="Capacity" name="capacity" min="0" max="{{ $zoneAllIntake }}" required />
                         </div>
                     </div>
                     <div class="modal-footer">

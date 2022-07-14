@@ -10,6 +10,7 @@ use App\Models\ApprovedApplicant;
 use App\Models\CindicationRoom;
 use App\Models\Qouta;
 use App\Models\Region;
+use App\Models\RegionIntake;
 use App\Models\Resource;
 use App\Models\Status;
 use App\Models\Training;
@@ -184,6 +185,10 @@ class TrainingSessionController extends Controller
         $trainingSession->status = 0;
         // $session = TrainingSession::create($trainingSession);
         $trainingSession->save();
+        foreach (Region::where('status',1)->get() as $key => $value) {
+            $capacity = $value->qoutaInpercent * $trainingSession->quantity;
+            RegionIntake::create(['training_session_id' => $trainingSession->id, 'region_id' => $value->id, 'intake' => $capacity]);
+        }
 
         $end_date_am = $trainingSession->endDateET();
 

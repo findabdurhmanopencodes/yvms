@@ -255,6 +255,15 @@ Route::get('adb', function () {
 
     Route::get('volunteer_export', [VolunteerController::class, 'exportVolunteers'])->name('export.volunteers');
     Route::post('volunteer_import', [VolunteerController::class, 'importVolunteers'])->name('import.volunteers');
+
+    Route::get('{region_id}/region/capacity/edit', [RegionController::class, 'regionIntakeEdit'])->name('region.intake_edit');
+    Route::put('{region_id}/capacity/update', [RegionController::class, 'regionIntakeUpdate'])->name('intake.update');
+
+    Route::get('{zone_id}/zone/capacity/edit', [ZoneController::class, 'zoneIntakeEdit'])->name('zone.intake_edit');
+    Route::put('{zone_id}/zone/capacity/update', [ZoneController::class, 'zoneIntakeUpdate'])->name('zone_intake.update');
+
+    Route::get('{woreda_id}/woreda/capacity/edit', [WoredaController::class, 'woredaIntakeEdit'])->name('woreda.intake_edit');
+    Route::put('{woreda_id}/woreda/capacity/update', [WoredaController::class, 'woredaIntakeUpdate'])->name('woreda_intake.update');
 });
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
 Route::middleware(['auth', 'verified'])->group(function () {

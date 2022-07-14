@@ -76,11 +76,11 @@
         </div>
 
 
-        @if (count($intake_exist) < 1 && count($curr_sess) > 0)
+        {{-- @if (count($intake_exist) < 1 && count($curr_sess) > 0)
             <div>
                 <a class="btn btn-primary btn-sm float-right mx-2 my-2" data-toggle="modal" data-target="#addCapacity"><i class="fa  fa-plus"></i>Add region Intake</a>
             </div>
-        @endif
+        @endif --}}
 
         <div class="card-body">
             <h5 class="card-title">{{ $region->name }} Region</h5>
@@ -95,7 +95,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach ($region->regionIntakes as $key => $regionIntake)
+                    @foreach ($intake_exist as $key => $regionIntake)
                         <tr>
                             <td>{{ $key+1 }}</td>
                             <td>{{ $trainingSession->moto }}</td>
@@ -106,6 +106,7 @@
                                 {{ $capacityHistory->trainningSession?->end_date }}</td>
                             <td> --}}
                             <td>    
+                                {{-- <a class="btn" href="{{ route('session.region.intake_edit', ['training_session'=>$trainingSession->id,'region_id'=>$region->id]) }}"><i class="fa fa-edit"></i></a> --}}
                                 <span class="badge badge-danger badge-pill">Can't Change Capacity</span>
                             </td>
                         </tr>
@@ -114,8 +115,6 @@
             </table>
 
         </div>
-
-
 
     </div>
 
@@ -136,7 +135,7 @@
                     <div class="modal-body">
                         <div class="col-lg-6">
                             <label>Capacity:</label>
-                            <input type="number" class="form-control" placeholder="Capacity" name="capacity" required />
+                            <input type="number" class="form-control" placeholder="Capacity" name="capacity" min="0" required />
                         </div>
                     </div>
                     <div class="modal-footer">
