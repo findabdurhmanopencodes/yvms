@@ -152,7 +152,7 @@ class TrainingSessionController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'start_date' => ['date_format:d/m/Y', 'after:' . $date_now_et],
+            'start_date' => ['date_format:d/m/Y', 'after_or_equal:' . $date_now_et],
             'end_date' => ['date_format:d/m/Y', 'after_or_equal:start_date'],
             'registration_start_date' => ['required', 'date_format:d/m/Y', 'after_or_equal:start_date', 'before_or_equal:end_date'],
             'registration_dead_line' => ['required', 'date_format:d/m/Y', 'after_or_equal:registration_start_date', 'before_or_equal:end_date'],

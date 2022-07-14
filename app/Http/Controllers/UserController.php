@@ -94,9 +94,9 @@ class UserController extends Controller
             return abort(403, "Please make sure regional cordinator and zonecoredinator role created");
         }
         $userData = $request->validate([
-            'first_name' => ['required', 'string', 'max:255', 'min:3'],
-            'father_name' => ['required', 'string', 'max:255', 'min:3'],
-            'grand_father_name' => ['required', 'string', 'max:255', 'min:3'],
+            'first_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-zA-Z ]+$/'],
+            'father_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-zA-Z ]+$/'],
+            'grand_father_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-zA-Z ]+$/'],
             'dob' => ['required', 'date_format:d/m/Y'],
             'gender' => ['required', 'string', 'in:M,F'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
@@ -195,9 +195,9 @@ class UserController extends Controller
         $regionalCordinator = Role::findByName('regional-coordinator');
         $zoneCordinator = Role::findByName('zone-coordinator');
         $userData = $request->validate([
-            'first_name' => ['required', 'string', 'max:255', 'min:3'],
-            'father_name' => ['required', 'string', 'max:255', 'min:3'],
-            'grand_father_name' => ['required', 'string', 'max:255', 'min:3'],
+            'first_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-zA-Z ]+$/'],
+            'father_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-zA-Z ]+$/'],
+            'grand_father_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-zA-Z ]+$/'],
             'dob' => ['required', 'date_format:d/m/Y'],
             'gender' => ['required', 'string', 'in:M,F'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -205,6 +205,7 @@ class UserController extends Controller
             'region' => ['required_if:role,==,' . $regionalCordinator->id . ''],
             'zone' => ['required_if:role,==,' . $zoneCordinator->id . ''],
         ]);
+        dd('sd');
         $date = DateTime::createFromFormat('d/m/Y', $request->get('dob'));
         $year = $date->format('Y');
         $month = $date->format('m');
