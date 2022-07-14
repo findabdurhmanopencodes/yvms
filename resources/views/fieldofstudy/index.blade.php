@@ -11,7 +11,7 @@
 @endsection
 @push('js')
     <script>
-        var HOST_URL = "{{ route('feild_of_study.index') }}";
+        var HOST_URL = "{{ route('FeildOfStudy.index') }}";
 
         function deleteRegion(fieldofStudyId, parent) {
             event.preventDefault();
@@ -25,7 +25,7 @@
                 if (result.value) {
                     $.ajax({
                         type: "POST",
-                        url: '/feild_of_study/' + fieldofStudyId,
+                        url: '/FeildOfStudy/' + fieldofStudyId,
                         data: {
                             "id": fieldofStudyId,
                             "_method": 'DELETE',
@@ -87,7 +87,7 @@
                                                     <i class="far fa-trash"></i>\
                                                 </a>\
                                                 \
-                                                <a href="/fieldofstudy/' + fieldofStudy + '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                                                <a href="/FeildOfStudy/' + fieldofStudy + '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-pen"></i>\
                                                 </a>\
                                                 \
@@ -124,7 +124,7 @@
                         <!--end::Svg Icon-->
                  </span>
                  Add New Field of study</a>
-                <form method="POST" action="{{ route('feild_of_study.store', []) }}">
+                <form method="POST" action="{{ route('FeildOfStudy.store', []) }}">
                         @csrf
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg"  role="document">

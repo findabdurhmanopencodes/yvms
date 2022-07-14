@@ -28,7 +28,7 @@ class TraininingCenter extends Model implements Auditable
 
     public function getRegionAttribute()
     {
-        return $this->zone->region;
+        return $this->zone?->region;
     }
     /**
      * Get the photo that owns the TraininingCenter

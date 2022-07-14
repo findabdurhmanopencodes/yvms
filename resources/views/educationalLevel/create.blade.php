@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Educational Level')
 @section('breadcrumb-list')
-    <li class=""><a href="{{ route('feild_of_study.index', []) }}"> Educational Level </a></li>
+    <li class=""><a href="{{ route('FeildOfStudy.index', []) }}"> Educational Level </a></li>
     <li class="active">Add educational Level</li>
 @endsection
 

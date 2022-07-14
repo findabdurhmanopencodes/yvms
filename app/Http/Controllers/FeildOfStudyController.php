@@ -48,12 +48,12 @@ class FeildOfStudyController extends Controller
      * @param  \App\Http\Requests\StoreFeildOfStudyRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreFeildOfStudyRequest $request)
+    public function store(Request $request)
     {
 
-        $request->validate(['name' => 'required|string|unique:feild_of_studies,name']);
+        $request->validate(['name' => 'required|regex:/^[a-zA-Z]+$/u|max:255|unique:feild_of_studies,name']);
         FeildOfStudy::create(['name' => $request->get('name')]);
-        return redirect()->route('feild_of_study.index')->with('message', 'Feild of Study created successfully');
+        return redirect()->route('FeildOfStudy.index')->with('message', 'Feild of Study created successfully');
     }
 
     /**
@@ -77,9 +77,10 @@ class FeildOfStudyController extends Controller
      * @param  \App\Models\FeildOfStudy  $feildOfStudy
      * @return \Illuminate\Http\Response
      */
-    public function edit(FeildOfStudy $feildOfStudy)
+    public function edit($feildOfStudy)
     {
-        return view('fieldofstudy.edit',compact('feild_of_studies'));
+
+        return view('fieldofstudy.create',['feildOfStudy'=>FeildOfStudy::find($feildOfStudy)]);
         //
     }
 
@@ -90,12 +91,13 @@ class FeildOfStudyController extends Controller
      * @param  \App\Models\FeildOfStudy  $feildOfStudy
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateFeildOfStudyRequest $request, FeildOfStudy $feildOfStudy)
+    public function update(Request $request,$FeildOfStudy)
     {
 
-        $data = $request->validate(['name' => 'required|string|unique:feildOfStudy,name,'.$feildOfStudy->id]);
-        $feildOfStudy->update($data);
-        return redirect()->route('feild_of_study.index')->with('message', 'feild Of Study created successfully');
+        $FeildOfStudyInfo=FeildOfStudy::find($request->get('id'));
+        $data = $request->validate(['name' => 'required|regex:/^[a-zA-Z]+$/u|max:255|unique:feild_of_studies,name,'.$FeildOfStudyInfo->id]);
+        $FeildOfStudyInfo->update(['name'=>$data['name']]);
+        return redirect()->route('FeildOfStudy.index')->with('message', 'feild Of Study Updated successfully');
         //
     }
 
@@ -107,6 +109,7 @@ class FeildOfStudyController extends Controller
      */
     public function destroy(Request $request,FeildOfStudy $feildOfStudy)
     {
+
         $feildOfStudy->delete();
         if ($request->ajax()) {
             return response()->json(array('msg' => 'deleted successfully'), 200);

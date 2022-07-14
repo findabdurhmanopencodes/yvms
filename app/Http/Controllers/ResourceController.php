@@ -43,7 +43,7 @@ class ResourceController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate(['name' => 'required|string|unique:resources,name']);
+        $request->validate(['name' => 'required|regex:/^[a-zA-Z]+$/u|max:255|unique:resources,name']);
         Resource::create(['name' => $request->get('name')]);
         return redirect()->route('resource.index')->with('message', 'Resource created successfully');
     }
@@ -82,7 +82,7 @@ class ResourceController extends Controller
      */
     public function update(Request $request, Resource $resource)
     {
-        $data = $request->validate(['name' => 'required|string|unique:resources,name,' . $resource->id]);
+        $data = $request->validate(['name' => 'required|regex:/^[a-zA-Z]+$/u|max:255|unique:resources,name,' . $resource->id]);
         $resource->update($data);
         return redirect()->route('resource.index')->with('message', 'resource updated successfully');
     }
