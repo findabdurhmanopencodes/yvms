@@ -1,31 +1,37 @@
-<x-admin-layout>
-    @push('styles')
-    @endpush
-    <x-slot name="title">Edit permission</x-slot>
-    <x-slot name="breadcrumbTitle">Edit permission</x-slot>
-    <x-slot name="breadcrumbItems">
-        <li class="breadcrumb-item"><a href="{{route('permission.index')}}">Permissions</a></li>
-        <li class="breadcrumb-item active">{{$permission->name}}</li>
-        <li class="breadcrumb-item active">Edit</li>
-    </x-slot>
-    <div class="row">
-        <div class="col-12">
-            {!! Form::model($permission, ['route'=>['permission.update','permission'=>$permission->id],'method'=>'PATCH']) !!}
-                @method('patch')
-                @csrf
-                <div class="row">
-                    <div class="col-md-12 form-group">
-                        <x-jet-label for="name" value="{{__('Name')}}"/>
-                        {!! Form::text('name', null, ['class'=>'form-control '.($errors->has('name')?'is-invalid':''),'placeholder'=>'Name']) !!}
-                        @error('name')
-                        <small class="text-danger"><b>{{$message}}</b></small>
-                        @enderror
+@extends('layouts.app')
+@section('title', 'feild of Study')
+@section('breadcrumb-list')
+    <li class=""><a href="{{ route('FeildOfStudy.index', []) }}"> Field of studies </a></li>
+    <li class="active">{{  (isset($feildOfStudy) ? 'Edit' : 'Create') }} Field of study</li>
+@endsection
+
+@section('content')
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Edit Field Of Study</h5>
+        <div class="row">
+            <div class="col-12">
+                <form method="POST">
+                    @csrf
+                    @isset($feildOfStudy)
+                        @method('PATCH')
+                    @endisset
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="name"> Field of Study </label>
+                        <div class="col-sm-9">
+                            <input type="text" value="{{$feildOfStudy->name }}"
+                                id="name" placeholder="Name" name="name" class="col-xs-10 col-sm-5 form-control">
+                            @error('name')
+                                <small class="text-danger"><b>{{ $message }}</b></small>
+                            @enderror
+                        </div>
                     </div>
-                </div>
-                <button class=" btn btn-outline-primary btn-rounded btn-floating">
-                    <i class="fal fa-sync"></i> Update Permission
-                </button>
-            </form>
+                    <button class="btn-sm btn btn-primary btn-rounded btn-floating">
+                        <i class="fa fa-plus"></i> {{ isset($feildOfStudy) ? 'Update Field of study' : 'Add Field of study' }}
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
-</x-admin-layout>
+</div>
+@endsection

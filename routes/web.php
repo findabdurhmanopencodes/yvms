@@ -255,6 +255,15 @@ Route::get('adb', function () {
 
     Route::get('volunteer_export', [VolunteerController::class, 'exportVolunteers'])->name('export.volunteers');
     Route::post('volunteer_import', [VolunteerController::class, 'importVolunteers'])->name('import.volunteers');
+
+    Route::get('{region_id}/region/capacity/edit', [RegionController::class, 'regionIntakeEdit'])->name('region.intake_edit');
+    Route::put('{region_id}/capacity/update', [RegionController::class, 'regionIntakeUpdate'])->name('intake.update');
+
+    Route::get('{zone_id}/zone/capacity/edit', [ZoneController::class, 'zoneIntakeEdit'])->name('zone.intake_edit');
+    Route::put('{zone_id}/zone/capacity/update', [ZoneController::class, 'zoneIntakeUpdate'])->name('zone_intake.update');
+
+    Route::get('{woreda_id}/woreda/capacity/edit', [WoredaController::class, 'woredaIntakeEdit'])->name('woreda.intake_edit');
+    Route::put('{woreda_id}/woreda/capacity/update', [WoredaController::class, 'woredaIntakeUpdate'])->name('woreda_intake.update');
 });
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -277,7 +286,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('user/{user}/permission/give', [UserController::class, 'givePermission'])->name('user.permission.give');
     Route::post('user/{user}/permission/revoke', [UserController::class, 'revokePermission'])->name('user.permission.revoke');
     Route::resource('educational_level', EducationalLevelController::class);
-    Route::resource('feild_of_study', FeildOfStudyController::class);
+    Route::resource('FeildOfStudy', FeildOfStudyController::class);
     Route::resource('disablity', DisablityController::class);
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
     Route::get('training_sessions', [RegionController::class, 'place'])->name('region.place');

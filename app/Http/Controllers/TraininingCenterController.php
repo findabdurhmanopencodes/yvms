@@ -90,7 +90,7 @@ class TraininingCenterController extends Controller
 
         $request->validate([
             'logo' => 'image|mimes:jpg,png,jpeg,svg|max:2048|',
-            'name' => 'min:2|required|string|unique:trainining_centers,name',
+            'name' => 'min:2|required|regex:/^[a-zA-Z]+$/u|max:255|unique:trainining_centers,name',
             'code' => 'required|string|unique:trainining_centers,code',
             'scale' => 'min:0|required:trainining_centers,scale',
             'status' => 'required'
@@ -158,13 +158,7 @@ class TraininingCenterController extends Controller
     {
 
         $TrainingCenter = TraininingCenter::findOrFail($traininingCenter);
-        // $trainingSession = new TrainingSession();
-        // $trainingSessionId = $trainingSession->availableSession()[0]->id;
-        // TrainingCenterCapacity::create([
-        //     'capacity' => $request->get('capacity'),
-        //     'training_session_id' => $trainingSessionId,
-        //     'trainining_center_id' => $TrainingCenter->id
-        // ]);
+        // $logoFile = FileController::deleteFile($TrainingCenter->photo);
         $data = $request->validate([
             'logo' => 'image|mimes:jpg,png,jpeg,svg|max:2048|',
             'name' => 'min:2|required|string|unique:trainining_centers,name,' . $traininingCenter,
@@ -172,10 +166,18 @@ class TraininingCenterController extends Controller
             'scale' => 'min:0|required:trainining_centers,scale,' . $traininingCenter,
             // 'status' => 'required'
         ]);
-        // dd($request);
+        if ($request->file('logo')) {
+            if ($TrainingCenter->photo) {
+                FileController::deleteFile($TrainingCenter->photo);
+                $logoFile = FileController::fileUpload($request->file('logo'), 'training center logos/')->id;
+                $TrainingCenter->photo = $logoFile;
+            } else {
 
-
-        $TrainingCenter->update($data);
+                $logoFile = FileController::fileUpload($request->file('logo'), 'training center logos/')->id;
+                $TrainingCenter->photo = $logoFile;
+            }
+        }
+        $TrainingCenter->update(['name' => $data['name'], 'code' => $data['code'], 'scale' => $data['scale']]);
         if ($request->get('status') == 'on') {
             $TrainingCenter->status = 1;
         } else {
@@ -394,8 +396,8 @@ class TraininingCenterController extends Controller
                 }
                 $x++;
                 // if ($x > 2000) {
-                    // dd('Contact Abdurhman for this error');
-                    // break;
+                // dd('Contact Abdurhman for this error');
+                // break;
                 // }
             }
         }

@@ -166,14 +166,51 @@ class WoredaController extends Controller
         $today = Carbon::today();
         $curr_sess = TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
         $intake_exist = WoredaIntake::where('training_session_id', $trainingSession->id)->where('woreda_id', $woreda_id)->get();
-        $woreda = Woreda::where('id', $woreda_id)?->get()[0];
-        return view('woreda.woreda_capacity', compact('woreda', 'trainingSession', 'intake_exist', 'curr_sess'));
+        $zone = Woreda::where('id',$woreda_id)->get()->first()->zone;
+        $woredaAllIntake = 0;
+        foreach (Woreda::where('status',1)->get() as $key => $value) {
+            // $zoneAllIntake
+            $zone_this = Woreda::where('id',$value->id)->get()->first()->zone;
+            if (($zone_this == $zone) && ($value->woredaIntakes->where('training_session_id',$trainingSession->id)->last())) {
+                $woredaAllIntake+=$value->woredaIntakes->where('training_session_id',$trainingSession->id)->last()->intake;
+            }
+        }
+        if ($zone->zoneIntakes->last()) {
+            $woredaAllIntake = $zone->zoneIntakes?->where('training_session_id',$trainingSession->id)->last()->intake - $woredaAllIntake;
+            $woreda = Woreda::where('id', $woreda_id)?->get()[0];
+            return view('woreda.woreda_capacity', compact('woreda', 'trainingSession', 'intake_exist', 'curr_sess', 'woredaAllIntake'));
+        }else{
+            return redirect()->route('woreda.index')->with('error', 'Specify Zone First!!');
+        }
     }
 
     public function woredaIntakeStore(Request $request, TrainingSession $trainingSession, $woreda_id)
     {
         WoredaIntake::create(['training_session_id' => $trainingSession->id, 'woreda_id' => $woreda_id, 'intake' => $request->get('capacity')]);
         return redirect()->route('session.woreda.intake', ['training_session' => $trainingSession->id, 'woreda_id' => $woreda_id])->with('message', 'Woreda Intake created successfully');
+    }
+    public function woredaIntakeEdit(TrainingSession $trainingSession, $woreda_id){
+        $woredas = Woreda::find($woreda_id);
+        $woredaIntake = $woredas->woredaIntakes->where('training_session_id', $trainingSession->id)->last();
+        $zone = Woreda::where('id',$woreda_id)->get()->first()->zone;
+        $woredaAllIntake = 0;
+        foreach (Woreda::where('status',1)->get() as $key => $value) {
+            // $zoneAllIntake
+            $zone_this = Woreda::where('id',$value->id)->get()->first()->zone;
+            if (($zone_this == $zone) && ($value->woredaIntakes->where('training_session_id',$trainingSession->id)->last())) {
+                $woredaAllIntake+=$value->woredaIntakes->where('training_session_id',$trainingSession->id)->last()->intake;
+            }
+        }
+        $woredaAllIntake = ($zone->zoneIntakes?->where('training_session_id',$trainingSession->id)->last()->intake - $woredaAllIntake) + $woredaIntake->intake;
+
+        return view('woreda.woredaIntake', compact('woredaIntake', 'woredas', 'trainingSession', 'woredaAllIntake'));
+    }
+    public function woredaIntakeUpdate(Request $request, TrainingSession $trainingSession, $woreda_id){
+        $woredas = Woreda::find($woreda_id);
+        $woredaIntake = $woredas->woredaIntakes->where('training_session_id',$trainingSession->id)->last();
+        $woredaIntake->intake = $request->get('capacity');
+        $woredaIntake->save();
+        return redirect()->route('session.woreda.intake', ['training_session' => $trainingSession->id, 'woreda_id' => $woreda_id])->with('message', 'Woreda Intake updated successfully');
     }
 
     public function import()
