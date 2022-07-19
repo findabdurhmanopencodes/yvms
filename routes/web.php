@@ -77,6 +77,7 @@ use App\Models\Volunteer;
 use App\Models\Woreda;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\Console\Input\Input;
@@ -336,7 +337,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/download/idPDF', [IdGenerateController::class, 'pdfDownload'])->name('id.download');
     Route::post('/certificatePDF/download', [IdGenerateController::class, 'certificateDownload'])->name('certificate.download');
     Route::get('/dashboard', function () {
-
+        if(!(Auth::user()?->can('dashboard.index')))
+            return abort(403);
         if (count(TrainingSession::availableSession()) > 0) {
             $trainingSession = TrainingSession::availableSession()[0];
             return redirect(route('session.dashboard', ['training_session' => $trainingSession->id]));

@@ -37,7 +37,8 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-
+        if(!Auth::user()->can('User.index'))
+            return abort(403);
         if ($request->ajax()) {
             return datatables()->of(User::whereRelation('roles', 'name', '!=', 'super-admin')->whereRelation('roles', 'name', '!=', 'volunteer'))->make(true);
         }
@@ -50,9 +51,9 @@ class UserController extends Controller
 
     public function create()
     {
-        // if(!Auth::user()->can('user.create')){
-        //     return abort(403);
-        // }
+        if(!Auth::user()->can('User.store')){
+            return abort(403);
+        }
         $user = null;
         $userRegion = null;
         $roles = Role::all();
@@ -66,6 +67,9 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
+        if(!Auth::user()->can('User.update')){
+            return abort(403);
+        }
         $userRegion = UserRegion::where('user_id', $user->id)->first();
         $roles = Role::all();
         $regions = Region::all();
@@ -79,6 +83,9 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        if(!Auth::user()->can('User.show')){
+            return abort(403);
+        }
         $permissions = $user->permissions()->get();
         $freePermissions = DB::table('permissions')->whereNotIn('id', $user->permissions()->pluck('id'))->get();
         return view('user.show', compact('user', 'permissions', 'freePermissions'));
@@ -259,12 +266,9 @@ class UserController extends Controller
 
     public function givePermission(Request $request, User $user)
     {
-        // if(!Auth::user()->can('role.permission.assign')){
-        //     return abort(403);
-        // }
-        // foreach ($user->permissions()->get() as $permission) {
-        //     $user->revokePermissionTo($permission);
-        // }
+        if(!Auth::user()->can('User.give.permission')){
+            return abort(403);
+        }
         $request->validate(['permissions' => 'required']);
         $permissions = $request->get('permissions');
         foreach ($permissions as $permission) {
@@ -275,9 +279,9 @@ class UserController extends Controller
 
     public function revokePermission(Request $request, User $user)
     {
-        // if(!Auth::user()->can('role.permission.assign')){
-        //     return abort(403);
-        // }
+        if(!Auth::user()->can('User.revoke.permission')){
+            return abort(403);
+        }
         $permissions = $request->reset_permissions;
         foreach ($permissions as $permissionId) {
             $permission = Permission::findById($permissionId);
@@ -290,6 +294,8 @@ class UserController extends Controller
 
     public function userPermissions(Request $request, User $user)
     {
+        if(!Auth::user()->can('User.user.permissions'))
+            return abort(403);
         if ($request->ajax()) {
             return datatables()->of($user->permissions())->make(true);
         }
@@ -317,6 +323,8 @@ class UserController extends Controller
     }
     public function downloadCredential(User $user)
     {
+        if(!Auth::user()->can('User.credential.download'))
+            return abort(403);
         $pdf = $this->getCredential($user);
         return $pdf->download('credential for ' . $user->father_name . '.pdf');
     }

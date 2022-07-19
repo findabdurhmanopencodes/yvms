@@ -44,7 +44,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        if ($user->hasPermissionTo('User.create'))
+        if ($user->can('User.store'))
             return true;
         return false;
     }

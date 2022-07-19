@@ -121,13 +121,17 @@
     <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
 @endpush
 @section('content')
-    <form action="{{ route('user.giveAllPermission', ['user' => $user->id]) }}" id="formGiveAllPermission" method="post">
-        @csrf
-    </form>
-    <form action="{{ route('user.removeAllPermission', ['user' => $user->id]) }}" id="formRevokeAllPermission"
-        method="post">
-        @csrf
-    </form>
+    @can('User.give.all.permission')
+        <form action="{{ route('user.giveAllPermission', ['user' => $user->id]) }}" id="formGiveAllPermission" method="post">
+            @csrf
+        </form>
+    @endcan
+    @can('User.remove.all.permission')
+        <form action="{{ route('user.removeAllPermission', ['user' => $user->id]) }}" id="formRevokeAllPermission"
+            method="post">
+            @csrf
+        </form>
+    @endcan
     <!--begin::Card-->
     <div class="card card-custom gutter-b">
         <div class="card-body">
@@ -225,62 +229,70 @@
                     <div class="row align-items-center">
                         <div class="col-lg-12">
                             <div class="row align-items-center">
-                                <form action="{{ route('user.permission.give', ['user' => $user->id]) }}"
-                                    class="col-12 row" method="POST">
-                                    <div class="col-md-10">
-                                        <div class="row align-items-center">
-                                            <div class="col-md-12 my-2 my-md-0">
-                                                <div class="form-group row">
-                                                    <div class="col-sm-12">
-                                                        <select
-                                                            class="form-control select2 @error('permission') is-invalid @enderror"
-                                                            id="select_permission" multiple name="permissions[]">
-                                                            <option value=""></option>
-                                                            @foreach ($freePermissions as $permission)
-                                                                <option value="{{ $permission->id }}">
-                                                                    {{ $permission->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                        @error('permission')
-                                                            <div class="fv-plugins-message-container">
-                                                                <div data-field="permission" data-validator="stringLength"
-                                                                    class="fv-help-block">{{ $message }}</div>
-                                                            </div>
-                                                        @enderror
+                                @can('User.give.permission')
+                                    <form action="{{ route('user.permission.give', ['user' => $user->id]) }}"
+                                        class="col-12 row" method="POST">
+                                        <div class="col-md-10">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-12 my-2 my-md-0">
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12">
+                                                            <select
+                                                                class="form-control select2 @error('permission') is-invalid @enderror"
+                                                                id="select_permission" multiple name="permissions[]">
+                                                                <option value=""></option>
+                                                                @foreach ($freePermissions as $permission)
+                                                                    <option value="{{ $permission->id }}">
+                                                                        {{ $permission->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                            @error('permission')
+                                                                <div class="fv-plugins-message-container">
+                                                                    <div data-field="permission" data-validator="stringLength"
+                                                                        class="fv-help-block">{{ $message }}</div>
+                                                                </div>
+                                                            @enderror
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    @csrf
-                                    <div class="col-md-2 mt-5 mt-lg-0">
-                                        <input type="submit" class="btn btn-light-primary px-6 font-weight-bold"
-                                            value="Assign Permission">
-                                    </div>
-                                </form>
+                                        @csrf
+                                        <div class="col-md-2 mt-5 mt-lg-0">
+                                            <input type="submit" class="btn btn-light-primary px-6 font-weight-bold"
+                                                value="Assign Permission">
+                                        </div>
+                                    </form>
+                                @endcan
                             </div>
                             <div class="d-flex justify-content-between">
-                                <button class="btn btn-primary px-6 font-weight-bold" onclick="giveAllPermission();">Give
-                                    All
-                                    Permission</button>
-                                <button class="btn btn-danger px-6 font-weight-bold" onclick="revokeAllPermission();">Remove
-                                    All
-                                    Permission</button>
+                                @can('User.give.all.permission')
+                                    <button class="btn btn-primary px-6 font-weight-bold" onclick="giveAllPermission();">Give
+                                        All
+                                        Permission</button>
+                                @endcan
+                                @can('User.remove.all.permission')
+                                    <button class="btn btn-danger px-6 font-weight-bold" onclick="revokeAllPermission();">Remove
+                                        All
+                                        Permission</button>
+                                @endcan
                             </div>
                             <div class="mt-4">
-                                <form id="revokePermission"
-                                    action="{{ route('user.permission.revoke', ['user' => $user->id]) }}" method="POST">
-                                    @csrf
-                                    <div class="d-flex justify-between my-2">
-                                        <h3 class="">Manage direct permissions</h3>
-                                    </div>
-                                    <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
-                                    <div class="d-flex mt-8">
-                                        <button onclick="event.preventDefault()" id="reset_permission_button"
-                                            class="btn btn-danger ml-auto mt-1">Remove Selected Permissions</button>
-                                    </div>
-                                </form>
+                                @can('User.revoke.permission')
+                                    <form id="revokePermission"
+                                        action="{{ route('user.permission.revoke', ['user' => $user->id]) }}" method="POST">
+                                        @csrf
+                                        <div class="d-flex justify-between my-2">
+                                            <h3 class="">Manage direct permissions</h3>
+                                        </div>
+                                        <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+                                        <div class="d-flex mt-8">
+                                            <button onclick="event.preventDefault()" id="reset_permission_button"
+                                                class="btn btn-danger ml-auto mt-1">Remove Selected Permissions</button>
+                                        </div>
+                                    </form>
+                                @endcan
                             </div>
                         </div>
                     </div>
