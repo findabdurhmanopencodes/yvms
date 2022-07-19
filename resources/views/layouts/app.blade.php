@@ -167,7 +167,7 @@
                                 </div>
                             </li>
                             @if (Request::route('training_session'))
-                                @can('session.detail')
+                                @canany(['centerCooridnator','TraininingCenter.index'])
                                     <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_center.index') === 0 ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('session.training_center.index', ['training_session' => Request::route('training_session')]) }}"
@@ -176,7 +176,7 @@
                                             <span class="menu-text">Session Detail</span>
                                         </a>
                                     </li>
-                                @endcan
+                                @endcanany
 
                                 <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'session.volunteer.index') === 0 || strpos(Route::currentRouteName(), 'session.volunteer.all') === 0 || strpos(Route::currentRouteName(), 'session.applicant.verified') === 0 || strpos(Route::currentRouteName(), 'session.applicant.selected') === 0 || strpos(Route::currentRouteName(), 'session.applicant.email.unVerified') === 0 ? 'menu-item-open' : '' }}"
                                     aria-haspopup="true" data-menu-toggle="hover">

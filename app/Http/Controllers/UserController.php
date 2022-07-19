@@ -205,7 +205,6 @@ class UserController extends Controller
             'region' => ['required_if:role,==,' . $regionalCordinator->id . ''],
             'zone' => ['required_if:role,==,' . $zoneCordinator->id . ''],
         ]);
-        dd('sd');
         $date = DateTime::createFromFormat('d/m/Y', $request->get('dob'));
         $year = $date->format('Y');
         $month = $date->format('m');
