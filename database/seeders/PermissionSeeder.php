@@ -89,7 +89,14 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'TrainingMaster.show']);
         Permission::create(['name'=>'TrainingMaster.update']);
         Permission::create(['name'=>'TrainingMaster.destroy']);
-        Permission::create(['name'=>'TrainingMaster.capacity.Change']);
+
+
+
+        Permission::create(['name'=>'Training.index']);
+        Permission::create(['name'=>'Training.store']);
+        Permission::create(['name'=>'Training.show']);
+        Permission::create(['name'=>'Training.update']);
+        Permission::create(['name'=>'Training.destroy']);
 
         Permission::create(['name'=>'TrainingPlacement.index']);
         Permission::create(['name'=>'TrainingPlacement.store']);
@@ -166,6 +173,11 @@ class PermissionSeeder extends Seeder
     public function abdi()
     {
         Permission::create(['name' => PermissionSeeder::CENTER_COORIDNATOR]);
+        Permission::create(['name'=>'Document.index']);
+        Permission::create(['name'=>'Document.store']);
+        Permission::create(['name'=>'Document.show']);
+        Permission::create(['name'=>'Document.update']);
+        Permission::create(['name'=>'Document.destroy']);
     }
 }
 

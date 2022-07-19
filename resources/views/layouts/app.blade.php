@@ -420,6 +420,7 @@
                                         </div>
                                     </li>
                                 @endcanany
+                                @canany(['Training.index'])
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'training.') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('training.index', []) }}" class="menu-link">
@@ -427,7 +428,7 @@
                                         <span class="menu-text">Training</span>
                                     </a>
                                 </li>
-
+                                @endcanany
                                 <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0 ? 'menu-item-open' : '' }}"
                                     aria-haspopup="true" data-menu-toggle="hover">
 
