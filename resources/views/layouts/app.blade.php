@@ -420,51 +420,58 @@
                                         </div>
                                     </li>
                                 @endcanany
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'training.') === 0 ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('training.index', []) }}" class="menu-link">
-                                        <i class="fal fa-book-open menu-icon"></i>
-                                        <span class="menu-text">Training</span>
-                                    </a>
-                                </li>
+                                @canany(['Training.index'])
+                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'training.') === 0 ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('training.index', []) }}" class="menu-link">
+                                            <i class="fal fa-book-open menu-icon"></i>
+                                            <span class="menu-text">Training</span>
+                                        </a>
+                                    </li>
+                                @endcanany
+                                @canany(['Role.index', 'Permission.index'])
+                                    <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0 ? 'menu-item-open' : '' }}"
+                                        aria-haspopup="true" data-menu-toggle="hover">
 
-                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'role') === 0 || strpos(Route::currentRouteName(), 'permission') === 0 ? 'menu-item-open' : '' }}"
-                                    aria-haspopup="true" data-menu-toggle="hover">
-
-                                    <a href="javascript:;" class="menu-link menu-toggle">
-                                        <i class="menu-icon flaticon-lock"></i>
-                                        <span class="menu-text">Role &amp; Permissions</span>
-                                        <i class="menu-arrow"></i>
-                                    </a>
-                                    <div class="menu-submenu">
-                                        <i class="menu-arrow"></i>
-                                        <ul class="menu-subnav">
-                                            <li class="menu-item menu-item-parent" aria-haspopup="true">
-                                                <span class="menu-link">
-                                                    <span class="menu-text">Roles &amp; Permissions</span>
-                                                </span>
-                                            </li>
-                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'role.index') === 0 ? 'menu-item-active' : '' }}"
-                                                aria-haspopup="true">
-                                                <a href="{{ route('role.index', []) }}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Roles</span>
-                                                </a>
-                                            </li>
-                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'permission.index') === 0 ? 'menu-item-active' : '' }}"
-                                                aria-haspopup="true">
-                                                <a href="{{ route('permission.index', []) }}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Permissions</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
+                                        <a href="javascript:;" class="menu-link menu-toggle">
+                                            <i class="menu-icon flaticon-lock"></i>
+                                            <span class="menu-text">Role &amp; Permissions</span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                        <div class="menu-submenu">
+                                            <i class="menu-arrow"></i>
+                                            <ul class="menu-subnav">
+                                                <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                                    <span class="menu-link">
+                                                        <span class="menu-text">Roles &amp; Permissions</span>
+                                                    </span>
+                                                </li>
+                                                @can('Role.index')
+                                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'role.index') === 0 ? 'menu-item-active' : '' }}"
+                                                        aria-haspopup="true">
+                                                        <a href="{{ route('role.index', []) }}" class="menu-link">
+                                                            <i class="menu-bullet menu-bullet-dot">
+                                                                <span></span>
+                                                            </i>
+                                                            <span class="menu-text">Roles</span>
+                                                        </a>
+                                                    </li>
+                                                @endcan
+                                                @can('Permission.index')
+                                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'permission.index') === 0 ? 'menu-item-active' : '' }}"
+                                                        aria-haspopup="true">
+                                                        <a href="{{ route('permission.index', []) }}" class="menu-link">
+                                                            <i class="menu-bullet menu-bullet-dot">
+                                                                <span></span>
+                                                            </i>
+                                                            <span class="menu-text">Permissions</span>
+                                                        </a>
+                                                    </li>
+                                                @endcan
+                                            </ul>
+                                        </div>
+                                    </li>
+                                @endcanany
 
                                 @include('aside.ms_aside')
                                 @include('aside.placement')

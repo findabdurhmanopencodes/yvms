@@ -12,6 +12,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
@@ -25,6 +26,8 @@ class TrainingMasterController extends Controller
      */
     public function index()
     {
+        if(!Auth::user()->can('TrainingMaster.index'))
+            return abort(403);
         $masters = TrainingMaster::paginate(10);
         return view('master.index', compact('masters'));
     }
@@ -36,6 +39,8 @@ class TrainingMasterController extends Controller
      */
     public function create()
     {
+        if(!Auth::user()->can('TrainingMaster.store'))
+            return abort(403);
         $master = null;
         $trainingCenters = TraininingCenter::all();
         return view('master.create', compact('trainingCenters', 'master'));
@@ -49,6 +54,8 @@ class TrainingMasterController extends Controller
      */
     public function store(StoreTrainingMasterRequest $request)
     {
+        if(!Auth::user()->can('TrainingMaster.store'))
+            return abort(403);
         $data = $request->validated();
         $userData = $data;
         $date = DateTime::createFromFormat('d/m/Y', $request->get('dob'));
@@ -88,6 +95,8 @@ class TrainingMasterController extends Controller
      */
     public function show(TrainingMaster $trainingMaster)
     {
+        if(!Auth::user()->can('TrainingMaster.show'))
+            return abort(403);
         return view('master.show',compact('trainingMaster'));
     }
 
@@ -99,6 +108,8 @@ class TrainingMasterController extends Controller
      */
     public function edit(TrainingMaster $trainingMaster)
     {
+        if(!Auth::user()->can('TrainingMaster.update'))
+            return abort(403);
         $master = $trainingMaster;
         $trainingCenters = TraininingCenter::all();
         return view('master.create',compact('master','trainingCenters'));
@@ -113,6 +124,8 @@ class TrainingMasterController extends Controller
      */
     public function update(UpdateTrainingMasterRequest $request, TrainingMaster $trainingMaster)
     {
+        if(!Auth::user()->can('TrainingMaster.update'))
+            return abort(403);
         $data = $request->validated();
         $userData = $data;
         $date = DateTime::createFromFormat('d/m/Y', $request->get('dob'));
@@ -153,6 +166,8 @@ class TrainingMasterController extends Controller
      */
     public function destroy(TrainingMaster $trainingMaster)
     {
+        if(!Auth::user()->can('TrainingMaster.destroy'))
+            return abort(403);
         $trainingMaster->delete();
         return redirect()->back()->with('message','Training master deleted successfully');
     }

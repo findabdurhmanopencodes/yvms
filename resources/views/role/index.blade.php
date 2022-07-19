@@ -79,17 +79,17 @@
                 template: function(row) {
                     var roleId = row.id;
                     return '\
-                                    <div class="d-flex">\
+                                    <div class="d-flex">\@can('Role.destroy')
                                                 <a href="javascript:;" onclick="deleteRole(' + roleId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-trash"></i>\
-                                                </a>\
-                                                \
+                                                </a>\@endcan
+                                                \@can('Role.show')
                                                 <a href="/role/' + roleId + '" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-eye"></i>\
-                                                </a>\
+                                                </a>\@endrole @can('Role.update')
                                                 <a href="/role/' + roleId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-pen"></i>\
-                                                </a>\
+                                                </a>\@endcan
                                                 \
                                             </div>\
                                             ';
@@ -111,12 +111,14 @@
             <div class="card-toolbar">
 
                 <!--begin::Button-->
+                @can('Role.store')
                 <a href="{{ route('role.create', []) }}" class="btn btn-primary font-weight-bolder">
                     <span class="svg-icon svg-icon-md">
                         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                         <i class="fal fa-plus"></i>
                         <!--end::Svg Icon-->
                     </span>Add New Role</a>
+                @endcan
                 <!--end::Button-->
             </div>
         </div>
