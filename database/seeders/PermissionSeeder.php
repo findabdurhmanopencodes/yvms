@@ -153,11 +153,25 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'Zone.fetch']);
         Permission::create(['name'=>'Zone.validate.form']);
         $this->abdi();
+        $this->ms();
     }
 
     public function abdi()
     {
         Permission::create(['name' => PermissionSeeder::CENTER_COORIDNATOR]);
+    }
+
+    public function ms(){
+        Permission::create(['name'=>'RegionIntake.index']);
+        Permission::create(['name'=>'RegionIntake.store']);
+
+        Permission::create(['name'=>'ZoneIntake.index']);
+        Permission::create(['name'=>'ZoneIntake.store']);
+        Permission::create(['name'=>'ZoneIntake.update']);
+
+        Permission::create(['name'=>'WoredaIntake.index']);
+        Permission::create(['name'=>'WoredaIntake.store']);
+        Permission::create(['name'=>'WoredaIntake.update']);
     }
 }
 

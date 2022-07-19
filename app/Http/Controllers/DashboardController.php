@@ -26,7 +26,6 @@ class DashboardController extends Controller
      */
     public function index()
     {
-
         $users = DB::table('users')->count();
         $regions = DB::table('regions')->count();
         $zones = DB::table('zones')->count();

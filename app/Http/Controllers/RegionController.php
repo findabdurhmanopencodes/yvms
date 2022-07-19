@@ -14,13 +14,14 @@ use App\Models\TrainingSession;
 use App\Models\Woreda;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RegionController extends Controller
 {
     public function __construct()
     {
 
-        $this->authorizeResource(Region::class, 'region');
+        // $this->authorizeResource(Region::class, 'region');
     }
     protected function resourceAbilityMap()
     {
@@ -42,6 +43,9 @@ class RegionController extends Controller
      */
     public function index(Request $request)
     {
+        if(!Auth::user()->can('Region.index')){
+            return abort(403);
+        }
         $trainingSession_id = TrainingSession::availableSession()->first()->id;
         if ($request->ajax()) {
             return datatables()->of(Region::select())->make(true);
@@ -65,6 +69,9 @@ class RegionController extends Controller
      */
     public function create()
     {
+        if(!Auth::user()->can('Region.store')){
+            return abort(403);
+        }
         return view('region.create');
     }
 
@@ -76,6 +83,9 @@ class RegionController extends Controller
      */
     public function store(StoreRegionRequest $request)
     {
+        if(!Auth::user()->can('Region.store')){
+            return abort(403);
+        }
         $regionInquota = $request->get('region_quota') / 100;
         $request->validate([
             'name' => 'required|string|unique:permissions,name',
@@ -104,6 +114,9 @@ class RegionController extends Controller
      */
     public function edit($id)
     {
+        if(!Auth::user()->can('Region.update')){
+            return abort(403);
+        }
         $regions = Region::find($id);
         return view('region.edit', compact('regions'));
     }
@@ -117,6 +130,9 @@ class RegionController extends Controller
      */
     public function update(UpdateRegionRequest $request, $id)
     {
+        if(!Auth::user()->can('Region.update')){
+            return abort(403);
+        }
         $region = Region::find($id);
         $region->name = $request->get('name');
         $region->code = $request->get('code');
@@ -163,6 +179,9 @@ class RegionController extends Controller
      */
     public function destroy(Request $request, Region $region)
     {
+        if(!Auth::user()->can('Region.destroy')){
+            return abort(403);
+        }
         // foreach ($region->zones as $zone) {
         //     $zone->delete();
         // }
@@ -192,6 +211,9 @@ class RegionController extends Controller
 
     public function regionIntake(TrainingSession $trainingSession, $region_id)
     {
+        if (!Auth::user()->can('RegionIntake.index')) {
+            return abort(403);
+        }
         $today = Carbon::today();
         $curr_sess = TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
         $intake_exist = RegionIntake::where('training_session_id', $trainingSession->id)->where('region_id', $region_id)->get();
@@ -201,6 +223,9 @@ class RegionController extends Controller
 
     public function regionIntakeStore(Request $request, TrainingSession $trainingSession, $region_id)
     {
+        if (!Auth::user()->can('RegionIntake.store')) {
+            return abort(403);
+        }
         RegionIntake::create(['training_session_id' => $trainingSession->id, 'region_id' => $region_id, 'intake' => $request->get('capacity')]);
         return redirect()->route('session.region.intake', ['training_session' => $trainingSession->id, 'region_id' => $region_id])->with('message', 'Region created successfully');
     }
@@ -218,6 +243,7 @@ class RegionController extends Controller
     }
     public function import()
     {
+        dd('none');
         $binRegions =  ImporterFiles::REGION_IMPORTS;
         $totalRegions = 0;
         foreach ($binRegions as $region) {
