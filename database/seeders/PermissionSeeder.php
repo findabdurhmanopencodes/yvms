@@ -83,6 +83,14 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'TrainingCenterCapacity.destroy']);
         Permission::create(['name'=>'TrainingCenterCapacity.capacity.Change']);
 
+
+        Permission::create(['name'=>'TrainingMaster.index']);
+        Permission::create(['name'=>'TrainingMaster.store']);
+        Permission::create(['name'=>'TrainingMaster.show']);
+        Permission::create(['name'=>'TrainingMaster.update']);
+        Permission::create(['name'=>'TrainingMaster.destroy']);
+        Permission::create(['name'=>'TrainingMaster.capacity.Change']);
+
         Permission::create(['name'=>'TrainingPlacement.index']);
         Permission::create(['name'=>'TrainingPlacement.store']);
         Permission::create(['name'=>'TrainingPlacement.show']);
