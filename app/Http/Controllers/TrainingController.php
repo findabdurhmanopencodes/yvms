@@ -17,8 +17,15 @@ class TrainingController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('')) {
+
+            return abort(403);
+
+
+        }
         $trainings = Training::paginate(10);
-        return view('training.index',compact('trainings'));
+        return view('training.index', compact('trainings'));
+
     }
 
     /**
@@ -40,7 +47,7 @@ class TrainingController extends Controller
     public function store(StoreTrainingRequest $request)
     {
         Training::create($request->validated());
-        return redirect()->back()->with('message','Training created successfully');
+        return redirect()->back()->with('message', 'Training created successfully');
     }
 
     /**
@@ -51,8 +58,8 @@ class TrainingController extends Controller
      */
     public function show(Training $training)
     {
-        $trainingDocuments = TrainingDocument::where('training_id',$training->id)->get();
-        return view('training.show',compact('training','trainingDocuments'));
+        $trainingDocuments = TrainingDocument::where('training_id', $training->id)->get();
+        return view('training.show', compact('training', 'trainingDocuments'));
     }
 
     /**
@@ -76,7 +83,7 @@ class TrainingController extends Controller
     public function update(UpdateTrainingRequest $request, Training $training)
     {
         $training->update($request->validated());
-        return redirect()->back()->with('message','Training updated successfully');
+        return redirect()->back()->with('message', 'Training updated successfully');
     }
 
     /**
@@ -88,6 +95,6 @@ class TrainingController extends Controller
     public function destroy(Training $training)
     {
         $training->delete();
-        return redirect()->back()->with('message','Training deleted successfully');
+        return redirect()->back()->with('message', 'Training deleted successfully');
     }
 }
