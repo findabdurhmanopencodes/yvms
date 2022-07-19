@@ -1140,7 +1140,7 @@
                                             <div class="col-xl-6">
                                                 <!--begin::Select-->
                                                 <div class="form-group">
-                                                    <label class="d-block">Kebele Id</label>
+                                                    <label class="d-block">Kebele Identification Image</label>
                                                     <div class="custom-file">
                                                         <input type="file"
                                                             class="@error('kebele_id') is-invalid @enderror custom-file-input"
@@ -1150,6 +1150,7 @@
                                                         @error('kebele_id')
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
+                                                    <span class="form-text text-muted">Please enter your Kebele ID.</span>
                                                     </div>
                                                 </div>
                                                 <!--end::Input-->

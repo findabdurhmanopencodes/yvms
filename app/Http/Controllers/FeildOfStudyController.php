@@ -13,7 +13,7 @@ class FeildOfStudyController extends Controller
     public function __construct()
     {
 
-        $this->authorizeResource(FeildOfStudy::class,'feildOfStudy');
+        // $this->authorizeResource(FeildOfStudy::class,'feildOfStudy');
 
     }
     /**
