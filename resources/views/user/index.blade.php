@@ -80,6 +80,7 @@
             <div class="card-toolbar">
 
                 <!--begin::Button-->
+                @can('User.store')
                 <a href="{{ route('user.create', []) }}" class="btn btn-primary font-weight-bolder">
                     <span class="svg-icon svg-icon-md">
                         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
@@ -87,6 +88,7 @@
                         <!--end::Svg Icon-->
                     </span>Add New User</a>
                 <!--end::Button-->
+                @endcan
             </div>
         </div>
         <div class="card-body">

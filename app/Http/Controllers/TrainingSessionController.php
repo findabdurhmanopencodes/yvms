@@ -49,29 +49,29 @@ class TrainingSessionController extends Controller
      *
      * @return array
      */
-    // protected function resourceAbilityMap()
-    // {
+    protected function resourceAbilityMap()
+    {
 
-    //     return [
-    //         'show' => 'view',
-    //         'create' => 'create',
-    //         'store' => 'create',
-    //         'edit' => 'update',
-    //         'update' => 'update',
-    //         'destroy' => 'delete',
-    //         'trainingCenterIndex' => 'trainingCenterIndex',
-    //     ];
-    // }
+        return [
+            'show' => 'view',
+            'create' => 'create',
+            'store' => 'create',
+            'edit' => 'update',
+            'update' => 'update',
+            'destroy' => 'delete',
+            'trainingCenterIndex' => 'trainingCenterIndex',
+        ];
+    }
 
-    // /**
-    //  * Get the list of resource methods which do not have model parameters.
-    //  *
-    //  * @return array
-    //  */
-    // protected function resourceMethodsWithoutModels()
-    // {
-    //     return ['index', 'create', 'store','trainingCenterIndex'];
-    // }
+    /**
+     * Get the list of resource methods which do not have model parameters.
+     *
+     * @return array
+     */
+    protected function resourceMethodsWithoutModels()
+    {
+        return ['index', 'create', 'store','trainingCenterIndex'];
+    }
 
     public function __construct()
     {
@@ -84,6 +84,10 @@ class TrainingSessionController extends Controller
      */
     public function index(Request $request)
     {
+        $user = Auth::user();
+        if(!$user->can('TrainingSession.index')){
+            return abort(403);
+        }
         if ($request->ajax()) {
             return datatables()->of(TrainingSession::select())->addColumn('start_date_et', function (TrainingSession $trainingSession) {
                 return $trainingSession->startDateET();
@@ -121,6 +125,10 @@ class TrainingSessionController extends Controller
      */
     public function create()
     {
+        $user = Auth::user();
+        if(!$user->can('TrainingSession.store')){
+            return abort(403);
+        }
         $bool_Arr = [];
         $date_now = Carbon::now();
         $last_data_id = DB::table('training_sessions')->orderBy('id', 'desc')->first()?->id;
@@ -133,7 +141,7 @@ class TrainingSessionController extends Controller
         if ($training_sessions) {
             foreach ($training_sessions as $training_session) {
                 if ((new DateTime($training_session->start_date) <= new DateTime($date_now->format('Y-m-d'))) && (new DateTime($date_now->format('Y-m-d')) <= new DateTime($training_session->end_date))) {
-                    return redirect()->route('training_session.index');
+                    return redirect()->route('training_session.index')->with('message','You have training session no queue please finish this session!');
                 }
             }
         }
@@ -941,18 +949,28 @@ class TrainingSessionController extends Controller
 
     public function trainingCenterIndex(TrainingSession $trainingSession)
     {
-        // $user = Auth::user();
-        // if($user->can('session.detail.based')){
-        //     dd('sd');
-        //     // $center = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id',$user->id)->where('permission_id',);
-        //     dd($center->get());
-        //     dd('sd');
-        //     // $trainingCenterCapacities = TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->whereIn('trainining_center_id',)->get();
-        // }
-        // else{
+        $user = Auth::user();
+        if($user->can('centerCooridnator') && !$user->hasRole(Constants::SUPER_ADMIN)){
+            $permission = Permission::findOrCreate('centerCooridnator');
+            $centers = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id',$user->id)->where('permission_id',$permission->id)->pluck('trainining_center_id');
+            if(count($centers)<=0){
+                $trainingCenterCapacities = [];
+            }else{
+                if(count($centers)==1){
+                    return redirect(route('session.training_center.show',['training_session'=>$trainingSession->id,'training_center'=>$centers[0]]));
+                }
+                $centerIds = [];
+                foreach($centers as $center){
+                    array_push($centerIds,$center);
+                }
+                $trainingCenterCapacities = TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->whereIn('trainining_center_id',$centerIds)->get();
+            }
+        }
+        else if($user->can('TraininingCenter.index')){
             $trainingCenterCapacities = TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->get();
-        // }
-
+        }else{
+            return abort(403,"You are not allowed to access this page!");
+        }
         return view('training_session.centers', compact('trainingSession', 'trainingCenterCapacities'));
     }
 
