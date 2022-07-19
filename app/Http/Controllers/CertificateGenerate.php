@@ -11,11 +11,15 @@ use App\Models\Volunteer;
 use DateTime;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CertificateGenerate extends Controller
 {
     public function CertificateGenerate(TrainingSession $trainingSession)
     {
+        if (!Auth::user()->can('CertificateGenerate.index')) {
+            return abort(403);
+        }
         $applicants = Volunteer::whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_COMPLETED)->where('training_session_id', $trainingSession->id)->paginate(5);
 
         $mopUsers = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->paginate(5);
@@ -24,6 +28,9 @@ class CertificateGenerate extends Controller
 
     public function designGenerate(Request $request, TrainingSession $trainingSession)
     {
+        if (!Auth::user()->can('CertificateGenerate.print')) {
+            return abort(403);
+        }
         $applicants = Volunteer::whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_COMPLETED)->where('training_session_id', $trainingSession->id)->get();
         $curr_date = new DateTime();
         $curr_date_now = $curr_date->format('M d, Y');

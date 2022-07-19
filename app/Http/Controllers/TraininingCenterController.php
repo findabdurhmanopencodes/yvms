@@ -417,6 +417,9 @@ class TraininingCenterController extends Controller
 
     public function show_all_volunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter, UserAttendance $userAttendance)
     {
+        if (!Auth::user()->can('TraininingCenter.graduate')) {
+            return abort(403);
+        }
         $check_deployed = [];
 
         $applicants = DB::table('volunteers')
@@ -487,6 +490,9 @@ class TraininingCenterController extends Controller
 
     public function graduationList(TrainingSession $trainingSession, Request $request)
     {
+        if (!Auth::user()->can('GraduationList.index')) {
+            return abort(403);
+        }
         $training_centers = TraininingCenter::all();
         $regions = Region::all();
 

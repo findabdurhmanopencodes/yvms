@@ -276,8 +276,15 @@ class RegionController extends Controller
 
     public function deployment(TrainingSession $trainingSession)
     {
+        if (!Auth::user()->can('Region.deployment')) {
+            return abort(403);
+        }
         $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type', Region::class)->pluck('quotable_id');
-        $regions = Region::with(['zones', 'quotas'])->whereIn('id', $quota)->get();
+        if (Auth::user()->roles()->get()->first()->name == 'regional-coordinator') {
+            $regions = Region::with(['zones', 'quotas'])->whereIn('id', $quota)->where('id',Auth::user()->getCordinatingRegion()->id)->get();
+        }else{
+            $regions = Region::with(['zones', 'quotas'])->whereIn('id', $quota)->get();
+        }
         return view('training_session.regions', compact('trainingSession', 'regions'));
     }
 }

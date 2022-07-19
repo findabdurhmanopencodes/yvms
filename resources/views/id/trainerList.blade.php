@@ -23,13 +23,15 @@
                 </div>
             </div>
                 <div class="card-toolbar">
-                    @if (count($totalTrainingMasters) > 0)
-                        <button type="submit" class="btn btn-primary font-weight-bolder" >
-                            <span class="svg-icon svg-icon-md" id="print_all">
-                                <i class="flaticon2-print" id="i_text"></i>Print ID
-                            </span>
-                        </button>
-                    @endif
+                    @can('TraininingCenter.trainnerIDPrint')
+                        @if (count($totalTrainingMasters) > 0)
+                            <button type="submit" class="btn btn-primary font-weight-bolder" >
+                                <span class="svg-icon svg-icon-md" id="print_all">
+                                    <i class="flaticon2-print" id="i_text"></i>Print ID
+                                </span>
+                            </button>
+                        @endif
+                    @endcan
                 </div>
         </div>
             <div class="card-body" id="search_card">

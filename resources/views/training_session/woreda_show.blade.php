@@ -263,7 +263,46 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse  ($volunteers as $key=>$volunteer)
+                    @if ($volunteers)
+                        @foreach ($volunteers as $key=>$volunteer)
+                            <tr>
+                                <td>
+                                    {{ $key + 1 }}
+                                </td>
+                                <td>
+                                    {{ $volunteer->id_number }}
+                                </td>
+                                <td>
+                                    {{ $volunteer->first_name }} {{ $volunteer->father_name }}
+                                </td>
+                                <td>
+                                    {{ $att_count[$volunteer->id_number] }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @elseif ($users)
+                        @foreach ($users as $key=>$user)
+                            <tr>
+                                <td>
+                                    {{ $key + 1 }}
+                                </td>
+                                <td>
+                                    {{ $user->id_number }}
+                                </td>
+                                <td>
+                                    {{ $user->first_name }} {{ $user->father_name }}
+                                </td>
+                                <td>
+                                    0
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr style="font-size: 13px;" class="text-center">
+                            <td colspan='2'>No attendance found</td>
+                        </tr>
+                    @endif
+                    {{-- @forelse  ($volunteers as $key=>$volunteer)
                         <tr>
                             <td>
                                 {{ $key + 1 }}
@@ -282,7 +321,7 @@
                         <tr style="font-size: 13px;" class="text-center">
                             <td colspan='2'>No attendance found</td>
                         </tr>
-                    @endforelse
+                    @endforelse --}}
                 </tbody>
             </table>
         </div>

@@ -164,6 +164,7 @@ class PermissionSeeder extends Seeder
     public function ms(){
         Permission::create(['name'=>'RegionIntake.index']);
         Permission::create(['name'=>'RegionIntake.store']);
+        Permission::create(['name'=>'Region.deployment']);
 
         Permission::create(['name'=>'ZoneIntake.index']);
         Permission::create(['name'=>'ZoneIntake.store']);
@@ -172,6 +173,21 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'WoredaIntake.index']);
         Permission::create(['name'=>'WoredaIntake.store']);
         Permission::create(['name'=>'WoredaIntake.update']);
+
+        Permission::create(['name'=>'GraduationList.index']);
+
+        Permission::create(['name'=>'CertificateGenerate.index']);
+        Permission::create(['name'=>'CertificateGenerate.print']);
+
+        Permission::create(['name'=>'TraininingCenter.checkedInID']);
+        Permission::create(['name'=>'TraininingCenter.trainnerID']);
+        Permission::create(['name'=>'TraininingCenter.graduate']);
+        Permission::create(['name'=>'TraininingCenter.checkedInIDPrint']);
+        Permission::create(['name'=>'TraininingCenter.trainnerIDPrint']);
+        Permission::create(['name'=>'TraininingCenter.graduatedIDPrint']);
+
+        Permission::create(['name'=>'VolunteerDeployment.zones']);
+        Permission::create(['name'=>'VolunteerDeployment.woredas']);
     }
 }
 

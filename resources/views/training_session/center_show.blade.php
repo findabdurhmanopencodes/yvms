@@ -104,23 +104,27 @@
                                                 <span class="navi-text">Resources</span>
                                             </a>
                                         </li>
-                                        <li class="navi-item">
-                                            <a href="{{ route('session.training_center.checkedIn_list', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
-                                                class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="fa fa-users"></i>
-                                                </span>
-                                                <span class="navi-text">Checked In List/ID </span>
-                                            </a>
-                                        </li>
-                                        <li class="navi-item">
-                                            <a href="{{ route('session.training_center.trainer_list', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="flaticon2-shopping-cart-1"></i>
-                                                </span>
-                                                <span class="navi-text">Trainners List/ID</span>
-                                            </a>
-                                        </li>
+                                        @can('TraininingCenter.checkedInID')
+                                            <li class="navi-item">
+                                                <a href="{{ route('session.training_center.checkedIn_list', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+                                                    class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="fa fa-users"></i>
+                                                    </span>
+                                                    <span class="navi-text">Checked In List/ID </span>
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        @can('TraininingCenter.trainnerID')
+                                            <li class="navi-item">
+                                                <a href="{{ route('session.training_center.trainer_list', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}" class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="flaticon2-shopping-cart-1"></i>
+                                                    </span>
+                                                    <span class="navi-text">Trainners List/ID</span>
+                                                </a>
+                                            </li>
+                                        @endcan
                                         <li class="navi-item">
                                             <a href="#" onclick="confirmPlacment()" class="navi-link">
                                                 <span class="navi-icon">
@@ -129,14 +133,16 @@
                                                 <span class="navi-text">Place Volunteers</span>
                                             </a>
                                         </li>
-                                        <li class="navi-item">
-                                            <a href="{{ route('session.show.volunteers', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="fal fas fa-graduation-cap"></i>
-                                                </span>
-                                                <span class="navi-text">Graduate Volunteers/ID</span>
-                                            </a>
-                                        </li>
+                                        @can('TraininingCenter.graduate')
+                                            <li class="navi-item">
+                                                <a href="{{ route('session.show.volunteers', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}" class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="fal fas fa-graduation-cap"></i>
+                                                    </span>
+                                                    <span class="navi-text">Graduate Volunteers/ID</span>
+                                                </a>
+                                            </li>
+                                        @endcan
                                     </ul>
                                     <!--end::Navigation-->
                                 </div>
