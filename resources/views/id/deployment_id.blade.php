@@ -316,34 +316,34 @@
                 // myDesign.appendChild(r_date_text);
 
                 // // // generateQR(applicant);
-                var div__qr_img = document.createElement("div");
+                // var div__qr_img = document.createElement("div");
 
-                var div__qr_img_2 = document.createElement("div");
+                // var div__qr_img_2 = document.createElement("div");
 
-                div__qr_img.setAttribute('id', 'qrcode'+key);
+                // div__qr_img.setAttribute('id', 'qrcode'+key);
 
-                // // myDesign.appendChild(div__qr_img);
+                // // // myDesign.appendChild(div__qr_img);
 
-                var qrcode = new QRCode(div__qr_img, {
-                    text: applicants[key].id_number,
-                    width: 50,
-                    height: 44.7,
-                    colorDark : "#000000",
-                    colorLight : "#ffffff",
-                    correctLevel : QRCode.CorrectLevel.H,
-                });
+                // var qrcode = new QRCode(div__qr_img, {
+                //     text: applicants[key].id_number,
+                //     width: 50,
+                //     height: 44.7,
+                //     colorDark : "#000000",
+                //     colorLight : "#ffffff",
+                //     correctLevel : QRCode.CorrectLevel.H,
+                // });
 
-                var img = qrcode._el.children[1];
-                var src = div__qr_img.children[0].toDataURL("image/png");
-                var qrf_img = document.createElement('img');
+                // var img = qrcode._el.children[1];
+                // var src = div__qr_img.children[0].toDataURL("image/png");
+                // var qrf_img = document.createElement('img');
 
-                obj.push(src);
+                // obj.push(src);
 
-                qrf_img.src = src;
-                div__qr_img_2.style.position = "relative";
-                div__qr_img_2.style.left = '149px';
-                div__qr_img_2.style.top = '-66px';
-                div__qr_img_2.appendChild(qrf_img.cloneNode(true));
+                // qrf_img.src = src;
+                // div__qr_img_2.style.position = "relative";
+                // div__qr_img_2.style.left = '149px';
+                // div__qr_img_2.style.top = '-66px';
+                // div__qr_img_2.appendChild(qrf_img.cloneNode(true));
                 // myDesign.appendChild(div__qr_img_2.cloneNode(true));
 
                 // myDesignBack = document.createElement("div");
@@ -539,21 +539,21 @@
                 // pback13.style.letterSpacing = "0.5px";
                 // myDesignBack.appendChild(pback13);
 
-                var div__bar_img_2 = document.createElement("div");
-                var div__bar_img = document.createElement("img");
+                // var div__bar_img_2 = document.createElement("div");
+                // var div__bar_img = document.createElement("img");
 
-                JsBarcode(div__bar_img)
-                    .options({font: "OCR-B", displayValue: true, width:0.9, height: 15, background: "white"})
-                    .CODE128(applicants[key].id_number, {fontSize: 11, textMargin: 2, textPosition: "top", color:'inherit'})
-                    .render();
+                // JsBarcode(div__bar_img)
+                //     .options({font: "OCR-B", displayValue: true, width:0.9, height: 15, background: "white"})
+                //     .CODE128(applicants[key].id_number, {fontSize: 11, textMargin: 2, textPosition: "top", color:'inherit'})
+                //     .render();
 
                 // div__bar_img_2.style.position = "relative";
                 // div__bar_img_2.style.float = "right";
                 // div__bar_img_2.style.left = '142px';
                 // div__bar_img_2.style.top = '-216px';
-                div__bar_img.style.color = "black";
+                // div__bar_img.style.color = "black";
                 
-                objBarCode.push(div__bar_img.src);
+                // objBarCode.push(div__bar_img.src);
 
                 // div__bar_img_2.appendChild(div__bar_img.cloneNode(true));
                 // myDesignBack.appendChild(div__bar_img_2.cloneNode(true));
@@ -607,8 +607,8 @@
 
             // console.log(obj)
 
-            document.getElementById('qrValue').value = obj;
-            document.getElementById('barValue').value = objBarCode;
+            // document.getElementById('qrValue').value = obj;
+            // document.getElementById('barValue').value = objBarCode;
 
             document.getElementById("myForm").submit();
             

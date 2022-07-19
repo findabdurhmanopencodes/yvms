@@ -204,6 +204,7 @@ Route::get('adb', function () {
     Route::any('/training-center/{training_center_id}/resource-assign/volunteer/{volunteer}', [TraininingCenterController::class, 'giveResourceDetail'])->name('resource.assign.volunteer.detail');
     Route::get('check-in/', [TraininingCenterController::class, 'checkInView'])->name('TrainingCenter.CheckIn');
     Route::get('result/', [TraininingCenterController::class, 'result'])->name('result');
+    Route::get('barQRCode/', [TraininingCenterController::class, 'barQRCode'])->name('barQRCode');
 
     Route::get('/check-in/action/{id}', [TraininingCenterController::class, 'checkIn'])->name('TrainingCenter.checked');
     Route::get('/checkin_all', [TraininingCenterController::class, 'checkInAll'])->name('trainingCenter.checkin.all');

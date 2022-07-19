@@ -9,6 +9,7 @@ use App\Http\Requests\StoreTraininingCenterRequest;
 use App\Http\Requests\UpdateTraininingCenterRequest;
 use App\Imports\UsersImport;
 use App\Models\ApprovedApplicant;
+use App\Models\BarQRVolunteer;
 use App\Models\CindicationRoom;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingSession;
@@ -256,6 +257,16 @@ class TraininingCenterController extends Controller
             }
             // echo json_encode($data);
         }
+    }
+
+    public function barQRCode(Request $request){
+        $barQrVol = new BarQRVolunteer();
+        $volunteer = Volunteer::where('id_number', $request->get('id_number'))->get()->first()->id;
+        $barQrVol->volunteer_id = $volunteer;
+        $barQrVol->bar_code = $request->get('barSrc');
+        $barQrVol->qr_code = $request->get('qrSrc');
+        $barQrVol->save();
+        return response()->json(['success' => 'success']);
     }
 
     public function checkIn($training_session, $id)
