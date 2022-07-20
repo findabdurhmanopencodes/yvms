@@ -208,6 +208,9 @@ class PermissionSeeder extends Seeder
 
         Permission::create(['name'=>'VolunteerDeployment.zones']);
         Permission::create(['name'=>'VolunteerDeployment.woredas']);
+        Permission::create(['name'=>'VolunteerDeployment.attendanceExport']);
+        Permission::create(['name'=>'VolunteerDeployment.attendanceImport']);
+        Permission::create(['name'=>'VolunteerDeployment.graduate']);
     }
 }
 

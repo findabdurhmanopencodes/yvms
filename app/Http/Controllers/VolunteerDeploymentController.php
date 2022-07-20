@@ -272,6 +272,9 @@ class VolunteerDeploymentController extends Controller
 
     public function deployedGraduateVolunteers(Request $request, TrainingSession $trainingSession, Woreda $woreda)
     {
+        if (!Auth::user()->can('VolunteerDeployment.graduate')) {
+            return abort(403);
+        }
         $att_amount = $request->get('att_amount');
         $all_vol = $request->get('gc_vol');
         $max_att = $request->get('max_attendance');

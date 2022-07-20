@@ -215,37 +215,46 @@
             </div>
             <div class="card-tool">
                 <div class="dropdown dropdown-inline">
-                    <a href="#" class="px-5 btn btn-sm btn-primary font-weight-bolder dropdown-toggle"
+                    @canany(['VolunteerDeployment.attendanceExport', 'VolunteerDeployment.attendanceImport', 'VolunteerDeployment.graduate'])
+                        <a href="#" class="px-5 btn btn-sm btn-primary font-weight-bolder dropdown-toggle"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</a>
+                    @endcanany
+                    
                     <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="">
                         <!--begin::Navigation-->
                         <ul class="navi navi-hover">
-                            <li class="navi-item">
-                                <a href="{{ route('session.deployment_attendance.export', ['training_session' => Request::route('training_session')->id, 'woreda' => Request::route('woreda')->id]) }}"
-                                    class="navi-link">
-                                    <span class="navi-icon">
-                                        <i class="flaticon2-shopping-cart-1"></i>
-                                    </span>
-                                    <span class="navi-text">Export Attendance</span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="" class="navi-link" data-toggle="modal"
-                                    data-target="#exampleModal1">
-                                    <span class="navi-icon">
-                                        <i class="fa fa-users"></i>
-                                    </span>
-                                    <span class="navi-text">Import Attendance</span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link" data-toggle="modal" data-target="#exampleModal">
-                                    <span class="svg-icon svg-icon-md">
-                                        <i class="flaticon-medal" id="i_text"></i>
-                                    </span>
-                                    Graduate Volunteers
-                                </a>
-                            </li>
+                            @can('VolunteerDeployment.attendanceExport')
+                                <li class="navi-item">
+                                    <a href="{{ route('session.deployment_attendance.export', ['training_session' => Request::route('training_session')->id, 'woreda' => Request::route('woreda')->id]) }}"
+                                        class="navi-link">
+                                        <span class="navi-icon">
+                                            <i class="flaticon2-shopping-cart-1"></i>
+                                        </span>
+                                        <span class="navi-text">Export Attendance</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('VolunteerDeployment.attendanceImport')
+                                <li class="navi-item">
+                                    <a href="" class="navi-link" data-toggle="modal"
+                                        data-target="#exampleModal1">
+                                        <span class="navi-icon">
+                                            <i class="fa fa-users"></i>
+                                        </span>
+                                        <span class="navi-text">Import Attendance</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('VolunteerDeployment.graduate')
+                                <li class="navi-item">
+                                    <a href="#" class="navi-link" data-toggle="modal" data-target="#exampleModal">
+                                        <span class="svg-icon svg-icon-md">
+                                            <i class="flaticon-medal" id="i_text"></i>
+                                        </span>
+                                        Graduate Volunteers
+                                    </a>
+                                </li>
+                            @endcan
                         </ul>
                         <!--end::Navigation-->
                     </div>
