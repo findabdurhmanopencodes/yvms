@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants;
 use App\Models\Region;
 use App\Models\Zone;
 use App\Http\Requests\StoreRegionRequest;
@@ -11,6 +12,7 @@ use App\Models\HierarchyReport;
 use App\Models\Qouta;
 use App\Models\RegionIntake;
 use App\Models\TrainingSession;
+use App\Models\UserRegion;
 use App\Models\Woreda;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -136,7 +138,7 @@ class RegionController extends Controller
         $region = Region::find($id);
         $region->name = $request->get('name');
         $region->code = $request->get('code');
-        
+
         $region->qoutaInpercent = $request->get('qoutaInpercent') / 100;
         if ($request->get('status')) {
             if ($request->get('status') == 'on') {
@@ -276,7 +278,26 @@ class RegionController extends Controller
 
     public function deployment(TrainingSession $trainingSession)
     {
-        if (!Auth::user()->can('Region.deployment')) {
+        $user = Auth::user();
+        if($user->canany(['HierarchyReport.list']) && !$user->hasRole(Constants::SUPER_ADMIN) && !$user->hasRole('HierarchyReport.index') ){
+            if($user->hasRole(Constants::ZONE_COORDINATOR)){
+                $userRegion = UserRegion::where('user_id',$user->id)->where('levelable_type',Zone::class)->first();
+                if($userRegion->levelable==null){
+                    return abort(404);
+                }
+                return redirect(route('session.deployment.zone.woredas',['training_session'=>$trainingSession->id,'zone'=>$userRegion->levelable]));
+            }else if($user->hasRole(Constants::REGIONAL_COORDINATOR)){
+                $userRegion = UserRegion::where('user_id',$user->id)->where('levelable_type',Region::class)->first();
+                $region = $userRegion->levelable;
+                if($region == null){
+                    return abort(404);
+                }
+                return redirect(route('session.deployment.region.zones',['training_session'=>$trainingSession->id,'region'=>$region->id]));
+            }
+            else{
+                return abort(403,'You did not have role');
+            }
+        }else if(!$user->canany(['HierarchyReport.index'])){
             return abort(403);
         }
         $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type', Region::class)->pluck('quotable_id');

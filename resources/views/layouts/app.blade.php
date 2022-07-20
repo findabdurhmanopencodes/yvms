@@ -288,15 +288,16 @@
                                             <span class="menu-text">Placement Result</span>
                                         </a>
                                     </li>
-
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.schedule') === 0 ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('session.schedule', ['training_session' => Request::route('training_session')]) }}"
-                                            class="menu-link">
-                                            <i class="menu-icon flaticon-calendar"></i>
-                                            <span class="menu-text">Training Schedule</span>
-                                        </a>
-                                    </li>
+                                    @can('TrainingSchedule.index')
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.schedule') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('session.schedule', ['training_session' => Request::route('training_session')]) }}"
+                                                class="menu-link">
+                                                <i class="menu-icon flaticon-calendar"></i>
+                                                <span class="menu-text">Training Schedule</span>
+                                            </a>
+                                        </li>
+                                    @endcan
                                     <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_master_placement') === 0 ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('session.training_master_placement.index', ['training_session' => Request::route('training_session')]) }}"
@@ -333,14 +334,16 @@
                                             <span class="menu-text">Volunteer Deployments </span>
                                         </a>
                                     </li>
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.deployment.regions') === 0 ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('session.deployment.regions', ['training_session' => Request::route('training_session')]) }}"
-                                            class="menu-link">
-                                            <i class="menu-icon fal fa-university"></i>
-                                            <span class="menu-text">Hierarchial Reports</span>
-                                        </a>
-                                    </li>
+                                    @canany(['HierarchyReport.index','HierarchyReport.list'])
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.deployment.regions') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('session.deployment.regions', ['training_session' => Request::route('training_session')]) }}"
+                                                class="menu-link">
+                                                <i class="menu-icon fal fa-university"></i>
+                                                <span class="menu-text">Hierarchial Reports</span>
+                                            </a>
+                                        </li>
+                                    @endcanany
                                     <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.certificate.graduate') === 0 ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('session.certificate.graduate', ['training_session' => Request::route('training_session')]) }}"
