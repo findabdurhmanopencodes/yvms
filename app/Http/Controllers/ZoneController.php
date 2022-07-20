@@ -12,12 +12,13 @@ use App\Models\Woreda;
 use App\Models\ZoneIntake;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ZoneController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Zone::class, 'zone');
+        // $this->authorizeResource(Zone::class, 'zone');
     }
     /**
      * Display a listing of the resource.
@@ -26,6 +27,9 @@ class ZoneController extends Controller
      */
     public function index(Region $region, Request $request)
     {
+        if(!Auth::user()->can('Zone.index')){
+            return abort(403);
+        }
         $trainingSession_id = TrainingSession::availableSession()[0]->id;
         if ($request->ajax()) {
             return datatables()->of(Zone::select())->addColumn('region', function (Zone $zone) {
@@ -45,6 +49,9 @@ class ZoneController extends Controller
      */
     public function create(Region $region)
     {
+        if(!Auth::user()->can('Zone.store')){
+            return abort(403);
+        }
         $regions = $region::all();
         return view('zone.create', compact('regions'));
     }
@@ -57,6 +64,9 @@ class ZoneController extends Controller
      */
     public function store(StoreZoneRequest $request)
     {
+        if(!Auth::user()->can('Zone.store')){
+            return abort(403);
+        }
         $zoneInquota = $request->get('zone_quota') / 100;
         $zone = new Zone();
         $request->validate(['name' => 'required|string|unique:zones,name', 'code' => 'required|string|unique:zones,code']);
@@ -87,6 +97,9 @@ class ZoneController extends Controller
      */
     public function edit($id, Request $request)
     {
+        if(!Auth::user()->can('Zone.update')){
+            return abort(403);
+        }
         $zone = Zone::find($id);
         // dd($zone->region->name);
         $regions = Region::where('id', '!=', $zone->region->id)->get();
@@ -102,6 +115,9 @@ class ZoneController extends Controller
      */
     public function update(UpdateZoneRequest $request, $id)
     {
+        if(!Auth::user()->can('Zone.update')){
+            return abort(403);
+        }
         $zone = Zone::find($id);
         $zone->name = $request->get('name');
         $zone->code = $request->get('code');
@@ -138,6 +154,9 @@ class ZoneController extends Controller
      */
     public function destroy(Zone $zone, Request $request)
     {
+        if(!Auth::user()->can('Zone.destroy')){
+            return abort(403);
+        }
         // foreach ($zone->woredas as $woreda) {
         //     $woreda->delete();
         // }
@@ -172,6 +191,9 @@ class ZoneController extends Controller
 
     public function zoneIntake(TrainingSession $trainingSession, $zone_id)
     {
+        if (!Auth::user()->can('ZoneIntake.index')) {
+            return abort(403);
+        }
         $today = Carbon::today();
         $curr_sess = TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
         $intake_exist = ZoneIntake::where('training_session_id', $trainingSession->id)->where('zone_id', $zone_id)->get();
@@ -196,11 +218,17 @@ class ZoneController extends Controller
 
     public function zoneIntakeStore(Request $request, TrainingSession $trainingSession, $zone_id)
     {
+        if (!Auth::user()->can('ZoneIntake.store')) {
+            return abort(403);
+        }
         ZoneIntake::create(['training_session_id' => $trainingSession->id, 'zone_id' => $zone_id, 'intake' => $request->get('capacity')]);
         return redirect()->route('session.zone.intake', ['training_session' => $trainingSession->id, 'zone_id' => $zone_id])->with('message', 'Zone Intake created successfully');
     }
 
     public function zoneIntakeEdit(TrainingSession $trainingSession, $zone_id){
+        if (!Auth::user()->can('ZoneIntake.update')) {
+            return abort(403);
+        }
         $zones = Zone::find($zone_id);
         $zoneIntake = $zones->zoneIntakes->where('training_session_id', $trainingSession->id)->last();
         $region = Zone::where('id',$zone_id)->get()->first()->region;
@@ -216,6 +244,9 @@ class ZoneController extends Controller
         return view('zone.zoneIntake', compact('zoneIntake', 'zones', 'trainingSession', 'zoneAllIntake'));
     }
     public function zoneIntakeUpdate(Request $request, TrainingSession $trainingSession, $zone_id){
+        if (!Auth::user()->can('ZoneIntake.update')) {
+            return abort(403);
+        }
         $zones = Zone::find($zone_id);
         $zoneIntake = $zones->zoneIntakes->where('training_session_id',$trainingSession->id)->last();
         $zoneIntake->intake = $request->get('capacity');
@@ -225,6 +256,7 @@ class ZoneController extends Controller
 
     public function import()
     {
+        dd('none');
         $binZones = ImporterFiles::ZONE_IMPORTS;
         $region = null;
         $totalZones = 0;

@@ -178,14 +178,15 @@
             </div>
             <div class="card-toolbar">
 
+                @can('Zone.store')
+                    <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModal">
+                        <span class="svg-icon svg-icon-md">
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                            <i class="fal fa-plus"></i>
+                            <!--end::Svg Icon-->
+                        </span>Add New Zone/Subcity</a>
+                @endcan
                 <!--begin::Button-->
-                <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModal">
-                    <span class="svg-icon svg-icon-md">
-                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-                        <i class="fal fa-plus"></i>
-                        <!--end::Svg Icon-->
-                    </span>Add New Zone/Subcity</a>
-
                     <form method="POST" action="{{ route('zone.store', []) }}">
                         @csrf
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

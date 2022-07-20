@@ -9,6 +9,7 @@ use App\Http\Requests\StoreTraininingCenterRequest;
 use App\Http\Requests\UpdateTraininingCenterRequest;
 use App\Imports\UsersImport;
 use App\Models\ApprovedApplicant;
+use App\Models\BarQRVolunteer;
 use App\Models\CindicationRoom;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingSession;
@@ -258,6 +259,16 @@ class TraininingCenterController extends Controller
         }
     }
 
+    public function barQRCode(Request $request){
+        $barQrVol = new BarQRVolunteer();
+        $volunteer = Volunteer::where('id_number', $request->get('id_number'))->get()->first()->id;
+        $barQrVol->volunteer_id = $volunteer;
+        $barQrVol->bar_code = $request->get('barSrc');
+        $barQrVol->qr_code = $request->get('qrSrc');
+        $barQrVol->save();
+        return response()->json(['success' => 'success']);
+    }
+
     public function checkIn($training_session, $id)
     {
         Volunteer::find($id)->status->update(['acceptance_status' => 5]);
@@ -408,6 +419,9 @@ class TraininingCenterController extends Controller
 
     public function show_all_volunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter, UserAttendance $userAttendance)
     {
+        if (!Auth::user()->can('TraininingCenter.graduate')) {
+            return abort(403);
+        }
         $check_deployed = [];
 
         $applicants = DB::table('volunteers')
@@ -478,6 +492,9 @@ class TraininingCenterController extends Controller
 
     public function graduationList(TrainingSession $trainingSession, Request $request)
     {
+        if (!Auth::user()->can('GraduationList.index')) {
+            return abort(403);
+        }
         $training_centers = TraininingCenter::all();
         $regions = Region::all();
 

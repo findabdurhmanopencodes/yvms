@@ -156,13 +156,15 @@
             <div class="card-toolbar">
 
                 <!--begin::Button-->
-                <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModal">
-                    <span class="svg-icon svg-icon-md">
-                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-                        <i class="fal fa-plus"></i>
-                        <!--end::Svg Icon-->
-                 </span>
-                 Add New Region/City Adminstration</a>
+                @can('Region.store')
+                    <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModal">
+                        <span class="svg-icon svg-icon-md">
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                            <i class="fal fa-plus"></i>
+                            <!--end::Svg Icon-->
+                    </span>
+                    Add New Region/City Adminstration</a>
+                @endcan
                 <form method="POST" action="{{ route('region.store', []) }}">
                         @csrf
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

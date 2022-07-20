@@ -625,6 +625,9 @@ class TrainingSessionController extends Controller
     }
     public function showQuota(TrainingSession $trainingSession)
     {
+        if (!Auth::user()->can('Qouta.index')) {
+            return abort(403);
+        }
         $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->get();
         $regions = Region::with(['zones', 'quotas'])->get();
         return view('training_session.quota_allocation', compact(['trainingSession', 'regions', 'quota']));
@@ -632,18 +635,9 @@ class TrainingSessionController extends Controller
 
     public function screen($id)
     {
-        // set_time_limit(1000);
-        // foreach (Volunteer::all() as $key => $value) {
-        //     $approved_applicant = new ApprovedApplicant();
-        //     $status = Status::where('volunteer_id', $value->id)->get()->first();
-        //     $status->acceptance_status = 3;
-        //     $status->save();
-        //     $approved_applicant->training_session_id = $id;
-        //     $approved_applicant->volunteer_id = $value->id;
-        //     $approved_applicant->status = 1;
-        //     $approved_applicant->save();
-        // }
-        // dd('fssdf');
+        if (!Auth::user()->can('TrainingSession.screen')) {
+            return abort(403);
+        }
         set_time_limit(1000);
         $arr = [];
         $accepted_arr = [];

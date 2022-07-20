@@ -92,7 +92,7 @@ return array (
     'normal' => $fontDir . '/ethiopian12_normal_e884b6c3f344f8ccf46067bf5b307504',
   ),
   'noto serif ethiopic' => array(
-    'bold' => $fontDir . '/noto_serif_ethiopic_bold_19991e0deed3a2891200281bbe7a698d',
+    'bold' => $fontDir . '/noto_serif_ethiopic_bold_ad64f642dc8f5dc3870629cb8d852475',
   ),
   'roboto serif' => array(
     'bold' => $fontDir . '/roboto_serif_bold_b6b8e73687041fe636da5add17d24802',

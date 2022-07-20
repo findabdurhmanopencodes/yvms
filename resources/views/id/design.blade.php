@@ -442,34 +442,34 @@
                     // myDesign.appendChild(r_date_text);
 
             //         // generateQR(applicant);
-                    var div__qr_img = document.createElement("div");
+                    // var div__qr_img = document.createElement("div");
 
-                    var div__qr_img_2 = document.createElement("div");
+                    // var div__qr_img_2 = document.createElement("div");
 
-                    div__qr_img.setAttribute('id', 'qrcode'+key);
+                    // div__qr_img.setAttribute('id', 'qrcode'+key);
                     
             //         // myDesign.appendChild(div__qr_img);
 
-                    var qrcode = new QRCode(div__qr_img, {
-                        text: applicant.id_number,
-                        width: 50,
-                        height: 44.7,
-                        colorDark : "#000000",
-                        colorLight : "#ffffff",
-                        correctLevel : QRCode.CorrectLevel.H,
-                    });
+                    // var qrcode = new QRCode(div__qr_img, {
+                    //     text: applicant.id_number,
+                    //     width: 50,
+                    //     height: 44.7,
+                    //     colorDark : "#000000",
+                    //     colorLight : "#ffffff",
+                    //     correctLevel : QRCode.CorrectLevel.H,
+                    // });
                     
-                    var img = qrcode._el.children[1];
-                    var src = div__qr_img.children[0].toDataURL("image/png");
-                    var qrf_img = document.createElement('img');
+                    // var img = qrcode._el.children[1];
+                    // var src = div__qr_img.children[0].toDataURL("image/png");
+                    // var qrf_img = document.createElement('img');
 
-                    obj.push(src);
+                    // obj.push(src);
 
-                    qrf_img.src = src;
-                    div__qr_img_2.style.position = "relative";
-                    div__qr_img_2.style.left = '140';
-                    div__qr_img_2.style.top = '-20';
-                    div__qr_img_2.appendChild(qrf_img.cloneNode(true));
+                    // qrf_img.src = src;
+                    // div__qr_img_2.style.position = "relative";
+                    // div__qr_img_2.style.left = '140';
+                    // div__qr_img_2.style.top = '-20';
+                    // div__qr_img_2.appendChild(qrf_img.cloneNode(true));
                     // myDesign.appendChild(div__qr_img_2.cloneNode(true));
 
                     // myDesign.style.pageBreakAfter = "always";
@@ -479,7 +479,7 @@
 
                 });
             }
-            document.getElementById('qrValue').value = obj;
+            // document.getElementById('qrValue').value = obj;
             document.getElementById("myForm").submit();
             // generatePDF(DATAS, paginate_apps);
         })

@@ -215,7 +215,11 @@ class VolunteerDeploymentController extends Controller
             return abort(403);
         $reports = HierarchyReport::where('reportable_type', Region::class)->where('reportable_id', $region->id)->get(['id', 'content', 'status', 'created_at']);
         $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type', Zone::class)->pluck('quotable_id');
-        $zones = Zone::where('region_id', $region->id)->with(['woredas', 'quotas'])->whereIn('id', $quota)->get();
+        if (Auth::user()->roles()->get()->first()->name == 'zone-coordinator') {
+            $zones = Zone::where('region_id', $region->id)->with(['woredas', 'quotas'])->whereIn('id', $quota)->where('id',Auth::user()->getCordinatingZone()->id)->get();
+        }else{
+            $zones = Zone::where('region_id', $region->id)->with(['woredas', 'quotas'])->whereIn('id', $quota)->get();
+        }
         return view('training_session.zones', compact('trainingSession', 'region', 'zones', 'reports'));
     }
     public function woredas(TrainingSession $trainingSession, Zone $zone)
@@ -319,7 +323,9 @@ class VolunteerDeploymentController extends Controller
             }
         }
 
-        return view('training_session.woreda_show', compact('trainingSession', 'woreda', 'reports', 'volunteers', 'date', 'att_count'));
+        $users = DB::table('volunteers')->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->leftJoin('volunteer_deployments', 'volunteer_deployments.training_placement_id', '=', 'training_placements.id')->leftJoin('woreda_intakes', 'volunteer_deployments.woreda_intake_id', '=', 'woreda_intakes.id')->leftJoin('woredas', 'woreda_intakes.woreda_id', '=', 'woredas.id')->where('woredas.id', $woreda->id)->get();
+
+        return view('training_session.woreda_show', compact('trainingSession', 'woreda', 'reports', 'volunteers', 'date', 'att_count', 'users'));
     }
 
 

@@ -20,12 +20,16 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Mailer\Transport\Dsn;
 
 class IdGenerateController extends Controller
 {
     public function checkedInList(Request $request, TrainingSession $trainingSession, $training_center_id){
+        if (!Auth::user()->can('TraininingCenter.checkedInID')) {
+            return abort(403);
+        }
         // $applicants = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $training_center_id)->whereRelation('status','acceptance_status', Constants::VOLUNTEER_STATUS_CHECKEDIN)->paginate(20);
         $applicants = DB::table('volunteers')
         ->join('statuses', 'statuses.volunteer_id','=', 'volunteers.id')
@@ -41,6 +45,9 @@ class IdGenerateController extends Controller
         return view('id.checkedIn', compact('applicants', 'training_center_id'));
     }
     public function idGenerate(TrainingSession $trainingSession , Request $request, $training_center_id){
+        if (!Auth::user()->can('TraininingCenter.checkedInIDPrint')) {
+            return abort(403);
+        }
         set_time_limit(1000);
         $trainer = '';
         $userType ='';
@@ -186,6 +193,9 @@ class IdGenerateController extends Controller
     }
 
     public function TrainerList(Request $request, TrainingSession $trainingSession, $training_center_id){
+        if (!Auth::user()->can('TraininingCenter.trainnerID')) {
+            return abort(403);
+        }
         $mopUsers = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $training_center_id)->get();
 
         $totalTrainingMasters = TrainingMasterPlacement::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $training_center_id)->get();
@@ -194,6 +204,9 @@ class IdGenerateController extends Controller
 
     public function deploymentID(Request $request, TrainingSession $trainingSession)
     {
+        if (!Auth::user()->can('TraininingCenter.graduatedIDPrint')) {
+            return abort(403);
+        }
         if ($request->get('applicant')) {
             $graduated_volunteers = Volunteer::with('approvedApplicant.trainingPlacement.deployment.woredaIntake.woreda')->with('session')->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->where('training_session_id', $trainingSession->id)->whereIn('id', $request->get('applicant'))->get();
         }else{
