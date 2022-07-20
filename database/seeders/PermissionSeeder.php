@@ -183,6 +183,15 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'TrainingSchedule.show']);
         Permission::create(['name'=>'TrainingSchedule.update']);
         Permission::create(['name'=>'TrainingSchedule.destroy']);
+
+
+
+        Permission::create(['name'=>'HierarchyReport.index']);
+        Permission::create(['name'=>'HierarchyReport.list']);
+        Permission::create(['name'=>'HierarchyReport.store']);
+        Permission::create(['name'=>'HierarchyReport.show']);
+        Permission::create(['name'=>'HierarchyReport.update']);
+        Permission::create(['name'=>'HierarchyReport.destroy']);
     }
 }
 

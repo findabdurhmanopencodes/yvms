@@ -265,7 +265,9 @@
                         </div>
                     </div>
                 </form>
+                @can('TrainingSchedule.show')
                 <div id="trainingCalendar"></div>
+                @endcan
             </div>
         </div>
     @endif

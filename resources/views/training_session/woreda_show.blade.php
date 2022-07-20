@@ -12,98 +12,109 @@
     </style>
 @endpush
 @section('content')
-<form method="POST" action="{{ route('session.deployment_graduate.volunteers', ['training_session'=>$trainingSession->id, 'woreda'=>$woreda->id]) }}">
-    @csrf
-    {{-- <input type="hidden" name="max_attendance" value="{{ count($arr_unique) }}"> --}}
-    {{-- <input type="hidden" name="training_center" value="{{ $trainingCenter->id }}"> --}}
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modalx-lg"  role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Graduate Volunteers</h5>
-                    <button type="button" class="close" data-dismiss="modal" -label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="card-body">
+
+    <form method="POST"
+        action="{{ route('session.deployment_graduate.volunteers', ['training_session' => $trainingSession->id, 'woreda' => $woreda->id]) }}">
+        @csrf
+        {{-- <input type="hidden" name="max_attendance" value="{{ count($arr_unique) }}"> --}}
+        {{-- <input type="hidden" name="training_center" value="{{ $trainingCenter->id }}"> --}}
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modalx-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Graduate Volunteers</h5>
+                        <button type="button" class="close" data-dismiss="modal" -label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
                         <div class="card-body">
-                            <div class="form-group row">
-                                <div class="col-lg-9">
-                                    <label>Attendace amount</label>
-                                    <input type="number" id="att_amount" class="form-control" name="att_amount" max=""/>
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <div class="col-lg-9">
+                                        <label>Attendace amount</label>
+                                        <input type="number" id="att_amount" class="form-control" name="att_amount"
+                                            max="" />
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-lg-12">
-                                    <label>Pass All</label>
-                                    <input type="checkbox" id="gc_vol" name="gc_vol" class="checkbox"/>
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Pass All</label>
+                                        <input type="checkbox" id="gc_vol" name="gc_vol" class="checkbox" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary font-weight-bold">Save changes</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold"
+                            data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary font-weight-bold">Save changes</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
     <!-- Modal-->
-    <div class="modal fade" id="writeReportModal" data-backdrop="static" tabindex="-1" role="dialog"
-        aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered  modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Report Form</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="reportForm"
-                        action="{{ route('session.hierarchy.store', ['training_session' => Request::route('training_session')->id]) }}"
-                        method="POST">
-                        @csrf
-                        <div class="">
-                            <label for="">Report Text</label>
-                            <div id="contentQuill" style="height: 325px">
-                                {!! old('content') !!}
-                            </div>
-                            <textarea name="content" id="content-textarea" class="d-none">{{ old('content') }}</textarea>
-                            @error('content')
-                                <div class="fv-plugins-message-container">
-                                    <div data-field="content" data-validator="stringLength" class="fv-help-block">
-                                        {{ $message }}
-                                    </div>
+    @can('HierarchyReport.store')
+        <div class="modal fade" id="writeReportModal" data-backdrop="static" tabindex="-1" role="dialog"
+            aria-labelledby="staticBackdrop" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered  modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Report Form</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="reportForm"
+                            action="{{ route('session.hierarchy.store', ['training_session' => Request::route('training_session')->id]) }}"
+                            method="POST">
+                            @csrf
+                            <div class="">
+                                <label for="">Report Text</label>
+                                <div id="contentQuill" style="height: 325px">
+                                    {!! old('content') !!}
                                 </div>
-                            @enderror
-                        </div>
-                        <input type="hidden" name="reportable_type" value="{{ \App\Models\Woreda::class }}">
-                        <input type="hidden" name="reportable_id" value="{{ $woreda->id }}">
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-                    <button type="button" onclick="$('#reportForm').submit()" class="btn btn-primary font-weight-bold">Write
-                        Report</button>
+                                <textarea name="content" id="content-textarea" class="d-none">{{ old('content') }}</textarea>
+                                @error('content')
+                                    <div class="fv-plugins-message-container">
+                                        <div data-field="content" data-validator="stringLength" class="fv-help-block">
+                                            {{ $message }}
+                                        </div>
+                                    </div>
+                                @enderror
+                            </div>
+                            <input type="hidden" name="reportable_type" value="{{ \App\Models\Woreda::class }}">
+                            <input type="hidden" name="reportable_id" value="{{ $woreda->id }}">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold"
+                            data-dismiss="modal">Close</button>
+                        <button type="button" onclick="$('#reportForm').submit()"
+                            class="btn btn-primary font-weight-bold">Write
+                            Report</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endcan
     <div class="card card-custom mb-2">
         <div class="card-header flex-wrap  pt-6 ">
             <div class="card-title mr-0">
                 <h3 class="card-label">{{ $woreda->name }} Hierarchila Reports</h3>
             </div>
-            <div class="card-tool">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#writeReportModal">
-                    <i class="fal fa-plus "></i>
-                    Write hierarchial report
-                </button>
-            </div>
+            @can('HierarchyReport.store')
+                <div class="card-tool">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#writeReportModal">
+                        <i class="fal fa-plus "></i>
+                        Write hierarchial report
+                    </button>
+                </div>
+            @endcan
         </div>
         <div class="card-body">
             <table width="100%" class="table">
@@ -126,19 +137,27 @@
                             </td>
                             <td>
                                 <div class="d-flex justify-content-between">
-                                    <a class="" href="{{ route('session.hierarchy.show', ['training_session'=>Request::route('training_session')->id,'hierarchy'=>$report->id]) }}">
-                                        <i class="fa text-primary fa-eye">
-                                        </i>
-                                    </a>
-                                    <a class="" href="{{ route('session.hierarchy.edit', ['training_session'=>Request::route('training_session')->id,'hierarchy'=>$report->id]) }}">
-                                        <i class="fa text-primary fa-pen">
-                                        </i>
-                                    </a>
-                                    <a class="" href="#"
-                                        onclick="confirmDeleteReport('{{ route('session.hierarchy.destroy', ['training_session' => Request::route('training_session')->id, 'hierarchy' => $report->id]) }}')">
-                                        <i class="fa text-danger fa-trash">
-                                        </i>
-                                    </a>
+                                    @can('HierarchyReport.show')
+                                        <a class=""
+                                            href="{{ route('session.hierarchy.show', ['training_session' => Request::route('training_session')->id, 'hierarchy' => $report->id]) }}">
+                                            <i class="fa text-primary fa-eye">
+                                            </i>
+                                        </a>
+                                    @endcan
+                                    @can('HierarchyReport.update')
+                                        <a class=""
+                                            href="{{ route('session.hierarchy.edit', ['training_session' => Request::route('training_session')->id, 'hierarchy' => $report->id]) }}">
+                                            <i class="fa text-primary fa-pen">
+                                            </i>
+                                        </a>
+                                    @endcan
+                                    @can('HierarchyReport.destroy')
+                                        <a class="" href="#"
+                                            onclick="confirmDeleteReport('{{ route('session.hierarchy.destroy', ['training_session' => Request::route('training_session')->id, 'hierarchy' => $report->id]) }}')">
+                                            <i class="fa text-danger fa-trash">
+                                            </i>
+                                        </a>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>
@@ -193,14 +212,16 @@
             <div class=" ml-0 col-12 p-0">
                 <div class="row">
                     <div class="form-group col-5">
-                        <input style="height: 40px;" type="text" id="start_date" class="form-control " name="date_att" placeholder="Search..." autocomplete="off" value=""/>
+                        <input style="height: 40px;" type="text" id="start_date" class="form-control "
+                            name="date_att" placeholder="Search..." autocomplete="off" value="" />
                     </div>
                     <div class="form-group col-2">
                         <button class="btn btn-primary btn-block"> Filter</button>
                     </div>
                 </div>
 
-                <h3>{{ ($date!='') ?$date.' Attendance ('.count($volunteers).')':'Today Attendance ('.count($volunteers).')' }}</h3>
+                <h3>{{ $date != '' ? $date . ' Attendance (' . count($volunteers) . ')' : 'Today Attendance (' . count($volunteers) . ')' }}
+                </h3>
             </div>
         </form>
     </div>
@@ -230,8 +251,7 @@
                                 </a>
                             </li>
                             <li class="navi-item">
-                                <a href="" class="navi-link" data-toggle="modal"
-                                    data-target="#exampleModal1">
+                                <a href="" class="navi-link" data-toggle="modal" data-target="#exampleModal1">
                                     <span class="navi-icon">
                                         <i class="fa fa-users"></i>
                                     </span>
@@ -321,7 +341,7 @@
             });
         })
 
-        
+
         $('.select2').select2({
             allowClear: true
         });
@@ -564,27 +584,27 @@
         });
     </script>
     <script>
-        $('#att_amount').on('input', function(){
+        $('#att_amount').on('input', function() {
             if ($('#att_amount').val()) {
-                $('#gc_vol').attr('disabled',true);
-            }else{
-                $('#gc_vol').attr('disabled',false);
+                $('#gc_vol').attr('disabled', true);
+            } else {
+                $('#gc_vol').attr('disabled', false);
             }
         });
 
-        $('#att_amount').on('input', function(){
+        $('#att_amount').on('input', function() {
             if ($('#att_amount').val()) {
-                $('#gc_vol').attr('disabled',true);
-            }else{
-                $('#gc_vol').attr('disabled',false);
+                $('#gc_vol').attr('disabled', true);
+            } else {
+                $('#gc_vol').attr('disabled', false);
             }
         });
 
         $('#gc_vol').change(function() {
-            if(this.checked) {
-                $('#att_amount').attr('disabled',true);
-            }else{
-                $('#att_amount').attr('disabled',false);
+            if (this.checked) {
+                $('#att_amount').attr('disabled', true);
+            } else {
+                $('#att_amount').attr('disabled', false);
             }
         });
     </script>
