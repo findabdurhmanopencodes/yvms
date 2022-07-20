@@ -91,7 +91,6 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'TrainingMaster.destroy']);
 
 
-
         Permission::create(['name'=>'Training.index']);
         Permission::create(['name'=>'Training.store']);
         Permission::create(['name'=>'Training.show']);
@@ -178,6 +177,12 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'Document.show']);
         Permission::create(['name'=>'Document.update']);
         Permission::create(['name'=>'Document.destroy']);
+
+        Permission::create(['name'=>'TrainingSchedule.index']);
+        Permission::create(['name'=>'TrainingSchedule.store']);
+        Permission::create(['name'=>'TrainingSchedule.show']);
+        Permission::create(['name'=>'TrainingSchedule.update']);
+        Permission::create(['name'=>'TrainingSchedule.destroy']);
     }
 }
 

@@ -288,15 +288,16 @@
                                             <span class="menu-text">Placement Result</span>
                                         </a>
                                     </li>
-
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.schedule') === 0 ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('session.schedule', ['training_session' => Request::route('training_session')]) }}"
-                                            class="menu-link">
-                                            <i class="menu-icon flaticon-calendar"></i>
-                                            <span class="menu-text">Training Schedule</span>
-                                        </a>
-                                    </li>
+                                    @can('TrainingSchedule.index')
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.schedule') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('session.schedule', ['training_session' => Request::route('training_session')]) }}"
+                                                class="menu-link">
+                                                <i class="menu-icon flaticon-calendar"></i>
+                                                <span class="menu-text">Training Schedule</span>
+                                            </a>
+                                        </li>
+                                    @endcan
                                     <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_master_placement') === 0 ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('session.training_master_placement.index', ['training_session' => Request::route('training_session')]) }}"

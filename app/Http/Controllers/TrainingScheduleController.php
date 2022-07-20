@@ -6,6 +6,7 @@ use App\Models\TrainingSchedule;
 use App\Http\Requests\StoreTrainingScheduleRequest;
 use App\Http\Requests\UpdateTrainingScheduleRequest;
 use App\Models\TrainingSession;
+use Illuminate\Support\Facades\Auth;
 
 class TrainingScheduleController extends Controller
 {
@@ -82,6 +83,8 @@ class TrainingScheduleController extends Controller
      */
     public function destroy(TrainingSession $trainingSession,TrainingSchedule $trainingSchedule)
     {
+        if(!Auth::user()->can('TrainingSchedule.destroy'))
+            return abort(403);
         $trainingSchedule->delete();
         return redirect()->back()->with('message','Training schedule deleted successfully');
     }
