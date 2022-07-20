@@ -367,6 +367,8 @@ class TraininingCenterController extends Controller
 
     public function placeVolunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
+        if(!Auth::user()->can('SyndicationRoom.placement'))
+            return abort(403);
         $volunteerGroups = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->get()->groupBy('woreda.zone.region.id');
         if (count($trainingCenter->rooms) <= 0) {
             return redirect()->back()->with('error', 'You have no syndication room!');

@@ -192,6 +192,15 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'HierarchyReport.show']);
         Permission::create(['name'=>'HierarchyReport.update']);
         Permission::create(['name'=>'HierarchyReport.destroy']);
+
+        Permission::create(['name'=>'SyndicationRoom.index']);
+        Permission::create(['name'=>'SyndicationRoom.store']);
+        Permission::create(['name'=>'SyndicationRoom.placement']);
+        Permission::create(['name'=>'SyndicationRoom.show']);
+        Permission::create(['name'=>'SyndicationRoom.update']);
+        Permission::create(['name'=>'SyndicationRoom.destroy']);
+
+        Permission::create(['name'=>'centerCooridnator.assign']);
     }
 }
 

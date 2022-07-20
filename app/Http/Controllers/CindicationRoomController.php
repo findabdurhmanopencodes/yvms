@@ -48,6 +48,9 @@ class CindicationRoomController extends Controller
      */
     public function store(StoreCindicationRoomRequest $request, TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
+        if(!Auth::user()->can('SyndicationRoom.store')){
+            return abort(403);
+        }
         $data = $request->validated();
         $data['trainining_center_id'] = $trainingCenter->id;
         $data['training_session_id'] = $trainingSession->id;
@@ -63,6 +66,9 @@ class CindicationRoomController extends Controller
      */
     public function show(TrainingSession $trainingSession, TraininingCenter $trainingCenter, CindicationRoom $cindicationRoom)
     {
+        if(!Auth::user()->can('SyndicationRoom.show')){
+            return abort(403);
+        }
         $checkerPermission = Permission::findOrCreate('checker');
         $coFacilitatorPermission = Permission::findOrCreate('coFacilitator');
 
@@ -106,6 +112,10 @@ class CindicationRoomController extends Controller
      */
     public function destroy(TrainingSession $trainingSession, TraininingCenter $trainingCenter, CindicationRoom $cindicationRoom)
     {
+
+        if(!Auth::user()->can('SyndicationRoom.destroy')){
+            return abort(403);
+        }
         $cindicationRoom->delete();
         return redirect()->back()->with('message', 'Cindication room removed successfully');
     }
