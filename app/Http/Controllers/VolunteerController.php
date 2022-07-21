@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Andegna\DateTimeFactory;
+use App\Constants;
 use App\Exports\ApplicantExport;
 use App\Models\Volunteer;
 use App\Http\Requests\StoreVolunteerRequest;
@@ -359,7 +360,10 @@ class VolunteerController extends Controller
      */
     public function verifiedApplicant(Request $request, $training_session)
     {
-        $applicants =  Volunteer::whereRelation('status', 'acceptance_status', 1)->where('training_session_id', $training_session);
+        if (!Auth::user()->can('Volunteer.verified.applicant')) {
+            return abort(403);
+        }
+        $applicants =  Volunteer::whereRelation('status', 'acceptance_status','>=', Constants::VOLUNTEER_STATUS_DOCUMENT_VERIFIED)->where('training_session_id', $training_session);
 
         $approved = ApprovedApplicant::where('training_session_id', $training_session)->get();
         // dd($applicants->get());
@@ -368,6 +372,9 @@ class VolunteerController extends Controller
     }
     public function selected(Request $request, $training_session)
     {
+        if (!Auth::user()->can('Volunteer.selected')) {
+            return abort(403);
+        }
         $applicants =  Volunteer::whereRelation('approvedApplicant', 'training_session_id', $training_session);
         // dd($applicants->get());
         return view('volunter.selected_volunter', ['volunters' => $applicants->paginate(10), 'trainingSession' => TrainingSession::find($training_session), 'trainingCenterCapacities' => TrainingCenterCapacity::where('training_session_id', $training_session)->get()]);

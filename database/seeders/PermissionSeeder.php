@@ -83,6 +83,20 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'TrainingCenterCapacity.destroy']);
         Permission::create(['name'=>'TrainingCenterCapacity.capacity.Change']);
 
+
+        Permission::create(['name'=>'TrainingMaster.index']);
+        Permission::create(['name'=>'TrainingMaster.store']);
+        Permission::create(['name'=>'TrainingMaster.show']);
+        Permission::create(['name'=>'TrainingMaster.update']);
+        Permission::create(['name'=>'TrainingMaster.destroy']);
+
+
+        Permission::create(['name'=>'Training.index']);
+        Permission::create(['name'=>'Training.store']);
+        Permission::create(['name'=>'Training.show']);
+        Permission::create(['name'=>'Training.update']);
+        Permission::create(['name'=>'Training.destroy']);
+
         Permission::create(['name'=>'TrainingPlacement.index']);
         Permission::create(['name'=>'TrainingPlacement.store']);
         Permission::create(['name'=>'TrainingPlacement.show']);
@@ -154,11 +168,73 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'Zone.validate.form']);
         $this->abdi();
         $this->ajaib();
+        $this->ms();
     }
 
     public function abdi()
     {
         Permission::create(['name' => PermissionSeeder::CENTER_COORIDNATOR]);
+        Permission::create(['name'=>'Document.index']);
+        Permission::create(['name'=>'Document.store']);
+        Permission::create(['name'=>'Document.show']);
+        Permission::create(['name'=>'Document.update']);
+        Permission::create(['name'=>'Document.destroy']);
+
+        Permission::create(['name'=>'TrainingSchedule.index']);
+        Permission::create(['name'=>'TrainingSchedule.store']);
+        Permission::create(['name'=>'TrainingSchedule.show']);
+        Permission::create(['name'=>'TrainingSchedule.update']);
+        Permission::create(['name'=>'TrainingSchedule.destroy']);
+
+
+
+        Permission::create(['name'=>'HierarchyReport.index']);
+        Permission::create(['name'=>'HierarchyReport.list']);
+        Permission::create(['name'=>'HierarchyReport.store']);
+        Permission::create(['name'=>'HierarchyReport.show']);
+        Permission::create(['name'=>'HierarchyReport.update']);
+        Permission::create(['name'=>'HierarchyReport.destroy']);
+
+        Permission::create(['name'=>'SyndicationRoom.index']);
+        Permission::create(['name'=>'SyndicationRoom.store']);
+        Permission::create(['name'=>'SyndicationRoom.placement']);
+        Permission::create(['name'=>'SyndicationRoom.show']);
+        Permission::create(['name'=>'SyndicationRoom.update']);
+        Permission::create(['name'=>'SyndicationRoom.destroy']);
+
+        Permission::create(['name'=>'centerCooridnator.assign']);
+    }
+
+    public function ms(){
+        Permission::create(['name'=>'RegionIntake.index']);
+        Permission::create(['name'=>'RegionIntake.store']);
+        Permission::create(['name'=>'Region.deployment']);
+
+        Permission::create(['name'=>'ZoneIntake.index']);
+        Permission::create(['name'=>'ZoneIntake.store']);
+        Permission::create(['name'=>'ZoneIntake.update']);
+
+        Permission::create(['name'=>'WoredaIntake.index']);
+        Permission::create(['name'=>'WoredaIntake.store']);
+        Permission::create(['name'=>'WoredaIntake.update']);
+
+        Permission::create(['name'=>'GraduationList.index']);
+
+        Permission::create(['name'=>'CertificateGenerate.index']);
+        Permission::create(['name'=>'CertificateGenerate.print']);
+
+        Permission::create(['name'=>'TraininingCenter.checkedInID']);
+        Permission::create(['name'=>'TraininingCenter.trainnerID']);
+        Permission::create(['name'=>'TraininingCenter.graduate']);
+        Permission::create(['name'=>'TraininingCenter.checkedInIDPrint']);
+        Permission::create(['name'=>'TraininingCenter.trainnerIDPrint']);
+        Permission::create(['name'=>'TraininingCenter.graduatedIDPrint']);
+
+        Permission::create(['name'=>'VolunteerDeployment.zones']);
+        Permission::create(['name'=>'VolunteerDeployment.woredas']);
+        Permission::create(['name'=>'VolunteerDeployment.attendanceExport']);
+        Permission::create(['name'=>'VolunteerDeployment.attendanceImport']);
+        Permission::create(['name'=>'VolunteerDeployment.graduate']);
     }
     public function ajaib()
     {

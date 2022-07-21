@@ -141,7 +141,7 @@ class UserController extends Controller
             }
         } else if ($userData['role'] == $zoneCordinator->id) {
             if ($user->hasRole($zoneCordinator->id)) {
-                $userRegion->update(['levelable_id' => $userData['region']]);
+                $userRegion->update(['levelable_id' => $userData['zone']]);
                 $userRegion->save();
             } else if ($user->hasRole($regionalCordinator->id)) {
                 $userRegion->delete();

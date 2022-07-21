@@ -14,7 +14,7 @@
                 confirmButtonText: "Yes, delete it!"
             }).then(function(result) {
                 if (result.value) {
-                    $('#deleteForm').attr('action','/training_master/'+masterId);
+                    $('#deleteForm').attr('action', '/training_master/' + masterId);
                     $('#deleteForm').submit();
                 }
             });
@@ -22,7 +22,7 @@
     </script>
 @endpush
 @section('content')
-    <form  method="POST" id="deleteForm">
+    <form method="POST" id="deleteForm">
         @csrf
         @method('DELETE')
     </form>
@@ -32,8 +32,10 @@
                 <h3 class="card-label">Master Trainers</h3>
             </div>
             <div class="card-tool">
-                <a href="{{ route('training_master.create', []) }}" class="btn btn-primary">Add Master
-                    Trainer</a>
+                @can('TrainingMaster.store')
+                    <a href="{{ route('training_master.create', []) }}" class="btn btn-primary">Add Master
+                        Trainer</a>
+                @endcan
             </div>
         </div>
         <div class="card-body">
@@ -57,14 +59,17 @@
                                 {{ $master->bank_account }}
                             </td>
                             <td>
-                                <a href="{{ route('training_master.edit', ['training_master' => $master->id]) }}"
-                                    class="btn btn-icon">
-                                    <span class="fa fa-edit"></span>
-                                </a>
-
-                                <a href="#" onclick="confirmDeleteMaster({{ $master->id }})" class="btn btn-icon">
-                                    <span class="fa fa-trash"></span>
-                                </a>
+                                @can('TrainingMaster.update')
+                                    <a href="{{ route('training_master.edit', ['training_master' => $master->id]) }}"
+                                        class="btn btn-icon">
+                                        <span class="fa fa-edit"></span>
+                                    </a>
+                                @endcan
+                                @can('TrainingMaster.destroy')
+                                    <a href="#" onclick="confirmDeleteMaster({{ $master->id }})" class="btn btn-icon">
+                                        <span class="fa fa-trash"></span>
+                                    </a>
+                                @endcan
                             </td>
                         </tr>
                     @endforeach

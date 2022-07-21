@@ -10,6 +10,7 @@ use App\Imports\DeploymentAttendanceImport;
 use App\Models\TrainingSession;
 use App\Models\Woreda;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -93,6 +94,9 @@ class DeploymentVolunteerAttendanceController extends Controller
 
     public function get_attendance_data(TrainingSession $trainingSession, Woreda $woreda)
     {
+        if (!Auth::user()->can('VolunteerDeployment.attendanceExport')) {
+            return abort(403);
+        }
         $users = DB::table('volunteers')->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->leftJoin('volunteer_deployments', 'volunteer_deployments.training_placement_id', '=', 'training_placements.id')->leftJoin('woreda_intakes', 'volunteer_deployments.woreda_intake_id', '=', 'woreda_intakes.id')->leftJoin('woredas', 'woreda_intakes.woreda_id', '=', 'woredas.id')->where('woredas.id', $woreda->id)->select(['id_number', 'first_name', 'father_name', 'grand_father_name'])->get();
 
         $past_url = url()->previous();
@@ -108,6 +112,9 @@ class DeploymentVolunteerAttendanceController extends Controller
     }
     public function fileImport(Request $request, TrainingSession $trainingSession, Woreda $woreda)
     {
+        if (!Auth::user()->can('VolunteerDeployment.attendanceImport')) {
+            return abort(403);
+        }
         Excel::import(new DeploymentAttendanceImport($trainingSession, $woreda), $request->file('attendance')->store('temp'));
         $past_url = url()->previous();
         return redirect($past_url)->with('success', 'Successfully Registered!!!');

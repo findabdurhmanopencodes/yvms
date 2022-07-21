@@ -351,11 +351,11 @@ class TraininingCenterController extends Controller
             if($trainingCenterOfAuthUserId==$training_center_id){
                 $training_center = TraininingCenter::with('resources')->find($training_center_id);
                 return view('training_center.assign_resource_voluteer', ['training_center' => $training_center, 'volunteer' => Volunteer::find($volunter)]);
-
             }
             else{
                 return abort(403);
             }
+
         }
 
 

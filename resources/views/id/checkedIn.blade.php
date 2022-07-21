@@ -23,15 +23,17 @@
                 <input type="text" id="search" class="form-control" placeholder="search by ID..." />
             </div>
         </div>
-        @if ($applicants)
-            <div class="card-toolbar">
-                <button type="submit" class="btn btn-primary font-weight-bolder" >
-                    <span class="svg-icon svg-icon-md" id="print_all">
-                        <i class="flaticon2-print" id="i_text"></i>Print All ID
-                    </span>
-                </button>
-            </div>
-        @endif
+        @can('TraininingCenter.checkedInIDPrint')
+            @if ($applicants)
+                <div class="card-toolbar">
+                    <button type="submit" class="btn btn-primary font-weight-bolder" >
+                        <span class="svg-icon svg-icon-md" id="print_all">
+                            <i class="flaticon2-print" id="i_text"></i>Print All ID
+                        </span>
+                    </button>
+                </div>
+            @endif
+        @endcan
 
     </div>
         <div class="card-body" id="search_card">

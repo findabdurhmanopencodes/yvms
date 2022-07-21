@@ -20,6 +20,7 @@ use App\Models\DeploymentVolunteerAttendance;
 use App\Models\HierarchyReport;
 use App\Models\Qouta;
 use App\Models\Region;
+use App\Models\UserRegion;
 use App\Models\Volunteer;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Dompdf\Dompdf;
@@ -28,6 +29,7 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\TextUI\XmlConfiguration\Constant;
 
 class VolunteerDeploymentController extends Controller
 {
@@ -191,22 +193,90 @@ class VolunteerDeploymentController extends Controller
     }
     public function zones(TrainingSession $trainingSession, Region $region)
     {
+        $user = Auth::user();
+        if ($user->hasRole(Constants::ZONE_COORDINATOR) && !$user->can('HierarchyReport.index')) {
+            $userRegion = UserRegion::where('user_id', $user->id)->where('levelable_type', Zone::class)->first();
+            if ($userRegion->levelable == null) {
+                return abort(404);
+            }
+            return redirect(route('session.deployment.zone.woredas', ['training_session' => $trainingSession->id, 'zone' => $userRegion->levelable]));
+        }
+        if ($user->hasRole(Constants::REGIONAL_COORDINATOR) && !$user->can('HierarchyReport.index')) {
+            $userRegion = UserRegion::where('user_id', $user->id)->where('levelable_type', Region::class)->first();
+            $item = $userRegion->levelable;
+            if ($userRegion->levelable == null) {
+                return abort(404);
+            }
+            if ($region->id != $item->id) {
+                return abort(403);
+            }
+        }
+        if (!$user->canany(['HierarchyReport.index', 'HierarchyReport.list']))
+            return abort(403);
         $reports = HierarchyReport::where('reportable_type', Region::class)->where('reportable_id', $region->id)->get(['id', 'content', 'status', 'created_at']);
         $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type', Zone::class)->pluck('quotable_id');
-        $zones = Zone::where('region_id', $region->id)->with(['woredas', 'quotas'])->whereIn('id', $quota)->get();
+        if (Auth::user()->roles()->get()->first()->name == 'zone-coordinator') {
+            $zones = Zone::where('region_id', $region->id)->with(['woredas', 'quotas'])->whereIn('id', $quota)->where('id',Auth::user()->getCordinatingZone()->id)->get();
+        }else{
+            $zones = Zone::where('region_id', $region->id)->with(['woredas', 'quotas'])->whereIn('id', $quota)->get();
+        }
         return view('training_session.zones', compact('trainingSession', 'region', 'zones', 'reports'));
     }
     public function woredas(TrainingSession $trainingSession, Zone $zone)
     {
+        $user = Auth::user();
+        if ($user->hasRole(Constants::ZONE_COORDINATOR) && !$user->can('HierarchyReport.index')) {
+            $userRegion = UserRegion::where('user_id', $user->id)->where('levelable_type', Zone::class)->first();
+            $item = $userRegion->levelable;
+            if ($userRegion->levelable == null) {
+                return abort(404);
+            }
+            if ($item->id != $zone->id)
+                return abort(403);
+        }
+        if ($user->hasRole(Constants::REGIONAL_COORDINATOR) && !$user->can('HierarchyReport.index')) {
+            $userRegion = UserRegion::where('user_id', $user->id)->where('levelable_type', Region::class)->first();
+            $item = $userRegion->levelable;
+            if ($userRegion->levelable == null) {
+                return abort(404);
+            }
+            if ($zone->region->id != $item->id) {
+                return abort(403);
+            }
+        }
+        if (!$user->canany(['HierarchyReport.index', 'HierarchyReport.list']))
+            return abort(403);
         $quota = Qouta::with('quotable')->where('training_session_id', $trainingSession->id)->where('quotable_type', Woreda::class)->pluck('quotable_id');
-        $woredas = Woreda::where('zone_id', $zone->id)->with(['quotas'])->whereIn('id', $quota)->get();
-
+        // $woredas = Woreda::where('zone_id', $zone->id)->with(['quotas'])->whereIn('id', $quota)->get();
+        $woredas = Woreda::where('zone_id', $zone->id)->with(['quotas'])->get();
         $reports = HierarchyReport::where('reportable_type', Zone::class)->where('reportable_id', $zone->id)->get(['id', 'content', 'status', 'created_at']);
         return view('training_session.woredas', compact('trainingSession', 'woredas', 'zone', 'reports'));
     }
 
     public function woredaDetail(Request $request, TrainingSession $trainingSession, Woreda $woreda)
     {
+        $user = Auth::user();
+        if ($user->hasRole(Constants::ZONE_COORDINATOR) && !$user->can('HierarchyReport.index')) {
+            $userRegion = UserRegion::where('user_id', $user->id)->where('levelable_type', Zone::class)->first();
+            $item = $userRegion->levelable;
+            if ($userRegion->levelable == null) {
+                return abort(404);
+            }
+            if ($item->id != $woreda->zone->id)
+                return abort(403);
+        }
+        if ($user->hasRole(Constants::REGIONAL_COORDINATOR) && !$user->can('HierarchyReport.index')) {
+            $userRegion = UserRegion::where('user_id', $user->id)->where('levelable_type', Region::class)->first();
+            $item = $userRegion->levelable;
+            if ($userRegion->levelable == null) {
+                return abort(404);
+            }
+            if ($woreda->zone->region->id != $item->id) {
+                return abort(403);
+            }
+        }
+        if (!$user->canany(['HierarchyReport.index', 'HierarchyReport.list']))
+            return abort(403);
         $date = '';
         $reports = HierarchyReport::where('reportable_type', Woreda::class)->where('reportable_id', $woreda->id)->get(['id', 'content', 'status', 'created_at']);
 
@@ -253,13 +323,18 @@ class VolunteerDeploymentController extends Controller
             }
         }
 
-        return view('training_session.woreda_show', compact('trainingSession', 'woreda', 'reports', 'volunteers', 'date', 'att_count'));
+        $users = DB::table('volunteers')->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->leftJoin('volunteer_deployments', 'volunteer_deployments.training_placement_id', '=', 'training_placements.id')->leftJoin('woreda_intakes', 'volunteer_deployments.woreda_intake_id', '=', 'woreda_intakes.id')->leftJoin('woredas', 'woreda_intakes.woreda_id', '=', 'woredas.id')->where('woredas.id', $woreda->id)->get();
+
+        return view('training_session.woreda_show', compact('trainingSession', 'woreda', 'reports', 'volunteers', 'date', 'att_count', 'users'));
     }
 
 
 
     public function deployedGraduateVolunteers(Request $request, TrainingSession $trainingSession, Woreda $woreda)
     {
+        if (!Auth::user()->can('VolunteerDeployment.graduate')) {
+            return abort(403);
+        }
         $att_amount = $request->get('att_amount');
         $all_vol = $request->get('gc_vol');
         $max_att = $request->get('max_attendance');

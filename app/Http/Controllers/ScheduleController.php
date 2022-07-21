@@ -15,6 +15,7 @@ use DateTime;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class ScheduleController extends Controller
@@ -26,6 +27,9 @@ class ScheduleController extends Controller
      */
     public function index(Request $request, TrainingSession $trainingSession)
     {
+        if(!Auth::user()->can('TrainingSchedule.index')){
+            return abort(403);
+        }
         $trainingSchedules = $trainingSession->trainingScheduless;
         $events = [];
         foreach ($trainingSchedules as $trainingSchedule) {
@@ -121,6 +125,9 @@ class ScheduleController extends Controller
     public function addSchedule(Request $request, TrainingSession $trainingSession)
     {
 
+        if(!Auth::user()->can('TrainingSchedule.store')){
+            return abort(403);
+        }
         $request->validate([
             'schedule_start_date' => ['required'],
             'schedule_end_date' => ['required'],

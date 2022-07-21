@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Yajra\Datatables\Facades\Datatables;
@@ -21,6 +22,9 @@ class PermissionController extends Controller
      */
     public function index(Request $request)
     {
+        if(!Auth::user()->can('Permission.index')){
+            return abort(403);
+        }
         // $user = Auth::user();
         // if(!$user->hasRole('super-admin') && !$user->hasPermissionTo('permission.viewAll')){
         //     abort(403);
@@ -39,6 +43,9 @@ class PermissionController extends Controller
      */
     public function create()
     {
+        if(!Auth::user()->can('Permission.store')){
+            return abort(403);
+        }
         return view('permission.create');
     }
 
@@ -50,6 +57,9 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->can('Permission.store')){
+            return abort(403);
+        }
         //
         // if(!Auth::user()->can('permission.create')){
         //     return abort(403);
@@ -78,6 +88,9 @@ class PermissionController extends Controller
      */
     public function edit(Permission $permission)
     {
+        if(!Auth::user()->can('Permission.update')){
+            return abort(403);
+        }
         return view('permission.create',compact('permission'));
     }
 
@@ -90,6 +103,9 @@ class PermissionController extends Controller
      */
     public function update(Request $request, Permission $permission)
     {
+        if(!Auth::user()->can('Permission.update')){
+            return abort(403);
+        }
         $data = $request->validate(['name' => 'required|string|unique:permissions,name,'.$permission->id]);
         $permission->update($data);
         return redirect()->route('permission.index')->with('message', 'Permission created successfully');
@@ -103,6 +119,9 @@ class PermissionController extends Controller
      */
     public function destroy(Request $request,Permission $permission)
     {
+        if(!Auth::user()->can('Permission.destroy')){
+            return abort(403);
+        }
         $permission->delete();
         if ($request->ajax()) {
             return response()->json(array('msg' => 'deleted successfully'), 200);
