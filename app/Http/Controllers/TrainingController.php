@@ -21,7 +21,7 @@ class TrainingController extends Controller
         if(!Auth::user()->can('Training.index'))
             return abort(403);
         $trainings = Training::paginate(10);
-        return view('training.index',compact('trainings'));
+        return view('training.index', compact('trainings'));
     }
 
     /**
@@ -45,7 +45,7 @@ class TrainingController extends Controller
         if(!Auth::user()->can('Training.store'))
             return abort(403);
         Training::create($request->validated());
-        return redirect()->back()->with('message','Training created successfully');
+        return redirect()->back()->with('message', 'Training created successfully');
     }
 
     /**
@@ -85,7 +85,7 @@ class TrainingController extends Controller
         if(!Auth::user()->can('Training.update'))
             return abort(403);
         $training->update($request->validated());
-        return redirect()->back()->with('message','Training updated successfully');
+        return redirect()->back()->with('message', 'Training updated successfully');
     }
 
     /**
@@ -99,6 +99,6 @@ class TrainingController extends Controller
         if(!Auth::user()->can('Training.destroy'))
             return abort(403);
         $training->delete();
-        return redirect()->back()->with('message','Training deleted successfully');
+        return redirect()->back()->with('message', 'Training deleted successfully');
     }
 }

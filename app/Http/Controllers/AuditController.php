@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use function PHPUnit\Framework\exactly;
 
@@ -12,6 +13,10 @@ class AuditController extends Controller
     //
     public function index(Request $request)
     {
+        if (!Auth::user()->can('audit.index')) {
+            return abort(403);
+        }
+
         $path = app_path() . "/Models";
         // dd($path);
 

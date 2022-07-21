@@ -14,7 +14,7 @@ class Resource extends Model implements Auditable
 
     public function traininingCenters()
     {
-        return $this->belongsToMany(TraininingCenter::class,'resource_trainining','trainining_center_id','resource_id')->withPivot('current_balance','initial_balance'   );
+        return $this->belongsToMany(TraininingCenter::class,'resource_trainining','trainining_center_id','resource_id')->withPivot('current_balance','initial_balance');
     }
     public function VolunteerHistoryResource()
     {
