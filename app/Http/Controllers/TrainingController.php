@@ -17,15 +17,9 @@ class TrainingController extends Controller
      */
     public function index()
     {
-        if (!auth()->user()->can('')) {
 
-            return abort(403);
-
-
-        }
         $trainings = Training::paginate(10);
         return view('training.index', compact('trainings'));
-
     }
 
     /**

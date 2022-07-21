@@ -114,12 +114,14 @@
             <div class="card-toolbar">
 
                 <!--begin::Button-->
+                @can('Resource.store')
                 <a href="{{ route('resource.create', []) }}" class="btn btn-primary font-weight-bolder">
                     <span class="svg-icon svg-icon-md">
                         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                         <i class="fal fa-plus"></i>
                         <!--end::Svg Icon-->
                     </span>Add New resource</a>
+                @endcan
                 <!--end::Button-->
             </div>
         </div>

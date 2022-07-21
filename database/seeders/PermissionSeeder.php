@@ -153,11 +153,41 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'Zone.fetch']);
         Permission::create(['name'=>'Zone.validate.form']);
         $this->abdi();
+        $this->ajaib();
     }
 
     public function abdi()
     {
         Permission::create(['name' => PermissionSeeder::CENTER_COORIDNATOR]);
+    }
+    public function ajaib()
+    {
+        Permission::create(['name'=>'Resource.index']);
+        Permission::create(['name'=>'Resource.store']);
+        Permission::create(['name'=>'Resource.show']);
+        Permission::create(['name'=>'Resource.update']);
+        Permission::create(['name'=>'Resource.destroy']);
+
+        Permission::create(['name'=>'Event.index']);
+        Permission::create(['name'=>'Event.store']);
+        Permission::create(['name'=>'Event.show']);
+        Permission::create(['name'=>'Event.update']);
+
+
+        Permission::create(['name'=>'audit.index']);
+
+        //updating trainingCenter Permission
+        Permission::create(['name'=>'TraininingCenter.giveResource']);
+        Permission::create(['name'=>'TraininingCenter.giveResourceDetail']);
+
+        //updating trainingSession Permission
+
+        Permission::create(['name'=>'TrainingSession.allResource']);
+        Permission::create(['name'=>'TrainingSession.showResource']);
+
+
+
+
     }
 }
 

@@ -25,6 +25,7 @@ use App\Models\UserAttendance;
 use App\Models\Volunteer;
 use App\Models\Woreda;
 use App\Models\WoredaIntake;
+use Database\Seeders\PermissionSeeder;
 use Database\Seeders\UserAttendanceSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +39,7 @@ class TraininingCenterController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(TraininingCenter::class, 'TraininingCenter');
+        // $this->authorizeResource(TraininingCenter::class, 'TraininingCenter');
     }
     /**
      * Display a listing of the resource.
@@ -54,6 +55,10 @@ class TraininingCenterController extends Controller
         // if(!$user->hasRole('super-admin') && !$user->hasPermissionTo('role.viewAll')){
         //     abort(403);
         // }
+        if (!Auth::user()->can('TraininingCenter.index')) {
+
+            return abort(403);
+        }
         return view('training_center.index');
     }
     public function placement(Request $request, $zone = null)
@@ -72,11 +77,16 @@ class TraininingCenterController extends Controller
      */
     public function create()
     {
+        if (!Auth::user()->can('TraininingCenter.store')) {
+
+            return abort(403);
+        }
 
         return view("training_center.create", ['zones' => Zone::all()]);
 
         //  return view('payrollSheet.create');
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -87,6 +97,11 @@ class TraininingCenterController extends Controller
     public function store(StoreTraininingCenterRequest $request)
     {
         // dd($request->get('scale'));
+        if (!Auth::user()->can('TraininingCenter.store')) {
+
+            return abort(403);
+        }
+
 
         $request->validate([
             'logo' => 'image|mimes:jpg,png,jpeg,svg|max:2048|',
@@ -117,6 +132,11 @@ class TraininingCenterController extends Controller
      */
     public function show($traininingCenter)
     {
+        if (!Auth::user()->can('TraininingCenter.show')) {
+
+            return abort(403);
+        }
+
         $traininingCenter     = TraininingCenter::with('capacities.trainningSession')->find($traininingCenter);
         $trainingSession      = new TrainingSession();
         $trainingSessionId    = $trainingSession->availableSession()->first()->id;
@@ -142,6 +162,10 @@ class TraininingCenterController extends Controller
     public function edit($TrainingCenter)
 
     {
+        if (!Auth::user()->can('TraininingCenter.update')) {
+
+            return abort(403);
+        }
         return view('training_center.create', [
             'trainingCenter' => TraininingCenter::findOrFail($TrainingCenter),
             'zones' => Zone::all()
@@ -156,6 +180,11 @@ class TraininingCenterController extends Controller
      */
     public function update(UpdateTraininingCenterRequest $request,  $traininingCenter)
     {
+        if (!Auth::user()->can('TraininingCenter.update')) {
+
+            return abort(403);
+        }
+
 
         $TrainingCenter = TraininingCenter::findOrFail($traininingCenter);
         // $logoFile = FileController::deleteFile($TrainingCenter->photo);
@@ -194,6 +223,10 @@ class TraininingCenterController extends Controller
      */
     public function destroy(Request $request, TraininingCenter $traininingCenter)
     {
+        if (!Auth::user()->can('TraininingCenter.destroy')) {
+
+            return abort(403);
+        }
         $traininingCenter->delete();
         if ($request->ajax()) {
             return response()->json(array('msg' => 'deleted successfully'), 200);
@@ -230,21 +263,27 @@ class TraininingCenterController extends Controller
     }
     public function checkInView()
     {
+        if (!Auth::user()->can('checker')) {
+
+            return abort(403);
+        }
         return view('training_center.check_in.check_in');
     }
     public function result(Request $request)
     {
+
+        $permission = Permission::findOrCreate('checker');
+        // dd(Auth::user()->id);
+        $TrainingBasedPermission = TrainingCenterBasedPermission::where('training_session_id', $request->route('training_session'))->where('user_id', Auth::user()->id)->where('permission_id', $permission->id)->first();
+        $trainingCenterId = $TrainingBasedPermission->traininingCenter->id;
         if ($request->ajax()) {
             $output = '';
             $query = $request->get('query');
             // Auth::user()->getRoleNames()[0]==Constants::SYSTEM_USER_ROLE;//Need This For Permission
-            // ->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter','id',Auth::user()->trainingCheckerOf->id);
-            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query);
-
-
+            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query)->whereRelation('approvedApplicant. .trainingCenterCapacity.trainingCenter', 'id', $trainingCenterId);
             if (count($volunteerQuery->get()) > 0) {
                 $data = $volunteerQuery->whereRelation('status', 'acceptance_status', 4)->first();
-                $accepted = $volunteerQuery->whereRelation('status', 'acceptance_status', 5)->first();
+                // $accepted = $volunteerQuery->whereRelation('status', 'acceptance_status', 5)->first();
 
                 if (!$data) {
                     return json_encode(['status' => 505]);
@@ -285,6 +324,9 @@ class TraininingCenterController extends Controller
     public function giveResource(Request $request, $training_session, $training_center_id)
     {
 
+        // $permission = Permission::findOrCreate('checker');
+        // $TrainingBasedPermission = TrainingCenterBasedPermission::where('training_session_id', $request->route('training_session'))->where('user_id', Auth::user()->id)->where('permission_id', $permission->id)->first();
+        // $trainingCenterId = $TrainingBasedPermission?->traininingCenter->id;
         $volunteers = Volunteer::whereRelation('status', 'acceptance_status', 5)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $training_center_id);
         $id = $request->get('id_number');
         $gender = $request->get('gender');
@@ -302,8 +344,21 @@ class TraininingCenterController extends Controller
     }
     public function giveResourceDetail(Request $request, $training_session, $training_center_id, $volunter)
     {
-        $training_center = TraininingCenter::with('resources')->find($training_center_id);
-        return view('training_center.assign_resource_voluteer', ['training_center' => $training_center, 'volunteer' => Volunteer::find($volunter)]);
+        $coordinatorPermission = Permission::findOrCreate(PermissionSeeder::CENTER_COORIDNATOR);
+        $TrainingBasedPermission = TrainingCenterBasedPermission::where('training_session_id', $request->route('training_session'))->where('user_id', Auth::user()->id)->where('permission_id', $coordinatorPermission->id)->first();
+        $trainingCenterOfAuthUserId = $TrainingBasedPermission?->traininingCenter->id;
+        if (Auth::user()->can('TraininingCenter.giveResourceDetail')) {
+            if($trainingCenterOfAuthUserId==$training_center_id){
+                $training_center = TraininingCenter::with('resources')->find($training_center_id);
+                return view('training_center.assign_resource_voluteer', ['training_center' => $training_center, 'volunteer' => Volunteer::find($volunter)]);
+
+            }
+            else{
+                return abort(403);
+            }
+        }
+
+
     }
     public function storeResourceToVolunteer($training_session, $training_center_id, $volunter, $resourceId)
     {

@@ -7,6 +7,7 @@ use App\Http\Requests\StoreFeildOfStudyRequest;
 use App\Http\Requests\UpdateFeildOfStudyRequest;
 // use GuzzleHttp\Psr7\Request;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FeildOfStudyController extends Controller
 {
@@ -23,6 +24,10 @@ class FeildOfStudyController extends Controller
      */
     public function index(Request $request)
     {
+        if (!Auth::user()->can('FeildOfStudy.index')) {
+
+            return abort(403);
+        }
         if ($request->ajax()) {
             return datatables()->of(FeildOfStudy::select())->make(true);
         }
@@ -38,6 +43,10 @@ class FeildOfStudyController extends Controller
      */
     public function create()
     {
+        if (!Auth::user()->can('FeildOfStudy.store')) {
+
+            return abort(403);
+        }
         return view('fieldofstudy.create');
         //
     }
@@ -50,6 +59,10 @@ class FeildOfStudyController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::user()->can('FeildOfStudy.store')) {
+
+            return abort(403);
+        }
 
         $request->validate(['name' => 'required|regex:/^[a-zA-Z]+$/u|max:255|unique:feild_of_studies,name']);
         FeildOfStudy::create(['name' => $request->get('name')]);
@@ -64,7 +77,10 @@ class FeildOfStudyController extends Controller
      */
     public function show($id)
     {
+        if (!Auth::user()->can('FeildOfStudy.show')) {
 
+            return abort(403);
+        }
         return view('fieldofstudy.show', [
             'FeildOfStudy' => FeildOfStudy::findOrFail($id)
         ]);
@@ -79,6 +95,10 @@ class FeildOfStudyController extends Controller
      */
     public function edit($feildOfStudy)
     {
+        if (!Auth::user()->can('FeildOfStudy.update')) {
+
+            return abort(403);
+        }
 
         return view('fieldofstudy.create',['feildOfStudy'=>FeildOfStudy::find($feildOfStudy)]);
         //
@@ -93,6 +113,10 @@ class FeildOfStudyController extends Controller
      */
     public function update(Request $request,$FeildOfStudy)
     {
+        if (!Auth::user()->can('FeildOfStudy.update')) {
+
+            return abort(403);
+        }
 
         $FeildOfStudyInfo=FeildOfStudy::find($request->get('id'));
         $data = $request->validate(['name' => 'required|regex:/^[a-zA-Z]+$/u|max:255|unique:feild_of_studies,name,'.$FeildOfStudyInfo->id]);
@@ -109,6 +133,10 @@ class FeildOfStudyController extends Controller
      */
     public function destroy(Request $request,FeildOfStudy $feildOfStudy)
     {
+        if (!Auth::user()->can('FeildOfStudy.destroy')) {
+
+            return abort(403);
+        }
 
         $feildOfStudy->delete();
         if ($request->ajax()) {

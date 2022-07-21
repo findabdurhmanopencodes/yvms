@@ -21,8 +21,10 @@
 
                     </div>
                     <div>
-                            <a class="btn btn-danger" href="{{ route('event.image.remove', ['eventImage'=>$image->id]) }}" onclick="alert('are you sure to delete');">Delete Image</a>
+                        @can('Event.update')
+                        <a class="btn btn-danger" href="{{ route('event.image.remove', ['eventImage'=>$image->id]) }}" onclick="alert('are you sure to delete');">Delete Image</a>
 
+                        @endcan
                         </div>
 
                     @endforeach

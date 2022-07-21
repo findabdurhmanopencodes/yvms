@@ -78,9 +78,12 @@
 
         @if (count($capaityAddedInCenter) < 1)
             <div>
+                @can('TraininingCenter.update')
+
                 <a class="btn btn-primary btn-sm float-right mx-2 my-2" data-toggle="modal" data-target="#addCapacity"><i
                         class="fa  fa-plus"></i>
                         Add Capacity For Session</a>
+                        @endcan
             </div>
         @endif
 
@@ -103,9 +106,11 @@
                                 {{ $capacityHistory->trainningSession?->end_date }}</td>
                             <td>
                                 @if (Carbon\Carbon::now()->between(Carbon\Carbon::parse($capacityHistory->trainningSession?->start_date), Carbon\Carbon::parse($capacityHistory->trainningSession?->end_date)))
+                                    @can('TraininingCenter.update')
                                     <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCapacity"
-                                        onclick="capacityChange({{ $capacityHistory->trainining_center_id }},{{ $capacityHistory->training_session_id }});"><i
-                                            class="fa fa-edit"></i>change Capacity</a>
+                                    onclick="capacityChange({{ $capacityHistory->trainining_center_id }},{{ $capacityHistory->training_session_id }});"><i
+                                        class="fa fa-edit"></i>change Capacity</a>
+                                    @endcan
                                 @else
                                     <span class="badge badge-danger badge-pill">Can't Change Capacity</span>
                                 @endif
