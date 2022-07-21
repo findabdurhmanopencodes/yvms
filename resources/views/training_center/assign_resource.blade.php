@@ -80,7 +80,7 @@
                 </tbody>
             </table>
             <div class="d-flex justify-content-center">
-                {{-- {!! $volunters->links() !!} --}}
+                {!! $volunteers->withQueryString()->links() !!}
             </div>
 
         </div>

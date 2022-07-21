@@ -347,23 +347,60 @@ class TraininingCenterController extends Controller
         $coordinatorPermission = Permission::findOrCreate(PermissionSeeder::CENTER_COORIDNATOR);
         $TrainingBasedPermission = TrainingCenterBasedPermission::where('training_session_id', $request->route('training_session'))->where('user_id', Auth::user()->id)->where('permission_id', $coordinatorPermission->id)->first();
         $trainingCenterOfAuthUserId = $TrainingBasedPermission?->traininingCenter->id;
+        $vol = DB::table('volunteers')
+            ->where('volunteers.training_session_id', '=', $training_session)
+            ->where('volunteers.id', '=', $volunter)
+            ->join('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')
+            ->join('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')
+            ->join('training_center_capacities', 'training_center_capacities.id', '=', 'training_placements.training_center_capacity_id')
+            ->join('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
+            ->where('trainining_centers.id', '=', $training_center_id)
+
+            ->count();
+
         if (Auth::user()->can('TraininingCenter.giveResourceDetail')) {
-            if($trainingCenterOfAuthUserId==$training_center_id){
-                $training_center = TraininingCenter::with('resources')->find($training_center_id);
-                return view('training_center.assign_resource_voluteer', ['training_center' => $training_center, 'volunteer' => Volunteer::find($volunter)]);
-            }
-            else{
+            if ($trainingCenterOfAuthUserId == $training_center_id) {
+                if ($vol > 0) {
+                    $training_center = TraininingCenter::with('resources')->find($training_center_id);
+                    return view('training_center.assign_resource_voluteer', ['training_center' => $training_center, 'volunteer' => Volunteer::find($volunter)]);
+                } else {
+                    return abort(403);
+                    }
+            } else {
                 return abort(403);
             }
-
         }
-
-
     }
     public function storeResourceToVolunteer($training_session, $training_center_id, $volunter, $resourceId)
     {
-        $training_center = TraininingCenter::with('resources')->find($training_center_id);
-        return view('training_center.assign_resource_voluteer', ['training_center' => $training_center, 'volunteer' => Volunteer::find($volunter)]);
+        {
+            $coordinatorPermission = Permission::findOrCreate(PermissionSeeder::CENTER_COORIDNATOR);
+            $TrainingBasedPermission = TrainingCenterBasedPermission::where('training_session_id', $request->route('training_session'))->where('user_id', Auth::user()->id)->where('permission_id', $coordinatorPermission->id)->first();
+            $trainingCenterOfAuthUserId = $TrainingBasedPermission?->traininingCenter->id;
+            $vol = DB::table('volunteers')
+                ->where('volunteers.training_session_id', '=', $training_session)
+                ->where('volunteers.id', '=', $volunter)
+                ->join('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')
+                ->join('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')
+                ->join('training_center_capacities', 'training_center_capacities.id', '=', 'training_placements.training_center_capacity_id')
+                ->join('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
+                ->where('trainining_centers.id', '=', $training_center_id)
+
+                ->count();
+
+            if (Auth::user()->can('TraininingCenter.giveResourceDetail')) {
+                if ($trainingCenterOfAuthUserId == $training_center_id) {
+                    if ($vol > 0) {
+                        $training_center = TraininingCenter::with('resources')->find($training_center_id);
+                        return view('training_center.assign_resource_voluteer', ['training_center' => $training_center, 'volunteer' => Volunteer::find($volunter)]);
+                    } else {
+                        return abort(403);
+                        }
+                } else {
+                    return abort(403);
+                }
+            }
+        }
     }
 
     public function trainingShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter, Training $training)

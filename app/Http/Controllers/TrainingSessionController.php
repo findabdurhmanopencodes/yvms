@@ -970,6 +970,12 @@ class TrainingSessionController extends Controller
 
     public function trainingCenterShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
+
+        $permission = Permission::findOrCreate('centerCooridnator');
+        $centers = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', Auth::user()->id)->where('permission_id', $permission->id)->where('trainining_center_id', $trainingCenter->id)->count();
+        if ($centers <= 0) {
+            return abort(403);
+        }
         $cindicationRooms = CindicationRoom::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->get();
         $miniSide = 'aside-minimize';
         // $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->count();
@@ -1026,7 +1032,7 @@ class TrainingSessionController extends Controller
         // $trainingCenter->resources()->attach($resource_id, ['current_balance' => (int)$amount, 'initial_balance' => $amount, 'training_session_id' => $training_session]);
         // dd($training_center_id);
         DB::table('resource_trainining')->where('resource_id', $resource_id)->where('training_session_id', $training_session)->where('trainining_center_id', $training_center_id)->update([
-            'current_balance' =>$amount
+            'current_balance' => $amount
         ]);
         return redirect()->back()->with('msg', 'Resource Added Sucessfuily TO Training Center');
     }

@@ -12,68 +12,7 @@
 
 
 
-<div id="assignResource" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <form action="{{ route('session.resource.assign', ['training_session' => Request::route('training_session')]) }}"
-            method="post">
-            @csrf
-            <input type="hidden" name="resource_id" value="{{ $resource->id }}">
-            <input type="hidden" id="training_center_id" name="training_center_id">
 
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title bg-red-600">Assign {{ $resource->name }}</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-
-                    <div>
-                        <label>Amount:</label>
-                        <input type="number" name="amount" class="form-control">
-
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary font-weight-bold">Submit</button>
-
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<div id="updateResource" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <form action="{{ route('session.resource.update', ['training_session' => Request::route('training_session')]) }}"
-            method="post">
-            @csrf
-            <input type="hidden" name="resource_id" value="{{ $resource->id }}">
-            <input type="hidden" id="training_center_update_id" name="training_center_id">
-
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title bg-red-600">Update {{ $resource->name }}</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-
-                    <div>
-                        <label>Amount:</label>
-                        <input type="number" name="amount" class="form-control">
-
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary font-weight-bold">Submit</button>
-
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 @section('content')
     <div class="card">
 
@@ -88,14 +27,17 @@
                         {{ $trainingCenter->name }} ({{ $trainingCenter->code }})
                         <div class="list-group-item d-flex justify-content-md-between">
                             @php
-                                $centers = $trainingCenter->resources()->where('resources.id', $resource->id)->get();
-                                if(count($centers)>0){
-                                    $latestResourceBalance = $centers[count($centers)-1];
+                                $centers = $trainingCenter
+                                    ->resources()
+                                    ->where('resources.id', $resource->id)
+                                    ->get();
+                                if (count($centers) > 0) {
+                                    $latestResourceBalance = $centers[count($centers) - 1];
                                 }
                             @endphp
                             {{-- @dd($latestResourceBalance) --}}
                             <span
-                                class="badge badge-primary badge-pill">{{ count($trainingCenter->resources()->where('resources.id', $resource->id)->get()) > 0? $latestResourceBalance->pivot->current_balance. ' Item': '0 Item' }}</span>
+                                class="badge badge-primary badge-pill">{{ count($trainingCenter->resources()->where('resources.id', $resource->id)->get()) > 0? $latestResourceBalance->pivot->current_balance . ' Item': '0 Item' }}</span>
                             @if (count(
                                 $trainingCenter->resources()->where('resources.id', $resource->id)->get()) < 1)
                                 <a class="btn btn-primary" data-toggle="modal" data-target="#assignResource"
@@ -108,6 +50,73 @@
                     </li>
                 @endforeach
             </ul>
+        </div>
+    </div>
+
+
+
+    <div id="assignResource" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <form
+                action="{{ route('session.resource.assign', ['training_session' => Request::route('training_session')]) }}"
+                method="post">
+                @csrf
+                <input type="hidden" name="resource_id" value="{{ $resource->id }}">
+                <input type="hidden" id="training_center_id" name="training_center_id">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title bg-red-600">Assign {{ $resource->name }}</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div>
+                            <label>Amount:</label>
+                            <input type="number" name="amount" class="form-control">
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary font-weight-bold">Submit</button>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="updateResource" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <form
+                action="{{ route('session.resource.update', ['training_session' => Request::route('training_session')]) }}"
+                method="post">
+                @csrf
+                <input type="hidden" name="resource_id" value="{{ $resource->id }}">
+                <input type="hidden" id="training_center_update_id" name="training_center_id">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title bg-red-600">Update {{ $resource->name }}</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div>
+                            <label>Amount:</label>
+                            <input type="number" name="amount" class="form-control">
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary font-weight-bold">Submit</button>
+
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 @endsection
