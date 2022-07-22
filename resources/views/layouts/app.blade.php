@@ -41,7 +41,7 @@
     <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
         <!--begin::Logo-->
         <a href="/">
-            <img alt="Logo" src="{{ asset('img/logo_peace_min.png') }}" width="40" />
+            <img alt="Logo" width="120" src="{{ asset('img/logo_peace_min.png') }}" width="40" />
         </a>
         <!--end::Logo-->
         <!--begin::Toolbar-->
@@ -88,8 +88,9 @@
                 <div class="mt-4 brand flex-column-auto" id="kt_brand">
                     <!--begin::Logo-->
                     <a href="#" class="text-center brand-logo w-100 d-block">
-                        <img alt="Logo" src="{{ asset('img/peace_logo_max.png') }}" width="70" />
+                        <img alt="Logo" src="{{ asset('img/peace_logo_max.png') }}" width="130" />
                     </a>
+
                     <!--end::Logo-->
                     <!--begin::Toggle-->
                     <button class="px-0 brand-toggle btn btn-sm" id="kt_aside_toggle">
