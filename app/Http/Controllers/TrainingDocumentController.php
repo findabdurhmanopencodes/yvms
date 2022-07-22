@@ -6,6 +6,7 @@ use App\Models\TrainingDocument;
 use App\Http\Requests\StoreTrainingDocumentRequest;
 use App\Http\Requests\UpdateTrainingDocumentRequest;
 use App\Models\Training;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class TrainingDocumentController extends Controller
@@ -38,6 +39,8 @@ class TrainingDocumentController extends Controller
      */
     public function store(StoreTrainingDocumentRequest $request,Training $training)
     {
+        if(!Auth::user()->can('Document.store'))
+            return abort(403);
         $validDatas = $request->validated();
         $data['name'] = $validDatas['name'];
         if (!$request->document->isValid()) {
@@ -92,6 +95,9 @@ class TrainingDocumentController extends Controller
      */
     public function destroy(Training $training,TrainingDocument $trainingDocument)
     {
+
+        if(!Auth::user()->can('Document.destroy'))
+            return abort(403);
         $deleteFileStatus = FileController::deleteFile($trainingDocument?->file);
         $trainingDocument->delete();
         if($deleteFileStatus == 200){

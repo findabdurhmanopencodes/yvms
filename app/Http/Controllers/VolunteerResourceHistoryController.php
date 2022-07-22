@@ -43,7 +43,6 @@ class VolunteerResourceHistoryController extends Controller
         $training_center = $request->get('training_center');
         $resource_id = $request->get('resource_id');
         $training_session_id = $request->get('training_session');
-        $training_session_id = $request->get('training_session');
         $volunteer_id = $request->get('volunteer_id');
         $trainingCenterResourceCurrentBalance = TraininingCenter::find($training_center)->resources()->latest()->first()?->pivot?->current_balance;
         $resource_avalilable_center = DB::table('resource_trainining')->where('resource_id', $resource_id)->where('training_session_id', $training_session_id)->where('trainining_center_id', $training_center)->first()?->current_balance;
@@ -52,7 +51,7 @@ class VolunteerResourceHistoryController extends Controller
             return  redirect()->back()->withErrors('Error!! insufficent Ballance For this operation');
         } else {
             VolunteerResourceHistory::create(['amount' => $amount, 'training_center_id' => $training_center, 'resource_id' => $resource_id, 'training_session_id' => $training_session_id, 'volunteer_id' => $volunteer_id]);
-            DB::table('resource_trainining')->where('resource_id', $resource_id)->where('training_session_id', $training_center)->where('trainining_center_id', $training_center)->update([
+            DB::table('resource_trainining')->where('resource_id', $resource_id)->where('training_session_id', $training_session_id)->where('trainining_center_id', $training_center)->update([
                 'current_balance' => $trainingCenterResourceCurrentBalance - $amount
             ]);
 

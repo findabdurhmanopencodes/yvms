@@ -13,14 +13,19 @@
             </div>
 
             <div class="card-tool">
-                <a href="{{ route('session.hierarchy.edit', ['training_session'=>Request::route('training_session')->id,'hierarchy'=>$hierarchy->id]) }}" class="btn btn-primary">
-                    <i class="fal fa-pen"></i>
-                    Edit
-                </a>
-                <button type="button" class="btn btn-danger" onclick="confirmDeleteReport()">
-                    <i class="fal fa-trash"></i>
-                    Delete
-                </button>
+                @can('HierarchyReport.update')
+                    <a href="{{ route('session.hierarchy.edit', ['training_session' => Request::route('training_session')->id, 'hierarchy' => $hierarchy->id]) }}"
+                        class="btn btn-primary">
+                        <i class="fal fa-pen"></i>
+                        Edit
+                    </a>
+                @endcan
+                @can('HierarchyReport.destroy')
+                    <button type="button" class="btn btn-danger" onclick="confirmDeleteReport()">
+                        <i class="fal fa-trash"></i>
+                        Delete
+                    </button>
+                @endcan
             </div>
         </div>
         <div class="card-body">
@@ -29,13 +34,15 @@
             </div>
         </div>
     </div>
+    @can('HierarchyReport.destroy')
+        <form id="reportFormDelete"
+            action="{{ route('session.hierarchy.destroy', ['training_session' => Request::route('training_session')->id, 'hierarchy' => $hierarchy->id]) }}"
+            method="POST">
+            @method('DELETE')
+            @csrf
+        </form>
+    @endcan
 
-    <form id="reportFormDelete"
-        action="{{ route('session.hierarchy.destroy', ['training_session' => Request::route('training_session')->id, 'hierarchy' => $hierarchy->id]) }}"
-        method="POST">
-        @method('DELETE')
-        @csrf
-    </form>
 @endsection
 @push('js')
     <script>

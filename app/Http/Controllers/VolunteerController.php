@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Andegna\DateTimeFactory;
+use App\Constants;
 use App\Exports\ApplicantExport;
 use App\Models\Volunteer;
 use App\Http\Requests\StoreVolunteerRequest;
@@ -359,7 +360,10 @@ class VolunteerController extends Controller
      */
     public function verifiedApplicant(Request $request, $training_session)
     {
-        $applicants =  Volunteer::whereRelation('status', 'acceptance_status', 1)->where('training_session_id', $training_session);
+        if (!Auth::user()->can('Volunteer.verified.applicant')) {
+            return abort(403);
+        }
+        $applicants =  Volunteer::whereRelation('status', 'acceptance_status','>=', Constants::VOLUNTEER_STATUS_DOCUMENT_VERIFIED)->where('training_session_id', $training_session);
 
         $approved = ApprovedApplicant::where('training_session_id', $training_session)->get();
         // dd($applicants->get());
@@ -368,6 +372,9 @@ class VolunteerController extends Controller
     }
     public function selected(Request $request, $training_session)
     {
+        if (!Auth::user()->can('Volunteer.selected')) {
+            return abort(403);
+        }
         $applicants =  Volunteer::whereRelation('approvedApplicant', 'training_session_id', $training_session);
         // dd($applicants->get());
         return view('volunter.selected_volunter', ['volunters' => $applicants->paginate(10), 'trainingSession' => TrainingSession::find($training_session), 'trainingCenterCapacities' => TrainingCenterCapacity::where('training_session_id', $training_session)->get()]);
@@ -398,7 +405,7 @@ class VolunteerController extends Controller
                 $volunteer->update();
                 $volunteer->save();
                 $verifyVolunteer->delete();
-                Auth::login($user);
+                // Auth::login($user);
                 dispatch(new SendEmailJob($volunteer->email, new VolunteerAppliedMail($volunteer)));
                 return redirect(route('home'))->with('message', 'Your Service Request Form will be reviewed shortly and a response made to the email address');
             } else {
@@ -417,7 +424,19 @@ class VolunteerController extends Controller
     }
     public function volunteerAll(Request $request, $training_session)
     {
+        // $applicants = Volunteer::where('training_session_id', $training_session);
         $applicants = Volunteer::where('training_session_id', $training_session);
+        $user = Auth::user();
+        if ($user->hasRole('regional-coordinator')) {
+            $region = UserRegion::where('user_id', $user->id)->where('levelable_type', Region::class)->first();
+          //  dd($region->levelable);
+            $applicants = $applicants->whereRelation('woreda.zone.region', 'id', $region->levelable_id);
+        }
+        if ($user->hasRole('zone-coordinator')) {
+            $zone = UserRegion::where('user_id', $user->id)->where('levelable_type', Zone::class)->first();
+            $applicants = $applicants->whereRelation('woreda.zone', 'id', $zone->levelable_id);
+        }
+
 
         if ($request->has('filter')) {
             $first_name = $request->get('first_name');

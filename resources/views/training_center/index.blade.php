@@ -78,13 +78,6 @@
                 title: 'Payment Scale',
                 sortable: 'asc',
             },
-            {
-                field: 'logo',
-                title: 'Logo',
-
-
-
-            },
 
             {
                 field: 'Actions',
@@ -96,20 +89,21 @@
                 template: function(row) {
                     var trainingCenterId = row.id;
                     return '\
-                                        <div class="d-flex">\
-                                                    <a href="javascript:;" onclick="deleteTainingCenter(' + trainingCenterId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
-                                                        <i class="far fa-trash"></i>\
-                                                    </a>\
-                                                    \
-                                                    <a href="/TrainingCenter/' + trainingCenterId + '" class="btn btn-sm btn-clean btn-icon" >\
-                                                        <i class="far fa-"></i>\
-                                                    </a>\
-                                                    <a href="/TrainingCenter/' + trainingCenterId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
-                                                        <i class="far fa-pen"></i>\
-                                                    </a>\
-                                                    \
-                                                </div>\
-                                                ';
+                                            <div class="d-flex">\
+                                                        <a href="javascript:;" onclick="deleteTainingCenter(' +
+                        trainingCenterId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
+                                                            <i class="far fa-trash"></i>\
+                                                        </a>\
+                                                        \
+                                                        <a href="/TrainingCenter/' + trainingCenterId + '" class="btn btn-sm btn-clean btn-icon" >\
+                                                            <i class="far fa-eye"></i>\
+                                                        </a>\
+                                                        <a href="/TrainingCenter/' + trainingCenterId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                                                            <i class="far fa-pen"></i>\
+                                                        </a>\
+                                                        \
+                                                    </div>\
+                                                    ';
                 },
             }
         ]
@@ -134,12 +128,14 @@
             <div class="card-toolbar">
 
                 <!--begin::Button-->
-                <a href="{{ route('TrainingCenter.create', []) }}" class="btn btn-primary font-weight-bolder">
-                    <span class="svg-icon svg-icon-md">
-                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-                        <i class="fal fa-plus"></i>
-                        <!--end::Svg Icon-->
-                    </span>Add New Training Center</a>
+                @can('TraininingCenter.store')
+                    <a href="{{ route('TrainingCenter.create', []) }}" class="btn btn-primary font-weight-bolder">
+                        <span class="svg-icon svg-icon-md">
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                            <i class="fal fa-plus"></i>
+                            <!--end::Svg Icon-->
+                        </span>Add New Training Center</a>
+                @endcan
                 <!--end::Button-->
             </div>
         </div>

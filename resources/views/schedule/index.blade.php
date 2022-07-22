@@ -173,6 +173,7 @@
                 </div>
             </div>
         @endif
+        @can('TrainingSchedule.store')
         <form action="{{ route('session.schedule.set', ['training_session' => Request::route('training_session')]) }}"
             method="POST">
             @csrf
@@ -204,6 +205,7 @@
                 </div>
             </div>
         </form>
+        @endcan
     </div>
     @if ($trainingSession->training_start_date != null)
         <div class="card card-custom">
@@ -263,7 +265,9 @@
                         </div>
                     </div>
                 </form>
+                @can('TrainingSchedule.show')
                 <div id="trainingCalendar"></div>
+                @endcan
             </div>
         </div>
     @endif

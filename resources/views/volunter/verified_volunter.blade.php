@@ -74,22 +74,23 @@
                         {{ $trainingSession?->moto }}</span>
                 </h3>
             </div>
-            @if (count($approve) < 1)
-                <div>
-
-                    <a class="btn btn-sm btn-info"
-                        href="{{ route('aplication.screen_out', ['training_session' => $trainingSession->id]) }}">
-                        <i class="fa fa-eye"></i> Screen</a>
-                </div>
-            @else
-                <div>
-                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
+            @can('Volunteer.Screen')
+                @if (count($approve) < 1)
+                    <div>
                         <a class="btn btn-sm btn-info"
-                            href="{{ route('session.aplication.resetScreen', ['training_session' => $trainingSession->id]) }}">
-                            <i class="fa fa-recycle"></i> Reset </a>
-                    @endif
-                </div>
-            @endif
+                            href="{{ route('aplication.screen_out', ['training_session' => $trainingSession->id]) }}">
+                            <i class="fa fa-eye"></i> Screen</a>
+                    </div>
+                @else
+                    <div>
+                        @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
+                            <a class="btn btn-sm btn-info"
+                                href="{{ route('session.aplication.resetScreen', ['training_session' => $trainingSession->id]) }}">
+                                <i class="fa fa-recycle"></i> Reset </a>
+                        @endif
+                    </div>
+                @endif
+            @endcan
         </div>
         <div class="card-body">
             <!--begin: Datatable-->
@@ -103,7 +104,7 @@
                             <th>Phone</th>
                             <th>Woreda</th>
                             <th>status</th>
-                            @if (count($approve) > 0)
+                            @if (count($approve) < 1)
                                 <th>Action</th>
                             @endif
 
@@ -133,7 +134,7 @@
                                     <span
                                         class="badge badge-warning badge-pill">{{ $volunter->status?->acceptance_status == 0 ? 'pending' : 'Document Verified' }}</span>
                                 </td>
-                                @if (count($approve) > 0)
+                                @if (count($approve) < 1)
                                     <td>
                                         <a href="#"
                                             data-action="{{ route('session.screen.manual', [request()->route('training_session'), $volunter->id]) }}"

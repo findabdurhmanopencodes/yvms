@@ -42,7 +42,7 @@
             <div id="collapseThree6" class="collapse" data-parent="#accordionExample6">
                 <div class="card-body">
 
-                    <form action="{{ route('audit.index') }}" method="post">
+                    <form action="{{ route('audit.index') }}" method="get">
                         @csrf
                         <div class="row">
                             <div class="col-sm-4">
@@ -171,7 +171,7 @@
                     </table>
                 </div>
             <div class="d-flex justify-content-center">
-                {!! $audits->links() !!}
+                {!! $audits->withQueryString()->links() !!}
             </div>
         </div>
     </div>

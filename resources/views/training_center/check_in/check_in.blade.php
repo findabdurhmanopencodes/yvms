@@ -153,6 +153,8 @@
             fetch_customer_data(query);
         });
     </script> --}}
+    <script src="{{ asset('js/qrcode.min.js') }}"></script>
+    <script src="{{ asset('js/JsBarcode.all.min.js') }}"></script>
     <script>
         function fetch_customer_data(query = '') {
             $.ajax({
@@ -173,6 +175,55 @@
                     //     alert('volunteer is aleady checked');
                     // }
                     else if (data.status == 200) {
+                        var div__qr_img = document.createElement("div");
+
+                        var div__qr_img_2 = document.createElement("div");
+
+                        // div__qr_img.setAttribute('id', 'qrcode');
+
+                        // // myDesign.appendChild(div__qr_img);
+
+                        var qrcode = new QRCode(div__qr_img, {
+                            text: data.data.id_number,
+                            width: 50,
+                            height: 44.7,
+                            colorDark : "#000000",
+                            colorLight : "#ffffff",
+                            correctLevel : QRCode.CorrectLevel.H,
+                        });
+
+                        var img = qrcode._el.children[1];
+                        var src = div__qr_img.children[0].toDataURL("image/png");
+
+                        var div__bar_img_2 = document.createElement("div");
+                        var div__bar_img = document.createElement("img");
+
+                        JsBarcode(div__bar_img)
+                            .options({font: "OCR-B", displayValue: true, width:0.9, height: 15, background: "white"})
+                            .CODE128(data.data.id_number, {fontSize: 11, textMargin: 2, textPosition: "top", color:'inherit'})
+                            .render();
+
+                        // div__bar_img_2.style.position = "relative";
+                        // div__bar_img_2.style.float = "right";
+                        // div__bar_img_2.style.left = '142px';
+                        // div__bar_img_2.style.top = '-216px';
+                        div__bar_img.style.color = "black";
+                        var barcodesrc = div__bar_img.src;
+                        
+                        $.ajax({
+                            url: 'barQRCode/',
+                            method: 'GET',
+                            data: {
+                                barSrc: barcodesrc,
+                                qrSrc: src,
+                                id_number: data.data.id_number
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                                alert(data.success);
+                            }
+                        })
+
                         $("#name").html('Name:' + data.data.first_name + data.data.father_name);
                         $("#phone").html('Phone:' + data.data.phone);
                         $("#region").html('Region:' + data.data.woreda.zone.region.name);

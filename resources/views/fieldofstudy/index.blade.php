@@ -11,7 +11,7 @@
 @endsection
 @push('js')
     <script>
-        var HOST_URL = "{{ route('feild_of_study.index') }}";
+        var HOST_URL = "{{ route('FeildOfStudy.index') }}";
 
         function deleteRegion(fieldofStudyId, parent) {
             event.preventDefault();
@@ -25,7 +25,7 @@
                 if (result.value) {
                     $.ajax({
                         type: "POST",
-                        url: '/feild_of_study/' + fieldofStudyId,
+                        url: '/FeildOfStudy/' + fieldofStudyId,
                         data: {
                             "id": fieldofStudyId,
                             "_method": 'DELETE',
@@ -87,7 +87,7 @@
                                                     <i class="far fa-trash"></i>\
                                                 </a>\
                                                 \
-                                                <a href="/fieldofstudy/' + fieldofStudy + '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                                                <a href="/FeildOfStudy/' + fieldofStudy + '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-pen"></i>\
                                                 </a>\
                                                 \
@@ -117,14 +117,17 @@
             <div class="card-toolbar">
 
                 <!--begin::Button-->
+                @can('FeildOfStudy.store')
+
                 <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModal">
                     <span class="svg-icon svg-icon-md">
                         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                         <i class="fal fa-plus"></i>
                         <!--end::Svg Icon-->
-                 </span>
-                 Add New Field of study</a>
-                <form method="POST" action="{{ route('feild_of_study.store', []) }}">
+                    </span>
+                    Add New Field of study</a>
+                    @endcan
+                <form method="POST" action="{{ route('FeildOfStudy.store', []) }}">
                         @csrf
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg"  role="document">

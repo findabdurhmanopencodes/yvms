@@ -15,20 +15,21 @@
             <div class="card-title mr-0">
                 <h3 class="card-label">Trainning Centers</h3>
             </div>
-            <div class="card-tool">
-                <a href="{{ route('session.deployment.regions', ['training_session'=>Request::route('training_session')->id]) }}" class="btn btn-primary">View deployment list</a>
-            </div>
+            {{-- <div class="card-tool">
+                <a href="{{ route('session.deployment.regions', ['training_session' => Request::route('training_session')->id]) }}"
+                    class="btn btn-primary">View deployment list</a>
+            </div> --}}
         </div>
         <div class="card-body">
             <table width="100%" class="table ">
                 <thead>
                     </tr>
-                        <th> # </th>
-                        <th> Center </th>
-                        <th> Capacity </th>
-                        <th> Code </th>
-                        <th> Zone </th>
-                        <th> Action </th>
+                    <th> # </th>
+                    <th> Center </th>
+                    <th> Capacity </th>
+                    <th> Code </th>
+                    <th> Zone </th>
+                    <th> Action </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,33 +37,44 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>
-                                <a href="{{ route('session.training_center.show', ['training_session'=>Request::route('training_session'),'training_center'=>$trainingCenterCapacity->trainingCenter->id]) }}">
+                                <a
+                                    href="{{ route('session.training_center.show', ['training_session' => Request::route('training_session'), 'training_center' => $trainingCenterCapacity->trainingCenter->id]) }}">
                                     {{ $trainingCenterCapacity->trainingCenter->name }}
                                 </a>
                             </td>
                             <td>
-                                <a href="{{ route('session.training_center.show', ['training_session'=>Request::route('training_session'),'training_center'=>$trainingCenterCapacity->trainingCenter->id]) }}">
+                                <a
+                                    href="{{ route('session.training_center.show', ['training_session' => Request::route('training_session'), 'training_center' => $trainingCenterCapacity->trainingCenter->id]) }}">
                                     {{ $trainingCenterCapacity->capacity }}
                                 </a>
                             </td>
                             <td>
-                                <a href="{{ route('session.training_center.show', ['training_session'=>Request::route('training_session'),'training_center'=>$trainingCenterCapacity->trainingCenter->id]) }}">
+                                <a
+                                    href="{{ route('session.training_center.show', ['training_session' => Request::route('training_session'), 'training_center' => $trainingCenterCapacity->trainingCenter->id]) }}">
                                     {{ $trainingCenterCapacity->trainingCenter->code }}
                                 </a>
                             </td>
                             <td>
-                                <a href="{{ route('session.training_center.show', ['training_session'=>Request::route('training_session'),'training_center'=>$trainingCenterCapacity->trainingCenter->id]) }}">
+                                <a
+                                    href="{{ route('session.training_center.show', ['training_session' => Request::route('training_session'), 'training_center' => $trainingCenterCapacity->trainingCenter->id]) }}">
                                     {{ $trainingCenterCapacity->trainingCenter->zone->name }}
                                 </a>
                             </td>
                             <td>
-                                <a href="{{ route('session.training_center.show', ['training_session'=>Request::route('training_session'),'training_center'=>$trainingCenterCapacity->trainingCenter->id]) }}"
+                                <a href="{{ route('session.training_center.show', ['training_session' => Request::route('training_session'), 'training_center' => $trainingCenterCapacity->trainingCenter->id]) }}"
                                     class="btn btn-icon">
                                     <span class="fa fa-eye"></span>
                                 </a>
                             </td>
                         </tr>
                     @endforeach
+                    @empty($trainingCenterCapacities)
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                No record found or you are not assigned to any training center
+                            </td>
+                        </tr>
+                    @endempty
                 </tbody>
             </table>
         </div>

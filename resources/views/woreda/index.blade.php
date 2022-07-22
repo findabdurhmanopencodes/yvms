@@ -71,29 +71,34 @@
         });
 
         $("#woreda_quota").on("input", function(){
-            value = $('#zone').val();
-              if (value) {
-                $.ajax({
-                  type: "POST",
-                  url: "/woreda/validate",
-                //   method: 'post',
-                  data: {
-                     'zone_id': value,
-                     'qouta': $('#woreda_quota').val(),
-                     'prv_val': 0,
-                     "_token": $('meta[name="csrf-token"]').attr('content'),
-                  },
-                  success: function(result){
-                      if (result.limit == false) {
-                          $('#message').html('you reached max qouta');
-                          $(":submit").attr("disabled", true);
-                      }else{
-                        $('#message').html('');
-                        $(":submit").removeAttr("disabled");
-                      }
-                  },
-                });
-              }
+            if ($("#woreda_quota").val() >= 0) {
+                value = $('#zone').val();
+                if (value) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/woreda/validate",
+                        //   method: 'post',
+                        data: {
+                            'zone_id': value,
+                            'qouta': $('#woreda_quota').val(),
+                            'prv_val': 0,
+                            "_token": $('meta[name="csrf-token"]').attr('content'),
+                        },
+                        success: function(result){
+                            if (result.limit == false) {
+                                $('#message').html('you reached max qouta');
+                                $(":submit").attr("disabled", true);
+                            }else{
+                                $('#message').html('');
+                                $(":submit").removeAttr("disabled");
+                            }
+                        },
+                    });
+                }
+            } else {
+                $('#message').html('Invalid Number!!!');
+                $(":submit").attr("disabled", true);
+            }
         })
 
         var COLUMNS = [{
@@ -171,15 +176,14 @@
                 </h3> --}}
             </div>
             <div class="card-toolbar">
-
-                <!--begin::Button-->
-                <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModal">
-                    <span class="svg-icon svg-icon-md">
-                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-                        <i class="fal fa-plus"></i>
-                        <!--end::Svg Icon-->
-                    </span>Add New Woreda</a>
-
+                @can('Woreda.store')
+                    <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModal">
+                        <span class="svg-icon svg-icon-md">
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                            <i class="fal fa-plus"></i>
+                            <!--end::Svg Icon-->
+                        </span>Add New Woreda</a>
+                @endcan
                     <form method="POST" action="{{ route('woreda.store', []) }}">
                         @csrf
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -219,7 +223,7 @@
                                                     <div class="col-lg-6">
                                                         <label>Woreda Quota(%):</label>
                                                         <div class="input-group">
-                                                            <input type="number" class="form-control" placeholder="Woreda quota in percent" name="woreda_quota" id="woreda_quota"/>
+                                                            <input type="number" class="form-control" placeholder="Woreda quota in percent" name="woreda_quota" id="woreda_quota" min="0"/>
                                                             <div class="input-group-append">
                                                                 <span class="input-group-text">%</span>
                                                             </div>

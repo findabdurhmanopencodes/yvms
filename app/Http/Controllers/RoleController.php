@@ -18,6 +18,8 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
+        if(!Auth::user()->can('Role.index'))
+            return abort(403);
         if ($request->ajax()) {
             return datatables()->of(Role::select())->make(true);
         }
@@ -36,6 +38,8 @@ class RoleController extends Controller
      */
     public function create()
     {
+        if(!Auth::user()->can('Role.store'))
+            return abort(403);
         return view('role.create');
     }
 
@@ -47,6 +51,8 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->can('Role.store'))
+            return abort(403);
         // if(!Auth::user()->can('role.create')){
         //     return abort(403);
         // }
@@ -63,7 +69,9 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        //
+
+        if(!Auth::user()->can('Role.show'))
+            return abort(403);
         $permissions = $role->permissions()->get();
         $freePermissions = DB::table('permissions')->whereNotIn('id', $role->permissions()->pluck('id'))->get();
         // dd($freePermissions);
@@ -79,6 +87,9 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+
+        if(!Auth::user()->can('Role.update'))
+            return abort(403);
         return view('role.create', compact('role'));
     }
 
@@ -91,6 +102,8 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        if(!Auth::user()->can('Role.update'))
+            return abort(403);
         $data = $request->validate(['name' => 'required|string|unique:roles,name,' . $role->id]);
         $role->update($data);
         return redirect()->route('role.index')->with('message', 'Role updated successfully');
@@ -104,6 +117,8 @@ class RoleController extends Controller
      */
     public function destroy(Request $request, Role $role)
     {
+        if(!Auth::user()->can('Role.destroy'))
+            return abort(403);
         $role->delete();
         if ($request->ajax()) {
             return response()->json(array('msg' => 'deleted successfully'), 200);

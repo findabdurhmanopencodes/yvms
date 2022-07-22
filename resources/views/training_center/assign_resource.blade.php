@@ -12,7 +12,7 @@
     <div class="card card-custom card-body mb-3">
         <form
             action="{{ route('session.resource.assign.volunteer', ['training_session' => Request::route('training_session'), 'training_center_id' => $training_center_id]) }}"
-            method="post">
+            method="get">
             @csrf
             <div class=" ml-0 col-12 p-0">
                 <div class="row ">
@@ -80,7 +80,7 @@
                 </tbody>
             </table>
             <div class="d-flex justify-content-center">
-                {{-- {!! $volunters->links() !!} --}}
+                {!! $volunteers->withQueryString()->links() !!}
             </div>
 
         </div>

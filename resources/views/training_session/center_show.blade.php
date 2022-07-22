@@ -1,3 +1,4 @@
+@can('centerCooridnator')
 @extends('layouts.app')
 @section('title', 'Center base detail')
 @push('css')
@@ -8,7 +9,6 @@
         .select2-container--below {
             width: 100% !important;
         }
-
     </style>
 @endpush
 @section('content')
@@ -31,7 +31,6 @@
                 <div class="flex-grow-1">
                     <!--begin: Title-->
                     <div class="flex-wrap d-flex align-items-center justify-content-between">
-
                         <div class="mr-3">
                             <!--begin::Name-->
                             <a href="#"
@@ -61,13 +60,13 @@
                         <div class="my-1 my-lg-0">
                             <div class="dropdown dropdown-inline">
                                 <a href="#" class="px-5 btn btn-sm btn-primary font-weight-bolder dropdown-toggle"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Emport/Export Volunteers</a>
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Emport/Export
+                                    Volunteers</a>
                                 <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="">
                                     <!--begin::Navigation-->
                                     <ul class="navi navi-hover">
                                         <li class="navi-item">
-                                            <a data-toggle="modal" data-target="#import"
-                                                class="navi-link">
+                                            <a data-toggle="modal" data-target="#import" class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="fa fa-file-import"></i>
                                                 </span>
@@ -104,39 +103,50 @@
                                                 <span class="navi-text">Resources</span>
                                             </a>
                                         </li>
-                                        <li class="navi-item">
-                                            <a href="{{ route('session.training_center.checkedIn_list', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
-                                                class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="fa fa-users"></i>
-                                                </span>
-                                                <span class="navi-text">Checked In List/ID </span>
-                                            </a>
-                                        </li>
-                                        <li class="navi-item">
-                                            <a href="{{ route('session.training_center.trainer_list', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="flaticon2-shopping-cart-1"></i>
-                                                </span>
-                                                <span class="navi-text">Trainners List/ID</span>
-                                            </a>
-                                        </li>
-                                        <li class="navi-item">
-                                            <a href="#" onclick="confirmPlacment()" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="fal fa-map-marker-check"></i>
-                                                </span>
-                                                <span class="navi-text">Place Volunteers</span>
-                                            </a>
-                                        </li>
-                                        <li class="navi-item">
-                                            <a href="{{ route('session.show.volunteers', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="fal fas fa-graduation-cap"></i>
-                                                </span>
-                                                <span class="navi-text">Graduate Volunteers/ID</span>
-                                            </a>
-                                        </li>
+
+                                        @can('TraininingCenter.checkedInID')
+                                            <li class="navi-item">
+                                                <a href="{{ route('session.training_center.checkedIn_list', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+                                                    class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="fa fa-users"></i>
+                                                    </span>
+                                                    <span class="navi-text">Checked In List/ID </span>
+                                                </a>
+                                            </li>
+                                        @endcan
+
+                                        @can('TraininingCenter.trainnerID')
+                                            <li class="navi-item">
+                                                <a href="{{ route('session.training_center.trainer_list', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}" class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="flaticon2-shopping-cart-1"></i>
+                                                    </span>
+                                                    <span class="navi-text">Trainners List/ID</span>
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        @can('SyndicationRoom.placement')
+                                            <li class="navi-item">
+                                                <a href="#" onclick="confirmPlacment()" class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="fal fa-map-marker-check"></i>
+                                                    </span>
+                                                    <span class="navi-text">Place Volunteers</span>
+                                                </a>
+                                            </li>
+                                        @endcan
+
+                                        @can('TraininingCenter.graduate')
+                                            <li class="navi-item">
+                                                <a href="{{ route('session.show.volunteers', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}" class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="fal fas fa-graduation-cap"></i>
+                                                    </span>
+                                                    <span class="navi-text">Graduate Volunteers/ID</span>
+                                                </a>
+                                            </li>
+                                        @endcan
                                     </ul>
                                     <!--end::Navigation-->
                                 </div>
@@ -316,74 +326,80 @@
                     </div>
                 </div>
                 <div class="pt-0 card-body">
-                    <form class="row" method="POST"
-                        action="{{ route('session.cindication_room.store', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}">
-                        @csrf
-                        <div class="form-group col-md-4">
-                            {{-- <label class="d-block">Room ID</label> --}}
-                            <input type="text" class="@error('number') is-invalid @enderror form-control" name="number"
-                                placeholder="Room ID"
-                                value="{{ old('number') ?? (isset($user) ? $user->number : '') }}" />
-                            @error('number')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            <span class="form-text text-muted">Please enter Room ID.</span>
-                        </div>
-                        <div class="form-group col-md-4">
-                            {{-- <label class="d-block">Number of volunteers</label> --}}
-                            <input type="text" class="@error('number_of_volunteers') is-invalid @enderror form-control"
-                                name="number_of_volunteers" placeholder="Number of volunteers"
-                                value="{{ old('number_of_volunteers') ?? (isset($user) ? $user->number_of_volunteers : '') }}" />
-                            @error('number_of_volunteers')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            <span class="form-text text-muted">Please enter Number of volunteers.</span>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Add Cindication rooms"
-                                class="btn btn-success font-weight-bolder font-size-sm">
-                        </div>
-                    </form>
-                    <form action="" method="POST" id="deleteRoomForm">
-                        @csrf
-                        @method('DELETE')
-                    </form>
-                    <table width="100%" class="table">
-                        <thead>
-                            </tr>
-                            <th>Cindication Room Id </th>
-                            <th>Volunteer Capacity</th>
-                            <th>Placed Volunteer</th>
-                            <th>Action</th>
-                            {{-- <th><i class="menu-icon flaticon-list"></i> </th> --}}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($cindicationRooms as $cindicationRoom)
-                                <tr>
-                                    <td>{{ $cindicationRoom->number }}</td>
-                                    <td>{{ $cindicationRoom->number_of_volunteers }}</td>
-                                    <td>{{ count($cindicationRoom->volunteers) }}</td>
-                                    <td>
-                                        <a href="#"
-                                            onclick="confirmDeleteRoom('{{ route('session.cindication_room.destroy', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room' => $cindicationRoom->id]) }}')">
-                                            <i class="fal fa-trash"></i>
-                                        </a>
-                                        <a
-                                            href="{{ route('session.cindication_room.show', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room' => $cindicationRoom->id]) }}">
-                                            <i class="fal fa-eye"></i>
-                                        </a>
-                                    </td>
+                    @can('SyndicationRoom.store')
+                        <form class="row" method="POST"
+                            action="{{ route('session.cindication_room.store', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}">
+                            @csrf
+                            <div class="form-group col-md-4">
+                                {{-- <label class="d-block">Room ID</label> --}}
+                                <input type="text" class="@error('number') is-invalid @enderror form-control"
+                                    name="number" placeholder="Room ID"
+                                    value="{{ old('number') ?? (isset($user) ? $user->number : '') }}" />
+                                @error('number')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <span class="form-text text-muted">Please enter Room ID.</span>
+                            </div>
+                            <div class="form-group col-md-4">
+                                {{-- <label class="d-block">Number of volunteers</label> --}}
+                                <input type="text" class="@error('number_of_volunteers') is-invalid @enderror form-control"
+                                    name="number_of_volunteers" placeholder="Number of volunteers"
+                                    value="{{ old('number_of_volunteers') ?? (isset($user) ? $user->number_of_volunteers : '') }}" />
+                                @error('number_of_volunteers')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <span class="form-text text-muted">Please enter Number of volunteers.</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Add Cindication rooms"
+                                    class="btn btn-success font-weight-bolder font-size-sm">
+                            </div>
+                        </form>
+                    @endcan
+                    @can('SyndicationRoom.destroy')
+                        <form action="" method="POST" id="deleteRoomForm">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                    @endcan
+                    @can('SyndicationRoom.index')
+                        <table width="100%" class="table">
+                            <thead>
                                 </tr>
-                            @endforeach
+                                <th>Cindication Room Id </th>
+                                <th>Volunteer Capacity</th>
+                                <th>Placed Volunteer</th>
+                                <th>Action</th>
+                                {{-- <th><i class="menu-icon flaticon-list"></i> </th> --}}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($cindicationRooms as $cindicationRoom)
+                                    <tr>
+                                        <td>{{ $cindicationRoom->number }}</td>
+                                        <td>{{ $cindicationRoom->number_of_volunteers }}</td>
+                                        <td>{{ count($cindicationRoom->volunteers) }}</td>
+                                        <td>
+                                            <a href="#"
+                                                onclick="confirmDeleteRoom('{{ route('session.cindication_room.destroy', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room' => $cindicationRoom->id]) }}')">
+                                                <i class="fal fa-trash"></i>
+                                            </a>
+                                            <a
+                                                href="{{ route('session.cindication_room.show', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room' => $cindicationRoom->id]) }}">
+                                                <i class="fal fa-eye"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
 
-                            @if (count($cindicationRooms) <= 0)
-                                <tr style="font-size: 13px;" class="text-center">
-                                    <td colspan="3" style="">No cindication room</td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
+                                @if (count($cindicationRooms) <= 0)
+                                    <tr style="font-size: 13px;" class="text-center">
+                                        <td colspan="3" style="">No cindication room</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    @endcan
                     <!--begin: Items-->
                 </div>
             </div>
@@ -429,44 +445,46 @@
                             </div>
                         </div>
                     </form>
-                    <form id="centerCoordinatorForm"
-                        action="{{ route('session.training_center_based_permission.store', ['training_session' => Request::route('training_session')->id]) }}"
-                        method="POST">
-                        @csrf
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <input type="hidden" name="permission_id"
-                                    value="{{ Spatie\Permission\Models\Permission::findOrCreate(Database\Seeders\PermissionSeeder::CENTER_COORIDNATOR)->id }}">
-                                <input type="hidden" name="training_center_id" value="{{ $trainingCenter->id }}">
-                                <input type="hidden" name="training_session_id"
-                                    value="{{ Request::route('training_session')->id }}">
-                                <select name="user_id" id="centerCoordinator" required
-                                    class=" @error('centerCoordinator') is-invalid @enderror select2 form-control  form-control select2">
-                                    @foreach ($centerCoordinatorUsers as $centerCoordinatorUser)
-                                        <option
-                                            {{ old('centerCoordinatorUser') != null ? (old('centerCoordinatorUser') == $centerCoordinatorUser->id ? 'selected' : '') : '' }}
-                                            value="{{ $centerCoordinatorUser->id }}">
-                                            {{ $centerCoordinatorUser->name }}
-                                        </option>
-                                    @endforeach
+                    @can('centerCooridnator.assign')
+                        <form id="centerCoordinatorForm"
+                            action="{{ route('session.training_center_based_permission.store', ['training_session' => Request::route('training_session')->id]) }}"
+                            method="POST">
+                            @csrf
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <input type="hidden" name="permission_id"
+                                        value="{{ Spatie\Permission\Models\Permission::findOrCreate(Database\Seeders\PermissionSeeder::CENTER_COORIDNATOR)->id }}">
+                                    <input type="hidden" name="training_center_id" value="{{ $trainingCenter->id }}">
+                                    <input type="hidden" name="training_session_id"
+                                        value="{{ Request::route('training_session')->id }}">
+                                    <select name="user_id" id="centerCoordinator" required
+                                        class=" @error('centerCoordinator') is-invalid @enderror select2 form-control  form-control select2">
+                                        @foreach ($centerCoordinatorUsers as $centerCoordinatorUser)
+                                            <option
+                                                {{ old('centerCoordinatorUser') != null ? (old('centerCoordinatorUser') == $centerCoordinatorUser->id ? 'selected' : '') : '' }}
+                                                value="{{ $centerCoordinatorUser->id }}">
+                                                {{ $centerCoordinatorUser->name }}
+                                            </option>
+                                        @endforeach
 
-                                    @if (count($centerCoordinatorUsers) <= 0)
-                                        <option>
-                                            Please add center coordinator
-                                        </option>
-                                    @endif
-                                </select>
-                                @error('centercenterCoordinator')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                <span class="form-text text-muted">Please select Checker User center.</span>
+                                        @if (count($centerCoordinatorUsers) <= 0)
+                                            <option>
+                                                Please add center coordinator
+                                            </option>
+                                        @endif
+                                    </select>
+                                    @error('centercenterCoordinator')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <span class="form-text text-muted">Please select Checker User center.</span>
+                                </div>
+                                <div class="ml-auto form-group col-md-12">
+                                    <input type="submit" value="Assign Coordinator"
+                                        class="float-right btn btn-success w-100 font-weight-bolder font-size-sm">
+                                </div>
                             </div>
-                            <div class="ml-auto form-group col-md-12">
-                                <input type="submit" value="Assign Coordinator"
-                                    class="float-right btn btn-success w-100 font-weight-bolder font-size-sm">
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    @endcan
                     <table width="100%" class="table">
                         <thead>
                             </tr>
@@ -484,7 +502,8 @@
                                             Coordinator
                                         </span>
                                     </td>
-                                    <td><a href="#" onclick="confirmDeleteCoordinator({{ $centerCoordinator->id }})"><i
+                                    <td><a href="#"
+                                            onclick="confirmDeleteCoordinator({{ $centerCoordinator->id }})"><i
                                                 class="fa fa-times"></i></a></td>
                                 </tr>
                             @endforeach
@@ -513,6 +532,7 @@
             </div>
         </div>
     </div>
+
     <form id="placeVolunteerForm"
         action="{{ route('session.training_center.placement', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
         method="post">
@@ -530,48 +550,49 @@
 
 
     <div class="modal fade" id="import" tabindex="-1" role="dialog" aria-labelledby="addCapacityLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <form method="POST" action="{{  route('session.volunteer.import',['training_session' => Request::route('training_session')->id, 'training_center'=> $trainingCenter])}}" enctype="multipart/form-data">
-            <input type="hidden" name="trainingCenterId" value="{{ $trainingCenter->id }}">
-            @csrf
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addCapacityLabel">importing Excell for Bank Account </h5>
-                    <button type="button" class="close" data-dismiss="modal" -label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12 form-group d-flex">
-                            <div class="col-md-11">
-                                <div class="form-group">
-                                    <label class="d-block">Select file</label>
-                                    <div class="custom-file">
-                                        <input type="file"
-                                            class=" custom-file-input"
-                                            name="file" id="ministry_document"  multiple/>
-                                        <label class="custom-file-label" for="customFile">Choose
-                                            file</label>
-                                        @error('file')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <form method="POST"
+                action="{{ route('session.volunteer.import', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter]) }}"
+                enctype="multipart/form-data">
+                <input type="hidden" name="trainingCenterId" value="{{ $trainingCenter->id }}">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addCapacityLabel">importing Excell for Bank Account </h5>
+                        <button type="button" class="close" data-dismiss="modal" -label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 form-group d-flex">
+                                <div class="col-md-11">
+                                    <div class="form-group">
+                                        <label class="d-block">Select file</label>
+                                        <div class="custom-file">
+                                            <input type="file" class=" custom-file-input" name="file"
+                                                id="ministry_document" multiple />
+                                            <label class="custom-file-label" for="customFile">Choose
+                                                file</label>
+                                            @error('file')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-danger font-weight-bold"
+                            data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary font-weight-bold">Save changes</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-danger font-weight-bold"
-                        data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary font-weight-bold">Save changes</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 @endsection
 @push('js')
     <script>
@@ -583,7 +604,7 @@
             $('#assignMasterModal').modal().show()
         @endif
 
-        function confirmPlacment(){
+        function confirmPlacment() {
             Swal.fire({
                 title: "Are you sure?",
                 text: "You are able to revert this!",
@@ -659,3 +680,5 @@
         }
     </script>
 @endpush
+
+@endcan

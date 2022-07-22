@@ -6,6 +6,7 @@ use App\Models\Training;
 use App\Http\Requests\StoreTrainingRequest;
 use App\Http\Requests\UpdateTrainingRequest;
 use App\Models\TrainingDocument;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class TrainingController extends Controller
@@ -17,8 +18,10 @@ class TrainingController extends Controller
      */
     public function index()
     {
+        if(!Auth::user()->can('Training.index'))
+            return abort(403);
         $trainings = Training::paginate(10);
-        return view('training.index',compact('trainings'));
+        return view('training.index', compact('trainings'));
     }
 
     /**
@@ -39,8 +42,10 @@ class TrainingController extends Controller
      */
     public function store(StoreTrainingRequest $request)
     {
+        if(!Auth::user()->can('Training.store'))
+            return abort(403);
         Training::create($request->validated());
-        return redirect()->back()->with('message','Training created successfully');
+        return redirect()->back()->with('message', 'Training created successfully');
     }
 
     /**
@@ -51,6 +56,8 @@ class TrainingController extends Controller
      */
     public function show(Training $training)
     {
+        if(!Auth::user()->can('Training.show'))
+            return abort(403);
         $trainingDocuments = TrainingDocument::where('training_id',$training->id)->get();
         return view('training.show',compact('training','trainingDocuments'));
     }
@@ -75,8 +82,10 @@ class TrainingController extends Controller
      */
     public function update(UpdateTrainingRequest $request, Training $training)
     {
+        if(!Auth::user()->can('Training.update'))
+            return abort(403);
         $training->update($request->validated());
-        return redirect()->back()->with('message','Training updated successfully');
+        return redirect()->back()->with('message', 'Training updated successfully');
     }
 
     /**
@@ -87,7 +96,9 @@ class TrainingController extends Controller
      */
     public function destroy(Training $training)
     {
+        if(!Auth::user()->can('Training.destroy'))
+            return abort(403);
         $training->delete();
-        return redirect()->back()->with('message','Training deleted successfully');
+        return redirect()->back()->with('message', 'Training deleted successfully');
     }
 }

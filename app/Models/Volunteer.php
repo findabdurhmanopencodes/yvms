@@ -126,4 +126,14 @@ class Volunteer extends Model implements Auditable
         return $this->hasOne(IDcount::class);
     }
 
+    /**
+     * Get the volunteer associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function barQrVolunteer(): HasOne
+    {
+        return $this->hasOne(BarQRVolunteer::class, 'volunteer_id', 'id');
+    }
+
 }

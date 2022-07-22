@@ -52,6 +52,7 @@
 </form>
 <form method="POST" id="IdForm" action="{{ route('session.deployment.generateID', [Request::route('training_session')]) }}">
     @csrf
+    <input type="hidden" name="center" value="{{ $trainingCenter->id }}">
     <div class="card card-custom">
     {{-- <input type="hidden" value="all" name="allPrint" id="training_center_id"> --}}
     <div class="card-header flex-wrap  pt-6 ">
@@ -65,19 +66,24 @@
         @if ($applicants)
             <div class="card-toolbar" >
                 <div class="d-flex">
-                    @if (!$check_deployed)
-                        <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModal">
-                            <span class="svg-icon svg-icon-md">
-                                <i class="flaticon-medal" id="i_text"></i>
-                            </span>
-                            Graduate Volunteers
-                        </a>
-                    @endif
+                    @can('TraininingCenter.graduate')
+                        @if (!$check_deployed)
+                            <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModal">
+                                <span class="svg-icon svg-icon-md">
+                                    <i class="flaticon-medal" id="i_text"></i>
+                                </span>
+                                Graduate Volunteers
+                            </a>
+                        @endif
+                    @endcan
 
-                    @if ($check_deployed)    
-                        <a class="btn ml-4 btn-sm btn-primary" href="#" onclick="$('#IdForm').submit();"><i class="fal flaticon2-print"></i> Print ID
-                        </a>
-                    @endif
+                    @can('TraininingCenter.graduatedIDPrint')
+                        @if ($check_deployed)    
+                            <a class="btn ml-4 btn-sm btn-primary" href="#" onclick="$('#IdForm').submit();"><i class="fal flaticon2-print"></i> Print ID
+                            </a>
+                        @endif
+                    @endcan
+        
                 </div>
             </div>
         @endif

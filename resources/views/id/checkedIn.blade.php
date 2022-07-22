@@ -23,15 +23,17 @@
                 <input type="text" id="search" class="form-control" placeholder="search by ID..." />
             </div>
         </div>
-        @if ($applicants)
-            <div class="card-toolbar">
-                <button type="submit" class="btn btn-primary font-weight-bolder" >
-                    <span class="svg-icon svg-icon-md" id="print_all">
-                        <i class="flaticon2-print" id="i_text"></i>Print All ID
-                    </span>
-                </button>
-            </div>
-        @endif
+        @can('TraininingCenter.checkedInIDPrint')
+            @if ($applicants)
+                <div class="card-toolbar">
+                    <button type="submit" class="btn btn-primary font-weight-bolder" >
+                        <span class="svg-icon svg-icon-md" id="print_all">
+                            <i class="flaticon2-print" id="i_text"></i>Print All ID
+                        </span>
+                    </button>
+                </div>
+            @endif
+        @endcan
 
     </div>
         <div class="card-body" id="search_card">
@@ -41,7 +43,7 @@
                         <th>#   </th>
                         <th> ID </th>
                         <th> Name </th>
-                        <th>ID count</th>
+                        {{-- <th>ID count</th> --}}
                         <th> Training Center </th>
                     </tr>
                 </thead>
@@ -56,13 +58,13 @@
                                 <td>
                                     {{ $applicant->first_name }} {{ $applicant->father_name }}
                                 </td>
-                                <td>
-                                    {{-- @if ($applicant->idCount)
+                                {{-- <td>
+                                    @if ($applicant->idCount)
                                         {{ $applicant?->idCount?->count }}
-                                    @else --}}
+                                    @else
                                         0
-                                    {{-- @endif --}}
-                                </td>
+                                    @endif
+                                </td> --}}
                                 {{-- <td>
                                     {{ $applicant?->idCount?->count }}
                                 </td> --}}
@@ -122,7 +124,7 @@
                         data.forEach(element => {
                             var count = element.idCount || 0;
                             var input = `<input type="checkbox" name="applicant[]" value="${element.id}" id="checkbox"/>`;
-                            $('#search_table tbody').append("<tr>"+getTableCell(input)+getTableCell(element.id_number)+getTableCell(element.first_name+' ' +element.father_name)+getTableCell(count)+getTableCell(element.approved_applicant.training_placement.training_center_capacity.training_center.code)+"</tr>");
+                            $('#search_table tbody').append("<tr>"+getTableCell(input)+getTableCell(element.id_number)+getTableCell(element.first_name+' ' +element.father_name)+getTableCell(element.approved_applicant.training_placement.training_center_capacity.training_center.code)+"</tr>");
                         });
                         $("#paginate").hide();
                     }else{

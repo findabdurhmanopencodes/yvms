@@ -77,6 +77,7 @@ use App\Models\Volunteer;
 use App\Models\Woreda;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\Console\Input\Input;
@@ -204,6 +205,7 @@ Route::get('adb', function () {
     Route::any('/training-center/{training_center_id}/resource-assign/volunteer/{volunteer}', [TraininingCenterController::class, 'giveResourceDetail'])->name('resource.assign.volunteer.detail');
     Route::get('check-in/', [TraininingCenterController::class, 'checkInView'])->name('TrainingCenter.CheckIn');
     Route::get('result/', [TraininingCenterController::class, 'result'])->name('result');
+    Route::get('barQRCode/', [TraininingCenterController::class, 'barQRCode'])->name('barQRCode');
 
     Route::get('/check-in/action/{id}', [TraininingCenterController::class, 'checkIn'])->name('TrainingCenter.checked');
     Route::get('/checkin_all', [TraininingCenterController::class, 'checkInAll'])->name('trainingCenter.checkin.all');
@@ -255,6 +257,15 @@ Route::get('adb', function () {
 
     Route::get('volunteer_export', [VolunteerController::class, 'exportVolunteers'])->name('export.volunteers');
     Route::post('volunteer_import', [VolunteerController::class, 'importVolunteers'])->name('import.volunteers');
+
+    Route::get('{region_id}/region/capacity/edit', [RegionController::class, 'regionIntakeEdit'])->name('region.intake_edit');
+    Route::put('{region_id}/capacity/update', [RegionController::class, 'regionIntakeUpdate'])->name('intake.update');
+
+    Route::get('{zone_id}/zone/capacity/edit', [ZoneController::class, 'zoneIntakeEdit'])->name('zone.intake_edit');
+    Route::put('{zone_id}/zone/capacity/update', [ZoneController::class, 'zoneIntakeUpdate'])->name('zone_intake.update');
+
+    Route::get('{woreda_id}/woreda/capacity/edit', [WoredaController::class, 'woredaIntakeEdit'])->name('woreda.intake_edit');
+    Route::put('{woreda_id}/woreda/capacity/update', [WoredaController::class, 'woredaIntakeUpdate'])->name('woreda_intake.update');
 });
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -277,7 +288,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('user/{user}/permission/give', [UserController::class, 'givePermission'])->name('user.permission.give');
     Route::post('user/{user}/permission/revoke', [UserController::class, 'revokePermission'])->name('user.permission.revoke');
     Route::resource('educational_level', EducationalLevelController::class);
-    Route::resource('feild_of_study', FeildOfStudyController::class);
+    Route::resource('FeildOfStudy', FeildOfStudyController::class);
     Route::resource('disablity', DisablityController::class);
     Route::get('/profile/{user?}', [UserController::class, 'profile'])->name('user.profile.show');
     Route::get('training_sessions', [RegionController::class, 'place'])->name('region.place');
@@ -327,7 +338,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/download/idPDF', [IdGenerateController::class, 'pdfDownload'])->name('id.download');
     Route::post('/certificatePDF/download', [IdGenerateController::class, 'certificateDownload'])->name('certificate.download');
     Route::get('/dashboard', function () {
-
+        if(!(Auth::user()?->can('dashboard.index')))
+            return abort(403);
         if (count(TrainingSession::availableSession()) > 0) {
             $trainingSession = TrainingSession::availableSession()[0];
             return redirect(route('session.dashboard', ['training_session' => $trainingSession->id]));

@@ -23,6 +23,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
 {
@@ -34,9 +35,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            PermissionSeeder::class,
-            RoleSeeder::class,
-            AbdiSeeder::class,
+            // PermissionSeeder::class,
+            // RoleSeeder::class,
+            // AbdiSeeder::class,
             // BaseSeeder::class,
             // FakeDataSeeder::class,
         ]);

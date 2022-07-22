@@ -7,6 +7,7 @@ use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\EventImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File as FacadesFile;
 
 
@@ -19,12 +20,14 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
+        if (!Auth::user()->can('Event.index')) {
+            return abort(403);
+        }
         $events = Event::query();
         $title = $request->get('title');
         if ($request->has('filter')) {
             if (!empty($title)) {
-                $events = $events->where('title','like', '%' . $title . '%');
-
+                $events = $events->where('title', 'like', '%' . $title . '%');
             }
         }
         return view('event.index', ['events' => $events->with('images')->paginate(10)]);
@@ -38,6 +41,9 @@ class EventController extends Controller
     public function create()
     {
         //
+        if (!Auth::user()->can('Event.store')) {
+            return abort(403);
+        }
         return view('event.create');
     }
 
@@ -51,6 +57,9 @@ class EventController extends Controller
     {
         // dd($request);
         //
+        if (!Auth::user()->can('Event.store')) {
+            return abort(403);
+        }
         $this->validate($request, [
             'title' => 'required|string|max:255',
             'content' => 'required',
@@ -79,6 +88,9 @@ class EventController extends Controller
      */
     public function show($event)
     {
+        if (!Auth::user()->can('Event.show')) {
+            return abort(403);
+        }
         return view('event.show', ['event' => Event::find($event)]);
     }
 
@@ -90,6 +102,9 @@ class EventController extends Controller
      */
     public function edit($event)
     {
+        if (!Auth::user()->can('Event.update')) {
+            return abort(403);
+        }
         //
         // dd($event);
         return view('event.edit', ['event' => Event::find($event)]);
@@ -104,6 +119,9 @@ class EventController extends Controller
      */
     public function update(Request $request, $event)
     {
+        if (!Auth::user()->can('Event.update')) {
+            return abort(403);
+        }
         $event = Event::with('images')->where('id', $event)->first();
         if ($request->has('pictures')) {
             foreach ($request->file('pictures') as $imagefile) {
@@ -139,6 +157,9 @@ class EventController extends Controller
      */
     public function destroy($event)
     {
+        if (!Auth::user()->can('Event.destroy')) {
+            return abort(403);
+        }
         Event::find($event)->delete();
         return redirect()->back();
     }
@@ -148,7 +169,7 @@ class EventController extends Controller
     }
     public function detailEvent($event)
     {
-        return view('event\event_detail', ['event' => Event::find($event), 'featuredEvents' => Event::latest()->take(5)->get()]);
+        return view('event.event_detail', ['event' => Event::find($event), 'featuredEvents' => Event::latest()->take(5)->get()]);
     }
     public function removeImage($eventImage)
     {

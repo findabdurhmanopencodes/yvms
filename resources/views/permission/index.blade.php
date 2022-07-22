@@ -74,15 +74,15 @@
                 template: function(row) {
                     var permissionId = row.id;
                     return '\
-                                                <div class="d-flex" style="justify-content: space-between;">\
+                                                <div class="d-flex" style="justify-content: space-between;">\@can('Permission.destroy')
                                                             <a href="javascript:;" onclick="deletePermission(' +
                         permissionId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
                                                                 <i class="far fa-trash"></i>\
-                                                            </a>\
-                                                            \
+                                                            </a>\@endcan
+                                                            \@can('Permission.update')
                                                             <a href="/permission/' + permissionId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                                                 <i class="far fa-pen"></i>\
-                                                            </a>\
+                                                            </a>\@endcan
                                                             \
                                                         </div>\
                                                         ';
@@ -104,12 +104,14 @@
             <div class="card-toolbar">
 
                 <!--begin::Button-->
+                @can('Permission.store')
                 <a href="{{ route('permission.create', []) }}" class="btn btn-primary font-weight-bolder">
                     <span class="svg-icon svg-icon-md">
                         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                         <i class="fal fa-plus"></i>
                         <!--end::Svg Icon-->
                     </span>Add New Permission</a>
+                @endcan
                 <!--end::Button-->
             </div>
         </div>

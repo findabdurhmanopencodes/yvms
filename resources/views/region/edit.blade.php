@@ -46,7 +46,7 @@
                             <div class="col-lg-6">
                                 <label>Region Quota:</label>
                                 <div class="input-group">
-                                    <input type="number" class="form-control" name="qoutaInpercent" value="{{ $regions->qoutaInpercent*100 }}" id="reg_quota"/>
+                                    <input type="number" class="form-control" name="qoutaInpercent" value="{{ $regions->qoutaInpercent*100 }}" id="reg_quota" min="0"/>
                                     <div class="input-group-append">
                                         <span class="input-group-text">%</span>
                                     </div>
@@ -83,25 +83,31 @@
 <script>
     var prv_val = $("#reg_quota").val();
     $("#reg_quota").on("input", function(){
-        $.ajax({
-            type: "POST",
-            url: "/region/validate",
-        //   method: 'post',
-            data: {
-                'qouta': $('#reg_quota').val(),
-                'prv_val': prv_val,
-                "_token": $('meta[name="csrf-token"]').attr('content'),
-            },
-            success: function(result){
-                if (result.limit == false) {
-                    $('#message').html('you reached max qouta');
-                    $(":submit").attr("disabled", true);
-                }else{
-                $('#message').html('');
-                $(":submit").removeAttr("disabled");
-                }
-            },
-        });
+        if ($("#reg_quota").val() >= 0) {
+            $.ajax({
+                type: "POST",
+                url: "/region/validate",
+            //   method: 'post',
+                data: {
+                    'qouta': $('#reg_quota').val(),
+                    'prv_val': prv_val,
+                    "_token": $('meta[name="csrf-token"]').attr('content'),
+                },
+                success: function(result){
+                    if (result.limit == false) {
+                        $('#message').html('you reached max qouta');
+                        $(":submit").attr("disabled", true);
+                    }else{
+                        $('#message').html('');
+                        $(":submit").removeAttr("disabled");
+                    }
+                },
+            });
+        } else {
+            $('#message').html('Invalid Number!!!');
+            $(":submit").attr("disabled", true);
+        }
+        
     })
 </script>
 @endpush
