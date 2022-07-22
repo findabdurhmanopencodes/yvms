@@ -24,11 +24,11 @@ class StoreTrainingCenterBasedPermissionRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => ['required'],
-            'permission_id' => ['required'],
-            'training_center_id' => ['required'],
-            'cindication_room_id' => ['nullable'],
-            'training_session_id' => ['required']
+            'user_id' => ['required','numeric'],
+            'permission_id' => 'required|numeric',
+            'training_center_id' => ['required','numeric'],
+            'cindication_room_id' => 'nullable|numeric',
+            'training_session_id' => 'required|numeric'
         ];
     }
 }

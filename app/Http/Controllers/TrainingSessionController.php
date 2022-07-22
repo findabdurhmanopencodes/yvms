@@ -70,7 +70,7 @@ class TrainingSessionController extends Controller
      */
     protected function resourceMethodsWithoutModels()
     {
-        return ['index', 'create', 'store','trainingCenterIndex'];
+        return ['index', 'create', 'store', 'trainingCenterIndex'];
     }
 
     public function __construct()
@@ -85,7 +85,7 @@ class TrainingSessionController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        if(!$user->can('TrainingSession.index')){
+        if (!$user->can('TrainingSession.index')) {
             return abort(403);
         }
         if ($request->ajax()) {
@@ -126,7 +126,7 @@ class TrainingSessionController extends Controller
     public function create()
     {
         $user = Auth::user();
-        if(!$user->can('TrainingSession.store')){
+        if (!$user->can('TrainingSession.store')) {
             return abort(403);
         }
         $bool_Arr = [];
@@ -141,7 +141,7 @@ class TrainingSessionController extends Controller
         if ($training_sessions) {
             foreach ($training_sessions as $training_session) {
                 if ((new DateTime($training_session->start_date) <= new DateTime($date_now->format('Y-m-d'))) && (new DateTime($date_now->format('Y-m-d')) <= new DateTime($training_session->end_date))) {
-                    return redirect()->route('training_session.index')->with('message','You have training session no queue please finish this session!');
+                    return redirect()->route('training_session.index')->with('message', 'You have training session no queue please finish this session!');
                 }
             }
         }
@@ -193,7 +193,7 @@ class TrainingSessionController extends Controller
         $trainingSession->status = 0;
         // $session = TrainingSession::create($trainingSession);
         $trainingSession->save();
-        foreach (Region::where('status',1)->get() as $key => $value) {
+        foreach (Region::where('status', 1)->get() as $key => $value) {
             $capacity = $value->qoutaInpercent * $trainingSession->quantity;
             RegionIntake::create(['training_session_id' => $trainingSession->id, 'region_id' => $value->id, 'intake' => $capacity]);
         }
@@ -689,7 +689,7 @@ class TrainingSessionController extends Controller
                             array_push($accepted_arr, $value);
                         }
                     }
-                }else{
+                } else {
                     return redirect()->back()->with('error', 'Check Your Woreda Quota');
                 }
             }
@@ -709,7 +709,7 @@ class TrainingSessionController extends Controller
                             array_push($accepted_arr, $value);
                         }
                     }
-                }else{
+                } else {
                     return redirect()->back()->with('error', 'Check Your Woreda Quota');
                 }
             }
@@ -943,33 +943,39 @@ class TrainingSessionController extends Controller
 
     public function trainingCenterIndex(TrainingSession $trainingSession)
     {
+
         $user = Auth::user();
-        if($user->can('centerCooridnator') && !$user->hasRole(Constants::SUPER_ADMIN)){
+        if ($user->can('centerCooridnator') && !$user->hasRole(Constants::SUPER_ADMIN)) {
             $permission = Permission::findOrCreate('centerCooridnator');
-            $centers = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id',$user->id)->where('permission_id',$permission->id)->pluck('trainining_center_id');
-            if(count($centers)<=0){
+            $centers = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', $user->id)->where('permission_id', $permission->id)->pluck('trainining_center_id');
+            if (count($centers) <= 0) {
                 $trainingCenterCapacities = [];
-            }else{
-                if(count($centers)==1){
-                    return redirect(route('session.training_center.show',['training_session'=>$trainingSession->id,'training_center'=>$centers[0]]));
+            } else {
+                if (count($centers) == 1) {
+                    return redirect(route('session.training_center.show', ['training_session' => $trainingSession->id, 'training_center' => $centers[0]]));
                 }
                 $centerIds = [];
-                foreach($centers as $center){
-                    array_push($centerIds,$center);
+                foreach ($centers as $center) {
+                    array_push($centerIds, $center);
                 }
-                $trainingCenterCapacities = TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->whereIn('trainining_center_id',$centerIds)->get();
+                $trainingCenterCapacities = TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->whereIn('trainining_center_id', $centerIds)->get();
             }
-        }
-        else if($user->can('TraininingCenter.index')){
+        } else if ($user->can('TraininingCenter.index')) {
             $trainingCenterCapacities = TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->get();
-        }else{
-            return abort(403,"You are not allowed to access this page!");
+        } else {
+            return abort(403, "You are not allowed to access this page!");
         }
         return view('training_session.centers', compact('trainingSession', 'trainingCenterCapacities'));
     }
 
     public function trainingCenterShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
+
+        $permission = Permission::findOrCreate('centerCooridnator');
+        $centers = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', Auth::user()->id)->where('permission_id', $permission->id)->where('trainining_center_id', $trainingCenter->id)->count();
+        if ($centers <= 0) {
+            return abort(403);
+        }
         $cindicationRooms = CindicationRoom::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->get();
         $miniSide = 'aside-minimize';
         // $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->count();
@@ -1002,6 +1008,9 @@ class TrainingSessionController extends Controller
     }
     public function resourceAssignToTrainingCenter($training_session, Request $request)
     {
+        if (!Auth::user()->can('TrainingSession.showResource')) {
+            return abort(403);
+        }
         $training_center_id = $request->get('training_center_id');
         $resource_id = $request->get('resource_id');
         $amount = $request->get('amount');
@@ -1011,31 +1020,40 @@ class TrainingSessionController extends Controller
     }
     public function updateResourceAssignToTrainingCenter($training_session, Request $request)
     {
-        // dd($request);
+        if (!Auth::user()->can('TrainingSession.showResource')) {
 
+            return abort(403);
+        }
         $training_center_id = $request->get('training_center_id');
         $resource_id = $request->get('resource_id');
         $amount = $request->get('amount');
+        // dd($amount);
         $trainingCenter = TraininingCenter::find($training_center_id);
-        $trainingCenterResourceCurrentBalance = $trainingCenter->resources()->latest()->first()->pivot->current_balance;
-        DB::table('resource_trainining')->where('resource_id', $resource_id)->where('training_session_id', $training_center_id)->where('trainining_center_id', $training_center_id)->update([
-            'current_balance' => $trainingCenterResourceCurrentBalance + $amount
+        // $trainingCenter->resources()->attach($resource_id, ['current_balance' => (int)$amount, 'initial_balance' => $amount, 'training_session_id' => $training_session]);
+        // dd($training_center_id);
+        DB::table('resource_trainining')->where('resource_id', $resource_id)->where('training_session_id', $training_session)->where('trainining_center_id', $training_center_id)->update([
+            'current_balance' => $amount
         ]);
-
-        $trainingCenter->resources()->attach($resource_id, ['current_balance' => (int)$amount + $trainingCenterResourceCurrentBalance, 'initial_balance' => $amount, 'training_session_id' => $training_session]);
-
         return redirect()->back()->with('msg', 'Resource Added Sucessfuily TO Training Center');
     }
     public function showResource($training_session, $resource)
     {
 
+        if (!Auth::user()->can('TrainingSession.showResource')) {
+
+            return abort(403);
+        }
 
         return view('training_session.resource.show', ['resource' => Resource::find($resource), 'trainingCenters' => TraininingCenter::all()]);
     }
     public function allResource(Request $request)
     {
+        if (!Auth::user()->can('TrainingSession.allResource')) {
+
+            return abort(403);
+        }
         $resources = Resource::query();
-        $name= $request->get('name');
+        $name = $request->get('name');
         if ($request->has('filter')) {
             if (!empty($name)) {
                 $resources = $resources->where('name', 'like',  '%' . $name . '%');
@@ -1047,7 +1065,7 @@ class TrainingSessionController extends Controller
     public function approvePlacment(TrainingSession $trainingSession)
     {
         $trainingSessionId = $trainingSession->id;
-        Artisan::call('id:generate '.$trainingSessionId);
+        Artisan::call('id:generate ' . $trainingSessionId);
         $trainingSession->update(['status' => Constants::TRAINING_SESSION_PLACEMENT_APPROVE]);
         $trainingSession->save();
         return redirect()->back()->with('message', 'Placment approved successfully');
