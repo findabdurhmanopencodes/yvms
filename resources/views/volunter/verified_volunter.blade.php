@@ -93,9 +93,11 @@
             @endcan
         </div>
         <div class="card-body">
+
+
             <!--begin: Datatable-->
-            <div class="datatable datatable-default datatable-bordered datatable-loaded">
-                <table class="table table-responsive">
+
+                <table width="100%"    class="table table-striped ">
                     <thead>
                         <tr>
                             <th>No.</th>
@@ -157,8 +159,7 @@
                 <div class="d-flex justify-content-center">
                     {!! $volunters->links() !!}
                 </div>
-            </div>
-            <!--end: Datatable-->
+
         </div>
     </div>
 
