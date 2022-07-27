@@ -14,14 +14,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('bar_q_r_volunteers', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(Volunteer::class)->constrained();
-            $table->longText('bar_code');
-            $table->longText('qr_code');
-            $table->integer('created_at');
-            $table->integer('updated_at');
-        });
+        // Schema::create('bar_q_r_volunteers', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->foreignIdFor(Volunteer::class)->constrained();
+        //     $table->longText('bar_code');
+        //     $table->longText('qr_code');
+        //     $table->integer('created_at');
+        //     $table->integer('updated_at');
+        // });
     }
 
     /**
