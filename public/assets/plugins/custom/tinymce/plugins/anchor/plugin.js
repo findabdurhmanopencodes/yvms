@@ -15,7 +15,7 @@
       return node.tagName === 'A' && editor.dom.getAttrib(node, 'href') === '';
     };
     var isValidId = function (id) {
-      return /^[A-Za-z][A-Za-z0-9\-:._]*$/.test(id);
+      return /^[a-z A-Z][a-z A-Z0-9\-:._]*$/.test(id);
     };
     var getId = function (editor) {
       var selectedNode = editor.selection.getNode();

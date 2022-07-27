@@ -56,7 +56,7 @@ class ResourceController extends Controller
             return abort(403);
         }
         //
-        $request->validate(['name' => 'required|regex:/^[a-zA-Z]+$/u|max:255|unique:resources,name']);
+        $request->validate(['name' => 'required|regex:/^[a-z A-Z]+$/u|max:255|unique:resources,name']);
         Resource::create(['name' => $request->get('name')]);
         return redirect()->route('resource.index')->with('message', 'Resource created successfully');
     }
@@ -106,7 +106,7 @@ class ResourceController extends Controller
 
             return abort(403);
         }
-        $data = $request->validate(['name' => 'required|regex:/^[a-zA-Z]+$/u|max:255|unique:resources,name,' . $resource->id]);
+        $data = $request->validate(['name' => 'required|regex:/^[a-z A-Z]+$/u|max:255|unique:resources,name,' . $resource->id]);
         $resource->update($data);
         return redirect()->route('resource.index')->with('message', 'resource updated successfully');
     }
