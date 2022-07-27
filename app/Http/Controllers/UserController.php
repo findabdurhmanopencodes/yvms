@@ -101,9 +101,9 @@ class UserController extends Controller
             return abort(403, "Please make sure regional cordinator and zonecoredinator role created");
         }
         $userData = $request->validate([
-            'first_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-zA-Z ]+$/'],
-            'father_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-zA-Z ]+$/'],
-            'grand_father_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-zA-Z ]+$/'],
+            'first_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-z A-Z ]+$/'],
+            'father_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-z A-Z ]+$/'],
+            'grand_father_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-z A-Z ]+$/'],
             'dob' => ['required', 'date_format:d/m/Y'],
             'gender' => ['required', 'string', 'in:M,F'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
@@ -202,9 +202,9 @@ class UserController extends Controller
         $regionalCordinator = Role::findByName('regional-coordinator');
         $zoneCordinator = Role::findByName('zone-coordinator');
         $userData = $request->validate([
-            'first_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-zA-Z ]+$/'],
-            'father_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-zA-Z ]+$/'],
-            'grand_father_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-zA-Z ]+$/'],
+            'first_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-z A-Z ]+$/'],
+            'father_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-z A-Z ]+$/'],
+            'grand_father_name' => ['required', 'string', 'max:255', 'min:3','regex:/^[a-z A-Z ]+$/'],
             'dob' => ['required', 'date_format:d/m/Y'],
             'gender' => ['required', 'string', 'in:M,F'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],

@@ -128,7 +128,7 @@
                         <i class="fal fa-plus"></i>
                         <!--end::Svg Icon-->
                  </span>
-              <i class="fa fa-usd"> </i>  Add tarif </a>
+              <i class="fa fa-usd"> </i>  Add new tarif </a>
                 <form method="POST" action="{{ route('transportTarif.store', []) }}">
                         @csrf
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -150,7 +150,7 @@
                                                </div>
 
                                             <div class="form-group col-12">
-                                                <input type="text" name="price" class="form-control" placeholder="Enter total birr" required>
+                                                <input type="number" name="price" class="form-control" placeholder="Enter total birr" required>
                                                </div>
 
 
@@ -168,8 +168,43 @@
                 <!--end::Button-->
             </div>
         </div>
+
+
         <div class="card-body">
-            <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+            <table width="100%" class="table table-striped ">
+                <thead>
+                    </tr>
+                    <th> #</th>
+                    <th> Tarif per KM</th>
+                    <th> Last update </th>
+                    <th> Description </th>
+                     <th>Action </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($tarifs as $key =>  $tarif)
+                        <tr>
+                                 <td> {{ $key + 1 }}</td>
+                                 <td> Birr {{ $tarif->price }} </td>
+                                 <td> {{ $tarif->created_at->diffForHumans();  }} </td>
+                                 <td> Current Transport tarif </td>
+                            </td>
+                            <td>
+                                <a href="javascript:;" onclick="deleteTarif({{ $tarif->id  }},$(this))" class="btn btn-sm btn-clean btn-icon" class="btn btn-icon">
+                                <span class="fa fa-trash"></span>
+                                </a>
+                                 <a href="{{ route('transportTarif.edit', ['transportTarif'=>$tarif->id]) }}"  class="btn btn-sm btn-clean btn-icon" class="btn btn-icon">
+                                    <span class="fa fa-edit"></span>
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+            {{-- <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div> --}}
         </div>
 
         <div class="m-auto col-6 mt-3">

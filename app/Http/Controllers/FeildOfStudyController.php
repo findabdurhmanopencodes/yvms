@@ -64,7 +64,7 @@ class FeildOfStudyController extends Controller
             return abort(403);
         }
 
-        $request->validate(['name' => 'required|regex:/^[a-zA-Z]+$/u|max:255|unique:feild_of_studies,name']);
+        $request->validate(['name' => 'required|regex:/^[a-z A-Z]+$/u|max:255|unique:feild_of_studies,name']);
         FeildOfStudy::create(['name' => $request->get('name')]);
         return redirect()->route('FeildOfStudy.index')->with('message', 'Feild of Study created successfully');
     }
@@ -119,7 +119,7 @@ class FeildOfStudyController extends Controller
         }
 
         $FeildOfStudyInfo=FeildOfStudy::find($request->get('id'));
-        $data = $request->validate(['name' => 'required|regex:/^[a-zA-Z]+$/u|max:255|unique:feild_of_studies,name,'.$FeildOfStudyInfo->id]);
+        $data = $request->validate(['name' => 'required|regex:/^[a-z A-Z]+$/u|max:255|unique:feild_of_studies,name,'.$FeildOfStudyInfo->id]);
         $FeildOfStudyInfo->update(['name'=>$data['name']]);
         return redirect()->route('FeildOfStudy.index')->with('message', 'feild Of Study Updated successfully');
         //

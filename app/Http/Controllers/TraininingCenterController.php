@@ -105,10 +105,11 @@ class TraininingCenterController extends Controller
 
         $request->validate([
             'logo' => 'image|mimes:jpg,png,jpeg,svg|max:2048|',
-            'name' => 'min:2|required|regex:/^[a-zA-Z]+$/u|max:255|unique:trainining_centers,name',
+            'name' => 'min:2|required|regex:/^[a-z A-Z]+$/u|max:255|unique:trainining_centers,name',
             'code' => 'required|string|unique:trainining_centers,code',
             'scale' => 'min:0|required:trainining_centers,scale',
-            'status' => 'required'
+            'status' => 'required',
+            'logo' => 'required',
         ]);
         $logoFile = FileController::fileUpload($request->logo, 'training center logos/')->id;
         TraininingCenter::create([

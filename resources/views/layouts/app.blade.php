@@ -89,9 +89,10 @@
                     <div class="mt-4 brand flex-column-auto" id="kt_brand">
                         <!--begin::Logo-->
                         <a href="#" class="text-center brand-logo w-100 d-block">
-                            <img alt="Logo" src="{{ asset('img/peace_logo_max.png') }}" width="70" />
+                            <img alt="Logo" src="{{ asset('img/peace_logo_max.png') }}" width="120" />
                         </a>
                         <!--end::Logo-->
+
                         <!--begin::Toggle-->
                         <button class="px-0 brand-toggle btn btn-sm" id="kt_aside_toggle">
                             <span class="svg-icon svg-icon-xl">
@@ -143,7 +144,7 @@
                                             <ul class="menu-subnav">
                                                 <li class="menu-item menu-item-parent" aria-haspopup="true">
                                                     <span class="menu-link">
-                                                        <span class="menu-text">User</span>
+                                                        <span class="menu-text"> User</span>
                                                     </span>
                                                 </li>
                                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'training_session.index') === 0 ? 'menu-item-active' : '' }}"
@@ -624,7 +625,7 @@
                 <div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
                     <!--begin::Copyright-->
                     <div class="order-2 text-dark order-md-1">
-                        <span class="mr-2 text-muted font-weight-bold">2020 &copy;</span>
+                        <span class="mr-2 text-muted font-weight-bold">2022 &copy;</span>
                         <a href="#" target="_blank" class="text-dark-75 text-hover-primary">Ministry of Peace</a>
                     </div>
                     <!--end::Copyright-->

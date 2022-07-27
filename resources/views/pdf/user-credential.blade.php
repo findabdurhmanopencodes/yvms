@@ -25,7 +25,7 @@
             Ministry Of Peace
             <br>
             <span style="font-family:serif !important;">
-                {{mb_convert_encoding('የሰላም ሚኒስቴር', 'HTML-ENTITIES', 'UTF-8');}}
+                <!-- {{mb_convert_encoding('የሰላም ሚኒስቴር', 'HTML-ENTITIES', 'UTF-8');}} -->
             </span>
         </h1>
         <hr>

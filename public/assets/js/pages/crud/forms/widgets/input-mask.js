@@ -58,7 +58,7 @@ var KTInputmask = function () {
             },
             definitions: {
                 '*': {
-                    validator: "[0-9A-Za-z!#$%&'*+/=?^_`{|}~\-]",
+                    validator: "[0-9a-z A-Z!#$%&'*+/=?^_`{|}~\-]",
                     cardinality: 1,
                     casing: "lower"
                 }

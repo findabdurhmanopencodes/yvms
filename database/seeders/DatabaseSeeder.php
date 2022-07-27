@@ -35,13 +35,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            // PermissionSeeder::class,
+            PermissionSeeder::class,
             RoleSeeder::class,
-            // AbdiSeeder::class,
+            AbdiSeeder::class,
             // BaseSeeder::class,
             // FakeDataSeeder::class,
         ]);
-        // dd('abdi for testing');
         $superUser = User::create(
             [
                 'first_name' => 'Super',
