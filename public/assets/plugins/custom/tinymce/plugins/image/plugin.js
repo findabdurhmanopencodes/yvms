@@ -2083,7 +2083,7 @@
       };
     };
     var addPrependUrl2 = function (info, srcURL) {
-      if (!/^(?:[a-zA-Z]+:)?\/\//.test(srcURL)) {
+      if (!/^(?:[a-z A-Z]+:)?\/\//.test(srcURL)) {
         return info.prependURL.bind(function (prependUrl) {
           if (srcURL.substring(0, prependUrl.length) !== prependUrl) {
             return Option.some(prependUrl + srcURL);

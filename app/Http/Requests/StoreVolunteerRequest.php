@@ -50,10 +50,10 @@ class StoreVolunteerRequest extends FormRequest
             'agree_check' => ['required', 'accepted'],
             //first wizard validation
             'photo' => ['required', 'image', 'max:4096', 'mimes:png,jpg,jpeg,bmp,tiff'],
-            'first_name' => ['required', 'string', 'min:2', 'max:50','regex:/^[a-zA-Z ]+$/'],
-            'first_name' => ['required', 'string', 'min:2', 'max:50','regex:/^[a-zA-Z ]+$/'],
-            'father_name' => ['required', 'string', 'min:2', 'max:50','regex:/^[a-zA-Z ]+$/'],
-            'grand_father_name' => ['required', 'string', 'min:2', 'max:50','regex:/^[a-zA-Z ]+$/'],
+            'first_name' => ['required', 'string', 'min:2', 'max:50','regex:/^[a-z A-Z ]+$/'],
+            'first_name' => ['required', 'string', 'min:2', 'max:50','regex:/^[a-z A-Z ]+$/'],
+            'father_name' => ['required', 'string', 'min:2', 'max:50','regex:/^[a-z A-Z ]+$/'],
+            'grand_father_name' => ['required', 'string', 'min:2', 'max:50','regex:/^[a-z A-Z ]+$/'],
             // 'disability' => ['sometimes',],
             'dob' => ['required', 'date_format:d/m/Y'],
             'gender' => ['required'],
@@ -74,7 +74,7 @@ class StoreVolunteerRequest extends FormRequest
             'msc_document' => ['required_if:educational_level,==,1', 'required_if:educational_level,==,2', 'file', 'max:4096', 'mimes:pdf,png,jpg,jpeg,bmp,tiff',],
             'phd_document' => ['required_if:educational_level,==,2', 'file', 'max:4096', 'mimes:pdf,png,jpg,jpeg,bmp,tiff',],
             //Other Mandatory Documents
-            'contact_name' => ['required','regex:/^[a-zA-Z ]+$/'],
+            'contact_name' => ['required','regex:/^[a-z A-Z ]+$/'],
             'contact_phone' => ['required', 'regex:/^(\+251|0)9[0-9]{8}/', 'unique:volunteers,phone'],
             'kebele_id' => ['required', 'file', 'max:4096', 'mimes:pdf,png,jpg,jpeg,bmp,tiff',],
             'ethical_license' => ['required', 'file', 'max:4096', 'mimes:pdf,png,jpg,jpeg,bmp,tiff',],

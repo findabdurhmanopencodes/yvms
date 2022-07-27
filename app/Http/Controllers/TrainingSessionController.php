@@ -395,6 +395,11 @@ class TrainingSessionController extends Controller
             'quantity' => 'required'
         ]);
 
+        foreach (Region::where('status', 1)->get() as $key => $value) {
+            $capacity = $value->qoutaInpercent * $trainingSession->quantity;
+            RegionIntake::create(['training_session_id' => $trainingSession->id, 'region_id' => $value->id, 'intake' => $capacity]);
+        }
+
         $end_date_am = $trainingSession->endDateET();
 
         $trainingSession->update(['end_date_am' => $end_date_am]);
@@ -673,7 +678,7 @@ class TrainingSessionController extends Controller
 
             foreach ($grouped_array_male as $key => $group) {
                 $quota_woreda = Qouta::where('training_session_id', $id)->where('quotable_id', $key)->where('quotable_type', 'App\Models\Woreda')->get()->first();
-
+                // dd($quota_woreda);
                 if ($quota_woreda) {
                     $quota_woreda = $quota_woreda->quantity;
                     if ($quota_woreda >= sizeof($group)) {

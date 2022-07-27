@@ -22,6 +22,9 @@ class RoleSeeder extends Seeder
         $regionalCordinatorRole = Role::create(['name' => Constants::REGIONAL_COORDINATOR]);
         $systemUserCordinatorRole = Role::create(['name' => Constants::SYSTEM_USER]);
         $zoneCordinatorRole = Role::create(['name' => Constants::ZONE_COORDINATOR]);
+        $deskRole = Role::create(['name' => Constants::DESK]);
+        $generalRole = Role::create(['name' => Constants::GENERAL]);
+        $adminRole = Role::create(['name' => Constants::ADMIN]);
     }
     
 }

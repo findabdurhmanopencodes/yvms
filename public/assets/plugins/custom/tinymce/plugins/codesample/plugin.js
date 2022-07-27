@@ -915,7 +915,7 @@
                   }
                 ],
                 'number': /\b(?:(?:0[xX](?:[\dA-Fa-f](?:_[\dA-Fa-f])?)+|0[bB](?:[01](?:_[01])?)+|0[oO](?:[0-7](?:_[0-7])?)+)n?|(?:\d(?:_\d)?)+n|NaN|Infinity)\b|(?:\b(?:\d(?:_\d)?)+\.?(?:\d(?:_\d)?)*|\B\.(?:\d(?:_\d)?)+)(?:[Ee][+-]?(?:\d(?:_\d)?)+)?/,
-                'function': /#?[_$a-zA-Z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*(?:\.\s*(?:apply|bind|call)\s*)?\()/,
+                'function': /#?[_$a-z A-Z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*(?:\.\s*(?:apply|bind|call)\s*)?\()/,
                 'operator': /--|\+\+|\*\*=?|=>|&&|\|\||[!=]==|<<=?|>>>?=?|[-+*/%&|^!=<>]=?|\.{3}|\?[.?]?|[~:]/
               });
               Prism.languages.javascript['class-name'][0].pattern = /(\b(?:class|interface|extends|implements|instanceof|new)\s+)[\w.\\]+/;
@@ -926,12 +926,12 @@
                   greedy: true
                 },
                 'function-variable': {
-                  pattern: /#?[_$a-zA-Z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*[=:]\s*(?:async\s*)?(?:\bfunction\b|(?:\((?:[^()]|\([^()]*\))*\)|[_$a-zA-Z\xA0-\uFFFF][$\w\xA0-\uFFFF]*)\s*=>))/,
+                  pattern: /#?[_$a-z A-Z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*[=:]\s*(?:async\s*)?(?:\bfunction\b|(?:\((?:[^()]|\([^()]*\))*\)|[_$a-z A-Z\xA0-\uFFFF][$\w\xA0-\uFFFF]*)\s*=>))/,
                   alias: 'function'
                 },
                 'parameter': [
                   {
-                    pattern: /(function(?:\s+[_$A-Za-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*)?\s*\(\s*)(?!\s)(?:[^()]|\([^()]*\))+?(?=\s*\))/,
+                    pattern: /(function(?:\s+[_$a-z A-Z\xA0-\uFFFF][$\w\xA0-\uFFFF]*)?\s*\(\s*)(?!\s)(?:[^()]|\([^()]*\))+?(?=\s*\))/,
                     lookbehind: true,
                     inside: Prism.languages.javascript
                   },
@@ -945,7 +945,7 @@
                     inside: Prism.languages.javascript
                   },
                   {
-                    pattern: /((?:\b|\s|^)(?!(?:as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|undefined|var|void|while|with|yield)(?![$\w\xA0-\uFFFF]))(?:[_$A-Za-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*\s*)\(\s*)(?!\s)(?:[^()]|\([^()]*\))+?(?=\s*\)\s*\{)/,
+                    pattern: /((?:\b|\s|^)(?!(?:as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|undefined|var|void|while|with|yield)(?![$\w\xA0-\uFFFF]))(?:[_$a-z A-Z\xA0-\uFFFF][$\w\xA0-\uFFFF]*\s*)\(\s*)(?!\s)(?:[^()]|\([^()]*\))+?(?=\s*\)\s*\{)/,
                     lookbehind: true,
                     inside: Prism.languages.javascript
                   }
@@ -1292,7 +1292,7 @@
                   greedy: true
                 },
                 'function': {
-                  pattern: /((?:^|\s)def[ \t]+)[a-zA-Z_]\w*(?=\s*\()/g,
+                  pattern: /((?:^|\s)def[ \t]+)[a-z A-Z_]\w*(?=\s*\()/g,
                   lookbehind: true
                 },
                 'class-name': {
@@ -1352,7 +1352,7 @@
                 Prism.languages.insertBefore('ruby', 'keyword', {
                   'regex': [
                     {
-                      pattern: /%r([^a-zA-Z0-9\s{(\[<])(?:(?!\1)[^\\]|\\[\s\S])*\1[gim]{0,3}/,
+                      pattern: /%r([^a-z A-Z0-9\s{(\[<])(?:(?!\1)[^\\]|\\[\s\S])*\1[gim]{0,3}/,
                       greedy: true,
                       inside: { 'interpolation': interpolation }
                     },
@@ -1382,9 +1382,9 @@
                       greedy: true
                     }
                   ],
-                  'variable': /[@$]+[a-zA-Z_]\w*(?:[?!]|\b)/,
+                  'variable': /[@$]+[a-z A-Z_]\w*(?:[?!]|\b)/,
                   'symbol': {
-                    pattern: /(^|[^:]):[a-zA-Z_]\w*(?:[?!]|\b)/,
+                    pattern: /(^|[^:]):[a-z A-Z_]\w*(?:[?!]|\b)/,
                     lookbehind: true
                   },
                   'method-definition': {
@@ -1402,7 +1402,7 @@
                 });
                 Prism.languages.ruby.string = [
                   {
-                    pattern: /%[qQiIwWxs]?([^a-zA-Z0-9\s{(\[<])(?:(?!\1)[^\\]|\\[\s\S])*\1/,
+                    pattern: /%[qQiIwWxs]?([^a-z A-Z0-9\s{(\[<])(?:(?!\1)[^\\]|\\[\s\S])*\1/,
                     greedy: true,
                     inside: { 'interpolation': interpolation }
                   },

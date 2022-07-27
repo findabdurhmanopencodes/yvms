@@ -48,7 +48,7 @@ class RegionController extends Controller
         if(!Auth::user()->can('Region.index')){
             return abort(403);
         }
-        $trainingSession_id = TrainingSession::availableSession()->first()->id;
+        $trainingSession_id = TrainingSession::availableSession()?->first()?->id;
         if ($request->ajax()) {
             return datatables()->of(Region::select())->make(true);
         }

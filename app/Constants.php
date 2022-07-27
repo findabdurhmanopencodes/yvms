@@ -13,6 +13,9 @@ class Constants {
     const SYSTEM_USER = 'system-user';
     const VOLUNTEER = 'volunteer';
     const SUPER_ADMIN = 'super-admin';
+    const DESK = 'desk';
+    const GENERAL = 'general';
+    const ADMIN = 'admin';
 
 
     const VOLUNTEER_STATUS_DOCUMENT_VERIFIED = 1;

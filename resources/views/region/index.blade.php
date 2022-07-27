@@ -10,7 +10,63 @@
     </li>
 @endsection
 @push('js')
-    <script>
+    <script> 
+        var COLUMNS = [{
+                field: 'id',
+                title: '#',
+                sortable: 'asc',
+                width: 30,
+                type: 'number',
+                selector: false,
+                textAlign: 'center',
+                template: function(row, index) {
+                    return index + 1;
+                }
+            },
+            {
+                field: 'name',
+                title: 'Name',
+                sortable: 'asc',
+            },
+            {
+                field: 'qoutaInpercent',
+                title: 'Quata',
+                sortable: 'asc',
+            },
+            {
+                field: 'code',
+                title: 'Code',
+                sortable: 'asc',
+            },
+            {
+                field: 'Actions',
+                title: 'Actions',
+                sortable: false,
+                width: 100,
+                overflow: 'visible',
+                autoHide: false,
+                template: function(row) {
+                    var regionId = row.id;
+                    return '\
+                                    <div class="d-flex">\
+                                                <a href="javascript:;" onclick="deleteRegion(' + regionId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
+                                                    <i class="far fa-trash"></i>\
+                                                </a>\
+                                                \
+                                                <a href="/region/' + regionId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                                                    <i class="far fa-pen"></i>\
+                                                </a>\
+                                                @if($trainingSession_id!=null)
+                                                <a href="'+{{ $trainingSession_id }}+'/'+regionId+'/region/capacity" class="btn btn-sm btn-clean btn-icon" >\
+                                                    <i class="far fa-eye"></i>\
+                                                </a>\
+                                                \
+                                                @endif
+                                            </div>\
+                                            ';
+                         },
+            }
+        ]
         var HOST_URL = "{{ route('region.index') }}";
 
         function deleteRegion(regionId, parent) {
@@ -80,61 +136,6 @@
                 $(":submit").attr("disabled", true);
             }
            })
-
-        var COLUMNS = [{
-                field: 'id',
-                title: '#',
-                sortable: 'asc',
-                width: 30,
-                type: 'number',
-                selector: false,
-                textAlign: 'center',
-                template: function(row, index) {
-                    return index + 1;
-                }
-            },
-            {
-                field: 'name',
-                title: 'Name',
-                sortable: 'asc',
-            },
-            {
-                field: 'qoutaInpercent',
-                title: 'Quata',
-                sortable: 'asc',
-            },
-            {
-                field: 'code',
-                title: 'Code',
-                sortable: 'asc',
-            },
-            {
-                field: 'Actions',
-                title: 'Actions',
-                sortable: false,
-                width: 100,
-                overflow: 'visible',
-                autoHide: false,
-                template: function(row) {
-                    var regionId = row.id;
-                    return '\
-                                    <div class="d-flex">\
-                                                <a href="javascript:;" onclick="deleteRegion(' + regionId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
-                                                    <i class="far fa-trash"></i>\
-                                                </a>\
-                                                \
-                                                <a href="/region/' + regionId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
-                                                    <i class="far fa-pen"></i>\
-                                                </a>\
-                                                <a href="'+{{ $trainingSession_id }}+'/'+regionId+'/region/capacity" class="btn btn-sm btn-clean btn-icon" >\
-                                                    <i class="far fa-eye"></i>\
-                                                </a>\
-                                                \
-                                            </div>\
-                                            ';
-                         },
-            }
-        ]
     </script>
     <script src="{{ asset('assets/js/pages/crud/ktdatatable/base/data-ajax.js') }}"></script>
 @endpush
