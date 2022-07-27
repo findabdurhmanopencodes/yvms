@@ -972,10 +972,12 @@ class TrainingSessionController extends Controller
     {
 
         $permission = Permission::findOrCreate('centerCooridnator');
-        $centers = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', Auth::user()->id)->where('permission_id', $permission->id)->where('trainining_center_id', $trainingCenter->id)->count();
-        // if ($centers <= 0) {
-        //     return abort(403);
-        // }
+        if(!Auth::user()->hasRole(Constants::SUPER_ADMIN)){
+            $centers = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', Auth::user()->id)->where('permission_id', $permission->id)->where('trainining_center_id', $trainingCenter->id)->count();
+            if ($centers <= 0) {
+                return abort(403);
+            }
+        }
         $cindicationRooms = CindicationRoom::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->get();
         $miniSide = 'aside-minimize';
         // $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->count();

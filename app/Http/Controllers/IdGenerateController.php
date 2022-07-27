@@ -127,7 +127,7 @@ class IdGenerateController extends Controller
 
             $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()[0];
         } else {
-            $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()[0];
+            $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()->first();
 
             $paginate_apps = DB::table('volunteers')
             ->join('statuses', 'statuses.volunteer_id','=', 'volunteers.id')
@@ -150,7 +150,7 @@ class IdGenerateController extends Controller
             ->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')
             ->leftJoin('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
             ->where('trainining_centers.id', $training_center_id)
-            ->where('statuses.acceptance_status',Constants::VOLUNTEER_STATUS_CHECKEDIN)
+            ->where('statuses.acceptance_status','>=',Constants::VOLUNTEER_STATUS_CHECKEDIN)
             ->select('*')->get();
             // dd($applicants[0]);
 
@@ -204,6 +204,7 @@ class IdGenerateController extends Controller
 
     public function deploymentID(Request $request, TrainingSession $trainingSession)
     {
+        $center = $request->get('center');
         if (!Auth::user()->can('TraininingCenter.graduatedIDPrint')) {
             return abort(403);
         }
@@ -213,7 +214,7 @@ class IdGenerateController extends Controller
             $graduated_volunteers = Volunteer::with('approvedApplicant.trainingPlacement.deployment.woredaIntake.woreda')->with('session')->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->where('training_session_id', $trainingSession->id)->get();
         }
 
-        return view('id.deployment_id', compact('graduated_volunteers'));
+        return view('id.deployment_id', compact('graduated_volunteers', 'center'));
     }
 
     public function pdfDownload(Request $request, TrainingSession $trainingSession, VolunteerDeployment $volunteerDeployment){
@@ -221,6 +222,7 @@ class IdGenerateController extends Controller
         // $qr = QrCode::generate('1234');
         // dd($qr);
         if ($request->get('checkVal') == 'deployment') {
+            $center_name = TraininingCenter::where('id',$request->get('center'))->get()->first()->code;
             $issued_date = $volunteerDeployment->IssuedDate();
             $check = $request->get('checkVal');
             $trainer = '';
@@ -231,9 +233,9 @@ class IdGenerateController extends Controller
             foreach ($html as $key => $value) {
                 array_push($volunteer_id, $value->id);
             }
-            $html = Volunteer::whereIn('id', $volunteer_id)->get();
+            $html = Volunteer::whereIn('id', $volunteer_id)->take(500)->get();
             $pdf = Pdf::loadView('id.dowlnload_id', compact('html', 'exp', 'expBar', 'check', 'trainer','issued_date'))->setPaper('letter', 'landscape');
-            return $pdf->stream();
+            return $pdf->download($center_name.' '.$request->get('checkVal').'ID.pdf');
         }elseif(($request->get('checkVal') == 'checkedIn') && ($request->get('trainer') == '')){
             $check = $request->get('checkVal');
             $trainer = $request->get('trainer');
@@ -245,6 +247,7 @@ class IdGenerateController extends Controller
             }
 
             $html = Volunteer::whereIn('id', $volunteer_id)->get();
+            // dd($html);
             foreach ($html as $key => $value) {
                 $check_val = IDcount::where('training_session_id', $trainingSession->availableSession()->first()->id)->where('volunteer_id',$value->id)->get();
                 if (count($check_val) > 0) {
@@ -254,8 +257,9 @@ class IdGenerateController extends Controller
                     IDcount::create(['volunteer_id' => $value->id, 'training_session_id' => $trainingSession->availableSession()->first()->id, 'count'=> 1]);
                 }
             }
+            
             $pdf = Pdf::loadView('id.dowlnload_id', compact('html', 'check', 'exp', 'trainer'))->setPaper('letter', 'landscape');
-            return $pdf->stream();
+            return $pdf->download($request->get('center').' '.$request->get('checkVal').'ID.pdf');
           } elseif(($request->get('checkVal') == 'checkedIn') && ($request->get('trainer') == 'trainer')){
             $check = $request->get('checkVal');
             $trainer = $request->get('trainer');
@@ -275,7 +279,7 @@ class IdGenerateController extends Controller
             }
 
             $pdf = Pdf::loadView('id.dowlnload_id', compact('html', 'check', 'trainer', 'userType', 'center', 'end_date'))->setPaper('letter', 'landscape');
-            return $pdf->stream();
+            return $pdf->download($request->get('center').' '.$request->get('trainer').'ID.pdf');
         }
     }
 

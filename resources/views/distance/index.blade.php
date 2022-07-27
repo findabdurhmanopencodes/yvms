@@ -180,6 +180,7 @@
 
                                  <td> {{ $distance->created_at}} </td>
                             </td>
+
                             <td>
                                 <a href="javascript:;" onclick="deleteDistance({{ $distance->id  }},$(this))" class="btn btn-sm btn-clean btn-icon" class="btn btn-icon">
                                 <span class="fa fa-trash"></span>

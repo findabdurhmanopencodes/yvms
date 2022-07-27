@@ -234,7 +234,7 @@ class TraininingCenterController extends Controller
     }
     public function assignChecker(Request $request, TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
-        $data = $request->validate(['checkerUser' => 'required']);
+        $data = $request->validate(['checkerUser' => 'required|numeric']);
         $checkerPermission = Permission::findOrCreate('checker');
         $trainingCenterBasedPermissionQuery = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', $data['checkerUser'])->where('trainining_center_id', $trainingCenter->id)->where('permission_id', $checkerPermission->id);
         $trainingCenterBasedPermissionCount = $trainingCenterBasedPermissionQuery->count();

@@ -168,7 +168,7 @@
         </div>
         <div class="card-body">
 
-            {{-- <table width="100%" class="table table-striped ">
+            <table width="100%" class="table table-striped ">
                 <thead>
                     </tr>
                     <th> #</th>
@@ -191,22 +191,24 @@
                             </td>
                             <td>
 
-                                <a href="javascript:;" onclick="deletepaymentType(' +paymentType + ',$(this))" class="btn btn-sm btn-clean btn-icon" >
-                                    <i class="far fa-trash"></i>
+                                <a href="javascript:;" onclick="deletepaymentType({{ $paymentType->id  }},$(this))" class="btn btn-sm btn-clean btn-icon" class="btn btn-icon">
+                                    <span class="fa fa-trash"></span>
                                 </a>
 
 
-                                 <a href="#"
-                                    class="btn btn-icon">
+
+
+                                <a href="{{ route('paymentType.edit', ['paymentType'=>$paymentType->id]) }}"  class="btn btn-sm btn-clean btn-icon" class="btn btn-icon">
                                     <span class="fa fa-edit"></span>
                                 </a>
+
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
-            </table> --}}
+            </table>
             <!--begin: Datatable-->
-        <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+        {{-- <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div> --}}
             <!--end: Datatable-->
         </div>
     </div>

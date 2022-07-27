@@ -52,6 +52,7 @@
 </form>
 <form method="POST" id="IdForm" action="{{ route('session.deployment.generateID', [Request::route('training_session')]) }}">
     @csrf
+    <input type="hidden" name="center" value="{{ $trainingCenter->id }}">
     <div class="card card-custom">
     {{-- <input type="hidden" value="all" name="allPrint" id="training_center_id"> --}}
     <div class="card-header flex-wrap  pt-6 ">

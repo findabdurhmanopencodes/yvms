@@ -212,7 +212,7 @@
                         <strong>Volunteer</strong>
                     </p>
                     <div style="position: relative; float: right; top: -79px;">
-                        <img src="data:image{{ $exp[$key+1] }}" alt="">
+                        <img src="{{ $val->barQrVolunteer->qr_code }}" alt="">
                     </div>
                 </div>
             @endif
