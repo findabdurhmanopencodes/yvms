@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Constants;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class PermissionSeeder extends Seeder
 {
@@ -169,7 +171,10 @@ class PermissionSeeder extends Seeder
         $this->abdi();
         $this->ajaib();
         $this->ms();
+        $this->seid();
     }
+
+
 
     public function abdi()
     {
@@ -248,22 +253,43 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'Event.store']);
         Permission::create(['name'=>'Event.show']);
         Permission::create(['name'=>'Event.update']);
-
-
         Permission::create(['name'=>'audit.index']);
-
         //updating trainingCenter Permission
         Permission::create(['name'=>'TraininingCenter.giveResource']);
         Permission::create(['name'=>'TraininingCenter.giveResourceDetail']);
-
         //updating trainingSession Permission
-
         Permission::create(['name'=>'TrainingSession.allResource']);
         Permission::create(['name'=>'TrainingSession.showResource']);
+    }
+
+    public function seid()
+    {
+        Role::findOrCreate(Constants::SUPER_ADMIN)->givePermissionTo([
+
+            'Payroll.index','Payroll.view','Payroll.create','Payroll.edit',
+            'Payroll.delete', 'PayrollSheet.view', 'PayrollSheet.create',
+            'PayrollSheet.edit', 'PayrollSheet.delete',  'Payroll.report',
+            'Payroll.filter',  'PayrollSheet.filter',  'Payroll.print',
+            'PaymentType.index', 'PaymentType.edit', 'PaymentType.delete',
+            'PaymentType.create', 'Distance.index',  'Distance.create',
+            'Distance.edit', 'Distance.delete', 'Distance.import', 'TransportTarif.index',
+             'TransportTarif.create',  'TransportTarif.edit', 'TransportTarif.delete'
 
 
+        ]);
 
 
+        // Role::findOrCreate(Constants::ADMIN)->givePermissionTo([
+
+        // ]);
+
+          // Role::findOrCreate(Constants::DESK)->givePermissionTo([
+
+        // ]);
+
+         // Role::findOrCreate(Constants::GENERAL)->givePermissionTo([
+
+        // ]);
     }
 }
 

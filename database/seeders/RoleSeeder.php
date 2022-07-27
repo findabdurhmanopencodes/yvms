@@ -23,4 +23,5 @@ class RoleSeeder extends Seeder
         $systemUserCordinatorRole = Role::create(['name' => Constants::SYSTEM_USER]);
         $zoneCordinatorRole = Role::create(['name' => Constants::ZONE_COORDINATOR]);
     }
+    
 }
