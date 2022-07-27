@@ -395,6 +395,11 @@ class TrainingSessionController extends Controller
             'quantity' => 'required'
         ]);
 
+        foreach (Region::where('status', 1)->get() as $key => $value) {
+            $capacity = $value->qoutaInpercent * $trainingSession->quantity;
+            RegionIntake::create(['training_session_id' => $trainingSession->id, 'region_id' => $value->id, 'intake' => $capacity]);
+        }
+
         $end_date_am = $trainingSession->endDateET();
 
         $trainingSession->update(['end_date_am' => $end_date_am]);
