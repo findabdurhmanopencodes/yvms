@@ -275,26 +275,50 @@ class TraininingCenterController extends Controller
 
         $permission = Permission::findOrCreate('checker');
         // dd(Auth::user()->id);
-        $TrainingBasedPermission = TrainingCenterBasedPermission::where('training_session_id', $request->route('training_session'))->where('user_id', Auth::user()->id)->where('permission_id', $permission->id)->first();
-        $trainingCenterId = $TrainingBasedPermission->traininingCenter->id;
-        if ($request->ajax()) {
-            $output = '';
-            $query = $request->get('query');
-            // Auth::user()->getRoleNames()[0]==Constants::SYSTEM_USER_ROLE;//Need This For Permission
-            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query)->whereRelation('approvedApplicant. .trainingCenterCapacity.trainingCenter', 'id', $trainingCenterId);
-            if (count($volunteerQuery->get()) > 0) {
-                $data = $volunteerQuery->whereRelation('status', 'acceptance_status', 4)->first();
-                // $accepted = $volunteerQuery->whereRelation('status', 'acceptance_status', 5)->first();
-
-                if (!$data) {
-                    return json_encode(['status' => 505]);
+        if(!Auth::user()->can('checker')){
+            return abort(403);
+        }
+        if(Auth::user()->hasRole(Constants::SUPER_ADMIN)){
+            if ($request->ajax()) {
+                $output = '';
+                $query = $request->get('query');
+                // Auth::user()->getRoleNames()[0]==Constants::SYSTEM_USER_ROLE;//Need This For Permission
+                $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query);
+                if (count($volunteerQuery->get()) > 0) {
+                    $data = $volunteerQuery->whereRelation('status', 'acceptance_status', 4)->first();
+                    // $accepted = $volunteerQuery->whereRelation('status', 'acceptance_status', 5)->first();
+                    if (!$data) {
+                        return json_encode(['status' => 505]);
+                    }
+                    return json_encode(['status' => 200, 'data' => $data]);
+                    // }
+                } else {
+                    return json_encode(['status' => 404]);
                 }
-                return json_encode(['status' => 200, 'data' => $data]);
-                // }
-            } else {
-                return json_encode(['status' => 404]);
+                // echo json_encode($data);
             }
-            // echo json_encode($data);
+        }else{
+            $TrainingBasedPermission = TrainingCenterBasedPermission::where('training_session_id', $request->route('training_session'))->where('user_id', Auth::user()->id)->where('permission_id', $permission->id)->first();
+            $trainingCenterId = $TrainingBasedPermission?->traininingCenter?->id;
+            if ($request->ajax()) {
+                $output = '';
+                $query = $request->get('query');
+                // Auth::user()->getRoleNames()[0]==Constants::SYSTEM_USER_ROLE;//Need This For Permission
+                $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query)->whereRelation('approvedApplicant. .trainingCenterCapacity.trainingCenter', 'id', $trainingCenterId);
+                if (count($volunteerQuery->get()) > 0) {
+                    $data = $volunteerQuery->whereRelation('status', 'acceptance_status', 4)->first();
+                    // $accepted = $volunteerQuery->whereRelation('status', 'acceptance_status', 5)->first();
+    
+                    if (!$data) {
+                        return json_encode(['status' => 505]);
+                    }
+                    return json_encode(['status' => 200, 'data' => $data]);
+                    // }
+                } else {
+                    return json_encode(['status' => 404]);
+                }
+                // echo json_encode($data);
+            }
         }
     }
 

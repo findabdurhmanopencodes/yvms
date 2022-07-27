@@ -678,7 +678,7 @@ class TrainingSessionController extends Controller
 
             foreach ($grouped_array_male as $key => $group) {
                 $quota_woreda = Qouta::where('training_session_id', $id)->where('quotable_id', $key)->where('quotable_type', 'App\Models\Woreda')->get()->first();
-
+                // dd($quota_woreda);
                 if ($quota_woreda) {
                     $quota_woreda = $quota_woreda->quantity;
                     if ($quota_woreda >= sizeof($group)) {
