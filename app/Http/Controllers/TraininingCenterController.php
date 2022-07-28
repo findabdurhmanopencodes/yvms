@@ -140,7 +140,7 @@ class TraininingCenterController extends Controller
 
         $traininingCenter     = TraininingCenter::with('capacities.trainningSession')->find($traininingCenter);
         $trainingSession      = new TrainingSession();
-        $trainingSessionId    = $trainingSession->availableSession()->first()->id;
+        $trainingSessionId    = $trainingSession->availableSession()?->first()?->id;
         $capaityAddedInCenter = TrainingCenterCapacity::where(
             'training_session_id',
             $trainingSessionId
@@ -200,11 +200,11 @@ class TraininingCenterController extends Controller
             if ($TrainingCenter->photo) {
                 FileController::deleteFile($TrainingCenter->photo);
                 $logoFile = FileController::fileUpload($request->file('logo'), 'training center logos/')->id;
-                $TrainingCenter->photo = $logoFile;
+                $TrainingCenter->logo = $logoFile;
             } else {
 
                 $logoFile = FileController::fileUpload($request->file('logo'), 'training center logos/')->id;
-                $TrainingCenter->photo = $logoFile;
+                $TrainingCenter->logo = $logoFile;
             }
         }
         $TrainingCenter->update(['name' => $data['name'], 'code' => $data['code'], 'scale' => $data['scale']]);
@@ -308,7 +308,7 @@ class TraininingCenterController extends Controller
                 if (count($volunteerQuery->get()) > 0) {
                     $data = $volunteerQuery->whereRelation('status', 'acceptance_status', 4)->first();
                     // $accepted = $volunteerQuery->whereRelation('status', 'acceptance_status', 5)->first();
-    
+
                     if (!$data) {
                         return json_encode(['status' => 505]);
                     }
