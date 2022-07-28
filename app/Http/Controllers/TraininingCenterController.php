@@ -9,6 +9,7 @@ use App\Http\Requests\StoreTraininingCenterRequest;
 use App\Http\Requests\UpdateTraininingCenterRequest;
 use App\Imports\UsersImport;
 use App\Models\ApprovedApplicant;
+use App\Models\BarQRVolunteer;
 use App\Models\CindicationRoom;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingSession;
@@ -140,7 +141,7 @@ class TraininingCenterController extends Controller
 
         $traininingCenter     = TraininingCenter::with('capacities.trainningSession')->find($traininingCenter);
         $trainingSession      = new TrainingSession();
-        $trainingSessionId    = $trainingSession->availableSession()->first()->id;
+        $trainingSessionId    = $trainingSession->availableSession()?->first()?->id;
         $capaityAddedInCenter = TrainingCenterCapacity::where(
             'training_session_id',
             $trainingSessionId
@@ -281,7 +282,7 @@ class TraininingCenterController extends Controller
             $output = '';
             $query = $request->get('query');
             // Auth::user()->getRoleNames()[0]==Constants::SYSTEM_USER_ROLE;//Need This For Permission
-            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query)->whereRelation('approvedApplicant. .trainingCenterCapacity.trainingCenter', 'id', $trainingCenterId);
+            $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenterId);
             if (count($volunteerQuery->get()) > 0) {
                 $data = $volunteerQuery->whereRelation('status', 'acceptance_status', 4)->first();
                 // $accepted = $volunteerQuery->whereRelation('status', 'acceptance_status', 5)->first();
@@ -588,5 +589,15 @@ class TraininingCenterController extends Controller
         $graduatedVolunteers = $q->paginate(10);
 
         return view('volunter.graduated_volunteers', compact('training_centers', 'regions', 'graduatedVolunteers'));
+    }
+
+    public function barQRCode(Request $request)
+    {
+        $volunteer_id = Volunteer::where('id_number', $request->id_number)->get()->first()->id;
+        $barcheck = BarQRVolunteer::where('volunteer_id', $volunteer_id)->get()->first();
+        if (!$barcheck) {
+            BarQRVolunteer::create(['volunteer_id'=>$volunteer_id, 'bar_code'=>$request->barSrc, 'qr_code'=>$request->qrSrc]);
+        }
+        return response()->json(array('success' => 'success'), 200);
     }
 }

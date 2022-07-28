@@ -220,7 +220,8 @@
                             },
                             dataType: 'json',
                             success: function(data) {
-                                alert(data.success);
+                                console.log(data.success);
+                                // alert(data.success);
                             }
                         })
 

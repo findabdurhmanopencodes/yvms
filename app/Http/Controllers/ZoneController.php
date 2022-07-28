@@ -30,7 +30,7 @@ class ZoneController extends Controller
         if(!Auth::user()->can('Zone.index')){
             return abort(403);
         }
-        $trainingSession_id = TrainingSession::availableSession()[0]->id;
+        $trainingSession_id = TrainingSession::availableSession()?->first()?->id;
         if ($request->ajax()) {
             return datatables()->of(Zone::select())->addColumn('region', function (Zone $zone) {
                 return $zone->region->name;
