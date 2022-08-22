@@ -30,13 +30,18 @@ class ZoneController extends Controller
         if(!Auth::user()->can('Zone.index')){
             return abort(403);
         }
-        $trainingSession_id = TrainingSession::availableSession()[0]->id;
+        $trainingSession_id = TrainingSession::availableSession();
+        if(count($trainingSession_id)>0){
+            $trainingSession_id = $trainingSession_id[0]->id;
+        }else{
+            $trainingSession_id = null;
+        }
         if ($request->ajax()) {
             return datatables()->of(Zone::select())->addColumn('region', function (Zone $zone) {
                 return $zone->region->name;
             })->make(true);
         }
-   
+
         $zones = Zone::all();
         $regions = Region::all();
         return view('zone.index', compact(['zones', 'regions', 'trainingSession_id']));
@@ -213,7 +218,7 @@ class ZoneController extends Controller
         }else{
             return redirect()->route('zone.index')->with('error', 'Specify Region First!!');
         }
-        
+
     }
 
     public function zoneIntakeStore(Request $request, TrainingSession $trainingSession, $zone_id)
