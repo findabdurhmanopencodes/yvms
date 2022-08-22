@@ -69,8 +69,7 @@
                                                 class="flaticon2-user-outline-symbol mr-2 font-size-lg"></i>{{ $volunteer->gender == 'f' || 'F' ? 'Femail' : 'Male' }}</a>
                                         <a href="#"
                                             class="text-dark-50 text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
-                                            <i
-                                                class="flaticon2-new-email mr-2 font-size-lg"></i>{{ $volunteer->email }}</a>
+                                            <i class="flaticon2-new-email mr-2 font-size-lg"></i>{{ $volunteer->email }}</a>
                                         <a href="#"
                                             class="text-dark-50 text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
                                             <i class="flaticon2-phone mr-2 font-size-lg"></i>{{ $volunteer->phone }}</a>
@@ -158,6 +157,24 @@
                         <!--end::Item-->
 
                     </div>
+                    @if ($volunteer->status?->acceptance_status)
+                        @php
+                            $volStatus = $volunteer->status?->acceptance_status;
+                            $volName = \App\Models\Status::$status[$volStatus];
+                        @endphp
+
+                        <div class="my-4 mx-4 float-right">
+                            <h1>Status:<span
+                                    class="badge {{ $volStatus == 0 ? 'badge-warning' : ($volStatus == 1 ? 'badge-success' : ($volStatus == 2 ? 'badge-danger' : 'badge-info')) }} badge-pill">{{ $volName }}</span>
+                            </h1>
+                        </div>
+                        @if ($volunteer->status?->acceptance_status==2)
+                        <div class="my-4 mx-4 float-left">
+                            <h3>Rejection Reason</h3>
+                            <p>{{ $volunteer->status?->rejection_reason??'unknown' }}</p>
+                        </div>
+                        @endif
+                    @endif
                     <!--begin::Items-->
                 </div>
             </div>
@@ -215,7 +232,8 @@
                                                         </td>
 
                                                         <td class="text-right">
-                                                            <span class="label label-lg label-light-primary label-inline"><a
+                                                            <span
+                                                                class="label label-lg label-light-primary label-inline"><a
                                                                     href="{{ asset($volunteer->picture()->file_path) }}"
                                                                     target="_blank">Open
                                                                     File</a></span>
