@@ -29,7 +29,13 @@ class WoredaController extends Controller
         if (!Auth::user()->can('Woreda.index')) {
             return abort(403);
         }
-        $trainingSession_id = TrainingSession::availableSession()?->first()?->id;
+        // $trainingSession_id = TrainingSession::availableSession()?->first()?->id;
+        $trainingSession_id = TrainingSession::availableSession();
+        if(count($trainingSession_id)>0){
+            $trainingSession_id = $trainingSession_id[0]->id;
+        }else{
+            $trainingSession_id = null;
+        }
         if ($request->ajax()) {
             return datatables()->of(Woreda::select())->addColumn('zone', function (Woreda $woreda) {
                 return $woreda->zone->name;

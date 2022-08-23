@@ -64,6 +64,6 @@ class IdNumberGenerate extends Command
                 $start++;
             }
         });
-        // Artisan::call('volunteer:placment:notify:all');
+        Artisan::call('volunteer:placment:notify:all');
     }
 }

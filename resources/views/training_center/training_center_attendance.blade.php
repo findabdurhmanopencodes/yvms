@@ -112,7 +112,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (count($applicants) > 1)
+                    @if (count($applicants) >= 1)
                         @foreach ($applicants as $key => $applicant)
                             <tr style="font-size: 13px;">
                                 {{-- <td>

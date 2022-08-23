@@ -137,7 +137,7 @@ Route::get('adb', function () {
      Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
      Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
 
-    Route::group(['prefix' => '{training_session}', 'middleware' => ['auth', 'verified'], 'as' => 'session.'], function () {
+    Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' => 'session.'], function () {
     Route::get('report/{report_name}', [ReportController::class, 'index'])->name('reports');
     Route::resource('hierarchy', HierarchyReportController::class);
     Route::get('deployment-regions', [RegionController::class, 'deployment'])->name('deployment.regions');
@@ -268,7 +268,7 @@ Route::get('adb', function () {
     Route::put('{woreda_id}/woreda/capacity/update', [WoredaController::class, 'woredaIntakeUpdate'])->name('woreda_intake.update');
 });
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     // Route::get('training_session/{training_session}/quota', [QoutaController::class, 'index'])->name('quota.index');
     // Route::middleware(['guest'])->group(function () {
     Route::resource('training_master', TrainingMasterController::class);
@@ -340,6 +340,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         if(!(Auth::user()?->can('dashboard.index')))
             return abort(403);
+            
         if (count(TrainingSession::availableSession()) > 0) {
             $trainingSession = TrainingSession::availableSession()[0];
             return redirect(route('session.dashboard', ['training_session' => $trainingSession->id]));

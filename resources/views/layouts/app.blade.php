@@ -308,14 +308,16 @@
                                         </a>
                                     </li>
 
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.CheckIn.index') === 0 ? 'menu-item-active' : '' }}"
+                                    @can('checker')
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.CheckIn.index') === 0 ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
-                                        <a href="{{ route('session.TrainingCenter.CheckIn', ['training_session' => Request::route('training_session')]) }}"
-                                            class="menu-link">
-                                            <i class="menu-icon flaticon2-check-mark"></i>
-                                            <span class="menu-text">Check-In</span>
-                                        </a>
-                                    </li>
+                                            <a href="{{ route('session.TrainingCenter.CheckIn', ['training_session' => Request::route('training_session')]) }}"
+                                                class="menu-link">
+                                                <i class="menu-icon flaticon2-check-mark"></i>
+                                                <span class="menu-text">Check-In</span>
+                                            </a>
+                                        </li>
+                                    @endcan
                                     <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.graduation.list') === 0 ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('session.graduation.list', ['training_session' => Request::route('training_session')]) }}"
