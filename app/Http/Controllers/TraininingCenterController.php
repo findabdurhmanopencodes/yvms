@@ -596,6 +596,9 @@ class TraininingCenterController extends Controller
 
     public function graduationList(TrainingSession $trainingSession, Request $request)
     {
+        if (!Auth::user()->can('TraininingCenter.graduate')) {
+            return abort(403);
+        }
         $training_centers = TraininingCenter::all();
         $regions = Region::all();
 
