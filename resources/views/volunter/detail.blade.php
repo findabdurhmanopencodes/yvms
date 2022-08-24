@@ -33,7 +33,12 @@
 
                         <div class="flex-shrink-0 mr-7 mt-lg-0 mt-3">
                             <div class="symbol symbol-40 symbol-lg-90">
+                                @if ($volunteer->picture())
+                                    
                                 <img src="{{ asset($volunteer->picture()->file_path) }}" alt="image">
+                                @else
+                                <img src="{{ asset('user.png') }}" alt="">
+                                @endif
                             </div>
                             <div class="symbol symbol-50 symbol-lg-120 symbol-primary d-none">
                                 <span class="font-size-h3 symbol-label font-weight-boldest"></span>
@@ -87,6 +92,22 @@
                         </div>
                         <!--end::Info-->
                     </div>
+                    @if ($volunteer->status?->acceptance_status == 2)
+                    <form
+                        action="{{ route('session.applicant.screen', ['training_session' => Request::route('training_session'), 'volunteer' => $volunteer->id]) }}"
+                        method="POST">
+                        @csrf
+                        <button class="btn btn-bg btn-info font-weight-bolder" type="submit"><i
+                                class="fa fa-check"></i>Accept Aplicant</button>
+                        <input type="hidden" value="accept" name="type">
+
+                    </form>
+                @endif
+                @if ($volunteer->status?->acceptance_status == 1)
+                    <button class="btn btn-bg btn-danger font-weight-bolder" data-toggle="modal"
+                        data-target="#reject_button" value="reject"><i class=""></i>Reject
+                        Applicant</button>
+                @endif
                     <!--end::Details-->
                     <div class="separator separator-solid"></div>
                     <!--begin::Items-->
@@ -113,7 +134,7 @@
                                 <span class="font-weight-bolder font-size-sm">Field Of Study</span>
                                 <span class="font-weight-bolder font-size-h5">
                                     <span
-                                        class="text-dark-50 font-weight-bold"></span>{{ $volunteer->fieldOfStudy->name }}</span>
+                                        class="text-dark-50 font-weight-bold"></span>{{ $volunteer->fieldOfStudy?->name }}</span>
                             </div>
                         </div>
                         <!--end::Item-->
@@ -232,11 +253,18 @@
                                                         </td>
 
                                                         <td class="text-right">
-                                                            <span
-                                                                class="label label-lg label-light-primary label-inline"><a
-                                                                    href="{{ asset($volunteer->picture()->file_path) }}"
-                                                                    target="_blank">Open
-                                                                    File</a></span>
+                                                            @if ($volunteer->picture())
+                                    
+                                                            
+                                                            <span class="label label-lg label-light-primary label-inline"><a
+                                                                href="{{ asset($volunteer->picture()?->file_path) }}"
+                                                                target="_blank">Open
+                                                                File</a></span>
+                                                            @else
+                                                            <span class="badge badge-danger badge-pill">Not
+                                                                Available</span>
+                                                            @endif
+                                                            
                                                         </td>
 
                                                     </tr>
@@ -494,6 +522,40 @@
 
         <!--end::Container-->
     </div>
+    <div class="modal fade" id="reject_button" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @can('Volunteer.Screen',)
+                <form method="POST"
+                    action="{{ route('session.applicant.screen', ['training_session' => Request::route('training_session'), 'volunteer' => $volunteer->id]) }}">
+                    @csrf
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Rejection Reason</h5>
+                        <button type="button" class="close" data-dismiss="modal" -label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="form-group mb-1">
+                            <label for="exampleTextarea">Rejection Reason</label>
+                            <textarea class="form-control" id="exampleTextarea" rows="3" name="rejection_reason"></textarea>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold"
+                            data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary font-weight-bold" value="reject" name="type">Save
+                            changes</button>
+                    </div>
+                </form>
+            @endcan
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('js')

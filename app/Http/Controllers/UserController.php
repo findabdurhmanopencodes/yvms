@@ -212,6 +212,7 @@ class UserController extends Controller
             'region' => ['required_if:role,==,' . $regionalCordinator->id . ''],
             'zone' => ['required_if:role,==,' . $zoneCordinator->id . ''],
         ]);
+    
         $date = DateTime::createFromFormat('d/m/Y', $request->get('dob'));
         $year = $date->format('Y');
         $month = $date->format('m');
@@ -241,13 +242,13 @@ class UserController extends Controller
             UserRegion::create([
                 'user_id' => $user->id,
                 'levelable_type' => Region::class,
-                'levelable_id' => $regionalCordinator->id,
+                'levelable_id' => $userData['region'],
             ]);
         } else if ($userData['role'] == $zoneCordinator->id) {
             UserRegion::create([
                 'user_id' => $user->id,
                 'levelable_type' => Zone::class,
-                'levelable_id' => $zoneCordinator->id,
+                'levelable_id' => $userData['zone'],
             ]);
         }
         event(new Registered($user));

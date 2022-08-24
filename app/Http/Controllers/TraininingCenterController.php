@@ -622,9 +622,9 @@ class TraininingCenterController extends Controller
 
     public function barQRCode(Request $request)
     {
-        $volunteer_id = Volunteer::where('id_number', $request->id_number)->get()->first()->id;
+        $volunteer_id = Volunteer::find($request->id_number)->id;
         $barcheck = BarQRVolunteer::where('volunteer_id', $volunteer_id)->get()->first();
-        if (!$barcheck) {
+        if ($barcheck == null) {
             BarQRVolunteer::create(['volunteer_id'=>$volunteer_id, 'bar_code'=>$request->barSrc, 'qr_code'=>$request->qrSrc]);
         }
         return response()->json(array('success' => 'success'), 200);

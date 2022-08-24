@@ -70,7 +70,12 @@
                         @dd(asset($applicant->picture()->file_path) ) --}}
                         <div class="flex-shrink-0 mr-7 mt-lg-0 mt-3">
                             <div class="symbol symbol-40 symbol-lg-90">
+                                @if ($applicant->picture())
+                                    
                                 <img src="{{ asset($applicant->picture()->file_path) }}" alt="image">
+                                @else
+                                <img src="{{ asset('user.png') }}" alt="">
+                                @endif
                             </div>
                             <div class="symbol symbol-50 symbol-lg-120 symbol-primary d-none">
                                 <span class="font-size-h3 symbol-label font-weight-boldest"></span>
@@ -122,13 +127,13 @@
                                         <a href="#"
                                             class="text-dark-50 text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
                                             <i
-                                                class="flaticon2-new-email mr-2 font-size-lg"></i>{{ $applicant->email }}</a>
+                                                class="flaticon2-new-email mr-2 font-size-lg"></i>{{ $applicant->email?$applicant->email:'unknown' }}</a>
                                         <a href="#"
                                             class="text-dark-50 text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
                                             <i class="flaticon2-phone mr-2 font-size-lg"></i>{{ $applicant->phone }}</a>
                                         <a href="#" class="text-dark-50 text-hover-primary font-weight-bold">
                                             <i
-                                                class="flaticon2-placeholder mr-2 font-size-lg"></i>{{ $applicant->woreda->name }},
+                                                class="flaticon2-placeholder mr-2 font-size-lg"></i>{{ $applicant->woreda?->name }},
                                             {{ $applicant->woreda->zone->name }}
                                             {{ $applicant->woreda->zone->region->name }}</a>
                                     </div>
@@ -166,7 +171,7 @@
                                 <span class="font-weight-bolder font-size-sm">Field Of Study</span>
                                 <span class="font-weight-bolder font-size-h5">
                                     <span
-                                        class="text-dark-50 font-weight-bold"></span>{{ $applicant->fieldOfStudy->name }}</span>
+                                        class="text-dark-50 font-weight-bold"></span>{{ $applicant->fieldOfStudy?->name }}</span>
                             </div>
                         </div>
                         <!--end::Item-->
@@ -269,7 +274,7 @@
 
                                                         <td class="text-right">
                                                             <span class="label label-lg label-light-primary label-inline"><a
-                                                                    href="{{ asset($applicant->picture()->file_path) }}"
+                                                                    href="{{ asset($applicant->picture()?$applicant->picture()->file_path:'user.png') }}"
                                                                     target="_blank">Open
                                                                     File</a></span>
                                                         </td>
