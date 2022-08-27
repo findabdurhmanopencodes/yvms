@@ -49,7 +49,7 @@ class VolunteerController extends Controller
 
     public function __construct()
     {
-        $this->authorizeResource(Volunteer::class, 'applicant');
+        // $this->authorizeResource(Volunteer::class, 'applicant');
     }
     protected function resourceAbilityMap()
     {
@@ -61,7 +61,7 @@ class VolunteerController extends Controller
             'edit' => 'update',
             'update' => 'update',
             'destroy' => 'delete',
-            'Screen' => 'screen',
+            // 'Screen' => 'screen',
         ];
     }
     /**
