@@ -49,7 +49,7 @@ class DeploymentAttendanceImport implements ToCollection, WithStartRow
             DeploymentVolunteerAttendance::create(['training_session_id'=> $this->trainingSession->id, 'woreda_id'=>$this->woreda->id, 'attendance_date'=>$date_now, 'volunteers'=> json_encode($volunteer_id)]);
             return redirect($past_url)->with('message', 'Volunteer Attendance Added Successfully!!!');
         }else{
-            return redirect($past_url)->with('error', 'Attendance Already Exists!!');
+            return redirect($past_url)->with('error', 'Attendance Already Taken on this date!!');
         }
     }
 

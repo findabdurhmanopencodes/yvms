@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants;
 use App\Exports\DeploymentAttendanceExport;
 use App\Models\DeploymentVolunteerAttendance;
 use App\Http\Requests\StoreDeploymentVolunteerAttendanceRequest;
@@ -97,7 +98,7 @@ class DeploymentVolunteerAttendanceController extends Controller
         if (!Auth::user()->can('VolunteerDeployment.attendanceExport')) {
             return abort(403);
         }
-        $users = DB::table('volunteers')->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->leftJoin('volunteer_deployments', 'volunteer_deployments.training_placement_id', '=', 'training_placements.id')->leftJoin('woreda_intakes', 'volunteer_deployments.woreda_intake_id', '=', 'woreda_intakes.id')->leftJoin('woredas', 'woreda_intakes.woreda_id', '=', 'woredas.id')->where('woredas.id', $woreda->id)->select(['id_number', 'first_name', 'father_name', 'grand_father_name'])->get();
+        $users = DB::table('volunteers')->join('statuses', 'statuses.volunteer_id','=', 'volunteers.id')->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->leftJoin('volunteer_deployments', 'volunteer_deployments.training_placement_id', '=', 'training_placements.id')->leftJoin('woreda_intakes', 'volunteer_deployments.woreda_intake_id', '=', 'woreda_intakes.id')->leftJoin('woredas', 'woreda_intakes.woreda_id', '=', 'woredas.id')->where('woredas.id', $woreda->id)->where('statuses.acceptance_status','>=',Constants::VOLUNTEER_STATUS_CHECKEDIN_DEPLOY)->select(['id_number', 'first_name', 'father_name', 'grand_father_name'])->get();
 
         $past_url = url()->previous();
         if ($users->first() == null) {

@@ -304,7 +304,10 @@ class VolunteerDeploymentController extends Controller
             $volunteersID = json_decode($attendances->volunteers);
 
             foreach ($volunteersID as $key => $value) {
-                array_push($volunteers, Volunteer::where('id_number', $value)->get()->first());
+                $vols = Volunteer::where('id_number', $value)->get()->first();
+                if ($vols) {
+                    array_push($volunteers, $vols);
+                }
             }
         }
 
@@ -323,7 +326,7 @@ class VolunteerDeploymentController extends Controller
             }
         }
 
-        $users = DB::table('volunteers')->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->leftJoin('volunteer_deployments', 'volunteer_deployments.training_placement_id', '=', 'training_placements.id')->leftJoin('woreda_intakes', 'volunteer_deployments.woreda_intake_id', '=', 'woreda_intakes.id')->leftJoin('woredas', 'woreda_intakes.woreda_id', '=', 'woredas.id')->where('woredas.id', $woreda->id)->get();
+        $users = DB::table('volunteers')->join('statuses', 'statuses.volunteer_id','=', 'volunteers.id')->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->leftJoin('volunteer_deployments', 'volunteer_deployments.training_placement_id', '=', 'training_placements.id')->leftJoin('woreda_intakes', 'volunteer_deployments.woreda_intake_id', '=', 'woreda_intakes.id')->leftJoin('woredas', 'woreda_intakes.woreda_id', '=', 'woredas.id')->where('woredas.id', $woreda->id)->where('statuses.acceptance_status','>=',Constants::VOLUNTEER_STATUS_CHECKEDIN_DEPLOY)->get();
 
         return view('training_session.woreda_show', compact('trainingSession', 'woreda', 'reports', 'volunteers', 'date', 'att_count', 'users'));
     }
