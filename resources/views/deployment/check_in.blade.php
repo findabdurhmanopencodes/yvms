@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Chek-in')
+@section('title','Check-in')
 {{-- @push('css')
     <style>
         #myTable {
@@ -77,13 +77,12 @@
     </div>
     <div class="card">
         <div class="card-header">
-            <h2>Check-In In Training Center</h2>
+            <h2>Check-In</h2>
             {{-- <div>
                 <a href="{{ route('session.trainingCenter.checkin.all', ['training_session'=>Request::route('training_session')]) }}" class="btn btn-primary float-right">Checked in All</a>
 
             </div> --}}
         </div>
-
         <div class="card-body">
             {{-- <h5 class="card-title">Search</h5>
             <input type="text" id="search" placeholder="Search Volunteer Using Id Number .."
@@ -124,8 +123,11 @@
             alt="..." width="200" id="profile">
         <h5 id="name">Name</h5>
         <h5 id="phone">Phone</h5>
-        <h5 id="region">Region</h5>
         <h5 id="center">Training Center</h5>
+        <h5 id="deployed_region">Deployed Region</h5>
+        <h5 id="deployed_zone">Deployed Zone</h5>
+        <h5 id="deployed_woreda">Deployed Woreda</h5>
+
         </div>
     </div>
 @endsection
@@ -157,8 +159,9 @@
     <script src="{{ asset('js/JsBarcode.all.min.js') }}"></script>
     <script>
         function fetch_customer_data(query = '') {
+            url='{{ route('session.deployment.check.result',['training_session'=> Request::route('training_session') ]) }}';
             $.ajax({
-                url: 'result/',
+                url: url,
                 method: 'GET',
                 data: {
                     query: query
@@ -175,62 +178,15 @@
                     //     alert('volunteer is aleady checked');
                     // }
                     else if (data.status == 200) {
-                        var div__qr_img = document.createElement("div");
-
-                        var div__qr_img_2 = document.createElement("div");
-
-                        // div__qr_img.setAttribute('id', 'qrcode');
-
-                        // // myDesign.appendChild(div__qr_img);
-
-                        var qrcode = new QRCode(div__qr_img, {
-                            text: data.data.id_number,
-                            width: 50,
-                            height: 44.7,
-                            colorDark : "#000000",
-                            colorLight : "#ffffff",
-                            correctLevel : QRCode.CorrectLevel.H,
-                        });
-
-                        var img = qrcode._el.children[1];
-                        var src = div__qr_img.children[0].toDataURL("image/png");
-
-                        var div__bar_img_2 = document.createElement("div");
-                        var div__bar_img = document.createElement("img");
-
-                        JsBarcode(div__bar_img)
-                            .options({font: "OCR-B", displayValue: true, width:0.9, height: 15, background: "white"})
-                            .CODE128(data.data.id_number, {fontSize: 11, textMargin: 2, textPosition: "top", color:'inherit'})
-                            .render();
-
-                        // div__bar_img_2.style.position = "relative";
-                        // div__bar_img_2.style.float = "right";
-                        // div__bar_img_2.style.left = '142px';
-                        // div__bar_img_2.style.top = '-216px';
-                        div__bar_img.style.color = "black";
-                        var barcodesrc = div__bar_img.src;
-
-                        $.ajax({
-                            url: 'barQRCode/',
-                            method: 'GET',
-                            data: {
-                                barSrc: barcodesrc,
-                                qrSrc: src,
-                                id_number: data.data.id
-                            },
-                            dataType: 'json',
-                            success: function(data) {
-                                console.log(data.success);
-                                // alert(data.success);
-                            }
-                        })
-
+                        console.log(data);
                         $("#name").html('Name:' + data.data.first_name + data.data.father_name);
                         $("#phone").html('Phone:' + data.data.phone);
-                        $("#region").html('Region:' + data.data.woreda.zone.region.name);
-                        // $("#center").html('Training Center:' + data.data.placment().name);
+                        $("#center").html('Training Center:' + data.data.approved_applicant.training_placement.training_center_capacity.training_center.name);
+                        $("#deployed_region").html('Deployed Region:' + data.deployed_region);
+                        $("#deployed_zone").html('Deployed Zone:' + data.deployed_zone);
+                        $("#deployed_woreda").html('Deployed Woreda:' + data.deployed_woreda);
                         $("#profile").attr("src", data.data.profilePhoto);
-                        $("#check").html('<h3><a class="btn btn-primary" href='+'/{{ Request::route('training_session') }}/check-in/action/' + data.data.id + '><i class="fa fa-check"> Check-In</a></h3>');
+                        $("#check").html('<h3><a class="btn btn-primary" href='+'/{{ Request::route('training_session') }}/deployment/check-in/action/' + data.data.id + '><i class="fa fa-check"> Check-In</a></h3>');
 
                     }
                 }
@@ -245,6 +201,7 @@
             $(document).on('keyup', '#search', function(e) {
                 if (e.key === 'Enter' || e.keyCode === 13) {
                     var query = $(this).val();
+
                     fetch_customer_data(query);
                     if (("#search").val == null) {
                         $("#name").html('');
