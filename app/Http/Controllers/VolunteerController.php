@@ -49,7 +49,7 @@ class VolunteerController extends Controller
 
     public function __construct()
     {
-        $this->authorizeResource(Volunteer::class, 'applicant');
+        // $this->authorizeResource(Volunteer::class, 'applicant');
     }
     protected function resourceAbilityMap()
     {
@@ -61,7 +61,7 @@ class VolunteerController extends Controller
             'edit' => 'update',
             'update' => 'update',
             'destroy' => 'delete',
-            'Screen' => 'screen',
+            // 'Screen' => 'screen',
         ];
     }
     /**
@@ -77,8 +77,12 @@ class VolunteerController extends Controller
         //     Status::create(['acceptance_status'=>1,'volunteer_id'=>$applicant->id]);
         // }
         // // dd('a');
-        $applicants = Volunteer::whereRelation('status', 'acceptance_status', 0)->where('training_session_id', $session_id);
         $user = Auth::user();
+        if(!$user->can('Volunteer.index')){
+            return abort(403);
+            
+        }
+        $applicants = Volunteer::whereRelation('status', 'acceptance_status', 0)->where('training_session_id', $session_id);
         if ($user->hasRole('regional-coordinator')) {
             $region = UserRegion::where('user_id', $user->id)->where('levelable_type', Region::class)->first();
           //  dd($region->levelable);
@@ -321,11 +325,12 @@ class VolunteerController extends Controller
     }
     public function Screen(Request $request, $session_id, Volunteer $volunteer)
     {
+        // dd($request);
         if ($request->get('type') == 'accept') {
             $volunteer->status->update(['acceptance_status' => 1]);
             return redirect()->route('session.volunteer.index', ['training_session' => $volunteer->training_session_id])->with('message', 'Volunter document  Verified');
         } elseif ($request->get('type') == 'reject') {
-            $volunteer->status->update(['acceptance_status' => 2]);
+            $volunteer->status->update(['acceptance_status' => 2,'rejection_reason'=>$request->get('rejection_reason')]);
             return redirect()->route('session.volunteer.index', ['training_session' => $volunteer->training_session_id])->with('message', 'Volunter document  unverified');
         }
     }

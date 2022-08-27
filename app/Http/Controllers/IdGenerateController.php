@@ -257,8 +257,10 @@ class IdGenerateController extends Controller
                     IDcount::create(['volunteer_id' => $value->id, 'training_session_id' => $trainingSession->availableSession()->first()->id, 'count'=> 1]);
                 }
             }
+            $session_id = $trainingSession->availableSession()?->first()?->id;
             
-            $pdf = Pdf::loadView('id.dowlnload_id', compact('html', 'check', 'exp', 'trainer'))->setPaper('letter', 'landscape');
+            $pdf = Pdf::loadView('id.dowlnload_id', compact('html', 'check', 'exp', 'trainer', 'session_id'))->setPaper('letter', 'landscape');
+            // $request->get('center').' '.$request->get('checkVal').'ID.pdf'
             return $pdf->download($request->get('center').' '.$request->get('checkVal').'ID.pdf');
           } elseif(($request->get('checkVal') == 'checkedIn') && ($request->get('trainer') == 'trainer')){
             $check = $request->get('checkVal');

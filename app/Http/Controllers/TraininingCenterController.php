@@ -9,6 +9,7 @@ use App\Http\Requests\StoreTraininingCenterRequest;
 use App\Http\Requests\UpdateTraininingCenterRequest;
 use App\Imports\UsersImport;
 use App\Models\ApprovedApplicant;
+use App\Models\BarQRVolunteer;
 use App\Models\CindicationRoom;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingSession;
@@ -140,7 +141,7 @@ class TraininingCenterController extends Controller
 
         $traininingCenter     = TraininingCenter::with('capacities.trainningSession')->find($traininingCenter);
         $trainingSession      = new TrainingSession();
-        $trainingSessionId    = $trainingSession->availableSession()->first()->id;
+        $trainingSessionId    = $trainingSession->availableSession()?->first()?->id;
         $capaityAddedInCenter = TrainingCenterCapacity::where(
             'training_session_id',
             $trainingSessionId
@@ -200,11 +201,11 @@ class TraininingCenterController extends Controller
             if ($TrainingCenter->photo) {
                 FileController::deleteFile($TrainingCenter->photo);
                 $logoFile = FileController::fileUpload($request->file('logo'), 'training center logos/')->id;
-                $TrainingCenter->photo = $logoFile;
+                $TrainingCenter->logo = $logoFile;
             } else {
 
                 $logoFile = FileController::fileUpload($request->file('logo'), 'training center logos/')->id;
-                $TrainingCenter->photo = $logoFile;
+                $TrainingCenter->logo = $logoFile;
             }
         }
         $TrainingCenter->update(['name' => $data['name'], 'code' => $data['code'], 'scale' => $data['scale']]);
@@ -275,17 +276,17 @@ class TraininingCenterController extends Controller
 
         $permission = Permission::findOrCreate('checker');
         // dd(Auth::user()->id);
-        if(!Auth::user()->can('checker')){
+        if (!Auth::user()->can('checker')) {
             return abort(403);
         }
-        if(Auth::user()->hasRole(Constants::SUPER_ADMIN)){
+        if (Auth::user()->hasRole(Constants::SUPER_ADMIN)) {
             if ($request->ajax()) {
                 $output = '';
                 $query = $request->get('query');
                 // Auth::user()->getRoleNames()[0]==Constants::SYSTEM_USER_ROLE;//Need This For Permission
                 $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query);
                 if (count($volunteerQuery->get()) > 0) {
-                    $data = $volunteerQuery->whereRelation('status', 'acceptance_status', 4)->first();
+                    $data = $volunteerQuery->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_PLACED)->first();
                     // $accepted = $volunteerQuery->whereRelation('status', 'acceptance_status', 5)->first();
                     if (!$data) {
                         return json_encode(['status' => 505]);
@@ -297,18 +298,18 @@ class TraininingCenterController extends Controller
                 }
                 // echo json_encode($data);
             }
-        }else{
+        } else {
             $TrainingBasedPermission = TrainingCenterBasedPermission::where('training_session_id', $request->route('training_session'))->where('user_id', Auth::user()->id)->where('permission_id', $permission->id)->first();
             $trainingCenterId = $TrainingBasedPermission?->traininingCenter?->id;
             if ($request->ajax()) {
                 $output = '';
                 $query = $request->get('query');
                 // Auth::user()->getRoleNames()[0]==Constants::SYSTEM_USER_ROLE;//Need This For Permission
-                $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query)->whereRelation('approvedApplicant. .trainingCenterCapacity.trainingCenter', 'id', $trainingCenterId);
+                $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query)->whereRelation('approvedApplicant. trainingCenterCapacity.trainingCenter', 'id', $trainingCenterId);
                 if (count($volunteerQuery->get()) > 0) {
-                    $data = $volunteerQuery->whereRelation('status', 'acceptance_status', 4)->first();
+                    $data = $volunteerQuery->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_PLACED)->first();
                     // $accepted = $volunteerQuery->whereRelation('status', 'acceptance_status', 5)->first();
-    
+
                     if (!$data) {
                         return json_encode(['status' => 505]);
                     }
@@ -329,9 +330,9 @@ class TraininingCenterController extends Controller
     }
     public function checkInAll(TrainingSession $trainingSession)
     {
-        $volunteers = Volunteer::whereRelation('status', 'acceptance_status', 4)->get();
+        $volunteers = Volunteer::whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_PLACED)->get();
         foreach ($volunteers as $volunteer) {
-            Volunteer::find($volunteer->id)->status->update(['acceptance_status' => 5]);
+            Volunteer::find($volunteer->id)->status->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_CHECKEDIN]);
         }
         return redirect()->back()->with('message', 'All applicant checked in successfully');
     }
@@ -390,15 +391,14 @@ class TraininingCenterController extends Controller
                     return view('training_center.assign_resource_voluteer', ['training_center' => $training_center, 'volunteer' => Volunteer::find($volunter)]);
                 } else {
                     return abort(403);
-                    }
+                }
             } else {
                 return abort(403);
             }
         }
     }
     public function storeResourceToVolunteer($training_session, $training_center_id, $volunter, $resourceId)
-    {
-        {
+    { {
             $coordinatorPermission = Permission::findOrCreate(PermissionSeeder::CENTER_COORIDNATOR);
             $TrainingBasedPermission = TrainingCenterBasedPermission::where('training_session_id', $request->route('training_session'))->where('user_id', Auth::user()->id)->where('permission_id', $coordinatorPermission->id)->first();
             $trainingCenterOfAuthUserId = $TrainingBasedPermission?->traininingCenter->id;
@@ -420,7 +420,7 @@ class TraininingCenterController extends Controller
                         return view('training_center.assign_resource_voluteer', ['training_center' => $training_center, 'volunteer' => Volunteer::find($volunter)]);
                     } else {
                         return abort(403);
-                        }
+                    }
                 } else {
                     return abort(403);
                 }
@@ -593,6 +593,9 @@ class TraininingCenterController extends Controller
 
     public function graduationList(TrainingSession $trainingSession, Request $request)
     {
+        if (!Auth::user()->can('TraininingCenter.graduate')) {
+            return abort(403);
+        }
         $training_centers = TraininingCenter::all();
         $regions = Region::all();
 
@@ -612,5 +615,15 @@ class TraininingCenterController extends Controller
         $graduatedVolunteers = $q->paginate(10);
 
         return view('volunter.graduated_volunteers', compact('training_centers', 'regions', 'graduatedVolunteers'));
+    }
+
+    public function barQRCode(Request $request)
+    {
+        $volunteer_id = Volunteer::find($request->id_number)->id;
+        $barcheck = BarQRVolunteer::where('volunteer_id', $volunteer_id)->get()->first();
+        if ($barcheck == null) {
+            BarQRVolunteer::create(['volunteer_id'=>$volunteer_id, 'bar_code'=>$request->barSrc, 'qr_code'=>$request->qrSrc]);
+        }
+        return response()->json(array('success' => 'success'), 200);
     }
 }

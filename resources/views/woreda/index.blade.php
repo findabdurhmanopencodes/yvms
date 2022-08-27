@@ -128,7 +128,7 @@
                 title: 'Zone',
                 sortable: 'asc',
             },
-            
+
             {
                 field: 'Actions',
                 title: 'Actions',
@@ -147,9 +147,11 @@
                                                 <a href="/woreda/' + woredaId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-pen"></i>\
                                                 </a>\
+                                                @if($trainingSession_id!=null)
                                                 <a href="'+{{ $trainingSession_id }}+'/'+woredaId+'/woreda/capacity" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-eye"></i>\
                                                 </a>\
+                                                @endif
                                                 \
                                             </div>\
                                             ';

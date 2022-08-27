@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants;
 use App\Models\Zone;
 use App\Http\Requests\StoreZoneRequest;
 use App\Http\Requests\UpdateZoneRequest;
 use App\ImporterFiles;
 use App\Models\Region;
 use App\Models\TrainingSession;
+use App\Models\UserRegion;
+use App\Models\Volunteer;
 use App\Models\Woreda;
 use App\Models\ZoneIntake;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 
 class ZoneController extends Controller
 {
@@ -27,18 +31,53 @@ class ZoneController extends Controller
      */
     public function index(Region $region, Request $request)
     {
-        if(!Auth::user()->can('Zone.index')){
+        if (!Auth::user()->can('Zone.index')) {
             return abort(403);
         }
-        $trainingSession_id = TrainingSession::availableSession()[0]->id;
-        if ($request->ajax()) {
-            return datatables()->of(Zone::select())->addColumn('region', function (Zone $zone) {
-                return $zone->region->name;
-            })->make(true);
+        $zones = null;
+        $regions = null;
+        // $trainingSession_id = TrainingSession::availableSession()?->first()?->id;
+        $trainingSession_id = TrainingSession::availableSession();
+        if (count($trainingSession_id) > 0) {
+            $trainingSession_id = $trainingSession_id[0]->id;
+        } else {
+            $trainingSession_id = null;
         }
-   
-        $zones = Zone::all();
-        $regions = Region::all();
+        if (Auth::user()->hasRole('super-admin')) {
+            if ($request->ajax()) {
+                return datatables()->of(Zone::select())->addColumn('region', function (Zone $zone) {
+                    return $zone->region->name;
+                })->make(true);
+            }
+
+            $zones = Zone::all();
+            $regions = Region::all();
+        }
+
+        if (Auth::user()->hasRole('regional-coordinator')) {
+            $region_id = Auth::user()->getCordinatingRegion()->id;
+            if ($request->ajax()) {
+                return datatables()->of(Zone::where('region_id', $region_id)->select())->addColumn('region', function (Zone $zone){
+                   return $zone->region->name;
+                })->make(true);
+            }
+            $zones = Zone::where('region_id', $region_id)->get();
+            $regions = Region::where('id', $region_id)->get();
+        }
+
+        if (Auth::user()->hasRole('zone-coordinator')) {
+            $zone_id = Auth::user()->getCordinatingZone()->id;
+            if ($request->ajax()) {
+                return datatables()->of(Zone::where('id', $zone_id)->select())->addColumn('region', function (Zone $zone){
+                   return $zone->region->name;
+                })->make(true);
+            }
+            $regions = [];
+            $zones = Zone::where('id', $zone_id)->get();
+            foreach ($zones as $key => $value) {
+                array_push($regions, $value->region);
+            }
+        }
         return view('zone.index', compact(['zones', 'regions', 'trainingSession_id']));
     }
 
@@ -49,7 +88,7 @@ class ZoneController extends Controller
      */
     public function create(Region $region)
     {
-        if(!Auth::user()->can('Zone.store')){
+        if (!Auth::user()->can('Zone.store')) {
             return abort(403);
         }
         $regions = $region::all();
@@ -64,7 +103,7 @@ class ZoneController extends Controller
      */
     public function store(StoreZoneRequest $request)
     {
-        if(!Auth::user()->can('Zone.store')){
+        if (!Auth::user()->can('Zone.store')) {
             return abort(403);
         }
         $zoneInquota = $request->get('zone_quota') / 100;
@@ -97,7 +136,7 @@ class ZoneController extends Controller
      */
     public function edit($id, Request $request)
     {
-        if(!Auth::user()->can('Zone.update')){
+        if (!Auth::user()->can('Zone.update')) {
             return abort(403);
         }
         $zone = Zone::find($id);
@@ -115,7 +154,7 @@ class ZoneController extends Controller
      */
     public function update(UpdateZoneRequest $request, $id)
     {
-        if(!Auth::user()->can('Zone.update')){
+        if (!Auth::user()->can('Zone.update')) {
             return abort(403);
         }
         $zone = Zone::find($id);
@@ -154,7 +193,7 @@ class ZoneController extends Controller
      */
     public function destroy(Zone $zone, Request $request)
     {
-        if(!Auth::user()->can('Zone.destroy')){
+        if (!Auth::user()->can('Zone.destroy')) {
             return abort(403);
         }
         // foreach ($zone->woredas as $woreda) {
@@ -197,23 +236,22 @@ class ZoneController extends Controller
         $today = Carbon::today();
         $curr_sess = TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
         $intake_exist = ZoneIntake::where('training_session_id', $trainingSession->id)->where('zone_id', $zone_id)->get();
-        $region = Zone::where('id',$zone_id)->get()->first()->region;
+        $region = Zone::where('id', $zone_id)->get()->first()->region;
         $zoneAllIntake = 0;
-        foreach (Zone::where('status',1)->get() as $key => $value) {
+        foreach (Zone::where('status', 1)->get() as $key => $value) {
             // $zoneAllIntake
-            $region_this = Zone::where('id',$value->id)->get()->first()->region;
-            if (($region_this == $region) && ($value->zoneIntakes?->where('training_session_id',$trainingSession->id)->last())) {
-                $zoneAllIntake+=$value->zoneIntakes->where('training_session_id',$trainingSession->id)->last()->intake;
+            $region_this = Zone::where('id', $value->id)->get()->first()->region;
+            if (($region_this == $region) && ($value->zoneIntakes?->where('training_session_id', $trainingSession->id)->last())) {
+                $zoneAllIntake += $value->zoneIntakes->where('training_session_id', $trainingSession->id)->last()->intake;
             }
         }
         if ($region->regionIntakes?->last()) {
-            $zoneAllIntake = $region->regionIntakes?->where('training_session_id',$trainingSession->id)->last()->intake - $zoneAllIntake;
+            $zoneAllIntake = $region->regionIntakes?->where('training_session_id', $trainingSession->id)->last()->intake - $zoneAllIntake;
             $zone = Zone::where('id', $zone_id)?->get()[0];
             return view('zone.zone_capacity', compact('zone', 'trainingSession', 'intake_exist', 'curr_sess', 'zoneAllIntake'));
-        }else{
+        } else {
             return redirect()->route('zone.index')->with('error', 'Specify Region First!!');
         }
-        
     }
 
     public function zoneIntakeStore(Request $request, TrainingSession $trainingSession, $zone_id)
@@ -225,30 +263,32 @@ class ZoneController extends Controller
         return redirect()->route('session.zone.intake', ['training_session' => $trainingSession->id, 'zone_id' => $zone_id])->with('message', 'Zone Intake created successfully');
     }
 
-    public function zoneIntakeEdit(TrainingSession $trainingSession, $zone_id){
+    public function zoneIntakeEdit(TrainingSession $trainingSession, $zone_id)
+    {
         if (!Auth::user()->can('ZoneIntake.update')) {
             return abort(403);
         }
         $zones = Zone::find($zone_id);
         $zoneIntake = $zones->zoneIntakes->where('training_session_id', $trainingSession->id)->last();
-        $region = Zone::where('id',$zone_id)->get()->first()->region;
+        $region = Zone::where('id', $zone_id)->get()->first()->region;
         $zoneAllIntake = 0;
-        foreach (Zone::where('status',1)->get() as $key => $value) {
+        foreach (Zone::where('status', 1)->get() as $key => $value) {
             // $zoneAllIntake
-            $region_this = Zone::where('id',$value->id)->get()->first()->region;
-            if (($region_this == $region) && ($value->zoneIntakes?->where('training_session_id',$trainingSession->id)->last())) {
-                $zoneAllIntake+=$value->zoneIntakes->where('training_session_id',$trainingSession->id)->last()->intake;
+            $region_this = Zone::where('id', $value->id)->get()->first()->region;
+            if (($region_this == $region) && ($value->zoneIntakes?->where('training_session_id', $trainingSession->id)->last())) {
+                $zoneAllIntake += $value->zoneIntakes->where('training_session_id', $trainingSession->id)->last()->intake;
             }
         }
-        $zoneAllIntake = ($region->regionIntakes?->where('training_session_id',$trainingSession->id)->last()->intake - $zoneAllIntake) + $zoneIntake->intake;
+        $zoneAllIntake = ($region->regionIntakes?->where('training_session_id', $trainingSession->id)->last()->intake - $zoneAllIntake) + $zoneIntake->intake;
         return view('zone.zoneIntake', compact('zoneIntake', 'zones', 'trainingSession', 'zoneAllIntake'));
     }
-    public function zoneIntakeUpdate(Request $request, TrainingSession $trainingSession, $zone_id){
+    public function zoneIntakeUpdate(Request $request, TrainingSession $trainingSession, $zone_id)
+    {
         if (!Auth::user()->can('ZoneIntake.update')) {
             return abort(403);
         }
         $zones = Zone::find($zone_id);
-        $zoneIntake = $zones->zoneIntakes->where('training_session_id',$trainingSession->id)->last();
+        $zoneIntake = $zones->zoneIntakes->where('training_session_id', $trainingSession->id)->last();
         $zoneIntake->intake = $request->get('capacity');
         $zoneIntake->save();
         return redirect()->route('session.zone.intake', ['training_session' => $trainingSession->id, 'zone_id' => $zone_id])->with('message', 'Zone Intake updated successfully');
@@ -270,11 +310,81 @@ class ZoneController extends Controller
             // }
             $zoneName = $bin[1];
             $re = Region::where('name', $region)->first();
-            Zone::where('name', $zoneName)->firstOr(function () use ($zoneName, $re,&$totalZones) {
+            Zone::where('name', $zoneName)->firstOr(function () use ($zoneName, $re, &$totalZones) {
                 Zone::create(['name' => $zoneName, 'status' => 1, 'region_id' => $re->id]);
                 $totalZones++;
             });
         }
         dump($totalZones . ' Zones imported successfully');
+    }
+    public function checkInView()
+    {
+
+        return view('deployment.check_in');
+    }
+    public function result(Request $request)
+    {
+
+        if (Auth::user()->hasRole(Constants::SUPER_ADMIN)) {
+            if ($request->ajax()) {
+                $output = '';
+                $query = $request->get('query');
+
+                $volunteerQuery = Volunteer::with('woreda.zone.region', 'approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'approvedApplicant.trainingPlacement.deployment.woredaIntake.woreda')->where('id_number', 'MoP-' . $query);
+                $trainingCenter = $volunteerQuery->first()->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->name;
+                $deployedworeda = $volunteerQuery->first()->approvedApplicant->trainingPlacement->deployment->woredaIntake->woreda;
+                $deployedworedaName = $deployedworeda->name;
+                $deployedRegion = $deployedworeda->zone->region->name;
+                $deployedZone = $deployedworeda->zone->name;
+                if (count($volunteerQuery->get()) > 0) {
+                    $data = $volunteerQuery->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->first();
+                    if (!$data) {
+                        return json_encode(['status' => 505]);
+                    }
+                    return json_encode(['status' => 200, 'data' => $data, 'center' => $trainingCenter, 'deployed_woreda' => $deployedworedaName, 'deployed_zone' => $deployedZone, 'deployed_region' => $deployedRegion]);
+                    // }
+                } else {
+                    return json_encode(['status' => 404]);
+                }
+            }
+        } else {
+            $user = Auth::user();
+
+            if ($request->ajax()) {
+                $query = $request->get('query');
+                if ($user->hasRole('regional-coordinator')) {
+
+                    $region = UserRegion::where('user_id', $user->id)->where('levelable_type', Region::class)->first();
+                    $volunteerQuery = Volunteer::with('woreda.zone.region', 'approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->where('id_number', 'MoP-' . $query)->whereRelation('approvedApplicant.trainingPlacement.deployment.woredaIntake.woreda.zone.region', 'id', $region->levelable_id);
+                }
+                // dd($region->levelable_id);
+                if ($user->hasRole('zone-coordinator')) {
+                    $zone = UserRegion::where('user_id', $user->id)->where('levelable_type', Zone::class)->first();
+                    $volunteerQuery = Volunteer::with('woreda.zone.region', 'approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'approvedApplicant.trainingPlacement.deployment.woredaIntake.woreda')->where('id_number', 'MoP-' . $query);
+                    $volunteerQuery = $volunteerQuery->whereRelation('approvedApplicant.trainingPlacement.deployment.woredaIntake.woreda.zone', 'id', $zone->levelable_id);
+                }
+                $output = '';
+                $trainingCenter = $volunteerQuery->first()?->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->name;
+                $deployedworeda = $volunteerQuery->first()?->approvedApplicant->trainingPlacement->deployment->woredaIntake->woreda;
+                $deployedworedaName = $deployedworeda?->name;
+                $deployedRegion = $deployedworeda?->zone->region->name;
+                $deployedZone = $deployedworeda?->zone->name;
+                if (count($volunteerQuery->get()) > 0) {
+                    $data = $volunteerQuery->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->first();
+                    if (!$data) {
+                        return json_encode(['status' => 505]);
+                    }
+                    return json_encode(['status' => 200, 'data' => $data, 'center' => $trainingCenter, 'deployed_woreda' => $deployedworedaName, 'deployed_zone' => $deployedZone, 'deployed_region' => $deployedRegion]);
+                    // }
+                } else {
+                    return json_encode(['status' => 404]);
+                }
+            }
+        }
+    }
+    public function checkIn($training_session, $id)
+    {
+        Volunteer::find($id)->status->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_CHECKEDIN_DEPLOY]);
+        return redirect()->route('session.TrainingCenter.CheckIn', ['training_session' => $training_session])->with('success', 'Successfuily Checked In');
     }
 }

@@ -175,6 +175,14 @@
                                         <i class="menu-arrow"></i>
                                     </a>
                                 </li>
+                                <li class="menu-item">
+                                    <a target="_blank" class="navi-link" href="{{ asset('/manual/User_Manaual_YVMS.pdf') }}">
+                                        <span class="symbol symbol-20 mr-3">
+                                            <i class="fa fa-download"></i>
+                                        </span>
+                                       User Manual Download
+                                    </a>
+                                </li>
                                 </ul>
                                 <!--end::Header Nav-->
                             </div>

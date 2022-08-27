@@ -18,6 +18,8 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
+
+
         Permission::create(['name'=>'dashboard.index']);
 
         Permission::create(['name'=>'Disablity.index']);
@@ -240,6 +242,16 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'VolunteerDeployment.attendanceExport']);
         Permission::create(['name'=>'VolunteerDeployment.attendanceImport']);
         Permission::create(['name'=>'VolunteerDeployment.graduate']);
+        Permission::create(['name'=>'volunteer.deployment']);
+        Permission::create(['name'=>'generate.certificate']);
+
+        Permission::create(['name'=>'region.quota']);
+        Permission::create(['name'=>'payroll.list']);
+        Permission::create(['name'=>'payroll.report']);
+        Permission::create(['name'=>'payment.type']);
+        Permission::create(['name'=>'distance.setting']);
+        Permission::create(['name'=>'transport.tarif']);
+        Permission::create(['name'=>'translation.index']);
     }
     public function ajaib()
     {
@@ -283,7 +295,11 @@ class PermissionSeeder extends Seeder
 
         // ]);
 
-          // Role::findOrCreate(Constants::DESK)->givePermissionTo([
+        //adding checked in deployment
+
+        Permission::create(['name'=>'deployment.checkIn']);
+
+
 
         // ]);
 
