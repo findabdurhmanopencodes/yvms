@@ -203,11 +203,15 @@ Route::get('adb', function () {
     Route::any('/training-center/{training_center_id}/resource-assign', [TraininingCenterController::class, 'giveResource'])->name('resource.assign.volunteer');
 
     Route::any('/training-center/{training_center_id}/resource-assign/volunteer/{volunteer}', [TraininingCenterController::class, 'giveResourceDetail'])->name('resource.assign.volunteer.detail');
+    Route::get('deployment/check-in/', [ZoneController::class, 'checkInView'])->name('deployment.CheckIn');
     Route::get('check-in/', [TraininingCenterController::class, 'checkInView'])->name('TrainingCenter.CheckIn');
     Route::get('result/', [TraininingCenterController::class, 'result'])->name('result');
+    Route::get('deployment/result/', [ZoneController::class, 'result'])->name('deployment.check.result');
     Route::get('barQRCode/', [TraininingCenterController::class, 'barQRCode'])->name('barQRCode');
 
     Route::get('/check-in/action/{id}', [TraininingCenterController::class, 'checkIn'])->name('TrainingCenter.checked');
+    Route::get('deployment/check-in/action/{id}', [ZoneController::class, 'checkIn'])->name('deployment.checked');
+
     Route::get('/checkin_all', [TraininingCenterController::class, 'checkInAll'])->name('trainingCenter.checkin.all');
 
     Route::any('/check-in/reports/', [TraininingCenterController::class, 'indexChecking'])->name('TrainingCenter.index.checked');
@@ -340,7 +344,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         if(!(Auth::user()?->can('dashboard.index')))
             return abort(403);
-            
+
         if (count(TrainingSession::availableSession()) > 0) {
             $trainingSession = TrainingSession::availableSession()[0];
             return redirect(route('session.dashboard', ['training_session' => $trainingSession->id]));

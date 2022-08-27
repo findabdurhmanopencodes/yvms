@@ -286,7 +286,7 @@ class TraininingCenterController extends Controller
                 // Auth::user()->getRoleNames()[0]==Constants::SYSTEM_USER_ROLE;//Need This For Permission
                 $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query);
                 if (count($volunteerQuery->get()) > 0) {
-                    $data = $volunteerQuery->whereRelation('status', 'acceptance_status', 4)->first();
+                    $data = $volunteerQuery->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_PLACED)->first();
                     // $accepted = $volunteerQuery->whereRelation('status', 'acceptance_status', 5)->first();
                     if (!$data) {
                         return json_encode(['status' => 505]);
@@ -307,7 +307,7 @@ class TraininingCenterController extends Controller
                 // Auth::user()->getRoleNames()[0]==Constants::SYSTEM_USER_ROLE;//Need This For Permission
                 $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query)->whereRelation('approvedApplicant. trainingCenterCapacity.trainingCenter', 'id', $trainingCenterId);
                 if (count($volunteerQuery->get()) > 0) {
-                    $data = $volunteerQuery->whereRelation('status', 'acceptance_status', 4)->first();
+                    $data = $volunteerQuery->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_PLACED)->first();
                     // $accepted = $volunteerQuery->whereRelation('status', 'acceptance_status', 5)->first();
 
                     if (!$data) {
@@ -330,9 +330,9 @@ class TraininingCenterController extends Controller
     }
     public function checkInAll(TrainingSession $trainingSession)
     {
-        $volunteers = Volunteer::whereRelation('status', 'acceptance_status', 4)->get();
+        $volunteers = Volunteer::whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_PLACED)->get();
         foreach ($volunteers as $volunteer) {
-            Volunteer::find($volunteer->id)->status->update(['acceptance_status' => 5]);
+            Volunteer::find($volunteer->id)->status->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_CHECKEDIN]);
         }
         return redirect()->back()->with('message', 'All applicant checked in successfully');
     }

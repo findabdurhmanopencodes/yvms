@@ -270,7 +270,7 @@
                                                     @endcan
                                                 </ul>
                                             </div>
-                                        </li>    
+                                        </li>
                                     @endcanany
                                     {{-- <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.pacement') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
@@ -330,10 +330,20 @@
                                             <a href="{{ route('session.TrainingCenter.CheckIn', ['training_session' => Request::route('training_session')]) }}"
                                                 class="menu-link">
                                                 <i class="menu-icon flaticon2-check-mark"></i>
-                                                <span class="menu-text">Check-In</span>
+                                                <span class="menu-text">Training Center Check-In</span>
                                             </a>
                                         </li>
                                     @endcan
+                                    @can('deployment.checkIn')
+                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.CheckIn.index') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                        <a href="{{ route('session.deployment.CheckIn', ['training_session' => Request::route('training_session')]) }}"
+                                            class="menu-link">
+                                            <i class="menu-icon fa fa-check-double"></i>
+                                            <span class="menu-text">Deployment Check-In</span>
+                                        </a>
+                                    </li>
+                                @endcan
                                     @can('TraininingCenter.graduate')
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.graduation.list') === 0 ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">

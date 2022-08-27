@@ -108,6 +108,11 @@ class Volunteer extends Model implements Auditable
         $tp = TrainingPlacement::whereRelation('approvedApplicant', 'volunteer_id', $this->id)->first();
         return $tp?->trainingCenterCapacity?->trainingCenter;
     }
+    public function getPlacmentAttribute()
+    {
+        $tp = TrainingPlacement::whereRelation('approvedApplicant', 'volunteer_id', $this->id)->first();
+        return $tp?->trainingCenterCapacity?->trainingCenter;
+    }
 
     public function approvedApplicant()
     {

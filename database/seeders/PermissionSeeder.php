@@ -16,6 +16,8 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
+
+
         Permission::create(['name'=>'dashboard.index']);
 
         Permission::create(['name'=>'Disablity.index']);
@@ -270,6 +272,11 @@ class PermissionSeeder extends Seeder
 
         Permission::create(['name'=>'TrainingSession.allResource']);
         Permission::create(['name'=>'TrainingSession.showResource']);
+
+        //adding checked in deployment
+
+        Permission::create(['name'=>'deployment.checkIn']);
+
 
 
 
