@@ -9,6 +9,7 @@ use App\Http\Requests\StoreTraininingCenterRequest;
 use App\Http\Requests\UpdateTraininingCenterRequest;
 use App\Imports\UsersImport;
 use App\Models\ApprovedApplicant;
+use App\Models\BarQRVolunteer;
 use App\Models\CindicationRoom;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingSession;
@@ -592,6 +593,9 @@ class TraininingCenterController extends Controller
 
     public function graduationList(TrainingSession $trainingSession, Request $request)
     {
+        if (!Auth::user()->can('TraininingCenter.graduate')) {
+            return abort(403);
+        }
         $training_centers = TraininingCenter::all();
         $regions = Region::all();
 
@@ -611,5 +615,15 @@ class TraininingCenterController extends Controller
         $graduatedVolunteers = $q->paginate(10);
 
         return view('volunter.graduated_volunteers', compact('training_centers', 'regions', 'graduatedVolunteers'));
+    }
+
+    public function barQRCode(Request $request)
+    {
+        $volunteer_id = Volunteer::find($request->id_number)->id;
+        $barcheck = BarQRVolunteer::where('volunteer_id', $volunteer_id)->get()->first();
+        if ($barcheck == null) {
+            BarQRVolunteer::create(['volunteer_id'=>$volunteer_id, 'bar_code'=>$request->barSrc, 'qr_code'=>$request->qrSrc]);
+        }
+        return response()->json(array('success' => 'success'), 200);
     }
 }

@@ -216,7 +216,7 @@
                             data: {
                                 barSrc: barcodesrc,
                                 qrSrc: src,
-                                id_number: data.data.id_number
+                                id_number: data.data.id
                             },
                             dataType: 'json',
                             success: function(data) {

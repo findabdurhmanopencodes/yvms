@@ -19,8 +19,9 @@ class Volunteer extends Model implements Auditable
     protected $guarded = [];
     protected $appends = ["profilePhoto"];
 
-    public function getProfilePhotoAttribute() {
-         return asset($this->picture()?->file_path);
+    public function getProfilePhotoAttribute()
+    {
+        return asset($this->picture()?->file_path);
     }
 
     /**
@@ -50,7 +51,13 @@ class Volunteer extends Model implements Auditable
 
     public function picture()
     {
-        return File::find($this->photo);
+        if ($this->photo) {
+
+            return File::find($this->photo);
+        } else {
+
+            return null;
+        }
     }
     public function getMinistryFileSize()
     {
@@ -92,13 +99,13 @@ class Volunteer extends Model implements Auditable
     public function status()
     {
         // dd($this->id);
-        return $this->hasOne(Status::class,'volunteer_id','id');
+        return $this->hasOne(Status::class, 'volunteer_id', 'id');
         // return Status::where('volunteer_id',$this->id)->get();
     }
 
     public function placment()
     {
-        $tp = TrainingPlacement::whereRelation('approvedApplicant','volunteer_id',$this->id)->first();
+        $tp = TrainingPlacement::whereRelation('approvedApplicant', 'volunteer_id', $this->id)->first();
         return $tp?->trainingCenterCapacity?->trainingCenter;
     }
 
@@ -118,7 +125,7 @@ class Volunteer extends Model implements Auditable
     }
     public function resourceHistories()
     {
-        return $this->hasMany(VolunteerResourceHistory::class,'volunteer_id','id');
+        return $this->hasMany(VolunteerResourceHistory::class, 'volunteer_id', 'id');
     }
 
     public function idCount()
@@ -135,5 +142,4 @@ class Volunteer extends Model implements Auditable
     {
         return $this->hasOne(BarQRVolunteer::class, 'volunteer_id', 'id');
     }
-
 }

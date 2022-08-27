@@ -77,8 +77,12 @@ class VolunteerController extends Controller
         //     Status::create(['acceptance_status'=>1,'volunteer_id'=>$applicant->id]);
         // }
         // // dd('a');
-        $applicants = Volunteer::whereRelation('status', 'acceptance_status', 0)->where('training_session_id', $session_id);
         $user = Auth::user();
+        if(!$user->can('Volunteer.index')){
+            return abort(403);
+            
+        }
+        $applicants = Volunteer::whereRelation('status', 'acceptance_status', 0)->where('training_session_id', $session_id);
         if ($user->hasRole('regional-coordinator')) {
             $region = UserRegion::where('user_id', $user->id)->where('levelable_type', Region::class)->first();
           //  dd($region->levelable);

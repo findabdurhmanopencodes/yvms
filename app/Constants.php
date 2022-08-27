@@ -18,6 +18,7 @@ class Constants {
     const ADMIN = 'admin';
 
 
+    const VOLUNTEER_STATUS_PENDING = 0;
     const VOLUNTEER_STATUS_DOCUMENT_VERIFIED = 1;
     const VOLUNTEER_STATUS_REJECTED = 2;
     const VOLUNTEER_STATUS_SELECTED = 3;
@@ -26,6 +27,7 @@ class Constants {
     const VOLUNTEER_STATUS_DEPLOYED = 7;
     const VOLUNTEER_STATUS_CHECKEDIN = 5;
     const VOLUNTEER_STATUS_COMPLETED = 8;
+    const VOLUNTEER_STATUS_CHECKEDIN_DEPLOY = 11;
 
 
     const TRAINING_SESSION_STARTED = 0;

@@ -24,11 +24,12 @@ class Status extends Model implements Auditable
         2 => 'Rejected',
         3 => 'Selected',
         4 => 'Placed',
-        5 => 'Checked-In',
+        5 => 'Checked-In Training Center',
         6 => 'Graduated',
         7 => 'deployed',
         8 => 'Served',
         9 => 'Finished',
         10 => 'Unknown',
+        11 => 'Checked-In Depolyment',
     ];
 }
