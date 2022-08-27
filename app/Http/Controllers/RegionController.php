@@ -17,6 +17,7 @@ use App\Models\Woreda;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class RegionController extends Controller
 {
@@ -49,11 +50,23 @@ class RegionController extends Controller
             return abort(403);
         }
         $trainingSession_id = TrainingSession::availableSession()?->first()?->id;
-        if ($request->ajax()) {
-            return datatables()->of(Region::select())->make(true);
+        $regions = null;
+        if (Auth::user()->hasRole('super-admin')) {
+            if ($request->ajax()) {
+                return datatables()->of(Region::select())->make(true);
+            }
+            $regions = Region::all();
         }
-
-        $regions = Region::all();
+        if (Auth::user()->hasRole('regional-coordinator')) {
+            $region_id = Auth::user()->getCordinatingRegion()->id;
+            if ($request->ajax()) {
+                $regions_co = DB::table('regions')
+                ->where('regions.id', $region_id)
+                ->select('*');
+                return datatables()->of($regions_co)->make(true);
+            }
+            $regions = Region::where('id',$region_id)->get();
+        }
         return view('region.index', compact('regions', 'trainingSession_id'));
     }
 

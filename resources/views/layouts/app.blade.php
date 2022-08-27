@@ -520,7 +520,7 @@
                                 @include('aside.placement')
                                 @include('aside.payroll')
 
-                                @canany(['region.index', 'zone.index', 'woreda.index', 'FeildOfStudy.index', 'payment.type', 'distance.setting', 'transport.tarif', 'TraininingCenter.index', 'Resource.index', 'translation.index'])
+                                @canany(['Region.index', 'Zone.index', 'Woreda.index', 'FeildOfStudy.index', 'payment.type', 'distance.setting', 'transport.tarif', 'TraininingCenter.index', 'Resource.index', 'translation.index'])
                                     <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'FeildOfStudy') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
                                     aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="javascript:;" class="menu-link menu-toggle">
