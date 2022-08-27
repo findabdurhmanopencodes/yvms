@@ -29,6 +29,8 @@ class WoredaController extends Controller
         if (!Auth::user()->can('Woreda.index')) {
             return abort(403);
         }
+        $woredas = null;
+        $zones = null;
         // $trainingSession_id = TrainingSession::availableSession()?->first()?->id;
         $trainingSession_id = TrainingSession::availableSession();
         if(count($trainingSession_id)>0){
@@ -36,17 +38,41 @@ class WoredaController extends Controller
         }else{
             $trainingSession_id = null;
         }
-        if ($request->ajax()) {
-            return datatables()->of(Woreda::select())->addColumn('zone', function (Woreda $woreda) {
-                return $woreda->zone->name;
-            })->make(true);
+        if (Auth::user()->hasRole('super-admin')) {
+            if ($request->ajax()) {
+                return datatables()->of(Woreda::select())->addColumn('zone', function (Woreda $woreda) {
+                    return $woreda->zone->name;
+                })->make(true);
+            }
+            $woredas = Woreda::all();
+            $zones = Zone::all();
         }
-        // $user = Auth::user();
-        // if(!$user->hasRole('super-admin') && !$user->hasPermissionTo('role.viewAll')){
-        //     abort(403);
-        // }
-        $woredas = Woreda::all();
-        $zones = Zone::all();
+        if (Auth::user()->hasRole('regional-coordinator')) {
+            $region_id = Auth::user()->getCordinatingRegion()->id;
+            $zones = Zone::where('region_id', $region_id)->get();
+            $zone_ids = [];
+            foreach ($zones as $key => $value) {
+                array_push($zone_ids, $value->id);
+            }
+            if ($request->ajax()) {
+                return datatables()->of(Woreda::whereIn('zone_id', $zone_ids)->select())->addColumn('zone', function (Woreda $woreda){
+                   return $woreda->zone->name; 
+                })->make(true);
+            }
+            $woredas = Woreda::whereIn('zone_id', $zone_ids)->get();
+            $zones = Zone::where('region_id', $region_id)->get();
+        }
+
+        if (Auth::user()->hasRole('zone-coordinator')) {
+            $zone_id = Auth::user()->getCordinatingZone()->id;
+            if ($request->ajax()) {
+                return datatables()->of(Woreda::where('zone_id', $zone_id)->select())->addColumn('zone', function (Woreda $woreda){
+                   return $woreda->zone->name; 
+                })->make(true);
+            }
+            $woredas = Woreda::where('zone_id', $zone_id)->get();
+            $zones = Zone::where('id', $zone_id)->get();
+        }
         return view('woreda.index', compact(['zones', 'woredas', 'trainingSession_id']));
     }
 

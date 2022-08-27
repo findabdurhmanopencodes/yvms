@@ -13,6 +13,7 @@ use App\Models\ZoneIntake;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ZoneController extends Controller
 {
@@ -30,6 +31,8 @@ class ZoneController extends Controller
         if(!Auth::user()->can('Zone.index')){
             return abort(403);
         }
+        $zones = null;
+        $regions = null;
         // $trainingSession_id = TrainingSession::availableSession()?->first()?->id;
         $trainingSession_id = TrainingSession::availableSession();
         if(count($trainingSession_id)>0){
@@ -37,14 +40,41 @@ class ZoneController extends Controller
         }else{
             $trainingSession_id = null;
         }
-        if ($request->ajax()) {
-            return datatables()->of(Zone::select())->addColumn('region', function (Zone $zone) {
-                return $zone->region->name;
-            })->make(true);
+        if (Auth::user()->hasRole('super-admin')) {
+            if ($request->ajax()) {
+                return datatables()->of(Zone::select())->addColumn('region', function (Zone $zone) {
+                    return $zone->region->name;
+                })->make(true);
+            }
+    
+            $zones = Zone::all();
+            $regions = Region::all();
         }
 
-        $zones = Zone::all();
-        $regions = Region::all();
+        if (Auth::user()->hasRole('regional-coordinator')) {
+            $region_id = Auth::user()->getCordinatingRegion()->id;
+            if ($request->ajax()) {
+                return datatables()->of(Zone::where('region_id', $region_id)->select())->addColumn('region', function (Zone $zone){
+                   return $zone->region->name; 
+                })->make(true);
+            }
+            $zones = Zone::where('region_id', $region_id)->get();
+            $regions = Region::where('id', $region_id)->get();
+        }
+
+        if (Auth::user()->hasRole('zone-coordinator')) {
+            $zone_id = Auth::user()->getCordinatingZone()->id;
+            if ($request->ajax()) {
+                return datatables()->of(Zone::where('id', $zone_id)->select())->addColumn('region', function (Zone $zone){
+                   return $zone->region->name; 
+                })->make(true);
+            }
+            $regions = [];
+            $zones = Zone::where('id', $zone_id)->get();
+            foreach ($zones as $key => $value) {
+                array_push($regions, $value->region);   
+            }
+        }
         return view('zone.index', compact(['zones', 'regions', 'trainingSession_id']));
     }
 
