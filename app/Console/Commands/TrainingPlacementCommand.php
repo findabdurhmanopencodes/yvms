@@ -84,17 +84,36 @@ class TrainingPlacementCommand extends Command
     public function place()
     {
         // dd('aj');
-
         $activeSession = TrainingSession::availableSession()->first();
-        DB::delete('DELETE FROM training_placements where training_session_id = ?;', [$activeSession->id]);
+        $errorMessage = null;
+
+        if (!$activeSession)
+            $errorMessage = "No Active Session is Available to place volunteers";
 
         $applicants = ApprovedApplicant::all();
 
-        $trainingCenters = TrainingCenterCapacity::where(['training_session_id' => 1])->get();
+        if ($applicants->isEmpty())
+            $errorMessage = "No Approved Applicants Available to place";
+
+        $trainingCenters = TrainingCenterCapacity::where(['training_session_id' => $activeSession->id])->get();
+
+        if ($trainingCenters->isEmpty())
+            $errorMessage = "No Traninig Center available for the selected";
 
         $regions = Region::all();
 
-        // if($appl)
+        if ($regions->isEmpty())
+            $errorMessage = "No Region Available for the selected Session";
+
+        $totalCapacity = TrainingCenterCapacity::query()->selectRaw("SUM(capacity) as total")->where(['training_session_id' => $activeSession->id])->first()->total;
+
+        if ($applicants->count() > $totalCapacity)
+            $errorMessage = "You have more Student's than the training centers can handle at the current session, you can increase the training center's capacity and try again ";
+
+        if ($errorMessage)
+            return redirect()->back()->withErrors($errorMessage);
+
+        DB::delete('DELETE FROM training_placements where training_session_id = ?;', [$activeSession->id]);
 
         while (!$regions->isEmpty() && (!$applicants->isEmpty()) && (!$trainingCenters->isEmpty())) {
             if ($regions->count() == 1 && $this->regionsExceptThis(Region::all(), $regions->first()->id, $trainingCenters)->isEmpty()) {
