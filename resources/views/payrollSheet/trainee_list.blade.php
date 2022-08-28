@@ -52,6 +52,7 @@ $('#sdate').calendarsPicker({
                             @endforeach
                         </select>
                     </div>
+
                     <div class="form-group col-3">
                                 <select name="format" id="" class="form-control select2" required>
                                  <option value=""> Select output format </option>
@@ -61,7 +62,7 @@ $('#sdate').calendarsPicker({
 
                         </select>
                     </div>
-                    <div class="form-group col-2">
+          <div class="form-group col-2">
 
                       <input type="number" min ="1" required="required" max="30"  placeholder="No of days" class="form-control" name="day">
 
