@@ -26,4 +26,5 @@ class RoleSeeder extends Seeder
         $generalRole = Role::create(['name' => Constants::GENERAL]);
         $adminRole = Role::create(['name' => Constants::ADMIN]);
     }
+    
 }
