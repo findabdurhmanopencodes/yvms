@@ -257,6 +257,7 @@ Route::get('adb', function () {
     Route::post('deployment/id', [IdGenerateController::class, 'deploymentID'])->name('deployment.generateID');
 
     Route::get('{woreda}/deployment/attendance_export', [DeploymentVolunteerAttendanceController::class, 'get_attendance_data'])->name('deployment_attendance.export');
+    Route::get('{woreda}/report/deployment/attendance', [DeploymentVolunteerAttendanceController::class, 'attendanceReport'])->name('attendance.report');
     Route::post('{woreda}/import/deployment', [DeploymentVolunteerAttendanceController::class, 'fileImport'])->name('import.deployment_attendance');
 
     Route::get('volunteer_export', [VolunteerController::class, 'exportVolunteers'])->name('export.volunteers');

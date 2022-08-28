@@ -14,12 +14,13 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 
 class DeploymentAttendanceImport implements ToCollection, WithStartRow
 {
-    protected $trainingSession, $woreda;
+    protected $trainingSession, $woreda, $date;
 
-    public function __construct($trainingSession, $woreda)
+    public function __construct($trainingSession, $woreda, $date)
     {
         $this->trainingSession = $trainingSession;
         $this->woreda = $woreda;
+        $this->date = $date;
     }
 
     /**
@@ -29,10 +30,13 @@ class DeploymentAttendanceImport implements ToCollection, WithStartRow
     */
     public function collection(Collection $collection)
     {
-        $date_now = new DateTime();
+        $date_now = $this->date;
+        $past_url = url()->previous();
+        if ($date_now > new DateTime()) {
+            return redirect($past_url)->with('error', 'Invalid Date!!');
+        }
         $volunteer_id = [];
         $check_exist = [];
-        $past_url = url()->previous();
         foreach ($collection as $key => $value) {
             if ($value[4] == 'P') {
                 array_push($volunteer_id, $value[0]);

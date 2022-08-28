@@ -140,18 +140,18 @@
                     var woredaId = row.id;
                     return '\
                                     <div class="d-flex">\
-                                                <a href="javascript:;" onclick="deleteZone(' + woredaId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
+                                                @can("Woreda.destroy")<a href="javascript:;" onclick="deleteZone(' + woredaId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-trash"></i>\
-                                                </a>\
+                                                </a>@endcan\
                                                 \
-                                                <a href="/woreda/' + woredaId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                                                @can("Woreda.update")<a href="/woreda/' + woredaId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-pen"></i>\
-                                                </a>\
-                                                @if($trainingSession_id!=null)
-                                                <a href="'+{{ $trainingSession_id }}+'/'+woredaId+'/woreda/capacity" class="btn btn-sm btn-clean btn-icon" >\
+                                                </a>@endcan\
+                                                @if($trainingSession_id!=null)\
+                                                @can("Woreda.show")<a href="'+{{ $trainingSession_id }}+'/'+woredaId+'/woreda/capacity" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-eye"></i>\
-                                                </a>\
-                                                @endif
+                                                </a>@endcan\
+                                                @endif\
                                                 \
                                             </div>\
                                             ';

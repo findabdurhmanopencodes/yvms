@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Andegna\DateTimeFactory;
 use App\Constants;
 use App\Exports\DeploymentAttendanceExport;
+use App\Exports\DeploymentAttendanceReportExport;
 use App\Models\DeploymentVolunteerAttendance;
 use App\Http\Requests\StoreDeploymentVolunteerAttendanceRequest;
 use App\Http\Requests\UpdateDeploymentVolunteerAttendanceRequest;
 use App\Imports\DeploymentAttendanceImport;
 use App\Models\TrainingSession;
 use App\Models\Woreda;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -116,8 +119,42 @@ class DeploymentVolunteerAttendanceController extends Controller
         if (!Auth::user()->can('VolunteerDeployment.attendanceImport')) {
             return abort(403);
         }
-        Excel::import(new DeploymentAttendanceImport($trainingSession, $woreda), $request->file('attendance')->store('temp'));
+        $date = DateTime::createFromFormat('d/m/Y', $request->get('attendance_date'));
+        $date_g = DateTimeFactory::of($date->format('Y'), $date->format('m'), $date->format('d'))->toGregorian();
+        Excel::import(new DeploymentAttendanceImport($trainingSession, $woreda, $date_g), $request->file('attendance')->store('temp'));
         $past_url = url()->previous();
         return redirect($past_url)->with('success', 'Successfully Registered!!!');
+    }
+
+    public function attendanceReport(TrainingSession $trainingSession, Woreda $woreda){
+        $users = DB::table('volunteers')->join('statuses', 'statuses.volunteer_id','=', 'volunteers.id')->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->leftJoin('volunteer_deployments', 'volunteer_deployments.training_placement_id', '=', 'training_placements.id')->leftJoin('woreda_intakes', 'volunteer_deployments.woreda_intake_id', '=', 'woreda_intakes.id')->leftJoin('woredas', 'woreda_intakes.woreda_id', '=', 'woredas.id')->where('woredas.id', $woreda->id)->where('statuses.acceptance_status','>=',Constants::VOLUNTEER_STATUS_CHECKEDIN_DEPLOY)->select(['id_number', 'first_name', 'father_name', 'name', 'account_number'])->get();
+
+        $att_vol = []; 
+        $att_volunteer = []; 
+        $attendances_vol = DeploymentVolunteerAttendance::where('training_session_id', $trainingSession->id)->where('woreda_id', $woreda->id)->get();
+ 
+        foreach ($attendances_vol as $key => $att) { 
+            array_push($att_vol, json_decode($att->volunteers)); 
+        } 
+ 
+        foreach ($att_vol as $key => $att) { 
+            foreach ($att as $key => $value) { 
+                array_push($att_volunteer, $value); 
+            } 
+        } 
+        $att_count = array_count_values($att_volunteer);
+        foreach ($users as $key => $user) {
+            if (array_key_exists($user->id_number, $att_count)) {
+                $user->count = $att_count[$user->id_number];
+            }
+        }
+
+        $past_url = url()->previous();
+        if ($users->first() == null) {
+            return redirect($past_url)->with('error', 'No Volunteer available!!');
+        }
+        else{
+            return Excel::download(new DeploymentAttendanceReportExport($users, ['ID Number', 'First Name', 'Father Name', 'Deployed Woreda', 'Account Number', 'Attendance Count('.count($attendances_vol).')', 'Monthly Payment']), $woreda->name.' attendance report.xlsx');
+        }
     }
 }

@@ -175,7 +175,7 @@
         action="{{ route('session.import.deployment_attendance', ['training_session' => Request::route('training_session')->id, 'woreda' => Request::route('woreda')->id]) }}"
         enctype="multipart/form-data">
         @csrf
-        <div style="z-index: 9999999;" class="modal fade" id="exampleModal1" tabindex="-1" role="dialog"
+        <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -186,16 +186,20 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="card-body">
+                        {{-- <div class="card-body"> --}}
                             <div class="card-body">
                                 <div class="form-group row">
                                     <div class="col-lg-6">
                                         <label>Attendance File: </label>
                                         <input type="file" name="attendance" />
                                     </div>
+                                    <div class="col-lg-6">
+                                        <label>Attendance Date: </label>
+                                        <input style="height: 40px;" type="text" id="end_date" class="form-control" name="attendance_date" placeholder="Select Date" autocomplete="off" value="" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        {{-- </div> --}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold"
@@ -276,6 +280,15 @@
                                     </a>
                                 </li>
                             @endcan
+                            <li class="navi-item">
+                                <a href="{{ route('session.attendance.report', ['training_session' => Request::route('training_session')->id, 'woreda' => Request::route('woreda')->id]) }}"
+                                    class="navi-link">
+                                    <span class="navi-icon">
+                                        <i class="flaticon2-shopping-cart-1"></i>
+                                    </span>
+                                    <span class="navi-text">Attendance Monthly Report</span>
+                                </a>
+                            </li>
                         </ul>
                         <!--end::Navigation-->
                     </div>
@@ -381,13 +394,6 @@
                 calendar: calendar
             });
 
-            $('#registration_start_date').calendarsPicker({
-                calendar: calendar
-            });
-
-            $('#registration_dead_line').calendarsPicker({
-                calendar: calendar
-            });
         })
 
 
