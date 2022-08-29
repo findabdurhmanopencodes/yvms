@@ -49,6 +49,19 @@
     </li>
 @endcan
 
+
+
+    <li class="menu-item {{ strpos(Route::currentRouteName(), 'attendanceSetting') === 0 ? 'menu-item-active' : '' }}"
+    aria-haspopup="true">
+        <a href="{{ route('attendanceSetting.index',[]) }}" class="menu-link">
+            <i class="menu-bullet menu-bullet-dot">
+                <span></span>
+            </i>
+            <span class="menu-text"> Attendance setting </span>
+        </a>
+    </li>
+
+
 {{-- <li class="menu-item {{ strpos(Route::currentRouteName(), 'disablity.index') === 0 ? 'menu-item-active' : '' }}"
     aria-haspopup="true">
     <a href="{{ route('disablity.index', []) }}" class="menu-link">

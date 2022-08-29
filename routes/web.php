@@ -52,6 +52,7 @@ use App\Http\Controllers\TrainingCenterBasedPermissionController;
 use App\Http\Controllers\TrainingDocumentController;
 use App\Http\Controllers\TranslationTextController;
 use App\Http\Controllers\VolunteerDeploymentController;
+use App\Http\Controllers\AttendanceSettingController;
 use App\Mail\VerifyMail;
 use App\Models\ApprovedApplicant;
 use App\Models\PaymentType;
@@ -257,6 +258,7 @@ Route::get('adb', function () {
     Route::post('deployment/id', [IdGenerateController::class, 'deploymentID'])->name('deployment.generateID');
 
     Route::get('{woreda}/deployment/attendance_export', [DeploymentVolunteerAttendanceController::class, 'get_attendance_data'])->name('deployment_attendance.export');
+    Route::get('{woreda}/report/deployment/attendance', [DeploymentVolunteerAttendanceController::class, 'attendanceReport'])->name('attendance.report');
     Route::post('{woreda}/import/deployment', [DeploymentVolunteerAttendanceController::class, 'fileImport'])->name('import.deployment_attendance');
 
     Route::get('volunteer_export', [VolunteerController::class, 'exportVolunteers'])->name('export.volunteers');
@@ -308,10 +310,13 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('transportTarif', TransportTarifController::class);
     Route::resource('distance', DistanceController::class);
     Route::resource('paymentType', PaymentTypeController::class);
+    Route::resource('attendanceSetting', AttendanceSettingController::class);
     Route::resource('paymentReport', PaymentReportController::class);
     Route::resource('payroll', PayrollController::class);
     Route::resource('payrollSheet', PayrollSheetController::class);
     Route::get('generatePDF', [PayrollSheetController::class, 'generatePDF'])->name('payrollSheet.generatePDF');
+    Route::get('monthly', [PayrollSheetController::class, 'monthly'])->name('payrollSheet.monthly');
+    Route::get('monthlyPayroll', [PayrollSheetController::class, 'monthlyPayroll'])->name('payrollSheet.monthlyPayroll');
 
     Route::get('{payroll_id}/payroll_list', [PayrollSheetController::class, 'payroll_list'])->name('payrollSheet.payroll_list');
     //Route::get('{payroll_id}/payroll_index', [PayrollSheetController::class, 'payroll_index'])->name('payrollSheet.payroll_index');

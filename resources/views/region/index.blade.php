@@ -48,20 +48,20 @@
                 template: function(row) {
                     var regionId = row.id;
                     return '\
-                                    <div class="d-flex">\
+                                    <div class="d-flex">@can("Region.destroy")\
                                                 <a href="javascript:;" onclick="deleteRegion(' + regionId + ',$(this))" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-trash"></i>\
-                                                </a>\
+                                                </a>@endcan\
                                                 \
-                                                <a href="/region/' + regionId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
+                                                @can("Region.update")<a href="/region/' + regionId + '/edit" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-pen"></i>\
-                                                </a>\
-                                                @if($trainingSession_id!=null)
-                                                <a href="'+{{ $trainingSession_id }}+'/'+regionId+'/region/capacity" class="btn btn-sm btn-clean btn-icon" >\
+                                                </a>@endcan\
+                                                @if($trainingSession_id!=null)\
+                                                @can("Region.show")<a href="'+{{ $trainingSession_id }}+'/'+regionId+'/region/capacity" class="btn btn-sm btn-clean btn-icon" >\
                                                     <i class="far fa-eye"></i>\
-                                                </a>\
+                                                </a>@endcan\
                                                 \
-                                                @endif
+                                                @endif\
                                             </div>\
                                             ';
                          },

@@ -26,6 +26,19 @@
                     </li>
                 @endcan
 
+{{--
+                @can('payroll.list') --}}
+                <li class="menu-item {{ strpos(Route::currentRouteName(), 'payrollSheet.monthly') === 0 ? 'menu-item-active' : '' }}"
+                aria-haspopup="true">
+                    <a href="{{ route('payrollSheet.monthly') }}" class="menu-link">
+                        <i class="menu-bullet menu-bullet-dot">
+                            <span></span>
+                        </i>
+                        <span class="menu-text"> Montly Payment </span>
+                    </a>
+                </li>
+                {{-- @endcan --}}
+
 
                 @can('payroll.report')
                     <li class="menu-item {{ strpos(Route::currentRouteName(), 'paymentReport') === 0 ? 'menu-item-active' : '' }}"

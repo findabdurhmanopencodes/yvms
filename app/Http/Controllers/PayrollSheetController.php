@@ -21,6 +21,8 @@ use Andegna\DateTimeFactory;
 use App\Models\Distance;
 use App\Models\Volunteer;
 use App\Models\ApprovedApplicant;
+use App\Models\DeploymentVolunteerAttendance;
+use App\Models\AttendanceSetting;
 use App\Models\PaymentReport;
 use App\Models\Status;
 use App\Models\Zone;
@@ -76,6 +78,25 @@ class PayrollSheetController extends Controller
 
     }
 
+
+
+    public function monthly(Request $request)
+    {
+        if ($request->ajax()) {
+            return datatables()->of(Payroll::select())->make(true);
+
+        }
+        $woredas = Woreda::all();
+        $last_sessions = TrainingSession::orderBy('id', 'desc')->paginate(1);
+        $training_sessions = TrainingSession::orderBy('id', 'desc')->paginate(10);
+         $payrolls = Payroll::orderBy('id', 'desc')->Paginate(1);
+
+         return view('monthly.index', compact('payrolls','last_sessions', 'woredas'));
+
+
+
+    }
+
     public function calculate($zone_id, $traingCenter_id)
     {
           $result = 0.0;
@@ -121,12 +142,80 @@ class PayrollSheetController extends Controller
         return $results;
 
       }
+ ////////////////////////////   for monthly payroll ///////////////////////////////////////////////
+      function monthlyPayroll(Request $request){
+        $traingSession     = TrainingSession::availableSession()->first();
+        $days = AttendanceSetting::select('days')->get()->last()->days;
+        $fixedAmount = PaymentType::where('id', 1)->first();
 
+        $woreda = $request->get('woreda');
+        $sdate = $request->get('sdate');
+        $edate = $request->get('edate');
+
+
+
+        $date =  DateTime::createFromFormat('d/m/Y', $request->get('sdate'));
+        $year = $date->format('Y');
+        $month = $date->format('m');
+        $day = $date->format('d');;
+        $sGC = DateTimeFactory::of($year, $month, $day)->toGregorian();
+        $inialDate = $sGC->format('d/m/Y');
+
+
+
+        $edate =  DateTime::createFromFormat('d/m/Y', $request->get('edate'));
+        $eyear = $edate->format('Y');
+        $emonth = $edate->format('m');
+        $eday = $edate->format('d');;
+        $eGC = DateTimeFactory::of($eyear, $emonth, $eday)->toGregorian();
+        $lastDate = $eGC->format('d/m/Y');
+
+
+        if( $inialDate  >  $lastDate){
+
+            return redirect()->route('payrollSheet.monthly')->with('error', 'Start date must be before from the end date!');
+            }
+
+          $att_vol = [];
+          $att_volunteer = [];
+          $attendances_vol = DeploymentVolunteerAttendance::where('training_session_id', $traingSession->id)->where('woreda_id', $woreda)->whereBetween('attendance_date',[ $inialDate,$lastDate])->get();
+
+          foreach ($attendances_vol as $key => $att) {
+              array_push($att_vol, json_decode($att->volunteers));
+          }
+
+          foreach ($att_vol as $key => $att) {
+              foreach ($att as $key => $value) {
+                  array_push($att_volunteer, $value);
+              }
+          }
+
+          $att_counts = array_count_values($att_volunteer);
+
+          //  dd(  $att_counts);
+          if ($request->get('woreda') != null) {
+            $pdf = PDF::loadView('payrollSheet.monthly_payroll_pdf', compact(
+                'att_counts',
+                'sdate',
+                'edate',
+                'fixedAmount'
+
+            ))->setPaper('A4', 'landscape');
+            return $pdf->download('monthly_payroll' . $woreda . 'pdf');
+        }
+
+        else {
+            return redirect()->route('payrollSheet.monthly')->with('error', ' Erreo while processing request');
+        }
+
+      }
+
+
+
+////////////////////////////////////////////////////////////////
     public function generatePDF(Request $request)
     {
-
-
-         $tarif = TransportTarif::select('price')->get()->last()->price;
+        $tarif = TransportTarif::select('price')->get()->last()->price;
          $km = [];
         $paymentTypes  = PaymentType::where('id', 1)->first();
          $date = DateTimeFactory::fromDateTime(new Carbon('now'))->format('d/m/Y h:i:s');
@@ -140,7 +229,7 @@ class PayrollSheetController extends Controller
         $session = $prefix ."-".$traingSession->id."-".$current_year;
         $center = 'Name';
 
-        $year = Carbon::now()->format('Y');
+       // $year = Carbon::now()->format('Y');
         $date =  DateTime::createFromFormat('d/m/Y', $request->get('sdate'));
         $year = $date->format('Y');
         $month = $date->format('m');
@@ -163,13 +252,11 @@ class PayrollSheetController extends Controller
             $center=$value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->get()->first();
              }
 
-
    ///////////////////////////////////////////////////////////////////////////////
         if ($request->get('payment_type') == '1' ) {  // for monthly  money payment
              $fixedAmount = PaymentType::where('id', 1)->first();
             $placedVolunteers = Volunteer::whereRelation('status','acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
             $total_volunteers = Volunteer::whereRelation('status','acceptance_status',  Constants::VOLUNTEER_STATUS_DEPLOYED)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->count();
-
 
             ////////// to count total payable volunteers /////////
             $total =0;
