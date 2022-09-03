@@ -80,7 +80,7 @@ class VolunteerController extends Controller
         $user = Auth::user();
         if(!$user->can('Volunteer.index')){
             return abort(403);
-            
+
         }
         $applicants = Volunteer::whereRelation('status', 'acceptance_status', 0)->where('training_session_id', $session_id);
         if ($user->hasRole('regional-coordinator')) {
@@ -355,7 +355,7 @@ class VolunteerController extends Controller
 
     public function emailUnverified($training_session)
     {
-        $volunters = Volunteer::whereRelation('User', 'email_verified_at', null)->where('training_session_id', $training_session)->paginate(6);
+        $volunters = Volunteer::doesntHave('User')->where('training_session_id', $training_session)->paginate(1000);
         return view('volunter.email_unverified_volunter', ['volunters' => $volunters]);
     }
     /**
