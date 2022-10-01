@@ -67,7 +67,7 @@
             </tbody>
         </table>
         <div class="d-flex justify-content-center">
-            {!! $volunters->links() !!}
+            {{-- {!! $volunters->links() !!} --}}
         </div>
     </div>
     <!--end: Datatable-->

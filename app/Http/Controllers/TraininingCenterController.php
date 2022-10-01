@@ -274,7 +274,7 @@ class TraininingCenterController extends Controller
     public function result(Request $request)
     {
 
-        $permission = Permission::findOrCreate('checker');
+        // $permission = Permission::findOrCreate('checker');
         // dd(Auth::user()->id);
         if (!Auth::user()->can('checker')) {
             return abort(403);

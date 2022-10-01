@@ -44,10 +44,16 @@ class HierarchyReportController extends Controller
      */
     public function store(StoreHierarchyReportRequest $request)
     {
+        $data = $request?->validated();
+        if (Auth::user()->hasRole(Constants::SUPER_ADMIN)) {
+            HierarchyReport::create($data);
+            return redirect()?->back()?->with('message', 'Hierarchical report created successfully');
+        }
+
+
         if (!Auth::user()?->can('HierarchyReport.store'))
             return abort(403);
         $user = Auth::user();
-        $data = $request?->validated();
         if ($data['reportable_type'] == Woreda::class) {
             if ($user?->hasAnyRole([Constants::ZONE_COORDINATOR])) {
                 $woreda = Woreda::find($data['reportable_id']);
