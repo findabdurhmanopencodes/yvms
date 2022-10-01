@@ -276,19 +276,19 @@ class PermissionSeeder extends Seeder
 
     public function seid()
     {
-        Role::findOrCreate(Constants::SUPER_ADMIN)->givePermissionTo([
+        // Role::findOrCreate(Constants::SUPER_ADMIN)->givePermissionTo([
 
-            'Payroll.index','Payroll.view','Payroll.create','Payroll.edit',
-            'Payroll.delete', 'PayrollSheet.view', 'PayrollSheet.create',
-            'PayrollSheet.edit', 'PayrollSheet.delete',  'Payroll.report',
-            'Payroll.filter',  'PayrollSheet.filter',  'Payroll.print',
-            'PaymentType.index', 'PaymentType.edit', 'PaymentType.delete',
-            'PaymentType.create', 'Distance.index',  'Distance.create',
-            'Distance.edit', 'Distance.delete', 'Distance.import', 'TransportTarif.index',
-             'TransportTarif.create',  'TransportTarif.edit', 'TransportTarif.delete'
+        //     'Payroll.index','Payroll.view','Payroll.create','Payroll.edit',
+        //     'Payroll.delete', 'PayrollSheet.view', 'PayrollSheet.create',
+        //     'PayrollSheet.edit', 'PayrollSheet.delete',  'Payroll.report',
+        //     'Payroll.filter',  'PayrollSheet.filter',  'Payroll.print',
+        //     'PaymentType.index', 'PaymentType.edit', 'PaymentType.delete',
+        //     'PaymentType.create', 'Distance.index',  'Distance.create',
+        //     'Distance.edit', 'Distance.delete', 'Distance.import', 'TransportTarif.index',
+        //      'TransportTarif.create',  'TransportTarif.edit', 'TransportTarif.delete'
 
 
-        ]);
+        // ]);
 
 
         // Role::findOrCreate(Constants::ADMIN)->givePermissionTo([
