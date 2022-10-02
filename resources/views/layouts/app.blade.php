@@ -182,7 +182,8 @@
                                         </li>
                                     @endcanany
 
-                                    @canany(['Volunteer.index', 'Volunteer.Screen', 'Volunteer.email.unverified', 'Volunteer.verified.applicant', 'Volunteer.selected'])
+                                    @canany(['Volunteer.index', 'Volunteer.Screen', 'Volunteer.email.unverified',
+                                        'Volunteer.verified.applicant', 'Volunteer.selected'])
                                         <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'session.volunteer.index') === 0 || strpos(Route::currentRouteName(), 'session.volunteer.all') === 0 || strpos(Route::currentRouteName(), 'session.applicant.verified') === 0 || strpos(Route::currentRouteName(), 'session.applicant.selected') === 0 || strpos(Route::currentRouteName(), 'session.applicant.email.unVerified') === 0 ? 'menu-item-open' : '' }}"
                                             aria-haspopup="true" data-menu-toggle="hover">
 
@@ -202,7 +203,7 @@
                                                     {{-- /*(strpos(Route::currentRouteName(), 'session.volunteer.all') === 0 || strpos(Route::currentRouteName(), 'session.volunteer') === 0) ? 'menu-item-active' : '' */ --}}
                                                     @can('Volunteer.index')
                                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.volunteer.index') === 0 ? 'menu-item-active' : '' }}"
-                                                        aria-haspopup="true">
+                                                            aria-haspopup="true">
                                                             <a href="{{ route('session.volunteer.index', ['training_session' => Request::route('training_session')]) }}"
                                                                 class="menu-link">
                                                                 <i class="menu-bullet menu-bullet-dot">
@@ -214,27 +215,27 @@
                                                     @endcan
                                                     @can('Volunteer.index')
                                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.volunteer.all') === 0 ? 'menu-item-active' : '' }}"
-                                                        aria-haspopup="true">
+                                                            aria-haspopup="true">
 
-                                                        <a href="{{ route('session.volunteer.all', ['training_session' => Request::route('training_session')]) }}"
-                                                            class="menu-link">
-                                                            <i class="menu-bullet menu-bullet-dot">
-                                                                <span></span>
-                                                            </i>
-                                                            <span class="menu-text">Applicants all</span>
-                                                        </a>
-                                                        {{-- <a href="{{ route('session.volunteer.index', ['training_session' => Request::route('training_session')]) }}"
+                                                            <a href="{{ route('session.volunteer.all', ['training_session' => Request::route('training_session')]) }}"
+                                                                class="menu-link">
+                                                                <i class="menu-bullet menu-bullet-dot">
+                                                                    <span></span>
+                                                                </i>
+                                                                <span class="menu-text">Applicants all</span>
+                                                            </a>
+                                                            {{-- <a href="{{ route('session.volunteer.index', ['training_session' => Request::route('training_session')]) }}"
                                                         class="menu-link">
                                                         <i class="menu-bullet menu-bullet-dot">
                                                             <span></span>
                                                         </i>
                                                         <span class="menu-text">Applicants</span>
                                                     </a> --}}
-                                                    </li>
+                                                        </li>
                                                     @endcan
                                                     @can('Volunteer.verified.applicant')
                                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.applicant.verified') === 0 ? 'menu-item-active' : '' }}"
-                                                        aria-haspopup="true">
+                                                            aria-haspopup="true">
                                                             <a href="{{ route('session.applicant.verified', ['training_session' => Request::route('training_session')]) }}"
                                                                 class="menu-link">
                                                                 <i class="menu-bullet menu-bullet-dot">
@@ -246,7 +247,7 @@
                                                     @endcan
                                                     @can('Volunteer.selected')
                                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.applicant.selected') === 0 ? 'menu-item-active' : '' }}"
-                                                        aria-haspopup="true">
+                                                            aria-haspopup="true">
                                                             <a href="{{ route('session.applicant.selected', ['training_session' => Request::route('training_session')]) }}"
                                                                 class="menu-link">
                                                                 <i class="menu-bullet menu-bullet-dot">
@@ -258,7 +259,7 @@
                                                     @endcan
                                                     @can('Volunteer.email.unverified')
                                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.applicant.email.unVerified') === 0 ? 'menu-item-active' : '' }}"
-                                                        aria-haspopup="true">
+                                                            aria-haspopup="true">
                                                             <a href="{{ route('session.applicant.email.unVerified', ['training_session' => Request::route('training_session')]) }}"
                                                                 class="menu-link">
                                                                 <i class="menu-bullet menu-bullet-dot">
@@ -294,7 +295,7 @@
 
                                     @can('TraininingCenter.placement')
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.placement.index') === 0 ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
+                                            aria-haspopup="true">
                                             <a href="{{ route('session.placement.index', ['training_session' => Request::route('training_session')]) }}"
                                                 class="menu-link">
                                                 <i class="menu-icon fal fa-map-marker-check"></i>
@@ -315,7 +316,7 @@
                                     @endcan
                                     @can('dashboard.index')
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_master_placement') === 0 ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
+                                            aria-haspopup="true">
                                             <a href="{{ route('session.training_master_placement.index', ['training_session' => Request::route('training_session')]) }}"
                                                 class="menu-link">
                                                 <i class="menu-icon fal fa-user-tie"></i>
@@ -326,7 +327,7 @@
 
                                     @can('checker')
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.CheckIn.index') === 0 ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
+                                            aria-haspopup="true">
                                             <a href="{{ route('session.TrainingCenter.CheckIn', ['training_session' => Request::route('training_session')]) }}"
                                                 class="menu-link">
                                                 <i class="menu-icon flaticon2-check-mark"></i>
@@ -335,18 +336,18 @@
                                         </li>
                                     @endcan
                                     @can('deployment.checkIn')
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.CheckIn.index') === 0 ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                        <a href="{{ route('session.deployment.CheckIn', ['training_session' => Request::route('training_session')]) }}"
-                                            class="menu-link">
-                                            <i class="menu-icon fa fa-check-double"></i>
-                                            <span class="menu-text">Deployment Check-In</span>
-                                        </a>
-                                    </li>
-                                @endcan
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.CheckIn.index') === 0 ? 'menu-item-active' : '' }}"
+                                            aria-haspopup="true">
+                                            <a href="{{ route('session.deployment.CheckIn', ['training_session' => Request::route('training_session')]) }}"
+                                                class="menu-link">
+                                                <i class="menu-icon fa fa-check-double"></i>
+                                                <span class="menu-text">Deployment Check-In</span>
+                                            </a>
+                                        </li>
+                                    @endcan
                                     @can('TraininingCenter.graduate')
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.graduation.list') === 0 ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
+                                            aria-haspopup="true">
                                             <a href="{{ route('session.graduation.list', ['training_session' => Request::route('training_session')]) }}"
                                                 class="menu-link">
                                                 <i class="menu-icon fal fas fa-graduation-cap"></i>
@@ -358,7 +359,7 @@
 
                                     @can('volunteer.deployment')
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.deployment.index') === 0 ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
+                                            aria-haspopup="true">
                                             <a href="{{ route('session.deployment.index', ['training_session' => Request::route('training_session')]) }}"
                                                 class="menu-link">
                                                 <i class="menu-icon fal fa-server"></i>
@@ -367,7 +368,7 @@
                                             </a>
                                         </li>
                                     @endcan
-                                    @canany(['HierarchyReport.index','HierarchyReport.list'])
+                                    @canany(['HierarchyReport.index', 'HierarchyReport.list'])
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.deployment.regions') === 0 ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
                                             <a href="{{ route('session.deployment.regions', ['training_session' => Request::route('training_session')]) }}"
@@ -379,7 +380,7 @@
                                     @endcanany
                                     @can('generate.certificate')
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.certificate.graduate') === 0 ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
+                                            aria-haspopup="true">
                                             <a href="{{ route('session.certificate.graduate', ['training_session' => Request::route('training_session')]) }}"
                                                 class="menu-link">
                                                 <i class="menu-icon fal flaticon2-document"></i>
@@ -391,7 +392,7 @@
 
                                     @can('region.quota')
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.training_session.quota') === 0 ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
+                                            aria-haspopup="true">
                                             <a href="{{ route('session.training_session.quota', ['training_session' => Request::route('training_session')]) }}"
                                                 class="menu-link">
                                                 <i class="menu-icon fab fa-quora"></i>
@@ -402,7 +403,7 @@
 
                                     @can('Resource.index')
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'resources') === 0 ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
+                                            aria-haspopup="true">
                                             <a href="{{ route('session.resource.all', ['training_session' => Request::route('training_session')]) }}"
                                                 class="menu-link">
                                                 <i class="menu-icon flaticon2-shopping-cart"></i>
@@ -520,9 +521,11 @@
                                 @include('aside.placement')
                                 @include('aside.payroll')
 
-                                @canany(['Region.index', 'Zone.index', 'Woreda.index', 'FeildOfStudy.index', 'payment.type', 'distance.setting', 'transport.tarif', 'TraininingCenter.index', 'Resource.index', 'translation.index'])
+                                @canany(['Region.index', 'Zone.index', 'Woreda.index', 'FeildOfStudy.index', 'payment.type',
+                                    'distance.setting', 'transport.tarif', 'TraininingCenter.index', 'Resource.index',
+                                    'translation.index'])
                                     <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'FeildOfStudy') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
-                                    aria-haspopup="true" data-menu-toggle="hover">
+                                        aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="javascript:;" class="menu-link menu-toggle">
                                             <i class="menu-icon flaticon-settings"></i>
                                             <span class="menu-text">Setting</span>
@@ -541,7 +544,7 @@
                                                 @include('aside.aj')
                                                 @can('Resource.index')
                                                     <li class="menu-item {{ strpos(Route::currentRouteName(), 'resource.index') === 0 ? 'menu-item-active' : '' }}"
-                                                    aria-haspopup="true">
+                                                        aria-haspopup="true">
                                                         <a href="{{ route('resource.index', []) }}" class="menu-link">
                                                             <i class="menu-bullet menu-bullet-dot">
                                                                 <span></span>
@@ -552,7 +555,7 @@
                                                 @endcan
                                                 @can('translation.index')
                                                     <li class="menu-item {{ strpos(Route::currentRouteName(), 'translation') === 0 ? 'menu-item-active' : '' }}"
-                                                    aria-haspopup="true">
+                                                        aria-haspopup="true">
                                                         <a href="{{ route('translation.index', []) }}" class="menu-link">
                                                             <i class="menu-bullet menu-bullet-dot">
                                                                 <span></span>
@@ -567,7 +570,7 @@
                                 @endcanany
                                 @canany(['Event.index', 'Event.store'])
                                     <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'Events') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'FeildOfStudy') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
-                                    aria-haspopup="true" data-menu-toggle="hover">
+                                        aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="javascript:;" class="menu-link menu-toggle">
                                             {{-- <i class="menu-icon flaticon-file"></i> --}}
                                             <i class=" menu-icon fa fa-file-magnifying-glass"></i>
@@ -586,7 +589,7 @@
 
                                                 @can('Event.store')
                                                     <li class="menu-item {{ strpos(Route::currentRouteName(), 'audits') === 0 ? 'menu-item-active' : '' }}"
-                                                    aria-haspopup="true">
+                                                        aria-haspopup="true">
                                                         <a href="{{ route('Events.create', []) }}" class="menu-link">
                                                             <i class="menu-bullet menu-bullet-dot">
                                                                 <span></span>
@@ -597,7 +600,7 @@
                                                 @endcan
                                                 @can('Event.index')
                                                     <li class="menu-item {{ strpos(Route::currentRouteName(), 'audits') === 0 ? 'menu-item-active' : '' }}"
-                                                    aria-haspopup="true">
+                                                        aria-haspopup="true">
                                                         <a href="{{ route('Events.index', []) }}" class="menu-link">
                                                             <i class="menu-bullet menu-bullet-dot">
                                                                 <span></span>
@@ -612,7 +615,7 @@
                                 @endcanany
                                 @can('audit.index')
                                     <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'audits') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'FeildOfStudy') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
-                                    aria-haspopup="true" data-menu-toggle="hover">
+                                        aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="javascript:;" class="menu-link menu-toggle">
                                             {{-- <i class="menu-icon flaticon-file"></i> --}}
                                             <i class=" menu-icon fa fa-file-magnifying-glass"></i>

@@ -23,4 +23,8 @@ class TrainingDocument extends Model implements Auditable
     {
         return $this->belongsTo(File::class);
     }
+    public function training(): BelongsTo
+    {
+        return $this->belongsTo(Training::class);
+    }
 }

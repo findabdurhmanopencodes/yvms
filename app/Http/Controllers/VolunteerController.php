@@ -21,6 +21,7 @@ use App\Models\Qouta;
 use App\Models\Region;
 use App\Models\Status;
 use App\Models\TrainingCenterCapacity;
+use App\Models\TrainingDocument;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;
@@ -509,5 +510,11 @@ class VolunteerController extends Controller
         // Excel::import(new ApplicantImport($trainingSession), $request->file('attendance')->store('temp'));
         $past_url = url()->previous();
         return redirect($past_url)->with('success', 'Successfully Imported!!!');
+    }
+
+    public function myDetail(){
+
+        return view('volunter.my_detail',['volunteer'=>Volunteer::find(2),'trainingMaterials'=>TrainingDocument::all()]);
+
     }
 }
