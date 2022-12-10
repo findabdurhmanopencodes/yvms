@@ -185,9 +185,19 @@ class VolunteerController extends Controller
      * @param  \App\Models\Volunteer  $volunteer
      * @return \Illuminate\Http\Response
      */
-    public function edit(Volunteer $volunteer)
+    public function edit(TrainingSession $trainingSession, $id)
     {
-        //
+        $volunteer = Volunteer::find($id);
+        $before = Carbon::now()->subYears(18)->format('d/m/Y');
+        $after = Carbon::now()->subYears(35)->format('d/m/Y');
+        $disabilities = Disablity::all();
+        $regions = Region::where('status', '=', 1)->get();
+        $educationLevels = EducationalLevel::$educationalLevel;
+        $fields = FeildOfStudy::all();
+        $objectiveTexts = TranslationText::where('translation_type', 0)->get();
+        $birth_date = DateTimeFactory::fromDateTime(new DateTime($volunteer->dob))->format('d/m/Y');
+        $appTexts = TranslationText::where('translation_type', 1)->get();
+        return view('volunter.edit', compact('volunteer', 'trainingSession', 'before', 'after', 'disabilities', 'regions', 'educationLevels', 'fields', 'objectiveTexts', 'appTexts', 'birth_date'));
     }
 
     /**
@@ -197,9 +207,9 @@ class VolunteerController extends Controller
      * @param  \App\Models\Volunteer  $volunteer
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateVolunteerRequest $request, Volunteer $volunteer)
+    public function update(TrainingSession $trainingSession, Request $request, Volunteer $volunteer)
     {
-        //
+        dd($request);
     }
 
     /**
@@ -510,4 +520,5 @@ class VolunteerController extends Controller
         $past_url = url()->previous();
         return redirect($past_url)->with('success', 'Successfully Imported!!!');
     }
+    
 }

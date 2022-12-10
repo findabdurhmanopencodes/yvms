@@ -39,7 +39,7 @@ class ApplicantExport implements FromCollection, WithHeadings, WithEvents
        return [
            AfterSheet::class => function(AfterSheet $event) {
 
-               $event->sheet->getDelegate()->getColumnDimension('A')->setWidth(30);
+            //    $event->sheet->getDelegate()->getColumnDimension('A')->setWidth(30);
                $event->sheet->getDelegate()->getColumnDimension('B')->setWidth(30);
                $event->sheet->getDelegate()->getColumnDimension('C')->setWidth(30);
                $event->sheet->getDelegate()->getColumnDimension('D')->setWidth(30);
