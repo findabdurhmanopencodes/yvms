@@ -513,10 +513,13 @@ class VolunteerController extends Controller
     public function exportVolunteers(TrainingSession $trainingSession){
         $all_volunteers = DB::table('volunteers')->where('training_session_id', $trainingSession->id)->select(['id_number', 'first_name', 'father_name', 'grand_father_name', 'phone', 'email', 'gender', 'dob', 'gpa', 'contact_name', 'contact_phone'])->get();
 
-        return Excel::download(new ApplicantExport($all_volunteers, ['ID Number', 'First Name', 'Father Name', 'Grand Father Name', 'Phone Number', 'E-mail', 'Gender', 'Date of Birth', 'GPA', 'Contact Name', 'Contact Phone']), 'Round'.$trainingSession->id.'.xlsx');
+        $woredas = Woreda::all()->pluck('name');
+
+        return Excel::download(new ApplicantExport($woredas,[], ['First Name', 'Father Name', 'Grand Father Name', 'Phone Number', 'E-mail', 'Gender', 'Woreda', 'Date of Birth', 'GPA', 'Contact Name', 'Contact Phone']), 'MopYVMS.xlsx');
+        
     }
     public function importVolunteers(Request $request, TrainingSession $trainingSession){
-        // Excel::import(new ApplicantImport($trainingSession), $request->file('attendance')->store('temp'));
+        Excel::import(new ApplicantImport($trainingSession), $request->file('attendance')->store('temp'));
         $past_url = url()->previous();
         return redirect($past_url)->with('success', 'Successfully Imported!!!');
     }
