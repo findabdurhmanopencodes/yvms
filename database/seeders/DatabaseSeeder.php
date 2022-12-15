@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RoleSeeder::class,
             AbdiSeeder::class,
-            // BaseSeeder::class,
+//             BaseSeeder::class,
             // FakeDataSeeder::class,
         ]);
         $superUser = User::create(
