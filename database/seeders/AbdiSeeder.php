@@ -16,6 +16,6 @@ class AbdiSeeder extends Seeder
     public function run()
     {
         // Permission::create(['name'=>'session.detail']);
-        Permission::create(['name'=>'session.detail.based']);
+        Permission::findOrCreate('session.detail.based');
     }
 }
