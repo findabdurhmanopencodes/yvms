@@ -317,15 +317,21 @@
                                 <td>
                                     {{ $volunter->id_number}}
                                 </td>
-                                <td>
+                                <td class="col-2">
                                     <span
-                                        class="badge {{ $volStatus == 0?'badge-warning':($volStatus==1?'badge-success':($volStatus==2?'badge-danger':'badge-info')) }} badge-pill">{{ $volName }}</span>
+                                        class="badge {{ $volStatus == 0?'badge-warning':($volStatus==1?'badge-success':($volStatus==2?'badge-danger':'badge-info')) }} badge-pill">{{ $volName }}
+                                    </span>
                                 </td>
                                 <td>
                                     <div class="row">
-                                        <a class="btn btn-sm btn-info"
+                                        <a class="ml-3"
                                             href="{{ route('session.volunteer.detail', ['training_session' => Request::route('training_session'), 'volunteer' => $volunter->id]) }}">
-                                            <i class="fa fa-sm fa-eye"></i> Detail</a>
+                                            <i class="fa fa-eye text-info"></i>
+                                        </a>
+                                        <a class="ml-2"
+                                            href="{{ route('session.applicant.edit', ['training_session' => Request::route('training_session'), 'applicant' => $volunter->id]) }}">
+                                            <i class="fa fa-pen text-warning"></i>
+                                        </a>
                                     </div>
 
                                 </td>

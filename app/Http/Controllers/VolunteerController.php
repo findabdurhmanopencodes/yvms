@@ -185,9 +185,19 @@ class VolunteerController extends Controller
      * @param  \App\Models\Volunteer  $volunteer
      * @return \Illuminate\Http\Response
      */
-    public function edit(Volunteer $volunteer)
+    public function edit(TrainingSession $trainingSession, $id)
     {
-        //
+        $volunteer = Volunteer::find($id);
+        $before = Carbon::now()->subYears(18)->format('d/m/Y');
+        $after = Carbon::now()->subYears(35)->format('d/m/Y');
+        $disabilities = Disablity::all();
+        $regions = Region::where('status', '=', 1)->get();
+        $educationLevels = EducationalLevel::$educationalLevel;
+        $fields = FeildOfStudy::all();
+        $objectiveTexts = TranslationText::where('translation_type', 0)->get();
+        $birth_date = DateTimeFactory::fromDateTime(new DateTime($volunteer->dob))->format('d/m/Y');
+        $appTexts = TranslationText::where('translation_type', 1)->get();
+        return view('volunter.edit', compact('volunteer', 'trainingSession', 'before', 'after', 'disabilities', 'regions', 'educationLevels', 'fields', 'objectiveTexts', 'appTexts', 'birth_date'));
     }
 
     /**
@@ -197,9 +207,9 @@ class VolunteerController extends Controller
      * @param  \App\Models\Volunteer  $volunteer
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateVolunteerRequest $request, Volunteer $volunteer)
+    public function update(TrainingSession $trainingSession, Request $request, Volunteer $volunteer)
     {
-        //
+        dd($request);
     }
 
     /**
@@ -503,11 +513,15 @@ class VolunteerController extends Controller
     public function exportVolunteers(TrainingSession $trainingSession){
         $all_volunteers = DB::table('volunteers')->where('training_session_id', $trainingSession->id)->select(['id_number', 'first_name', 'father_name', 'grand_father_name', 'phone', 'email', 'gender', 'dob', 'gpa', 'contact_name', 'contact_phone'])->get();
 
-        return Excel::download(new ApplicantExport($all_volunteers, ['ID Number', 'First Name', 'Father Name', 'Grand Father Name', 'Phone Number', 'E-mail', 'Gender', 'Date of Birth', 'GPA', 'Contact Name', 'Contact Phone']), 'Round'.$trainingSession->id.'.xlsx');
+        $woredas = Woreda::all()->pluck('name');
+
+        return Excel::download(new ApplicantExport($woredas,[], ['First Name', 'Father Name', 'Grand Father Name', 'Phone Number', 'E-mail', 'Gender', 'Woreda', 'Date of Birth', 'GPA', 'Contact Name', 'Contact Phone']), 'MopYVMS.xlsx');
+        
     }
     public function importVolunteers(Request $request, TrainingSession $trainingSession){
-        // Excel::import(new ApplicantImport($trainingSession), $request->file('attendance')->store('temp'));
+        Excel::import(new ApplicantImport($trainingSession), $request->file('attendance')->store('temp'));
         $past_url = url()->previous();
         return redirect($past_url)->with('success', 'Successfully Imported!!!');
     }
+    
 }
