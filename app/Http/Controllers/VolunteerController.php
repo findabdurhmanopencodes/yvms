@@ -516,12 +516,12 @@ class VolunteerController extends Controller
         $woredas = Woreda::all()->pluck('name');
 
         return Excel::download(new ApplicantExport($woredas,[], ['First Name', 'Father Name', 'Grand Father Name', 'Phone Number', 'E-mail', 'Gender', 'Woreda', 'Date of Birth', 'GPA', 'Contact Name', 'Contact Phone']), 'MopYVMS.xlsx');
-        
+
     }
     public function importVolunteers(Request $request, TrainingSession $trainingSession){
         Excel::import(new ApplicantImport($trainingSession), $request->file('attendance')->store('temp'));
         $past_url = url()->previous();
         return redirect($past_url)->with('success', 'Successfully Imported!!!');
     }
-    
+
 }

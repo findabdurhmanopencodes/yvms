@@ -83,7 +83,6 @@ class TrainingPlacementCommand extends Command
 
     public function place()
     {
-        // dd('aj');
         $activeSession = TrainingSession::availableSession()->first();
         $errorMessage = null;
 
