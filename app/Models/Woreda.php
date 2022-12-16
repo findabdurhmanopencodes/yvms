@@ -49,7 +49,6 @@ class Woreda extends Model implements Auditable
     public function getQuotasInNumberAttribute()
     {
         $countWoredas =  Woreda::count();
-
         return TrainingSession::availableSession()->first()->sessionQouta / $countWoredas;
     }
 

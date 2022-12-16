@@ -407,9 +407,9 @@ class TrainingSessionController extends Controller
         $registrationEndDate = DateTime::createFromFormat('d/m/Y',$request->get('registration_dead_line'));
         $registrationStartDate = DateTimeFactory::of($registrationStartDate->format('Y'), $registrationStartDate->format('m'), $registrationStartDate->format('d'))->toGregorian();
         $registrationEndDate = DateTimeFactory::of($registrationEndDate->format('Y'), $registrationEndDate->format('m'), $registrationEndDate->format('d'))->toGregorian();
-        $checkOne = TrainingSession::where('registration_start_date', '=', $registrationStartDate)->count()>0?True:False;
-        $checkTwo = TrainingSession::where('registration_start_date', '<=', $registrationStartDate)->where('registration_dead_line','>',$registrationStartDate)->count()>0?True:False;
-        $checkThree = TrainingSession::where('registration_start_date', '>', $registrationStartDate)->where('registration_start_date','<',$registrationEndDate)->count()>0?True:False;
+        $checkOne = TrainingSession::where('registration_start_date', '=', $registrationStartDate)->where('id','!=',$trainingSession->id)->count()>0?True:False;
+        $checkTwo = TrainingSession::where('registration_start_date', '<=', $registrationStartDate)->where('registration_dead_line','>',$registrationStartDate)->where('id','!=',$trainingSession->id)->count()>0?True:False;
+        $checkThree = TrainingSession::where('registration_start_date', '>', $registrationStartDate)->where('registration_start_date','<',$registrationEndDate)->where('id','!=',$trainingSession->id)->count()>0?True:False;
         if($checkOne || $checkTwo|| $checkThree){
             throw ValidationException::withMessages(['registration_start_date'=>'You can\'t have multiple session with concurent registration']);
         }
@@ -423,6 +423,21 @@ class TrainingSessionController extends Controller
 
         $trainingSession->update(['end_date_am' => $end_date_am]);
 
+
+        $date_start_gc =  DateTime::createFromFormat('d/m/Y', $data['start_date']);
+        $date_end_gc =  DateTime::createFromFormat('d/m/Y', $data['end_date']);
+        $date_start_reg_gc =  DateTime::createFromFormat('d/m/Y', $data['registration_start_date']);
+        $date_end_reg_gc =  DateTime::createFromFormat('d/m/Y', $data['registration_dead_line']);
+
+        $d_s_t_g = DateTimeFactory::of($date_start_gc->format('Y'), $date_start_gc->format('m'), $date_start_gc->format('d'))->toGregorian();
+
+        $d_e_t_g = DateTimeFactory::of($date_end_gc->format('Y'), $date_end_gc->format('m'), $date_end_gc->format('d'))->toGregorian();
+
+        $d_r_s_t_g = DateTimeFactory::of($date_start_reg_gc->format('Y'), $date_start_reg_gc->format('m'), $date_start_reg_gc->format('d'))->toGregorian();
+
+        $d_r_d_t_g = DateTimeFactory::of($date_end_reg_gc->format('Y'), $date_end_reg_gc->format('m'), $date_end_reg_gc->format('d'))->toGregorian();
+
+        $trainingSession->update(['moto' => $data['name'], 'start_date' => $d_s_t_g, 'end_date' => $d_e_t_g, 'registration_start_date' => $d_r_s_t_g, 'registration_dead_line' => $d_r_d_t_g, 'quantity' => $data['quantity']]);
         $regions = Region::all();
         $zones = Zone::all();
         $woredas = Woreda::all();
@@ -445,21 +460,6 @@ class TrainingSessionController extends Controller
                 $reg_new->qoutaInpercent = $reg_new->qoutaInpercent + $division;
                 array_push($regs, $reg_new);
             }
-
-            $date_start_gc =  DateTime::createFromFormat('d/m/Y', $data['start_date']);
-            $date_end_gc =  DateTime::createFromFormat('d/m/Y', $data['end_date']);
-            $date_start_reg_gc =  DateTime::createFromFormat('d/m/Y', $data['registration_start_date']);
-            $date_end_reg_gc =  DateTime::createFromFormat('d/m/Y', $data['registration_dead_line']);
-
-            $d_s_t_g = DateTimeFactory::of($date_start_gc->format('Y'), $date_start_gc->format('m'), $date_start_gc->format('d'))->toGregorian();
-
-            $d_e_t_g = DateTimeFactory::of($date_end_gc->format('Y'), $date_end_gc->format('m'), $date_end_gc->format('d'))->toGregorian();
-
-            $d_r_s_t_g = DateTimeFactory::of($date_start_reg_gc->format('Y'), $date_start_reg_gc->format('m'), $date_start_reg_gc->format('d'))->toGregorian();
-
-            $d_r_d_t_g = DateTimeFactory::of($date_end_reg_gc->format('Y'), $date_end_reg_gc->format('m'), $date_end_reg_gc->format('d'))->toGregorian();
-
-            $trainingSession->update(['moto' => $data['name'], 'start_date' => $d_s_t_g, 'end_date' => $d_e_t_g, 'registration_start_date' => $d_r_s_t_g, 'registration_dead_line' => $d_r_d_t_g, 'quantity' => $data['quantity']]);
 
             $qouta_all = $qouta->all();
             foreach ($qouta_all as $key => $qou) {

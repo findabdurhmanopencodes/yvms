@@ -81,9 +81,9 @@ class TrainingPlacementCommand extends Command
         return $regionalTrainingCenters->random();
     }
 
-    public function place()
+    public function place($trainingSessionId)
     {
-        $activeSession = TrainingSession::availableSession()->first();
+        $activeSession = TrainingSession::find($trainingSessionId);
         $errorMessage = null;
 
         if (!$activeSession)

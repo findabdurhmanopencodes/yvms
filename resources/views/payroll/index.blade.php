@@ -146,9 +146,12 @@
                                         <div class="card-body">
                                   <span style="font-size:13px;">
                                     <i class="fa fa-info" aria-hidden="true"></i>  Create payroll for Training session range from
-                                    @foreach ($last_sessions as $last_session)
-                                    <option value=""> {{ $last_session->startDateET() }}  -   {{ $last_session->endDateET() }} ዓ.ም </option>
+                                    <select name="training_session_id" id="" class="form-control">
+                                        @foreach ($last_sessions as $last_session)
+                                    <option value="{{ $last_session->id }}"> {{ $last_session->startDateET() }}  -   {{ $last_session->endDateET() }} ዓ.ም </option>
                                       @endforeach
+                                    </select>
+                                    <br>
 
                                  in order to create payroll sheet for each training center!
                                    </span>
