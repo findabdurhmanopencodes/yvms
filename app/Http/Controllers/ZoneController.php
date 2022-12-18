@@ -331,11 +331,11 @@ class ZoneController extends Controller
                 $query = $request->get('query');
 
                 $volunteerQuery = Volunteer::with('woreda.zone.region', 'approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'approvedApplicant.trainingPlacement.deployment.woredaIntake.woreda')->where('id_number', 'MoP-' . $query);
-                $trainingCenter = $volunteerQuery->first()->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->name;
-                $deployedworeda = $volunteerQuery->first()->approvedApplicant->trainingPlacement->deployment->woredaIntake->woreda;
-                $deployedworedaName = $deployedworeda->name;
-                $deployedRegion = $deployedworeda->zone->region->name;
-                $deployedZone = $deployedworeda->zone->name;
+                $trainingCenter = $volunteerQuery->first()?->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->name;
+                $deployedworeda = $volunteerQuery->first()?->approvedApplicant->trainingPlacement->deployment->woredaIntake->woreda;
+                $deployedworedaName = $deployedworeda?->name;
+                $deployedRegion = $deployedworeda?->zone?->region?->name;
+                $deployedZone = $deployedworeda?->zone?->name;
                 if (count($volunteerQuery->get()) > 0) {
                     $data = $volunteerQuery->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->first();
                     if (!$data) {

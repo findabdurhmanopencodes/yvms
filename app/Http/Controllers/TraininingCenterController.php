@@ -274,7 +274,7 @@ class TraininingCenterController extends Controller
     public function result(Request $request)
     {
 
-        $permission = Permission::findOrCreate('checker');
+        // $permission = Permission::findOrCreate('checker');
         // dd(Auth::user()->id);
         if (!Auth::user()->can('checker')) {
             return abort(403);
@@ -305,7 +305,7 @@ class TraininingCenterController extends Controller
                 $output = '';
                 $query = $request->get('query');
                 // Auth::user()->getRoleNames()[0]==Constants::SYSTEM_USER_ROLE;//Need This For Permission
-                $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query)->whereRelation('approvedApplicant. trainingCenterCapacity.trainingCenter', 'id', $trainingCenterId);
+                $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenterId);
                 if (count($volunteerQuery->get()) > 0) {
                     $data = $volunteerQuery->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_PLACED)->first();
                     // $accepted = $volunteerQuery->whereRelation('status', 'acceptance_status', 5)->first();

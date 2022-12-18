@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Constants;
+use Exception;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -20,156 +21,156 @@ class PermissionSeeder extends Seeder
     {
 
 
-        Permission::create(['name'=>'dashboard.index']);
+        Permission::findOrCreate('dashboard.index');
 
-        Permission::create(['name'=>'Disablity.index']);
-        Permission::create(['name'=>'Disablity.store']);
-        Permission::create(['name'=>'Disablity.show']);
-        Permission::create(['name'=>'Disablity.update']);
-        Permission::create(['name'=>'Disablity.destroy']);
+        Permission::findOrCreate('Disablity.index');
+        Permission::findOrCreate('Disablity.store');
+        Permission::findOrCreate('Disablity.show');
+        Permission::findOrCreate('Disablity.update');
+        Permission::findOrCreate('Disablity.destroy');
 
-        Permission::create(['name'=>'EducationalLevel.index']);
-        Permission::create(['name'=>'EducationalLevel.store']);
-        Permission::create(['name'=>'EducationalLevel.show']);
-        Permission::create(['name'=>'EducationalLevel.update']);
-        Permission::create(['name'=>'EducationalLevel.destroy']);
+        Permission::findOrCreate('EducationalLevel.index');
+        Permission::findOrCreate('EducationalLevel.store');
+        Permission::findOrCreate('EducationalLevel.show');
+        Permission::findOrCreate('EducationalLevel.update');
+        Permission::findOrCreate('EducationalLevel.destroy');
 
-        Permission::create(['name'=>'Feadback.index']);
-        Permission::create(['name'=>'Feadback.store']);
-        Permission::create(['name'=>'Feadback.show']);
-        Permission::create(['name'=>'Feadback.update']);
-        Permission::create(['name'=>'Feadback.destroy']);
+        Permission::findOrCreate('Feadback.index');
+        Permission::findOrCreate('Feadback.store');
+        Permission::findOrCreate('Feadback.show');
+        Permission::findOrCreate('Feadback.update');
+        Permission::findOrCreate('Feadback.destroy');
 
-        Permission::create(['name'=>'FeildOfStudy.index']);
-        Permission::create(['name'=>'FeildOfStudy.store']);
-        Permission::create(['name'=>'FeildOfStudy.show']);
-        Permission::create(['name'=>'FeildOfStudy.update']);
-        Permission::create(['name'=>'FeildOfStudy.destroy']);
+        Permission::findOrCreate('FeildOfStudy.index');
+        Permission::findOrCreate('FeildOfStudy.store');
+        Permission::findOrCreate('FeildOfStudy.show');
+        Permission::findOrCreate('FeildOfStudy.update');
+        Permission::findOrCreate('FeildOfStudy.destroy');
 
-        Permission::create(['name'=>'File.file.Upload']);
+        Permission::findOrCreate('File.file.Upload');
 
-        Permission::create(['name'=>'Permission.index']);
-        Permission::create(['name'=>'Permission.store']);
-        Permission::create(['name'=>'Permission.show']);
-        Permission::create(['name'=>'Permission.update']);
-        Permission::create(['name'=>'Permission.destroy']);
+        Permission::findOrCreate('Permission.index');
+        Permission::findOrCreate('Permission.store');
+        Permission::findOrCreate('Permission.show');
+        Permission::findOrCreate('Permission.update');
+        Permission::findOrCreate('Permission.destroy');
 
-        Permission::create(['name'=>'Qouta.index']);
-        Permission::create(['name'=>'Qouta.store']);
-        Permission::create(['name'=>'Qouta.show']);
-        Permission::create(['name'=>'Qouta.update']);
-        Permission::create(['name'=>'Qouta.destroy']);
-
-
-        Permission::create(['name'=>'Region.index']);
-        Permission::create(['name'=>'Region.store']);
-        Permission::create(['name'=>'Region.show']);
-        Permission::create(['name'=>'Region.update']);
-        Permission::create(['name'=>'Region.destroy']);
-        Permission::create(['name'=>'Region.place']);
-        Permission::create(['name'=>'Region.validate.form']);
-
-        Permission::create(['name'=>'Role.index']);
-        Permission::create(['name'=>'Role.store']);
-        Permission::create(['name'=>'Role.show']);
-        Permission::create(['name'=>'Role.update']);
-        Permission::create(['name'=>'Role.destroy']);
-        Permission::create(['name'=>'Role.permissions']);
-        Permission::create(['name'=>'Role.give.permission']);
-        Permission::create(['name'=>'Role.revoke.permission']);
-        Permission::create(['name'=>'Role.give.all.Permission']);
-        Permission::create(['name'=>'Role.remove.all.Permission']);
-
-        Permission::create(['name'=>'TrainingCenterCapacity.index']);
-        Permission::create(['name'=>'TrainingCenterCapacity.store']);
-        Permission::create(['name'=>'TrainingCenterCapacitq.show']);
-        Permission::create(['name'=>'TrainingCenterCapacity.update']);
-        Permission::create(['name'=>'TrainingCenterCapacity.destroy']);
-        Permission::create(['name'=>'TrainingCenterCapacity.capacity.Change']);
+        Permission::findOrCreate('Qouta.index');
+        Permission::findOrCreate('Qouta.store');
+        Permission::findOrCreate('Qouta.show');
+        Permission::findOrCreate('Qouta.update');
+        Permission::findOrCreate('Qouta.destroy');
 
 
-        Permission::create(['name'=>'TrainingMaster.index']);
-        Permission::create(['name'=>'TrainingMaster.store']);
-        Permission::create(['name'=>'TrainingMaster.show']);
-        Permission::create(['name'=>'TrainingMaster.update']);
-        Permission::create(['name'=>'TrainingMaster.destroy']);
+        Permission::findOrCreate('Region.index');
+        Permission::findOrCreate('Region.store');
+        Permission::findOrCreate('Region.show');
+        Permission::findOrCreate('Region.update');
+        Permission::findOrCreate('Region.destroy');
+        Permission::findOrCreate('Region.place');
+        Permission::findOrCreate('Region.validate.form');
+
+        Permission::findOrCreate('Role.index');
+        Permission::findOrCreate('Role.store');
+        Permission::findOrCreate('Role.show');
+        Permission::findOrCreate('Role.update');
+        Permission::findOrCreate('Role.destroy');
+        Permission::findOrCreate('Role.permissions');
+        Permission::findOrCreate('Role.give.permission');
+        Permission::findOrCreate('Role.revoke.permission');
+        Permission::findOrCreate('Role.give.all.Permission');
+        Permission::findOrCreate('Role.remove.all.Permission');
+
+        Permission::findOrCreate('TrainingCenterCapacity.index');
+        Permission::findOrCreate('TrainingCenterCapacity.store');
+        Permission::findOrCreate('TrainingCenterCapacitq.show');
+        Permission::findOrCreate('TrainingCenterCapacity.update');
+        Permission::findOrCreate('TrainingCenterCapacity.destroy');
+        Permission::findOrCreate('TrainingCenterCapacity.capacity.Change');
 
 
-        Permission::create(['name'=>'Training.index']);
-        Permission::create(['name'=>'Training.store']);
-        Permission::create(['name'=>'Training.show']);
-        Permission::create(['name'=>'Training.update']);
-        Permission::create(['name'=>'Training.destroy']);
-
-        Permission::create(['name'=>'TrainingPlacement.index']);
-        Permission::create(['name'=>'TrainingPlacement.store']);
-        Permission::create(['name'=>'TrainingPlacement.show']);
-        Permission::create(['name'=>'TrainingPlacement.update']);
-        Permission::create(['name'=>'TrainingPlacement.destroy']);
-
-        Permission::create(['name'=>'TrainingSession.index']);
-        Permission::create(['name'=>'TrainingSession.store']);
-        Permission::create(['name'=>'TrainingSession.show']);
-        Permission::create(['name'=>'TrainingSession.destroy']);
-        Permission::create(['name'=>'TrainingSession.update']);
-        Permission::create(['name'=>'TrainingSession.show.quota']);
-        Permission::create(['name'=>'TrainingSession.screen']);
-
-        Permission::create(['name'=>'TraininingCenter.index']);
-        Permission::create(['name'=>'TraininingCenter.store']);
-        Permission::create(['name'=>'TraininingCenter.show']);
-        Permission::create(['name'=>'TraininingCenter.update']);
-        Permission::create(['name'=>'TraininingCenter.destroy']);
-        Permission::create(['name'=>'TraininingCenter.placement']);
-
-        Permission::create(['name'=>'UserRegion.index']);
-        Permission::create(['name'=>'UserRegion.store']);
-        Permission::create(['name'=>'UserRegion.show']);
-        Permission::create(['name'=>'UserRegion.update']);
-        Permission::create(['name'=>'UserRegion.destroy']);
+        Permission::findOrCreate('TrainingMaster.index');
+        Permission::findOrCreate('TrainingMaster.store');
+        Permission::findOrCreate('TrainingMaster.show');
+        Permission::findOrCreate('TrainingMaster.update');
+        Permission::findOrCreate('TrainingMaster.destroy');
 
 
-        Permission::create(['name'=>'Volunteer.index']);
-        Permission::create(['name'=>'Volunteer.store']);
-        Permission::create(['name'=>'Volunteer.show']);
-        Permission::create(['name'=>'Volunteer.update']);
-        Permission::create(['name'=>'Volunteer.destroy']);
-        Permission::create(['name'=>'Volunteer.application.form']);
-        Permission::create(['name'=>'Volunteer.apply']);
-        Permission::create(['name'=>'Volunteer.Screen']);
-        Permission::create(['name'=>'Volunteer.email.unverified']);
-        Permission::create(['name'=>'Volunteer.verified.applicant']);
-        Permission::create(['name'=>'Volunteer.selected']);
-        Permission::create(['name'=>'Volunteer.verify.email']);
+        Permission::findOrCreate('Training.index');
+        Permission::findOrCreate('Training.store');
+        Permission::findOrCreate('Training.show');
+        Permission::findOrCreate('Training.update');
+        Permission::findOrCreate('Training.destroy');
+
+        Permission::findOrCreate('TrainingPlacement.index');
+        Permission::findOrCreate('TrainingPlacement.store');
+        Permission::findOrCreate('TrainingPlacement.show');
+        Permission::findOrCreate('TrainingPlacement.update');
+        Permission::findOrCreate('TrainingPlacement.destroy');
+
+        Permission::findOrCreate('TrainingSession.index');
+        Permission::findOrCreate('TrainingSession.store');
+        Permission::findOrCreate('TrainingSession.show');
+        Permission::findOrCreate('TrainingSession.destroy');
+        Permission::findOrCreate('TrainingSession.update');
+        Permission::findOrCreate('TrainingSession.show.quota');
+        Permission::findOrCreate('TrainingSession.screen');
+
+        Permission::findOrCreate('TraininingCenter.index');
+        Permission::findOrCreate('TraininingCenter.store');
+        Permission::findOrCreate('TraininingCenter.show');
+        Permission::findOrCreate('TraininingCenter.update');
+        Permission::findOrCreate('TraininingCenter.destroy');
+        Permission::findOrCreate('TraininingCenter.placement');
+
+        Permission::findOrCreate('UserRegion.index');
+        Permission::findOrCreate('UserRegion.store');
+        Permission::findOrCreate('UserRegion.show');
+        Permission::findOrCreate('UserRegion.update');
+        Permission::findOrCreate('UserRegion.destroy');
 
 
-        Permission::create(['name'=>'User.index']);
-        Permission::create(['name'=>'User.show']);
-        Permission::create(['name'=>'User.update']);
-        Permission::create(['name'=>'User.destroy']);
-        Permission::create(['name'=>'User.profile']);
-        Permission::create(['name'=>'User.give.permission']);
-        Permission::create(['name'=>'User.revoke.permission']);
-        Permission::create(['name'=>'User.user.permissions']);
-        Permission::create(['name'=>'User.give.all.permission']);
-        Permission::create(['name'=>'User.remove.all.permission']);
-        Permission::create(['name'=>'User.credential.download']);
+        Permission::findOrCreate('Volunteer.index');
+        Permission::findOrCreate('Volunteer.store');
+        Permission::findOrCreate('Volunteer.show');
+        Permission::findOrCreate('Volunteer.update');
+        Permission::findOrCreate('Volunteer.destroy');
+        Permission::findOrCreate('Volunteer.application.form');
+        Permission::findOrCreate('Volunteer.apply');
+        Permission::findOrCreate('Volunteer.Screen');
+        Permission::findOrCreate('Volunteer.email.unverified');
+        Permission::findOrCreate('Volunteer.verified.applicant');
+        Permission::findOrCreate('Volunteer.selected');
+        Permission::findOrCreate('Volunteer.verify.email');
 
-        Permission::create(['name'=>'Woreda.index']);
-        Permission::create(['name'=>'Woreda.store']);
-        Permission::create(['name'=>'Woreda.show']);
-        Permission::create(['name'=>'Woreda.update']);
-        Permission::create(['name'=>'Woreda.destroy']);
-        Permission::create(['name'=>'Woreda.fetch']);
-        Permission::create(['name'=>'Woreda.validate.form']);
 
-        Permission::create(['name'=>'Zone.index']);
-        Permission::create(['name'=>'Zone.store']);
-        Permission::create(['name'=>'Zone.show']);
-        Permission::create(['name'=>'Zone.update']);
-        Permission::create(['name'=>'Zone.destroy']);
-        Permission::create(['name'=>'Zone.fetch']);
-        Permission::create(['name'=>'Zone.validate.form']);
+        Permission::findOrCreate('User.index');
+        Permission::findOrCreate('User.show');
+        Permission::findOrCreate('User.update');
+        Permission::findOrCreate('User.destroy');
+        Permission::findOrCreate('User.profile');
+        Permission::findOrCreate('User.give.permission');
+        Permission::findOrCreate('User.revoke.permission');
+        Permission::findOrCreate('User.user.permissions');
+        Permission::findOrCreate('User.give.all.permission');
+        Permission::findOrCreate('User.remove.all.permission');
+        Permission::findOrCreate('User.credential.download');
+
+        Permission::findOrCreate('Woreda.index');
+        Permission::findOrCreate('Woreda.store');
+        Permission::findOrCreate('Woreda.show');
+        Permission::findOrCreate('Woreda.update');
+        Permission::findOrCreate('Woreda.destroy');
+        Permission::findOrCreate('Woreda.fetch');
+        Permission::findOrCreate('Woreda.validate.form');
+
+        Permission::findOrCreate('Zone.index');
+        Permission::findOrCreate('Zone.store');
+        Permission::findOrCreate('Zone.show');
+        Permission::findOrCreate('Zone.update');
+        Permission::findOrCreate('Zone.destroy');
+        Permission::findOrCreate('Zone.fetch');
+        Permission::findOrCreate('Zone.validate.form');
         $this->abdi();
         $this->ajaib();
         $this->ms();
@@ -180,132 +181,130 @@ class PermissionSeeder extends Seeder
 
     public function abdi()
     {
-        Permission::create(['name' => PermissionSeeder::CENTER_COORIDNATOR]);
-        Permission::create(['name'=>'Document.index']);
-        Permission::create(['name'=>'Document.store']);
-        Permission::create(['name'=>'Document.show']);
-        Permission::create(['name'=>'Document.update']);
-        Permission::create(['name'=>'Document.destroy']);
+        Permission::findOrCreate(PermissionSeeder::CENTER_COORIDNATOR);
+        Permission::findOrCreate('Document.index');
+        Permission::findOrCreate('Document.store');
+        Permission::findOrCreate('Document.show');
+        Permission::findOrCreate('Document.update');
+        Permission::findOrCreate('Document.destroy');
 
-        Permission::create(['name'=>'TrainingSchedule.index']);
-        Permission::create(['name'=>'TrainingSchedule.store']);
-        Permission::create(['name'=>'TrainingSchedule.show']);
-        Permission::create(['name'=>'TrainingSchedule.update']);
-        Permission::create(['name'=>'TrainingSchedule.destroy']);
+        Permission::findOrCreate('TrainingSchedule.index');
+        Permission::findOrCreate('TrainingSchedule.store');
+        Permission::findOrCreate('TrainingSchedule.show');
+        Permission::findOrCreate('TrainingSchedule.update');
+        Permission::findOrCreate('TrainingSchedule.destroy');
 
 
 
-        Permission::create(['name'=>'HierarchyReport.index']);
-        Permission::create(['name'=>'HierarchyReport.list']);
-        Permission::create(['name'=>'HierarchyReport.store']);
-        Permission::create(['name'=>'HierarchyReport.show']);
-        Permission::create(['name'=>'HierarchyReport.update']);
-        Permission::create(['name'=>'HierarchyReport.destroy']);
+        Permission::findOrCreate('HierarchyReport.index');
+        Permission::findOrCreate('HierarchyReport.list');
+        Permission::findOrCreate('HierarchyReport.store');
+        Permission::findOrCreate('HierarchyReport.show');
+        Permission::findOrCreate('HierarchyReport.update');
+        Permission::findOrCreate('HierarchyReport.destroy');
 
-        Permission::create(['name'=>'SyndicationRoom.index']);
-        Permission::create(['name'=>'SyndicationRoom.store']);
-        Permission::create(['name'=>'SyndicationRoom.placement']);
-        Permission::create(['name'=>'SyndicationRoom.show']);
-        Permission::create(['name'=>'SyndicationRoom.update']);
-        Permission::create(['name'=>'SyndicationRoom.destroy']);
+        Permission::findOrCreate('SyndicationRoom.index');
+        Permission::findOrCreate('SyndicationRoom.store');
+        Permission::findOrCreate('SyndicationRoom.placement');
+        Permission::findOrCreate('SyndicationRoom.show');
+        Permission::findOrCreate('SyndicationRoom.update');
+        Permission::findOrCreate('SyndicationRoom.destroy');
 
-        Permission::create(['name'=>'centerCooridnator.assign']);
+        Permission::findOrCreate('centerCooridnator.assign');
     }
 
-    public function ms(){
-        Permission::create(['name'=>'RegionIntake.index']);
-        Permission::create(['name'=>'RegionIntake.store']);
-        Permission::create(['name'=>'Region.deployment']);
+    public function ms()
+    {
+        Permission::findOrCreate('RegionIntake.index');
+        Permission::findOrCreate('RegionIntake.store');
+        Permission::findOrCreate('Region.deployment');
 
-        Permission::create(['name'=>'ZoneIntake.index']);
-        Permission::create(['name'=>'ZoneIntake.store']);
-        Permission::create(['name'=>'ZoneIntake.update']);
+        Permission::findOrCreate('ZoneIntake.index');
+        Permission::findOrCreate('ZoneIntake.store');
+        Permission::findOrCreate('ZoneIntake.update');
 
-        Permission::create(['name'=>'WoredaIntake.index']);
-        Permission::create(['name'=>'WoredaIntake.store']);
-        Permission::create(['name'=>'WoredaIntake.update']);
+        Permission::findOrCreate('WoredaIntake.index');
+        Permission::findOrCreate('WoredaIntake.store');
+        Permission::findOrCreate('WoredaIntake.update');
 
-        Permission::create(['name'=>'GraduationList.index']);
+        Permission::findOrCreate('GraduationList.index');
 
-        Permission::create(['name'=>'CertificateGenerate.index']);
-        Permission::create(['name'=>'CertificateGenerate.print']);
+        Permission::findOrCreate('CertificateGenerate.index');
+        Permission::findOrCreate('CertificateGenerate.print');
 
-        Permission::create(['name'=>'TraininingCenter.checkedInID']);
-        Permission::create(['name'=>'TraininingCenter.trainnerID']);
-        Permission::create(['name'=>'TraininingCenter.graduate']);
-        Permission::create(['name'=>'TraininingCenter.checkedInIDPrint']);
-        Permission::create(['name'=>'TraininingCenter.trainnerIDPrint']);
-        Permission::create(['name'=>'TraininingCenter.graduatedIDPrint']);
+        Permission::findOrCreate('TraininingCenter.checkedInID');
+        Permission::findOrCreate('TraininingCenter.trainnerID');
+        Permission::findOrCreate('TraininingCenter.graduate');
+        Permission::findOrCreate('TraininingCenter.checkedInIDPrint');
+        Permission::findOrCreate('TraininingCenter.trainnerIDPrint');
+        Permission::findOrCreate('TraininingCenter.graduatedIDPrint');
 
-        Permission::create(['name'=>'VolunteerDeployment.zones']);
-        Permission::create(['name'=>'VolunteerDeployment.woredas']);
-        Permission::create(['name'=>'VolunteerDeployment.attendanceExport']);
-        Permission::create(['name'=>'VolunteerDeployment.attendanceImport']);
-        Permission::create(['name'=>'VolunteerDeployment.graduate']);
-        Permission::create(['name'=>'volunteer.deployment']);
-        Permission::create(['name'=>'generate.certificate']);
+        Permission::findOrCreate('VolunteerDeployment.zones');
+        Permission::findOrCreate('VolunteerDeployment.woredas');
+        Permission::findOrCreate('VolunteerDeployment.attendanceExport');
+        Permission::findOrCreate('VolunteerDeployment.attendanceImport');
+        Permission::findOrCreate('VolunteerDeployment.graduate');
+        Permission::findOrCreate('volunteer.deployment');
+        Permission::findOrCreate('generate.certificate');
 
-        Permission::create(['name'=>'region.quota']);
-        Permission::create(['name'=>'payroll.list']);
-        Permission::create(['name'=>'payroll.report']);
-        Permission::create(['name'=>'payment.type']);
-        Permission::create(['name'=>'distance.setting']);
-        Permission::create(['name'=>'transport.tarif']);
-        Permission::create(['name'=>'translation.index']);
+        Permission::findOrCreate('region.quota');
+        Permission::findOrCreate('payroll.list');
+        Permission::findOrCreate('payroll.report');
+        Permission::findOrCreate('payment.type');
+        Permission::findOrCreate('distance.setting');
+        Permission::findOrCreate('transport.tarif');
+        Permission::findOrCreate('translation.index');
     }
     public function ajaib()
     {
-        Permission::create(['name'=>'Resource.index']);
-        Permission::create(['name'=>'Resource.store']);
-        Permission::create(['name'=>'Resource.show']);
-        Permission::create(['name'=>'Resource.update']);
-        Permission::create(['name'=>'Resource.destroy']);
+        Permission::findOrCreate('Resource.index');
+        Permission::findOrCreate('Resource.store');
+        Permission::findOrCreate('Resource.show');
+        Permission::findOrCreate('Resource.update');
+        Permission::findOrCreate('Resource.destroy');
 
-        Permission::create(['name'=>'Event.index']);
-        Permission::create(['name'=>'Event.store']);
-        Permission::create(['name'=>'Event.show']);
-        Permission::create(['name'=>'Event.update']);
-        Permission::create(['name'=>'audit.index']);
+        Permission::findOrCreate('Event.index');
+        Permission::findOrCreate('Event.store');
+        Permission::findOrCreate('Event.show');
+        Permission::findOrCreate('Event.update');
+        Permission::findOrCreate('audit.index');
         //updating trainingCenter Permission
-        Permission::create(['name'=>'TraininingCenter.giveResource']);
-        Permission::create(['name'=>'TraininingCenter.giveResourceDetail']);
+        Permission::findOrCreate('TraininingCenter.giveResource');
+        Permission::findOrCreate('TraininingCenter.giveResourceDetail');
         //updating trainingSession Permission
-        Permission::create(['name'=>'TrainingSession.allResource']);
-        Permission::create(['name'=>'TrainingSession.showResource']);
+        Permission::findOrCreate('TrainingSession.allResource');
+        Permission::findOrCreate('TrainingSession.showResource');
     }
 
     public function seid()
     {
-        Role::findOrCreate(Constants::SUPER_ADMIN)->givePermissionTo([
-
-            'Payroll.index','Payroll.view','Payroll.create','Payroll.edit',
-            'Payroll.delete', 'PayrollSheet.view', 'PayrollSheet.create',
-            'PayrollSheet.edit', 'PayrollSheet.delete',  'Payroll.report',
+        $permissionOfPayroll = [
+            'Payroll.index','Payroll.view','Payroll.findOrCreate','Payroll.edit',
+            'Payroll.delete', 'PayrollSheet.view', 'PayrollSheet.findOrCreate',
+            'PayrollSheet.edit', 'PayrollSheet.delete',
             'Payroll.filter',  'PayrollSheet.filter',  'Payroll.print',
             'PaymentType.index', 'PaymentType.edit', 'PaymentType.delete',
-            'PaymentType.create', 'Distance.index',  'Distance.create',
+            'PaymentType.findOrCreate', 'Distance.index',  'Distance.findOrCreate',
             'Distance.edit', 'Distance.delete', 'Distance.import', 'TransportTarif.index',
-             'TransportTarif.create',  'TransportTarif.edit', 'TransportTarif.delete'
-
-
-        ]);
-
-
-        // Role::findOrCreate(Constants::ADMIN)->givePermissionTo([
-
-        // ]);
-
-        //adding checked in deployment
-
-        Permission::create(['name'=>'deployment.checkIn']);
-
-
-
-        // ]);
-
-         // Role::findOrCreate(Constants::GENERAL)->givePermissionTo([
-
-        // ]);
+             'TransportTarif.findOrCreate',  'TransportTarif.edit', 'TransportTarif.delete'
+        ];
+        foreach($permissionOfPayroll as $payrollPermission){
+            Permission::findOrCreate($payrollPermission);
+        }
+        try {
+            Role::findOrCreate(Constants::SUPER_ADMIN)->givePermissionTo([
+                'Payroll.index', 'Payroll.view', 'Payroll.findOrCreate', 'Payroll.edit',
+                'Payroll.delete', 'PayrollSheet.view', 'PayrollSheet.findOrCreate',
+                'PayrollSheet.edit', 'PayrollSheet.delete',  'Payroll.report',
+                'Payroll.filter',  'PayrollSheet.filter',  'Payroll.print',
+                'PaymentType.index', 'PaymentType.edit', 'PaymentType.delete',
+                'PaymentType.findOrCreate', 'Distance.index',  'Distance.findOrCreate',
+                'Distance.edit', 'Distance.delete', 'Distance.import', 'TransportTarif.index',
+                'TransportTarif.findOrCreate',  'TransportTarif.edit', 'TransportTarif.delete'
+            ]);
+        } catch (Exception $f) {
+            // Permission::findOrCreate(explode('`', $f->getMessage())[1]);
+        }
+        Permission::findOrCreate('deployment.checkIn');
     }
 }
-
