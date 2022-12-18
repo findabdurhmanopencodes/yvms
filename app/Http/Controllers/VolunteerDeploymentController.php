@@ -38,9 +38,9 @@ class VolunteerDeploymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request,TrainingSession $trainingSession)
     {
-        $trainingSession = TrainingSession::availableSession()->first();
+        // $trainingSession = TrainingSession::availableSession()->first();
         $q = VolunteerDeployment::query()->whereRelation('trainingPlacement', 'training_session_id', $trainingSession->id);
 
         if ($request->get('training_center') != null) {
@@ -128,10 +128,10 @@ class VolunteerDeploymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function deploy()
+    public function deploy(TrainingSession $trainingSession)
     {
         $dep =  new VoluteerDeploymentCommand();
-        $dep->deploy();
+        $dep->deploy($trainingSession);
 
         return redirect(route('session.deployment.index', ['training_session' => request()->route('training_session')]))->with('message', 'Volunteers Successfully  Deployed');
     }

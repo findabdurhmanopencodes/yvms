@@ -26,14 +26,13 @@ class PayrollController extends Controller
 
     public function index(Request $request)
     {
+
         if ($request->ajax()) {
             return datatables()->of(Payroll::select())->make(true);
-
         }
-        $last_sessions = TrainingSession::orderBy('id', 'desc')->paginate(1);
+        $last_sessions = TrainingSession::orderBy('id', 'desc')->get();
         $training_sessions = TrainingSession::orderBy('id', 'desc')->paginate(10);
-         $payrolls = Payroll::orderBy('id', 'desc')->Paginate(1);
-
+        $payrolls = Payroll::orderBy('id', 'desc')->Paginate(1);
         return view('payroll.index', compact('payrolls','training_sessions','last_sessions'));
     }
 
@@ -47,14 +46,13 @@ class PayrollController extends Controller
           // creating eduycational level setting
           return view('payroll.create');
     }
-    public function store()
+    public function store(Request $request)
     {
-        $traingSession     = TrainingSession::availableSession()->first();
-       // dd( $traingSession );
+        $request->validate(['training_session_id' => 'required']);
+        $traingSession     = TrainingSession::find($request->get('training_session_id'))->first();
         $prefix ='MoP-YVMS-Payroll';
         $current_year = now()->year;
         $code   = $prefix ."-".$traingSession->id."-".$current_year;
-
         if (Payroll::where('training_session_id',$traingSession->id)->where('name',$code)->count() > 0) {
             return redirect()->route('payroll.index')->with('error', ' This session round has been created payroll alreay!');
         }

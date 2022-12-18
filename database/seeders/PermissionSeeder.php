@@ -174,7 +174,7 @@ class PermissionSeeder extends Seeder
         $this->abdi();
         $this->ajaib();
         $this->ms();
-        $this->seid();
+//        $this->seid();
     }
 
 

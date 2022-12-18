@@ -43,15 +43,10 @@ class TrainingCenterCapacityController extends Controller
      */
     public function store(Request $request)
     {
-
         $trainingSession = new TrainingSession();
-
         $trainingSessionId = $trainingSession->availableSession()?->first()?->id;
         TrainingCenterCapacity::create(['capacity' => $request->get('capacity'), 'training_session_id' => $trainingSessionId, 'trainining_center_id' => $request->get('trainingCenterId')]);
         return redirect()->back();
-
-
-
     }
 
     /**

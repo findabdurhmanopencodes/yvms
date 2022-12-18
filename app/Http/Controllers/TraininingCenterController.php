@@ -138,7 +138,6 @@ class TraininingCenterController extends Controller
 
             return abort(403);
         }
-
         $traininingCenter     = TraininingCenter::with('capacities.trainningSession')->find($traininingCenter);
         $trainingSession      = new TrainingSession();
         $trainingSessionId    = $trainingSession->availableSession()?->first()?->id;

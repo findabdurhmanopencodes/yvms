@@ -131,14 +131,14 @@ Route::get('adb', function () {
     // $markdown = new \Illuminate\Mail\Markdown(view(), config('mail.markdown'));
     // return $markdown->render($notification->markdown, $notification->data());
 });
-    // Route::get('send',[NotificationController::class,'sendApplicantPlacmentEmail']);
+// Route::get('send',[NotificationController::class,'sendApplicantPlacmentEmail']);
 
-     Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
-     Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
-     Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
-     Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
+Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
+Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
+Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
+Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
 
-    Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' => 'session.'], function () {
+Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' => 'session.'], function () {
     Route::get('report/{report_name}', [ReportController::class, 'index'])->name('reports');
     Route::resource('hierarchy', HierarchyReportController::class);
     Route::get('deployment-regions', [RegionController::class, 'deployment'])->name('deployment.regions');
@@ -347,7 +347,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/download/idPDF', [IdGenerateController::class, 'pdfDownload'])->name('id.download');
     Route::post('/certificatePDF/download', [IdGenerateController::class, 'certificateDownload'])->name('certificate.download');
     Route::get('/dashboard', function () {
-        if(!(Auth::user()?->can('dashboard.index')))
+        if (!(Auth::user()?->can('dashboard.index')))
             return abort(403);
 
         if (count(TrainingSession::availableSession()) > 0) {
@@ -380,4 +380,3 @@ Route::get('/Event/{event}/', [EventController::class, 'detailEvent'])->name('ev
 Route::get('/Event/image-remove/{eventImage}', [EventController::class, 'removeImage'])->name('event.image.remove');
 Route::any('audits', [AuditController::class, 'index'])
     ->middleware('auth', \App\Http\Middleware\AllowOnlyAdmin::class)->name('audit.index');
-
