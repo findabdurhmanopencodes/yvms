@@ -144,6 +144,8 @@ class PayrollSheetController extends Controller
       }
  ////////////////////////////   for monthly payroll ///////////////////////////////////////////////
       function monthlyPayroll(Request $request){
+
+
         $traingSession     = TrainingSession::availableSession()->first();
         $days = AttendanceSetting::select('days')->get()->last()->days;
         $fixedAmount = PaymentType::where('id', 1)->first();
@@ -159,7 +161,7 @@ class PayrollSheetController extends Controller
         $month = $date->format('m');
         $day = $date->format('d');;
         $sGC = DateTimeFactory::of($year, $month, $day)->toGregorian();
-        $inialDate = $sGC->format('d/m/Y');
+        $inialDate = $sGC->format('Y/m/d');
 
 
 
@@ -168,16 +170,23 @@ class PayrollSheetController extends Controller
         $emonth = $edate->format('m');
         $eday = $edate->format('d');;
         $eGC = DateTimeFactory::of($eyear, $emonth, $eday)->toGregorian();
-        $lastDate = $eGC->format('d/m/Y');
+        $lastDate = $eGC->format('Y/m/d');
 
 
-        if( $inialDate  >  $lastDate){
+        // if( $inialDate  >  $lastDate){
 
-            return redirect()->route('payrollSheet.monthly')->with('error', 'Start date must be before from the end date!');
-            }
+        //     return redirect()->route('payrollSheet.monthly')->with('error', 'Start date must be before from the end date!');
+        //     }
+
+          //$deployedVolunteers = Volunteer::whereRelation('status','acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
+
+
+
 
           $att_vol = [];
+
           $att_volunteer = [];
+
           $attendances_vol = DeploymentVolunteerAttendance::where('training_session_id', $traingSession->id)->where('woreda_id', $woreda)->whereBetween('attendance_date',[ $inialDate,$lastDate])->get();
 
           foreach ($attendances_vol as $key => $att) {
@@ -191,11 +200,22 @@ class PayrollSheetController extends Controller
           }
 
           $att_counts = array_count_values($att_volunteer);
+          $deployedVolunteers  = Volunteer::whereRelation('status','acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->get();
 
-          //  dd(  $att_counts);
+         // $deployedVolunteers = Volunteer::whereIn('id_number', [$att_counts])->get();
+
+           foreach ($deployedVolunteers as $key => $value){
+           array_push($att_counts, $deployedVolunteers);
+
+              }
+
+           // dd($att_volunteer);
+
           if ($request->get('woreda') != null) {
             $pdf = PDF::loadView('payrollSheet.monthly_payroll_pdf', compact(
                 'att_counts',
+                'att_volunteer',
+                'deployedVolunteers',
                 'sdate',
                 'edate',
                 'fixedAmount'
@@ -244,17 +264,14 @@ class PayrollSheetController extends Controller
         $edate  = $start_date->addDays($day);
 
         $day = $request->get('day');
-
         $volunteers = Volunteer::whereRelation('status','acceptance_status', Constants:: VOLUNTEER_STATUS_CHECKEDIN)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
-
-
-           foreach ($volunteers  as $key => $value) {
-            $center=$value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->get()->first();
+         foreach ($volunteers  as $key => $value) {
+        $center=$value->approvedApplicant->trainingPlacement->trainingCenterCapacity->trainingCenter->get()->first();
              }
 
    ///////////////////////////////////////////////////////////////////////////////
         if ($request->get('payment_type') == '1' ) {  // for monthly  money payment
-             $fixedAmount = PaymentType::where('id', 1)->first();
+           $fixedAmount = PaymentType::where('id', 1)->first();
             $placedVolunteers = Volunteer::whereRelation('status','acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
             $total_volunteers = Volunteer::whereRelation('status','acceptance_status',  Constants::VOLUNTEER_STATUS_DEPLOYED)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->count();
 
@@ -297,10 +314,9 @@ class PayrollSheetController extends Controller
             }
         }
 
-        elseif ($request->get('payment_type') == '2') { // for perdiem payment
+            elseif ($request->get('payment_type') == '2') { // for perdiem payment
             $placedVolunteers = Volunteer::whereRelation('status','acceptance_status', Constants:: VOLUNTEER_STATUS_CHECKEDIN)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
             $total_volunteers = Volunteer::whereRelation('status','acceptance_status', Constants:: VOLUNTEER_STATUS_CHECKEDIN)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->count();
-
             $totals = [];
             $scale = [];
 
