@@ -21,6 +21,7 @@ use App\Models\Qouta;
 use App\Models\Region;
 use App\Models\Status;
 use App\Models\TrainingCenterCapacity;
+use App\Models\TrainingDocument;
 use App\Models\TrainingPlacement;
 use App\Models\TrainingSession;
 use App\Models\TraininingCenter;

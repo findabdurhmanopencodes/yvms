@@ -347,6 +347,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/download/idPDF', [IdGenerateController::class, 'pdfDownload'])->name('id.download');
     Route::post('/certificatePDF/download', [IdGenerateController::class, 'certificateDownload'])->name('certificate.download');
     Route::get('/dashboard', function () {
+        $volunteer = Volunteer::where('user_id', Auth::user()->id)->first();
+        if ($volunteer) {
+
+            return view('volunter.my_detail', ['volunteer' => $volunteer, 'trainingMaterials' => TrainingDocument::all()]);
+        }
         if (!(Auth::user()?->can('dashboard.index')))
             return abort(403);
 
@@ -380,3 +385,4 @@ Route::get('/Event/{event}/', [EventController::class, 'detailEvent'])->name('ev
 Route::get('/Event/image-remove/{eventImage}', [EventController::class, 'removeImage'])->name('event.image.remove');
 Route::any('audits', [AuditController::class, 'index'])
     ->middleware('auth', \App\Http\Middleware\AllowOnlyAdmin::class)->name('audit.index');
+Route::get('/my-detail', [VolunteerController::class, 'myDetail'])->name('volunteer.myDetail');

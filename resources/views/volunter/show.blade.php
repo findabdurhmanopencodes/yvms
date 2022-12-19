@@ -71,7 +71,7 @@
                         <div class="flex-shrink-0 mr-7 mt-lg-0 mt-3">
                             <div class="symbol symbol-40 symbol-lg-90">
                                 @if ($applicant->picture())
-                                    
+
                                 <img src="{{ asset($applicant->picture()->file_path) }}" alt="image">
                                 @else
                                 <img src="{{ asset('user.png') }}" alt="">
@@ -268,7 +268,7 @@
                                                             <div>
                                                                 <span class="font-weight-bolder">Size:</span>
                                                                 {{-- {{ $applicant->getMinistryFileSize() }} --}}
-                                                                22 Kb
+
                                                             </div>
                                                         </td>
 
@@ -296,7 +296,7 @@
                                                             <div>
                                                                 <span class="font-weight-bolder">Size:</span>
                                                                 {{-- {{ $applicant->getMinistryFileSize() }} --}}
-                                                                22 Kb
+
                                                             </div>
                                                         </td>
                                                         @if ($applicant->getBsc() != null)
@@ -333,7 +333,7 @@
                                                             <div>
                                                                 <span class="font-weight-bolder">Size:</span>
                                                                 {{-- {{ $applicant->getMinistryFileSize() }} --}}
-                                                                22 Kb
+
                                                             </div>
                                                         </td>
                                                         @if ($applicant->getMsc() != null)
@@ -371,7 +371,7 @@
                                                             <div>
                                                                 <span class="font-weight-bolder">Size:</span>
                                                                 {{-- {{ $applicant->getMinistryFileSize() }} --}}
-                                                                22 Kb
+
                                                             </div>
                                                         </td>
                                                         @if ($applicant->getPhd() != null)
@@ -429,7 +429,7 @@
                                                             <div>
                                                                 <span class="font-weight-bolder">Size:</span>
                                                                 {{-- {{ $applicant->getMinistryFileSize() }} --}}
-                                                                22 Kb
+
                                                             </div>
                                                         </td>
                                                         @if ($applicant->getPregnant() != null)
@@ -467,7 +467,7 @@
                                                         <div>
                                                             <span class="font-weight-bolder">Size:</span>
                                                             {{-- {{ $applicant->getMinistryFileSize() }} --}}
-                                                            22 Kb
+
                                                         </div>
                                                     </td>
                                                     @if ($applicant->getEthical() != null)
