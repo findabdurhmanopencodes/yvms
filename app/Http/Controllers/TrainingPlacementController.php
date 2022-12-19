@@ -31,9 +31,9 @@ class TrainingPlacementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request,TrainingSession $trainingSession)
     {
-        $trainingSession = TrainingSession::availableSession()->first();
+        // $trainingSession = TrainingSession::availableSession()->first();
         $q               = TrainingPlacement::query()->where('training_placements.training_session_id', $trainingSession->id);
 
         if ($request->get('training_center') != null) {
@@ -127,16 +127,15 @@ class TrainingPlacementController extends Controller
         //
     }
 
-    public function place(Request $request)
+    public function place(Request $request,$trainingSessionId)
     {
         // $output = shell_exec('php ../artisan training:place');
         // if (!$output)
         //     $message = 'Succefully Placed Volunteers';
         // else
         //     $message = $output;
-
         $tp = new TrainingPlacementCommand();
-        $tp->place();
+        $tp->place($trainingSessionId);
         return redirect(route('session.placement.index', [$request->route('training_session')]))->with('message', 'Succefully Placed');
     }
 

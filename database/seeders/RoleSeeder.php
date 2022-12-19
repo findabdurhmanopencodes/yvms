@@ -17,14 +17,14 @@ class RoleSeeder extends Seeder
     public function run()
     {
         //
-        $volunteerRole = Role::create(['name' => Constants::VOLUNTEER]);
-        $superAdminRole = Role::create(['name' => Constants::SUPER_ADMIN]);
-        $regionalCordinatorRole = Role::create(['name' => Constants::REGIONAL_COORDINATOR]);
-        $systemUserCordinatorRole = Role::create(['name' => Constants::SYSTEM_USER]);
-        $zoneCordinatorRole = Role::create(['name' => Constants::ZONE_COORDINATOR]);
-        $deskRole = Role::create(['name' => Constants::DESK]);
-        $generalRole = Role::create(['name' => Constants::GENERAL]);
-        $adminRole = Role::create(['name' => Constants::ADMIN]);
+        $volunteerRole = Role::findOrCreate(Constants::VOLUNTEER);
+        $superAdminRole = Role::findOrCreate(Constants::SUPER_ADMIN);
+        $regionalCordinatorRole = Role::findOrCreate(Constants::REGIONAL_COORDINATOR);
+        $systemUserCordinatorRole = Role::findOrCreate(Constants::SYSTEM_USER);
+        $zoneCordinatorRole = Role::findOrCreate(Constants::ZONE_COORDINATOR);
+        $deskRole = Role::findOrCreate(Constants::DESK);
+        $generalRole = Role::findOrCreate(Constants::GENERAL);
+        $adminRole = Role::findOrCreate(Constants::ADMIN);
     }
-    
+
 }

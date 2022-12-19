@@ -80,9 +80,9 @@ class VoluteerDeploymentCommand extends Command
         return $regionalWoredas->random();
     }
 
-    public function deploy()
+    public function deploy(TrainingSession $trainingSession)
     {
-        $activeSession = TrainingSession::availableSession()->first();
+        $activeSession = $trainingSession;
         VolunteerDeployment::whereHas('trainingPlacement', function ($q) use ($activeSession) {
             $q->where(['training_session_id' => $activeSession->id]);
         })->delete();

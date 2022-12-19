@@ -9,6 +9,7 @@ use App\Models\Region;
 use App\Models\Status;
 use App\Models\TrainingPlacement;
 use App\Models\TraininingCenter;
+use App\Models\User;
 use App\Models\Volunteer;
 use App\Models\Woreda;
 use DateTime;
@@ -21,12 +22,10 @@ use Maatwebsite\Excel\Concerns\WithStartRow;
 
 class ApplicantImport implements ToCollection, WithStartRow
 {
-    protected $trainingSession, $placement, $trainingCenterCapacityId;
-    public function __construct($trainingSession, $placement, $trainingCenterCapacityId)
+    protected $trainingSession;
+    public function __construct($trainingSession)
     {
         $this->trainingSession = $trainingSession;
-        $this->placement = $placement;
-        $this->trainingCenterCapacityId = $trainingCenterCapacityId;
     }
 
     /**
@@ -36,49 +35,54 @@ class ApplicantImport implements ToCollection, WithStartRow
      */
     public function collection(Collection $rows)
     {
-        $centerPlacement = TraininingCenter::($this->placement);
-        $volunteerData = [];
-        foreach ($rows as $key => $value) {
-            $fi_name = '';
-            $fathe_name = '';
-            $gr_name = '';
-            $woredas_app = ltrim(rtrim(strtoupper($value[8])));
-            $woreda = Woreda::Where('name', $woredas_app)->get()->first();
-            
-                $name_val = str_replace('  ', ' ', ltrim(rtrim($value[1])));
-                $name = explode(' ', $name_val);
-                if (count($name) >= 1) {
-                    $fi_name = $name[0];
-                }
-                if (count($name) >= 2) {
-                    $fathe_name = $name[1];
-                }
-                if (count($name) >= 3) {
-                    $gr_name = $name[2];
-                }
-                $gpa = $value[9] || 0.0;
-                $date = strtotime((string)$value[3]);
-                $d = date('d/m/Y', $date);
-                $data = ['first_name' => $fi_name, 'father_name' => $fathe_name, 'grand_father_name' => $gr_name, 'email' => '', 'dob' => new DateTime('01/01/1991'), 'gender' => $value[2], 'phone' => (string)$value[11], 'contact_name' => 'UNKNOWN', 'contact_phone' => 'UNKNOWN', 'gpa' => $gpa, 'password' => Hash::make('12345678'), 'training_session_id' => $this->trainingSession, 'woreda_id' => $woreda->id];
-                array_push($volunteerData, $data);
+        foreach ($rows as $value) {
+            $gen = $value[5] ?? null;
+            $woreda = $value[6] ?? null;
+            $woreda_id = Woreda::where('name', $woreda)?->first()?->id;
+            $gender = $gen == 'Male' ? 'M' : 'F';
+
+            $first_name = $value[0] ?? null;
+            $middle_name = $value[1] ?? null;
+            $last_name = $value[2] ?? null;
+            $email = $value[4] ?? null;
+            $dob = $value[7] ?? null;
+            $contact_name = $value[9] ?? null;
+            $contact_phone = $value[10] ?? null;
+            $gpa = $value[8] ?? null;
+            $phone = $value[3] ?? null;
+
+            if ($woreda_id) {
+                $user = new User();
+                $user->first_name = $first_name;
+                $user->father_name = $middle_name;
+                $user->grand_father_name = $last_name;
+                $user->email = $email;
+                $user->dob = $dob;
+                $user->gender = $gender;
+                $user->save();
+                
+                $volunteer = new Volunteer();
+                $volunteer->first_name = $first_name;
+                $volunteer->father_name = $middle_name;
+                $volunteer->grand_father_name = $last_name;
+                $volunteer->email = $email;
+                $volunteer->dob = $dob;
+                $volunteer->gender = $gender;
+                $volunteer->phone = $phone;
+                $volunteer->contact_name = $contact_name;
+                $volunteer->contact_phone = $contact_phone;
+                $volunteer->gpa = $gpa;
+                $volunteer->woreda_id = $woreda_id;
+                $volunteer->user_id = $user->id;
+                $volunteer->training_session_id = $this->trainingSession->id;
+                $volunteer->save();
+
+                $status = new Status();
+                $status->volunteer_id = $volunteer->id;
+                $status->acceptance_status = Constants::VOLUNTEER_STATUS_PENDING;
+                $status->save();
+            }
         }
-        Volunteer::insert($volunteerData);
-        $lastIds = Volunteer::orderBy('id', 'desc')->take(count($volunteerData))->pluck('id');
-        $statusData = [];
-        $approvedApplicants = [];
-        for ($x = 0; $x < count($lastIds); $x++) {
-            array_push($statusData, ['volunteer_id' => $lastIds[$x], 'acceptance_status' => 1]);
-            array_push($approvedApplicants, ['training_session_id' => $this->trainingSession, 'volunteer_id' => $lastIds[$x], 'status' => Constants::VOLUNTEER_STATUS_PLACED]);
-        }
-        Status::insert($statusData);
-        ApprovedApplicant::insert($approvedApplicants);
-        $lastIdsForApproved = ApprovedApplicant::orderBy('id', 'desc')->take(count($volunteerData))->pluck('id');
-        $trainingPlacements = [];
-        for ($x = 0; $x < count($lastIdsForApproved); $x++) {
-            array_push($trainingPlacements, ['training_center_capacity_id' => $this->trainingCenterCapacityId, 'approved_applicant_id' => $lastIdsForApproved[$x], 'training_session_id' => $this->trainingSession]);
-        }
-        TrainingPlacement::insert($trainingPlacements);
-        return 1;
     }
     /**
      * @return int

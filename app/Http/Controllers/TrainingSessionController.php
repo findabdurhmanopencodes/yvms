@@ -138,13 +138,13 @@ class TrainingSessionController extends Controller
         $training_sessions = TrainingSession::all();
         // dd($training_sessions);
         // new DateTime($training_session->end_date) <= new DateTime($date_now->format('Y-m-d'))
-        if ($training_sessions) {
-            foreach ($training_sessions as $training_session) {
-                if ((new DateTime($training_session->start_date) <= new DateTime($date_now->format('Y-m-d'))) && (new DateTime($date_now->format('Y-m-d')) <= new DateTime($training_session->end_date))) {
-                    return redirect()->route('training_session.index')->with('message', 'You have training session no queue please finish this session!');
-                }
-            }
-        }
+        // if ($training_sessions) {
+        //     foreach ($training_sessions as $training_session) {
+        //         if ((new DateTime($training_session->start_date) <= new DateTime($date_now->format('Y-m-d'))) && (new DateTime($date_now->format('Y-m-d')) <= new DateTime($training_session->end_date))) {
+        //             return redirect()->route('training_session.index')->with('message', 'You have training session no queue please finish this session!');
+        //         }
+        //     }
+        // }
         return view('training_session.create', compact('last_data_id'));
     }
 
@@ -167,7 +167,16 @@ class TrainingSessionController extends Controller
             'registration_dead_line' => ['required', 'date_format:d/m/Y', 'after_or_equal:registration_start_date', 'before_or_equal:end_date'],
             'quantity' => 'required'
         ]);
-
+        $registrationStartDate = DateTime::createFromFormat('d/m/Y',$request->get('registration_start_date'));
+        $registrationEndDate = DateTime::createFromFormat('d/m/Y',$request->get('registration_dead_line'));
+        $registrationStartDate = DateTimeFactory::of($registrationStartDate->format('Y'), $registrationStartDate->format('m'), $registrationStartDate->format('d'))->toGregorian();
+        $registrationEndDate = DateTimeFactory::of($registrationEndDate->format('Y'), $registrationEndDate->format('m'), $registrationEndDate->format('d'))->toGregorian();
+        $checkOne = TrainingSession::where('registration_start_date', '=', $registrationStartDate)->count()>0?True:False;
+        $checkTwo = TrainingSession::where('registration_start_date', '<=', $registrationStartDate)->where('registration_dead_line','>',$registrationStartDate)->count()>0?True:False;
+        $checkThree = TrainingSession::where('registration_start_date', '>', $registrationStartDate)->where('registration_start_date','<',$registrationEndDate)->count()>0?True:False;
+        if($checkOne || $checkTwo|| $checkThree){
+            throw ValidationException::withMessages(['registration_start_date'=>'You can\'t have multiple session with concurent registration']);
+        }
         $trainingSession = new TrainingSession();
 
         $date_start =  DateTime::createFromFormat('d/m/Y', $request->get('start_date'));
@@ -394,6 +403,16 @@ class TrainingSessionController extends Controller
             'registration_dead_line' => ['required', 'date_format:d/m/Y', 'after_or_equal:registration_start_date', 'before_or_equal:end_date'],
             'quantity' => 'required'
         ]);
+        $registrationStartDate = DateTime::createFromFormat('d/m/Y',$request->get('registration_start_date'));
+        $registrationEndDate = DateTime::createFromFormat('d/m/Y',$request->get('registration_dead_line'));
+        $registrationStartDate = DateTimeFactory::of($registrationStartDate->format('Y'), $registrationStartDate->format('m'), $registrationStartDate->format('d'))->toGregorian();
+        $registrationEndDate = DateTimeFactory::of($registrationEndDate->format('Y'), $registrationEndDate->format('m'), $registrationEndDate->format('d'))->toGregorian();
+        $checkOne = TrainingSession::where('registration_start_date', '=', $registrationStartDate)->where('id','!=',$trainingSession->id)->count()>0?True:False;
+        $checkTwo = TrainingSession::where('registration_start_date', '<=', $registrationStartDate)->where('registration_dead_line','>',$registrationStartDate)->where('id','!=',$trainingSession->id)->count()>0?True:False;
+        $checkThree = TrainingSession::where('registration_start_date', '>', $registrationStartDate)->where('registration_start_date','<',$registrationEndDate)->where('id','!=',$trainingSession->id)->count()>0?True:False;
+        if($checkOne || $checkTwo|| $checkThree){
+            throw ValidationException::withMessages(['registration_start_date'=>'You can\'t have multiple session with concurent registration']);
+        }
 
         foreach (Region::where('status', 1)->get() as $key => $value) {
             $capacity = $value->qoutaInpercent * $trainingSession->quantity;
@@ -404,6 +423,21 @@ class TrainingSessionController extends Controller
 
         $trainingSession->update(['end_date_am' => $end_date_am]);
 
+
+        $date_start_gc =  DateTime::createFromFormat('d/m/Y', $data['start_date']);
+        $date_end_gc =  DateTime::createFromFormat('d/m/Y', $data['end_date']);
+        $date_start_reg_gc =  DateTime::createFromFormat('d/m/Y', $data['registration_start_date']);
+        $date_end_reg_gc =  DateTime::createFromFormat('d/m/Y', $data['registration_dead_line']);
+
+        $d_s_t_g = DateTimeFactory::of($date_start_gc->format('Y'), $date_start_gc->format('m'), $date_start_gc->format('d'))->toGregorian();
+
+        $d_e_t_g = DateTimeFactory::of($date_end_gc->format('Y'), $date_end_gc->format('m'), $date_end_gc->format('d'))->toGregorian();
+
+        $d_r_s_t_g = DateTimeFactory::of($date_start_reg_gc->format('Y'), $date_start_reg_gc->format('m'), $date_start_reg_gc->format('d'))->toGregorian();
+
+        $d_r_d_t_g = DateTimeFactory::of($date_end_reg_gc->format('Y'), $date_end_reg_gc->format('m'), $date_end_reg_gc->format('d'))->toGregorian();
+
+        $trainingSession->update(['moto' => $data['name'], 'start_date' => $d_s_t_g, 'end_date' => $d_e_t_g, 'registration_start_date' => $d_r_s_t_g, 'registration_dead_line' => $d_r_d_t_g, 'quantity' => $data['quantity']]);
         $regions = Region::all();
         $zones = Zone::all();
         $woredas = Woreda::all();
@@ -426,21 +460,6 @@ class TrainingSessionController extends Controller
                 $reg_new->qoutaInpercent = $reg_new->qoutaInpercent + $division;
                 array_push($regs, $reg_new);
             }
-
-            $date_start_gc =  DateTime::createFromFormat('d/m/Y', $data['start_date']);
-            $date_end_gc =  DateTime::createFromFormat('d/m/Y', $data['end_date']);
-            $date_start_reg_gc =  DateTime::createFromFormat('d/m/Y', $data['registration_start_date']);
-            $date_end_reg_gc =  DateTime::createFromFormat('d/m/Y', $data['registration_dead_line']);
-
-            $d_s_t_g = DateTimeFactory::of($date_start_gc->format('Y'), $date_start_gc->format('m'), $date_start_gc->format('d'))->toGregorian();
-
-            $d_e_t_g = DateTimeFactory::of($date_end_gc->format('Y'), $date_end_gc->format('m'), $date_end_gc->format('d'))->toGregorian();
-
-            $d_r_s_t_g = DateTimeFactory::of($date_start_reg_gc->format('Y'), $date_start_reg_gc->format('m'), $date_start_reg_gc->format('d'))->toGregorian();
-
-            $d_r_d_t_g = DateTimeFactory::of($date_end_reg_gc->format('Y'), $date_end_reg_gc->format('m'), $date_end_reg_gc->format('d'))->toGregorian();
-
-            $trainingSession->update(['moto' => $data['name'], 'start_date' => $d_s_t_g, 'end_date' => $d_e_t_g, 'registration_start_date' => $d_r_s_t_g, 'registration_dead_line' => $d_r_d_t_g, 'quantity' => $data['quantity']]);
 
             $qouta_all = $qouta->all();
             foreach ($qouta_all as $key => $qou) {
@@ -600,16 +619,19 @@ class TrainingSessionController extends Controller
         }
         // dd($qouta_reg);
         if ($regional_qouta < $request->get('quantity')) {
-            $qouta_reg[0]->update(['quantity', $qouta_reg[0]->quantity += ($request->get('quantity') - $regional_qouta)]);
+            if(count($qouta_reg)>0)
+                $qouta_reg[0]->update(['quantity', $qouta_reg[0]->quantity += ($request->get('quantity') - $regional_qouta)]);
             foreach ($qouta_zon as $key => $zon_qou) {
                 $zonal_qouta += $zon_qou->quantity;
             }
             if ($zonal_qouta < $request->get('quantity')) {
+                if(count($qouta_zon)>0)
                 $qouta_zon[0]->update(['quantity', $qouta_zon[0]->quantity += ($request->get('quantity') - $zonal_qouta)]);
                 foreach ($qouta_wor as $key => $wor_qou) {
                     $woredal_qoutal += $wor_qou->quantity;
                 }
                 if ($woredal_qoutal < $request->get('quantity')) {
+                if(count($qouta_wor)>0)
                     $qouta_wor[0]->update(['quantity', $qouta_wor[0]->quantity += ($request->get('quantity') - $woredal_qoutal)]);
                 }
             }

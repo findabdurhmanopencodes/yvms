@@ -164,7 +164,7 @@ class IdGenerateController extends Controller
         $center_code = $trainingCenter->code;
         // dd(TrainingSession::whereRelation('approvedApplicants.volunteer','id', 1)->get()[0]->start_date);
 
-        $training_session_id = $trainingSession->availableSession()[0]->id;
+        $training_session_id = $trainingSession->id;
         $train_end_date = $trainingSession->trainingEndDateET();
         // $applicants = Volunteer::with('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->take(3)->get();
         return view('id.design', compact('applicants', 'training_session_id', 'paginate_apps', 'training_center_id', 'train_end_date', 'trainingCenter', 'trainer', 'trainingSession', 'center_code', 'userType', 'table_name'));
@@ -249,16 +249,16 @@ class IdGenerateController extends Controller
             $html = Volunteer::whereIn('id', $volunteer_id)->get();
             // dd($html);
             foreach ($html as $key => $value) {
-                $check_val = IDcount::where('training_session_id', $trainingSession->availableSession()->first()->id)->where('volunteer_id',$value->id)->get();
+                $check_val = IDcount::where('training_session_id', $trainingSession->id)->where('volunteer_id',$value->id)->get();
                 if (count($check_val) > 0) {
                     $count = $check_val->first()->count + 1;
-                    IDcount::where('training_session_id', $trainingSession->availableSession()->first()->id)->where('volunteer_id', $value->id)->update(['count'=> $count]);
+                    IDcount::where('training_session_id', $trainingSession->id)->where('volunteer_id', $value->id)->update(['count'=> $count]);
                 }else{
-                    IDcount::create(['volunteer_id' => $value->id, 'training_session_id' => $trainingSession->availableSession()->first()->id, 'count'=> 1]);
+                    IDcount::create(['volunteer_id' => $value->id, 'training_session_id' => $trainingSession->id, 'count'=> 1]);
                 }
             }
-            $session_id = $trainingSession->availableSession()?->first()?->id;
-            
+            $session_id = $trainingSession?->id;
+
             $pdf = Pdf::loadView('id.dowlnload_id', compact('html', 'check', 'exp', 'trainer', 'session_id'))->setPaper('letter', 'landscape');
             // $request->get('center').' '.$request->get('checkVal').'ID.pdf'
             return $pdf->download($request->get('center').' '.$request->get('checkVal').'ID.pdf');
@@ -286,8 +286,8 @@ class IdGenerateController extends Controller
     }
 
     public function certificateDownload(Request $request, TrainingSession $trainingSession){
-        $training_session_id = $trainingSession->availableSession()->first()->id;
-        $diff_arr = explode(',',$trainingSession->availableSession()->first()->dateDiff());
+        $training_session_id = $trainingSession->id;
+        $diff_arr = explode(',',$trainingSession->dateDiff());
         if ($diff_arr[0] > 0) {
             $diff_arr_string = $diff_arr[0];
             $diff_arr_string_am = 'አመት';

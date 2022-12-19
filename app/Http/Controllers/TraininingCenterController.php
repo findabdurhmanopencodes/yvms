@@ -138,7 +138,6 @@ class TraininingCenterController extends Controller
 
             return abort(403);
         }
-
         $traininingCenter     = TraininingCenter::with('capacities.trainningSession')->find($traininingCenter);
         $trainingSession      = new TrainingSession();
         $trainingSessionId    = $trainingSession->availableSession()?->first()?->id;
@@ -305,7 +304,7 @@ class TraininingCenterController extends Controller
                 $output = '';
                 $query = $request->get('query');
                 // Auth::user()->getRoleNames()[0]==Constants::SYSTEM_USER_ROLE;//Need This For Permission
-                $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query)->whereRelation('approvedApplicant. trainingCenterCapacity.trainingCenter', 'id', $trainingCenterId);
+                $volunteerQuery = Volunteer::with('woreda.zone.region')->where('id_number', 'MoP-' . $query)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenterId);
                 if (count($volunteerQuery->get()) > 0) {
                     $data = $volunteerQuery->whereRelation('status', 'acceptance_status', Constants::VOLUNTEER_STATUS_PLACED)->first();
                     // $accepted = $volunteerQuery->whereRelation('status', 'acceptance_status', 5)->first();

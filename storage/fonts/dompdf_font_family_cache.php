@@ -86,13 +86,13 @@ return array (
     'bold' => $fontDir . '/poppins_bold_8fe618268f56b4b8f1e70e87a9e99fc0',
   ),
   'ethiopian' => array(
-    'normal' => $fontDir . '/ethiopian_normal_a91d13629dc18bdb3094004a469111f6',
+    'normal' => $fontDir . '/ethiopian_normal_f147aabff768e498965a871615e78644',
   ),
   'ethiopian12' => array(
     'normal' => $fontDir . '/ethiopian12_normal_e884b6c3f344f8ccf46067bf5b307504',
   ),
   'noto serif ethiopic' => array(
-    'bold' => $fontDir . '/noto_serif_ethiopic_bold_3e107f140284c59430d9e92f24eaae2c',
+    'bold' => $fontDir . '/noto_serif_ethiopic_bold_5f6da2601bb7c62653e9f885f680eb28',
   ),
   'roboto serif' => array(
     'bold' => $fontDir . '/roboto_serif_bold_b6b8e73687041fe636da5add17d24802',
