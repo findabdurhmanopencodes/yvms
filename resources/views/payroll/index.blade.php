@@ -147,7 +147,9 @@
                                   <span style="font-size:13px;">
                                     <i class="fa fa-info" aria-hidden="true"></i>  Create payroll for Training session range from
                                     <select name="training_session_id" id="" class="form-control">
-                                        @foreach ($last_sessions as $last_session)
+
+
+                                              @foreach ($last_sessions as $last_session)
                                     <option value="{{ $last_session->id }}"> {{ $last_session->startDateET() }}  -   {{ $last_session->endDateET() }} ዓ.ም </option>
                                       @endforeach
                                     </select>

@@ -32,7 +32,7 @@ class PayrollController extends Controller
         }
         $last_sessions = TrainingSession::orderBy('id', 'desc')->get();
         $training_sessions = TrainingSession::orderBy('id', 'desc')->paginate(10);
-        $payrolls = Payroll::orderBy('id', 'desc')->Paginate(1);
+        $payrolls = Payroll::orderBy('id', 'desc')->Paginate(2);
         return view('payroll.index', compact('payrolls','training_sessions','last_sessions'));
     }
 
@@ -49,16 +49,28 @@ class PayrollController extends Controller
     public function store(Request $request)
     {
         $request->validate(['training_session_id' => 'required']);
-        $traingSession     = TrainingSession::find($request->get('training_session_id'))->first();
+
+      //  $traingSession     = TrainingSession::find($request->get('training_session_id'))->first();
+        $traingSession     = $request->get('training_session_id');
         $prefix ='MoP-YVMS-Payroll';
         $current_year = now()->year;
-        $code   = $prefix ."-".$traingSession->id."-".$current_year;
-        if (Payroll::where('training_session_id',$traingSession->id)->where('name',$code)->count() > 0) {
-            return redirect()->route('payroll.index')->with('error', ' This session round has been created payroll alreay!');
+        $code   = $prefix ."-".$traingSession."-".$current_year;
+
+       // dd( $code);
+       // $result = Payroll::where("name", code)->exists();
+
+
+        if (Payroll::where("training_session_id", $traingSession)->exists()) {
+            return redirect()->route('payroll.index')->with('error', ' Payroll has been created already for this training center!');
         }
 
+
+        // if (Payroll::where('training_session_id',$traingSession->id)->where('name',$code)->count() > 0) {
+        //     return redirect()->route('payroll.index')->with('error', ' Payroll has been created already for this training center!');
+        // }
+
               Payroll::create(['name'=>$code,
-             'training_session_id'=>$traingSession->id,
+             'training_session_id'=>$traingSession,
              'user_id'=>Auth::user()->id]);
 
           return redirect()->route('payroll.index')->with('message', 'Payroll created successfully');
