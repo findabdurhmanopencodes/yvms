@@ -49,6 +49,11 @@ class ReportController extends Controller
     public function getPdf(Request $request){
 
         $training_session = $request->get('training_session');
+
+
+        $training_sessions = TrainingSession::where('id', '=',  $training_session)->get();
+         //dd( $training_sessions );
+
         $report = 'training_session_report';
         $placedVolunteers  = Volunteer::all();
         $regions  = Region::all();
@@ -56,7 +61,7 @@ class ReportController extends Controller
        // if (null != $request->get('training_session') and $request->get('format') == 'pdf') {
         if (null != $request->get('training_session')) {
             $pdf = PDF::loadView('report.training_session_report_pdf', compact(
-                'placedVolunteers',  'regions','training_centers'
+                'placedVolunteers',  'regions','training_centers','training_sessions'
             ))->setPaper('A4', 'landscape');
             return $pdf->download('training_session_report-'.now()->year.'pdf');
         }

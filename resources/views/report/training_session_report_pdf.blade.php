@@ -21,7 +21,6 @@ table {
     </style>
 
 </head>
-
 <body>
     <div style="text-align: center;">
         <img src="{{ public_path('img/logo_peace.png') }}" alt="" style="width: 100px; height: 100px;">
@@ -30,26 +29,29 @@ table {
         <span style="text-align:center;">
             <p style="font-size: 30px"> <b>  Ministery of Peace </b> </p>
             <p style="font-size: 25px"><b>   Youth Volunterism Managment System </b></p>
-            <p style="font-size: 20px"><b>   Training session Report [ ] </b></p>
+            <p style="font-size: 20px"><b>   Training session Report
+
+            @foreach ($training_sessions as $training_session)
+      <h5> [ {{ $training_session->startDateET() }} -   {{ $training_session->endDateET() }}   E.C   ]</h5> </h4>
+
+      @endforeach
+
+
+
+        </b></p>
 
         </span>
-
     </h1>
     <hr>
-
      <table width="100%" style="font-size: 15px" class="table table-striped">
         <tbody>
-
-
             <br>
             <tr>
                 <th style="text-align: left;">I. Voluneteer Application Repprt : </th>
-            </tr>  <br><hr>
-
+            </tr>
+            <br>
+            <hr>
             <tr>
-
-
-
                 <th style="text-align:right;">Total Vouleneters :</th>
                 <th><u>7,991 </u> </th>
                 <th> Male:</th>
@@ -64,7 +66,6 @@ table {
             <tr>
                 <th style="text-align:left;">{{ ++$i }} &nbsp;
                 {{$region->name   }}:</th>
-
                   <th> Quata: {{ number_format($region->qoutaInpercent*100 ,1,'.',',')  }} %
                     </th>
                     <th> Male:</th>
