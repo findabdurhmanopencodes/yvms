@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use Andegna\DateTimeFactory;
+use App\Models\PayrollSheet;
+use App\Models\Region;
 use App\Models\TrainingPlacement;
+use App\Models\TrainingSession;
+use App\Models\TraininingCenter;
+use App\Models\Volunteer;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -30,6 +35,39 @@ class ReportController extends Controller
         }
     }
 
+
+    public function getReport(Request $request){
+
+
+        $regions  = Region::all();
+        $payroll_sheets = PayrollSheet::select('*')->where('payroll_id', '=',1)->paginate(10);
+        $training_centers = TraininingCenter::all();
+        $training_sessions = TrainingSession::all();
+
+        return view('report.index', compact('training_centers', 'payroll_sheets','regions', 'training_sessions'));
+
+
+    }
+    public function getPdf(Request $request){
+
+
+        $training_session = $request->get('training_session');
+
+        $report = 'training_session_report';
+        $placedVolunteers  = Volunteer::all();
+        $regions  = Region::all();
+        $training_centers = TraininingCenter::all();
+       // if (null != $request->get('training_session') and $request->get('format') == 'pdf') {
+        if (null != $request->get('training_session')) {
+            $pdf = PDF::loadView('report.training_session_report_pdf', compact(
+                'placedVolunteers',  'regions','training_centers'
+
+            ))->setPaper('A4', 'landscape');
+            return $pdf->download('training_session_report-'.now()->year.'pdf');
+        }
+
+
+    }
     public function placedVolunteersList($tsID)
     {
         $trPlacement = TrainingPlacement::where(['training_session_id' => $tsID])->get();

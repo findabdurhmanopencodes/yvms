@@ -34,7 +34,7 @@
                         <i class="menu-bullet menu-bullet-dot">
                             <span></span>
                         </i>
-                        <span class="menu-text"> Montly Payment </span>
+                        <span class="menu-text"> Monthly Payment </span>
                     </a>
                 </li>
                 {{-- @endcan --}}
@@ -47,7 +47,7 @@
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>
-                            <span class="menu-text"> Payment report</span>
+                            <span class="menu-text"> Payment Report</span>
                         </a>
                     </li>
                 @endcan

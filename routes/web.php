@@ -133,12 +133,13 @@ Route::get('adb', function () {
 });
 // Route::get('send',[NotificationController::class,'sendApplicantPlacmentEmail']);
 
-Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
-Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
-Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
-Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
-
-Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' => 'session.'], function () {
+    Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
+    Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
+    Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
+    Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
+    Route::get('report/report', [ReportController::class, 'getReport'])->name('report.bysession');
+    Route::get('report/generatePdf', [ReportController::class, 'getPdf'])->name('report.generatePdf');
+    Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' => 'session.'], function () {
     Route::get('report/{report_name}', [ReportController::class, 'index'])->name('reports');
     Route::resource('hierarchy', HierarchyReportController::class);
     Route::get('deployment-regions', [RegionController::class, 'deployment'])->name('deployment.regions');
@@ -182,13 +183,10 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' =
     Route::get('deployment/reset', [VolunteerDeploymentController::class, 'resetDeployment'])->name('deployment.reset');
     Route::post('{deployment}/manual-deployment', [VolunteerDeploymentController::class, 'deployManually'])->name('deployment.manual');
     Route::post('deployment/{deployment}/change', [VolunteerDeploymentController::class, 'changeDeployment'])->name('deployment.change');
-
     Route::post('{approvedApplicant}/manual-screen', [TrainingSessionController::class, 'screenManually'])->name('screen.manual');
-
     Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedule');
     Route::post('/schedules', [TrainingSessionController::class, 'setSchedule'])->name('schedule.set');
     Route::post('/addSchedule', [ScheduleController::class, 'addSchedule'])->name('schedule.add');
-
     Route::delete('/training_schedule/{training_schedule}', [TrainingScheduleController::class, 'destroy'])->name('trainingschedule.destroy');
     Route::get('training_center', [TrainingSessionController::class, 'trainingCenterIndex'])->name('training_center.index');
     Route::get('training_center/{training_center}', [TrainingSessionController::class, 'trainingCenterShow'])->name('training_center.show');
@@ -197,7 +195,6 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' =
     Route::resource('training_center_based_permission', TrainingCenterBasedPermissionController::class);
     Route::post('training_center/{training_center}/assign_checker', [TraininingCenterController::class, 'assignChecker'])->name('training_center.assign_checker');
     Route::post('resource/assign', [TrainingSessionController::class, 'resourceAssignToTrainingCenter'])->name('resource.assign');
-
     Route::any('/resources', [TrainingSessionController::class, 'allResource'])->name('resource.all');
     Route::post('resource/update', [TrainingSessionController::class, 'updateResourceAssignToTrainingCenter'])->name('resource.update');
     Route::get('/resource/{resource}', [TrainingSessionController::class, 'showResource'])->name('resource.show');
