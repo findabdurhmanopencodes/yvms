@@ -124,11 +124,27 @@
                             data-menu-dropdown-timeout="500">
                             <!--begin::Menu Nav-->
                             <ul class="menu-nav">
+                                {{-- <li class="menu-item {{ strpos(Route::currentRouteName(), 'userhome') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('userhome') }}" class="menu-link">
+                                        <i class="menu-icon flaticon-home"></i>
+                                        <span class="menu-text">Home</span>
+                                    </a>
+                                </li> --}}
+
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('dashboard', []) }}" class="menu-link">
-                                        <i class="menu-icon flaticon-home"></i>
-                                        <span class="menu-text">Dashboard</span>
+                                        <i class="menu-icon flaticon-dashboard"></i>
+                                        <span class="menu-text">
+                                            @if(auth()->user()->can('dashboard'))
+                                                Dashboard
+                                                @else
+                                                Home
+                                            @endif
+
+
+                                        </span>
                                     </a>
                                 </li>
                                 @canany(['TrainingSession.store', 'TrainingSession.index'])
@@ -568,12 +584,50 @@
                                         </div>
                                     </li>
                                 @endcanany
+
+
+
+
+                                {{-- @canany(['Event.index', 'Event.store']) --}}
+                                    <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'Events') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'FeildOfStudy') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
+                                    aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="javascript:;" class="menu-link menu-toggle">
+                                            {{-- <i class="menu-icon flaticon-file"></i> --}}
+                                            <i class=" menu-icon fal fas fa-print"></i>
+                                            <span class="menu-text"> Report</span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                        <div class="menu-submenu">
+                                            <i class="menu-arrow"></i>
+                                            <ul class="menu-subnav">
+                                                <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                                    <span class="menu-link">
+                                                        <span class="menu-text"> Report </span>
+                                                    </span>
+                                                </li>
+
+                                                {{-- @can('Event.index') --}}
+                                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'audits') === 0 ? 'menu-item-active' : '' }}"
+                                                    aria-haspopup="true">
+                                                        <a href="{{ route('report.bysession', []) }}" class="menu-link">
+                                                            <i class="menu-bullet menu-bullet-dot">
+                                                                <span></span>
+                                                            </i>
+                                                            <span class="menu-text">Training session report </span>
+                                                        </a>
+                                                    </li>
+                                                {{-- @endcan --}}
+                                            </ul>
+                                        </div>
+                                    </li>
+                                {{-- @endcanany --}}
+
                                 @canany(['Event.index', 'Event.store'])
                                     <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'Events') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'FeildOfStudy') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
                                         aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="javascript:;" class="menu-link menu-toggle">
                                             {{-- <i class="menu-icon flaticon-file"></i> --}}
-                                            <i class=" menu-icon fa fa-file-magnifying-glass"></i>
+                                            <i class=" menu-icon fal fas fa-globe"></i>
                                             <span class="menu-text">Events</span>
                                             <i class="menu-arrow"></i>
                                         </a>
@@ -582,6 +636,7 @@
                                             <ul class="menu-subnav">
                                                 <li class="menu-item menu-item-parent" aria-haspopup="true">
                                                     <span class="menu-link">
+                                                        <i class=" menu-icon fal fas fa-flag"></i>
                                                         <span class="menu-text">Events</span>
                                                     </span>
                                                 </li>
@@ -618,7 +673,7 @@
                                         aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="javascript:;" class="menu-link menu-toggle">
                                             {{-- <i class="menu-icon flaticon-file"></i> --}}
-                                            <i class=" menu-icon fa fa-file-magnifying-glass"></i>
+                                            <i class=" menu-icon fa fa-cogs"></i>
                                             <span class="menu-text">Audits</span>
                                             <i class="menu-arrow"></i>
                                         </a>

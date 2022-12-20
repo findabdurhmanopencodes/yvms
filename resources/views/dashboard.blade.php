@@ -74,258 +74,268 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" /> --}}
 @endpush
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card-counter primary">
-                    <i class="fa fa-users" style="color:black;"></i>
-                    <span class="count-numbers">
-
-                        {{ $users }}
-
-                    </span>
-                    <span class="count-name"> Total Users</span>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card-counter danger">
-                    <i class="fa fa-users" style="color:black;"></i>
-                    <span class="count-numbers">{{ $traininingCenters }}</span>
-                    <span class="count-name"> Training Centers</span>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card-counter success">
-                    <i class="fa fa-users" style="color:black;"></i>
-                    <span class="count-numbers">{{ $volunteers }}</span>
-                    <span class="count-name"> Active Application</span>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card-counter info">
-                    <i class="fa fa-flag" style="color:black;"></i>
-                    <span class="count-numbers">{{ $regions }}</span>
-                    <span class="count-name"> Regions</span>
-                </div>
-            </div>
-        </div>
-        <br>
-
-    </div>
-    </div>
-
+@if(auth()->user()->can('dashboard'))
+<div class="container">
     <div class="row">
-        <!--end::Card-->
-        <div class="col-lg-12">
-            <!--begin::Card-->
-            <div class="card card-custom gutter-b" style="min-height: 500px;">
-                <div class="card-header">
-                    <div class="card-title">
-                        <h3 class="card-label">Intake Capacity of Training Centers</h3>
-                    </div>
-                </div>
-                <div class="card-body" style="position: relative;">
-                    <!--begin::Chart-->
-                    <div id="chart_5" style="min-height: 400px;">
+        <div class="col-md-3">
+            <div class="card-counter primary">
+                <i class="fa fa-users" style="color:black;"></i>
+                <span class="count-numbers">
 
-                    </div>
-                </div>
-                <!--end::Chart-->
-                <div class="resize-triggers">
-                    <div class="expand-trigger">
-                        <div style="width: 444px; height: 414px;"></div>
-                    </div>
-                    <div class="contract-trigger"></div>
-                </div>
+                    {{ $users }}
+
+                </span>
+                <span class="count-name"> Total Users</span>
             </div>
         </div>
-        <!--end::Card-->
 
+        <div class="col-md-3">
+            <div class="card-counter danger">
+                <i class="fa fa-users" style="color:black;"></i>
+                <span class="count-numbers">{{ $traininingCenters }}</span>
+                <span class="count-name"> Training Centers</span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-counter success">
+                <i class="fa fa-users" style="color:black;"></i>
+                <span class="count-numbers">{{ $volunteers }}</span>
+                <span class="count-name"> Active Application</span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-counter info">
+                <i class="fa fa-flag" style="color:black;"></i>
+                <span class="count-numbers">{{ $regions }}</span>
+                <span class="count-name"> Regions</span>
+            </div>
+        </div>
+    </div>
+    <br>
+
+</div>
+</div>
+
+<div class="row">
+    <!--end::Card-->
+    <div class="col-lg-12">
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b" style="min-height: 500px;">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">Intake Capacity of Training Centers</h3>
+                </div>
+            </div>
+            <div class="card-body" style="position: relative;">
+                <!--begin::Chart-->
+                <div id="chart_5" style="min-height: 400px;">
+
+                </div>
+            </div>
+            <!--end::Chart-->
+            <div class="resize-triggers">
+                <div class="expand-trigger">
+                    <div style="width: 444px; height: 414px;"></div>
+                </div>
+                <div class="contract-trigger"></div>
+            </div>
+        </div>
+    </div>
+    <!--end::Card-->
+
+</div>
+
+
+<div class="row">
+
+
+    <!--end::Card-->
+    <div class="col-lg-6">
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b" style="min-height: 550px;">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label"> Regional Quotas</h3>
+                </div>
+            </div>
+            <div class="card-body" style="position: relative;">
+                <!--begin::Chart-->
+                <div id="chart_12" style="min-height: 450px;">
+
+                </div>
+            </div>
+            <!--end::Chart-->
+            <div class="resize-triggers">
+                <div class="expand-trigger">
+                    <div style="width: 444px; height: 414px;"></div>
+                </div>
+                <div class="contract-trigger"></div>
+            </div>
+        </div>
+    </div>
+    <!--end::Card-->
+
+    <div class="col-lg-6">
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b">
+            <!--begin::Header-->
+            <div class="card-header h-auto">
+                <div class="card-title py-5">
+                    <h3 class="card-label">Regional Contribution to Training Center </h3>
+                    <form action="" style="width: 100%;" >
+                        <select id="centers" onchange="onTrainingCenterChange()" class="form-control" >
+                            @foreach ($trCenters as $trCenter)
+                            <option value="{{ $trCenter->id }}"> {{ $trCenter->name }} </option>
+                            @endforeach
+                        </select>
+                    </form>
+                </div>
+            </div>
+            <!--end::Header-->
+            <div class="card-body" style="position: relative;">
+                <!--begin::Chart-->
+                <div id="chart_1" style="min-height: 365px;">
+
+                </div>
+            </div>
+            <!--end::Chart-->
+            <div class="resize-triggers">
+                <div class="expand-trigger">
+                    <div style="width: 444px; height: 414px;"></div>
+                </div>
+                <div class="contract-trigger"></div>
+            </div>
+        </div>
     </div>
 
+</div>
 
-    <div class="row">
+<div class="row">
 
+    {{-- <div class="col-lg-6">
+        <!--begin::Card-->
 
-        <!--end::Card-->
-        <div class="col-lg-6">
-            <!--begin::Card-->
-            <div class="card card-custom gutter-b" style="min-height: 550px;">
-                <div class="card-header">
-                    <div class="card-title">
-                        <h3 class="card-label"> Regional Quotas</h3>
-                    </div>
-                </div>
-                <div class="card-body" style="position: relative;">
-                    <!--begin::Chart-->
-                    <div id="chart_12" style="min-height: 450px;">
-
-                    </div>
-                </div>
-                <!--end::Chart-->
-                <div class="resize-triggers">
-                    <div class="expand-trigger">
-                        <div style="width: 444px; height: 414px;"></div>
-                    </div>
-                    <div class="contract-trigger"></div>
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">Stock and Asset Requests Trend</h3>
                 </div>
             </div>
-        </div>
-        <!--end::Card-->
+            <div class="card-body" style="position: relative;">
+                <!--begin::Chart-->
+                <div id="chart_2" style="min-height: 365px;">
 
-        <div class="col-lg-6">
-            <!--begin::Card-->
-            <div class="card card-custom gutter-b">
-                <!--begin::Header-->
-                <div class="card-header h-auto">
-                    <div class="card-title py-5">
-                        <h3 class="card-label">Regional Contribution to Training Center </h3>
-                        <form action="" style="width: 100%;" >
-                            <select id="centers" onchange="onTrainingCenterChange()" class="form-control" >
-                                @foreach ($trCenters as $trCenter)
-                                <option value="{{ $trCenter->id }}"> {{ $trCenter->name }} </option>
-                                @endforeach
-                            </select>
-                        </form>
-                    </div>
-                </div>
-                <!--end::Header-->
-                <div class="card-body" style="position: relative;">
-                    <!--begin::Chart-->
-                    <div id="chart_1" style="min-height: 365px;">
-
-                    </div>
-                </div>
-                <!--end::Chart-->
-                <div class="resize-triggers">
-                    <div class="expand-trigger">
-                        <div style="width: 444px; height: 414px;"></div>
-                    </div>
-                    <div class="contract-trigger"></div>
                 </div>
             </div>
+            <!--end::Chart-->
+            <div class="resize-triggers">
+                <div class="expand-trigger">
+                    <div style="width: 444px; height: 414px;"></div>
+                </div>
+                <div class="contract-trigger"></div>
+            </div>
         </div>
+    </div> --}}
+    <!--end::Card-->
 
+
+    {{-- <div class="col-lg-6">
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b">
+            <!--begin::Header-->
+            <div class="card-header h-auto">
+                <div class="card-title py-5">
+                    <h3 class="card-label">Requests Approval Trend</h3>
+                </div>
+            </div>
+            <!--end::Header-->
+            <div class="card-body" style="position: relative;">
+                <!--begin::Chart-->
+                <div id="chart_1" style="min-height: 365px;">
+
+                </div>
+            </div>
+            <!--end::Chart-->
+            <div class="resize-triggers">
+                <div class="expand-trigger">
+                    <div style="width: 444px; height: 414px;"></div>
+                </div>
+                <div class="contract-trigger"></div>
+            </div>
+        </div>
+    </div> --}}
+
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b">
+            <!--begin::Header-->
+            <div class="card-header h-auto">
+                <div class="card-title py-5">
+                    <h3 class="card-label">Regional Contribution of Placed Students</h3>
+                </div>
+            </div>
+            <!--end::Header-->
+            <div class="card-body" style="position: relative;">
+                <!--begin::Chart-->
+                <div id="chart_11" style="min-height: 365px;">
+
+                </div>
+            </div>
+            <!--end::Chart-->
+            <div class="resize-triggers">
+                <div class="expand-trigger">
+                    <div style="width: 444px; height: 414px;"></div>
+                </div>
+                <div class="contract-trigger"></div>
+            </div>
+        </div>
     </div>
+    <!--end::Card-->
 
-    <div class="row">
-
-        {{-- <div class="col-lg-6">
-            <!--begin::Card-->
-
-            <!--begin::Card-->
-            <div class="card card-custom gutter-b">
-                <div class="card-header">
-                    <div class="card-title">
-                        <h3 class="card-label">Stock and Asset Requests Trend</h3>
-                    </div>
-                </div>
-                <div class="card-body" style="position: relative;">
-                    <!--begin::Chart-->
-                    <div id="chart_2" style="min-height: 365px;">
-
-                    </div>
-                </div>
-                <!--end::Chart-->
-                <div class="resize-triggers">
-                    <div class="expand-trigger">
-                        <div style="width: 444px; height: 414px;"></div>
-                    </div>
-                    <div class="contract-trigger"></div>
+    <div class="col-lg-6">
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b">
+            <!--begin::Header-->
+            <div class="card-header h-auto">
+                <div class="card-title py-5">
+                    <h3 class="card-label">Regional Contributions</h3>
                 </div>
             </div>
-        </div> --}}
-        <!--end::Card-->
+            <!--end::Header-->
+            <div class="card-body" style="position: relative;">
+                <!--begin::Chart-->
+                <div id="chart_3" style="min-height: 365px;">
 
-
-        {{-- <div class="col-lg-6">
-            <!--begin::Card-->
-            <div class="card card-custom gutter-b">
-                <!--begin::Header-->
-                <div class="card-header h-auto">
-                    <div class="card-title py-5">
-                        <h3 class="card-label">Requests Approval Trend</h3>
-                    </div>
-                </div>
-                <!--end::Header-->
-                <div class="card-body" style="position: relative;">
-                    <!--begin::Chart-->
-                    <div id="chart_1" style="min-height: 365px;">
-
-                    </div>
-                </div>
-                <!--end::Chart-->
-                <div class="resize-triggers">
-                    <div class="expand-trigger">
-                        <div style="width: 444px; height: 414px;"></div>
-                    </div>
-                    <div class="contract-trigger"></div>
                 </div>
             </div>
-        </div> --}}
-
-    </div>
-    <div class="row">
-        <div class="col-lg-6">
-            <!--begin::Card-->
-            <div class="card card-custom gutter-b">
-                <!--begin::Header-->
-                <div class="card-header h-auto">
-                    <div class="card-title py-5">
-                        <h3 class="card-label">Regional Contribution of Placed Students</h3>
-                    </div>
+            <!--end::Chart-->
+            <div class="resize-triggers">
+                <div class="expand-trigger">
+                    <div style="width: 444px; height: 414px;"></div>
                 </div>
-                <!--end::Header-->
-                <div class="card-body" style="position: relative;">
-                    <!--begin::Chart-->
-                    <div id="chart_11" style="min-height: 365px;">
-
-                    </div>
-                </div>
-                <!--end::Chart-->
-                <div class="resize-triggers">
-                    <div class="expand-trigger">
-                        <div style="width: 444px; height: 414px;"></div>
-                    </div>
-                    <div class="contract-trigger"></div>
-                </div>
+                <div class="contract-trigger"></div>
             </div>
         </div>
-        <!--end::Card-->
-
-        <div class="col-lg-6">
-            <!--begin::Card-->
-            <div class="card card-custom gutter-b">
-                <!--begin::Header-->
-                <div class="card-header h-auto">
-                    <div class="card-title py-5">
-                        <h3 class="card-label">Regional Contributions</h3>
-                    </div>
-                </div>
-                <!--end::Header-->
-                <div class="card-body" style="position: relative;">
-                    <!--begin::Chart-->
-                    <div id="chart_3" style="min-height: 365px;">
-
-                    </div>
-                </div>
-                <!--end::Chart-->
-                <div class="resize-triggers">
-                    <div class="expand-trigger">
-                        <div style="width: 444px; height: 414px;"></div>
-                    </div>
-                    <div class="contract-trigger"></div>
-                </div>
-            </div>
-        </div>
-        <!--end::Card-->
-
-        <!--end::Card-->
-
     </div>
+    <!--end::Card-->
+
+    <!--end::Card-->
+
+</div>
+@else
+<div class="card">
+    <div class="card-body">
+        <p class="card-text">Welcome ,<strong>{{  auth()->user()->name}}</strong></p>
+    </div>
+</div>
+@endif
+
+
 
 @endsection
 
