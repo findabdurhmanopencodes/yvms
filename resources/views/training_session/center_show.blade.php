@@ -1,16 +1,16 @@
 @can('centerCooridnator')
-@extends('layouts.app')
-@section('title', 'Center base detail')
-@push('css')
-    <style>
-        .select2,
-        .select2-container,
-        .select2-container--default,
-        .select2-container--below {
-            width: 100% !important;
-        }
-    </style>
-@endpush
+    @extends('layouts.app')
+    @section('title', 'Center base detail')
+    @push('css')
+        <style>
+            .select2,
+            .select2-container,
+            .select2-container--default,
+            .select2-container--below {
+                width: 100% !important;
+            }
+        </style>
+    @endpush
 @section('content')
     <!--begin::Card-->
     <div class="card card-custom gutter-b">
@@ -118,7 +118,8 @@
 
                                         @can('TraininingCenter.trainnerID')
                                             <li class="navi-item">
-                                                <a href="{{ route('session.training_center.trainer_list', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}" class="navi-link">
+                                                <a href="{{ route('session.training_center.trainer_list', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+                                                    class="navi-link">
                                                     <span class="navi-icon">
                                                         <i class="flaticon2-shopping-cart-1"></i>
                                                     </span>
@@ -139,7 +140,8 @@
 
                                         @can('TraininingCenter.graduate')
                                             <li class="navi-item">
-                                                <a href="{{ route('session.show.volunteers', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}" class="navi-link">
+                                                <a href="{{ route('session.show.volunteers', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+                                                    class="navi-link">
                                                     <span class="navi-icon">
                                                         <i class="fal fas fa-graduation-cap"></i>
                                                     </span>
@@ -318,7 +320,7 @@
             <div class="card card-custom gutter-b">
                 <div class="py-5 border-0 card-header">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label font-weight-bolder text-dark">Cindication rooms</span>
+                        <span class="card-label font-weight-bolder text-dark">Syndication rooms</span>
                         <span class="mt-3 text-muted font-weight-bold font-size-sm">Total {{ count($cindicationRooms) }}
                             Cindication Rooms</span>
                     </h3>
@@ -330,8 +332,7 @@
                         <form class="row" method="POST"
                             action="{{ route('session.cindication_room.store', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}">
                             @csrf
-                            <div class="form-group col-md-4">
-                                {{-- <label class="d-block">Room ID</label> --}}
+                            {{-- <div class="form-group col-md-4">
                                 <input type="text" class="@error('number') is-invalid @enderror form-control"
                                     name="number" placeholder="Room ID"
                                     value="{{ old('number') ?? (isset($user) ? $user->number : '') }}" />
@@ -339,7 +340,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <span class="form-text text-muted">Please enter Room ID.</span>
-                            </div>
+                            </div> --}}
                             <div class="form-group col-md-4">
                                 {{-- <label class="d-block">Number of volunteers</label> --}}
                                 <input type="text" class="@error('number_of_volunteers') is-invalid @enderror form-control"
@@ -349,6 +350,17 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <span class="form-text text-muted">Please enter Number of volunteers.</span>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                {{-- <label class="d-block">Number of volunteers</label> --}}
+                                <input type="text" class="@error('counter') is-invalid @enderror form-control"
+                                    name="counter" placeholder="Number of syndication room"
+                                    value="{{ old('counter') ?? (isset($counter) ? $counter : '') }}" />
+                                @error('counter')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <span class="form-text text-muted">Please enter counter.</span>
                             </div>
                             <div class="form-group">
                                 <input type="submit" value="Add Cindication rooms"

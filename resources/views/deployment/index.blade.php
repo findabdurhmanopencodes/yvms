@@ -145,7 +145,7 @@
                     </tr>
                     <th> SNo.</th>
                     <th> Name </th>
-                    {{-- <th> Middle Name </th> --}}
+                    <th> ID </th>
                     <th> Region </th>
                     <th> Zone </th>
                     <th> Woreda </th>
@@ -157,7 +157,7 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $deployedVolunteer?->trainingPlacement?->approvedApplicant?->volunteer?->name() }}</td>
-                            {{-- <td>{{ $placedVolunteer->approvedApplicant->volunteer->father_name }}</td> --}}
+                            <td>{{ $deployedVolunteer?->trainingPlacement->approvedApplicant->volunteer->id_number }}</td>
                             <td> {{ $deployedVolunteer?->woredaIntake?->woreda?->zone?->region?->name }} </td>
                             <td> {{ $deployedVolunteer->woredaIntake->woreda?->zone?->name }} </td>
                             <td> {{ $deployedVolunteer?->woredaIntake?->woreda?->name }} </td>

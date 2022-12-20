@@ -7,13 +7,15 @@ use App\Http\Requests\StoreTrainingCenterCapacityRequest;
 use App\Http\Requests\UpdateTrainingCenterCapacityRequest;
 use App\Models\TrainingSession;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException as ValidationValidationException;
+use Illuminate\Validation\ValidationException;
 
 class TrainingCenterCapacityController extends Controller
 {
     public function __construct()
     {
 
-        $this->authorizeResource(TrainingCenterCapacity::class,'trainingCenterCapacity');
+        $this->authorizeResource(TrainingCenterCapacity::class, 'trainingCenterCapacity');
     }
     /**
      * Display a listing of the resource.
@@ -43,8 +45,12 @@ class TrainingCenterCapacityController extends Controller
      */
     public function store(Request $request)
     {
-        $trainingSession = new TrainingSession();
-        $trainingSessionId = $trainingSession->availableSession()?->first()?->id;
+        $trainingSessionId = $request->get('training_session_id');
+        if (TrainingCenterCapacity::where('training_session_id', $trainingSessionId)->where('trainining_center_id',$request->get('trainingCenterId'))->count() > 0) {
+            throw ValidationException::withMessages(['training_session_id' => 'Multiple training center capacity for the same session']);
+        }
+        // $trainingSessionId = $trainingSession->availableSession()?->first()?->id;
+
         TrainingCenterCapacity::create(['capacity' => $request->get('capacity'), 'training_session_id' => $trainingSessionId, 'trainining_center_id' => $request->get('trainingCenterId')]);
         return redirect()->back();
     }
@@ -96,10 +102,10 @@ class TrainingCenterCapacityController extends Controller
 
     public function capacityChange(Request $request)
     {
-        $trainingCenterId=$request->get('trainining_center_id');
-        $trainingSessionId=$request->get('training_session_id');
-        $trainingCenterCapacity=TrainingCenterCapacity::where('trainining_center_id',$trainingCenterId)->where('training_session_id',$trainingSessionId)->get()->first();
-        $trainingCenterCapacity->update(['capacity'=>$request->get('capacity')]);
+        $trainingCenterId = $request->get('trainining_center_id');
+        $trainingSessionId = $request->get('training_session_id');
+        $trainingCenterCapacity = TrainingCenterCapacity::where('trainining_center_id', $trainingCenterId)->where('training_session_id', $trainingSessionId)->get()->first();
+        $trainingCenterCapacity->update(['capacity' => $request->get('capacity')]);
         $trainingCenterCapacity->save();
         return redirect()->back();
     }

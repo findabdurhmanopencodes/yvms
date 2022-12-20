@@ -1,5 +1,5 @@
 @can('FeildOfStudy.index')
-    <li class="menu-item {{ strpos(Route::currentRouteName(), 'FeildOfStudy.index') === 0 ? 'menu-item-active' : '' }}"
+    <li class="menu-item {{ strpos(Route::currentRouteName(), 'FeildOfStudy') === 0 ? 'menu-item-active' : '' }}"
     aria-haspopup="true">
         <a href="{{ route('FeildOfStudy.index', []) }}" class="menu-link">
             <i class="menu-bullet menu-bullet-dot">
@@ -12,7 +12,7 @@
 
 
 @can('payment.type')
-    <li class="menu-item {{ strpos(Route::currentRouteName(), 'payment_type') === 0 ? 'menu-item-active' : '' }}"
+    <li class="menu-item {{ strpos(Route::currentRouteName(), 'paymentType') === 0 ? 'menu-item-active' : '' }}"
     aria-haspopup="true">
         <a href="{{ route('paymentType.index',[]) }}" class="menu-link">
             <i class="menu-bullet menu-bullet-dot">

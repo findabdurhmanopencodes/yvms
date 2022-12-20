@@ -30,12 +30,19 @@ class StoreCindicationRoomRequest extends FormRequest
         $usedQuota = CindicationRoom::where('training_session_id', request()->route('training_session')->id)->where('trainining_center_id', $trainingCenter->id)->sum('number_of_volunteers');
         $totalVolunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->count();
         $availableQuota = $totalVolunteers - $usedQuota;
-        if($availableQuota <=0){
-            throw ValidationException::withMessages(['number_of_volunteers'=>'Reached maximum placement']);
+        if ($availableQuota <= 0) {
+            throw ValidationException::withMessages(['number_of_volunteers' => 'Reached maximum placement']);
+        }
+
+        $counter = $this->request->get('counter');
+        $numberOfVolunteers = $this->request->get('number_of_volunteers');
+        if (intval($availableQuota) < intval($counter * $numberOfVolunteers)) {
+            throw ValidationException::withMessages(['counter' => 'Reached maximum placement']);
         }
         return [
-            'number' => 'required|unique:cindication_rooms,number',
+            // 'number' => 'required|unique:cindication_rooms,number',
             'number_of_volunteers' => ['required', 'numeric', 'min:1', 'max:' . ($availableQuota)],
+            'counter' => ['required', 'numeric', 'min:1'],
         ];
     }
 }

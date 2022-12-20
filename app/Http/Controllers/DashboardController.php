@@ -24,20 +24,18 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(TrainingSession $trainingSession)
     {
         $users = DB::table('users')->count();
         $regions = DB::table('regions')->count();
         $zones = DB::table('zones')->count();
         $woredas = DB::table('woredas')->count();
-
      //   Woreda::count();
-        $volunteers = DB::table('volunteers')->count();
+        $volunteers = DB::table('volunteers')->where('training_session_id',$trainingSession->id)->count();
         $traininingCenters = DB::table('trainining_centers')->count();
-
         $trCenters = TraininingCenter::all();
-
-        $ts = request()->route('training_session');
+        $ts = $trainingSession->id;
+        // $ts = request()->route('training_session');
 
         $trainingCentersCapacity['centers'] = collect(DB::select("SELECT tc.code as code FROM training_center_capacities tcc LEFT JOIN trainining_centers tc ON tcc.trainining_center_id = tc.id WHERE tcc.training_session_id = $ts ORDER BY tcc.id ASC"))->pluck('code')->toArray();
         $trainingCentersCapacity['capacities'] = collect(DB::select("SELECT capacity FROM `training_center_capacities` WHERE training_session_id = $ts"))->pluck('capacity')->toArray();
