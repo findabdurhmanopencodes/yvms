@@ -99,7 +99,6 @@ class TrainingSessionController extends Controller
                 return $trainingSession->endRegDateET();
             })->make(true);
         }
-
         $date_now = Carbon::now();
         $check_date = false;
 
@@ -108,7 +107,7 @@ class TrainingSessionController extends Controller
         if ($training_sessions) {
             foreach ($training_sessions as $training_session) {
                 if ((new DateTime($training_session->start_date) <= new DateTime($date_now->format('Y-m-d'))) && (new DateTime($date_now->format('Y-m-d')) <= new DateTime($training_session->end_date))) {
-                    $check_date = true;
+                    $check_date = false;
                 }
             }
         }

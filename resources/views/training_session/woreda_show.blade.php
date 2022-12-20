@@ -244,7 +244,7 @@
                         <a href="#" class="px-5 btn btn-sm btn-primary font-weight-bolder dropdown-toggle"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</a>
                     @endcanany
-                    
+
                     <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="">
                         <!--begin::Navigation-->
                         <ul class="navi navi-hover">
@@ -276,7 +276,7 @@
                                         <span class="svg-icon svg-icon-md">
                                             <i class="flaticon-medal" id="i_text"></i>
                                         </span>
-                                        Graduate Volunteers
+                                        Cirtificate for Volunteers
                                     </a>
                                 </li>
                             @endcan

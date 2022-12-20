@@ -141,6 +141,8 @@ class TraininingCenterController extends Controller
         $traininingCenter     = TraininingCenter::with('capacities.trainningSession')->find($traininingCenter);
         $trainingSession      = new TrainingSession();
         $trainingSessionId    = $trainingSession->availableSession()?->first()?->id;
+        $sessions = TrainingSession::all();
+        // $trainingSessionId    = $trainingSession->availableSession()?->first()?->id;
         $capaityAddedInCenter = TrainingCenterCapacity::where(
             'training_session_id',
             $trainingSessionId
@@ -151,7 +153,8 @@ class TraininingCenterController extends Controller
         return view('training_center.show', [
             'trainingCenter' => $traininingCenter,
             'capaityAddedInCenter' => $capaityAddedInCenter,
-            'users' => User::all()
+            'users' => User::all(),
+            'sessions' => $sessions
         ]);
     }
     /**
@@ -532,7 +535,7 @@ class TraininingCenterController extends Controller
             ->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')
             ->leftJoin('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
             ->where('trainining_centers.id', $trainingCenter->id)
-            ->select('*')
+            ->select('*')->where('volunteers.training_session_id',$trainingSession->id)
             ->paginate(10);
 
         $trainingSchedules = TrainingSchedule::all();
@@ -621,7 +624,7 @@ class TraininingCenterController extends Controller
         $volunteer_id = Volunteer::find($request->id_number)->id;
         $barcheck = BarQRVolunteer::where('volunteer_id', $volunteer_id)->get()->first();
         if ($barcheck == null) {
-            BarQRVolunteer::create(['volunteer_id'=>$volunteer_id, 'bar_code'=>$request->barSrc, 'qr_code'=>$request->qrSrc]);
+            BarQRVolunteer::create(['volunteer_id' => $volunteer_id, 'bar_code' => $request->barSrc, 'qr_code' => $request->qrSrc]);
         }
         return response()->json(array('success' => 'success'), 200);
     }

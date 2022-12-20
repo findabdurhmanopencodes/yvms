@@ -34,8 +34,7 @@ class TrainingPlacementController extends Controller
     public function index(Request $request,TrainingSession $trainingSession)
     {
         // $trainingSession = TrainingSession::availableSession()->first();
-        $q               = TrainingPlacement::query()->where('training_placements.training_session_id', $trainingSession->id);
-
+        $q = TrainingPlacement::query()->where('training_placements.training_session_id', $trainingSession->id);
         if ($request->get('training_center') != null) {
             $q->whereHas('trainingCenterCapacity.trainingCenter', function ($query) use ($request) {
                 $query->where('id', $request->get('training_center'));
