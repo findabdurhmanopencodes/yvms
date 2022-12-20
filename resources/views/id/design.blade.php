@@ -24,6 +24,7 @@
 @endpush
 
 @section('content')
+
 <form method="POST" id="myForm" action="{{ route('id.download') }}">
     @csrf
     <input type="hidden" name="checkVal" value="checkedIn">
@@ -144,9 +145,9 @@
         var start = 0;
         var end = 600;
         var len = Object.keys(applicants).length;
-        
+
         $('#print_btn').on('click', function(event){
-            
+
             if ('{{ $trainer }}' == 'trainer') {
                 applicants.forEach((applicant, key) => {
                     document.getElementById("myForm").submit();
@@ -171,7 +172,7 @@
                     end+=600;
                     document.getElementById('htmlValue').value = JSON.stringify(items);
                     document.getElementById("myForm").submit();
-                    
+
                 }else{
                     document.getElementById('print_btn').style.visibility = 'hidden';
                     document.getElementById('progressBar').style.width = '100%';

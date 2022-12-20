@@ -144,6 +144,7 @@
                     <th> Name </th>
                     {{-- <th> Middle Name </th> --}}
                     <th> Region </th>
+                    <th> ID </th>
                     <th> Training Center </th>
                     <th> Action</th>
                     </tr>
@@ -156,6 +157,7 @@
                             {{-- <td>{{ $placedVolunteer->approvedApplicant->volunteer->father_name }}</td> --}}
                             {{-- <td> {{ $placedVolunteer->approvedApplicant->volunteer->grand_father_name }} </td> --}}
                             <td> {{ $placedVolunteer->approvedApplicant->volunteer->woreda->zone->region->name }} </td>
+                            <td> {{ $placedVolunteer->approvedApplicant->volunteer->id_number }} </td>
                             <td> {{ $placedVolunteer->trainingCenterCapacity->trainingCenter->name }} </td>
                             <td>
                                 <a href="#"

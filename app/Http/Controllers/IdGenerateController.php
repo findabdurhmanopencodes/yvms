@@ -254,7 +254,7 @@ class IdGenerateController extends Controller
                     $count = $check_val->first()->count + 1;
                     IDcount::where('training_session_id', $trainingSession->id)->where('volunteer_id', $value->id)->update(['count'=> $count]);
                 }else{
-                    IDcount::create(['volunteer_id' => $value->id, 'training_session_id' => $trainingSession->id, 'count'=> 1]);
+                    IDcount::create(['volunteer_id' => $value->id, 'training_session_id' => $value->training_session_id, 'count'=> 1]);
                 }
             }
             $session_id = $trainingSession?->id;
@@ -279,7 +279,6 @@ class IdGenerateController extends Controller
             } else {
                 $html = TrainingMasterPlacement::whereIn('id', $volunteer_id)->get();
             }
-
             $pdf = Pdf::loadView('id.dowlnload_id', compact('html', 'check', 'trainer', 'userType', 'center', 'end_date'))->setPaper('letter', 'landscape');
             return $pdf->download($request->get('center').' '.$request->get('trainer').'ID.pdf');
         }
