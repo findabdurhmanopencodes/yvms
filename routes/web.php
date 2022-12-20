@@ -133,13 +133,13 @@ Route::get('adb', function () {
 });
 // Route::get('send',[NotificationController::class,'sendApplicantPlacmentEmail']);
 
-    Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
-    Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
-    Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
-    Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
-    Route::get('report/report', [ReportController::class, 'getReport'])->name('report.bysession');
-    Route::get('report/generatePdf', [ReportController::class, 'getPdf'])->name('report.generatePdf');
-    Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' => 'session.'], function () {
+Route::post('application/document/upload', [VolunteerController::class, 'application_document_upload'])->name('document.upload');
+Route::get('application_form', [VolunteerController::class, 'application_form'])->name('aplication.form');
+Route::post('application_form/apply', [VolunteerController::class, 'apply'])->name('aplication.apply');
+Route::get('training_session/{training_session}/screenout', [TrainingSessionController::class, 'screen'])->name('aplication.screen_out');
+Route::get('report/report', [ReportController::class, 'getReport'])->name('report.bysession');
+Route::get('report/generatePdf', [ReportController::class, 'getPdf'])->name('report.generatePdf');
+Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' => 'session.'], function () {
     Route::get('report/{report_name}', [ReportController::class, 'index'])->name('reports');
     Route::resource('hierarchy', HierarchyReportController::class);
     Route::get('deployment-regions', [RegionController::class, 'deployment'])->name('deployment.regions');
@@ -206,10 +206,8 @@ Route::get('adb', function () {
     Route::get('result/', [TraininingCenterController::class, 'result'])->name('result');
     Route::get('deployment/result/', [ZoneController::class, 'result'])->name('deployment.check.result');
     Route::get('barQRCode/', [TraininingCenterController::class, 'barQRCode'])->name('barQRCode');
-
     Route::get('/check-in/action/{id}', [TraininingCenterController::class, 'checkIn'])->name('TrainingCenter.checked');
     Route::get('deployment/check-in/action/{id}', [ZoneController::class, 'checkIn'])->name('deployment.checked');
-
     Route::get('/checkin_all', [TraininingCenterController::class, 'checkInAll'])->name('trainingCenter.checkin.all');
 
     Route::any('/check-in/reports/', [TraininingCenterController::class, 'indexChecking'])->name('TrainingCenter.index.checked');
@@ -269,6 +267,7 @@ Route::get('adb', function () {
 
     Route::get('{woreda_id}/woreda/capacity/edit', [WoredaController::class, 'woredaIntakeEdit'])->name('woreda.intake_edit');
     Route::put('{woreda_id}/woreda/capacity/update', [WoredaController::class, 'woredaIntakeUpdate'])->name('woreda_intake.update');
+    Route::post('/download/idPDF', [IdGenerateController::class, 'pdfDownload'])->name('id.download');
 });
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
 Route::middleware(['auth'])->group(function () {
@@ -341,7 +340,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('{training}/training/schedule', [TraininingCenterController::class, 'trainingSchedule'])->name('training.attendance');
     Route::post('{training}/training/schedule/remove', [TraininingCenterController::class, 'trainingScheduleRemove'])->name('training.remove');
     Route::resource('training/{training}/training_document', TrainingDocumentController::class);
-    Route::post('/download/idPDF', [IdGenerateController::class, 'pdfDownload'])->name('id.download');
     Route::post('/certificatePDF/download', [IdGenerateController::class, 'certificateDownload'])->name('certificate.download');
     Route::get('/dashboard', function () {
         $volunteer = Volunteer::where('user_id', Auth::user()->id)->first();

@@ -11,6 +11,7 @@ use App\Models\TrainingMasterPlacement;
 use App\Models\TrainingSession;
 use App\Models\TrainingSessionTraining;
 use App\Models\TraininingCenter;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class TrainingMasterPlacementController extends Controller
@@ -22,6 +23,11 @@ class TrainingMasterPlacementController extends Controller
      */
     public function index(TrainingSession $trainingSession)
     {
+
+        $user = Auth::user();
+        if (!$user->can('assigned.trainner')) {
+            return abort(403);
+        }
         $trainingMasterPlacementQuery = TrainingMasterPlacement::where('training_session_id', $trainingSession->id);
         // $freeTrainners = TrainingMaster::select()->whereNotIn('id',$trainingMasterPlacementQuery->pluck('training_master_id'))->get();
         $freeTrainners = TrainingMaster::all();

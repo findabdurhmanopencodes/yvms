@@ -380,6 +380,16 @@ class VolunteerController extends Controller
             return abort(403);
         }
         $applicants =  Volunteer::whereRelation('status', 'acceptance_status','>=', Constants::VOLUNTEER_STATUS_DOCUMENT_VERIFIED)->where('training_session_id', $training_session);
+        $user = Auth::user();
+        if ($user->hasRole('regional-coordinator')) {
+            $region = UserRegion::where('user_id', $user->id)->where('levelable_type', Region::class)->first();
+          //  dd($region->levelable);
+            $applicants = $applicants->whereRelation('woreda.zone.region', 'id', $region->levelable_id);
+        }
+        if ($user->hasRole('zone-coordinator')) {
+            $zone = UserRegion::where('user_id', $user->id)->where('levelable_type', Zone::class)->first();
+            $applicants = $applicants->whereRelation('woreda.zone', 'id', $zone->levelable_id);
+        }
 
         $approved = ApprovedApplicant::where('training_session_id', $training_session)->get();
         // dd($applicants->get());

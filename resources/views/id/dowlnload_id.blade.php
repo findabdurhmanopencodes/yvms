@@ -23,7 +23,7 @@
             <div style="width: 201.6px; height: 326.4px; background-size: cover; background-image: url('img/mopfrontdes.png'); break-after: page; transform: rotate(90deg); transform-origin: 159px 159px; page-break-after: always; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: -43px; margin-left: -35px;">
                 <div style="position: relative; left: 54px; top: 120px;">
                     @if ($val->picture()->name)
-                        <img src="{{ public_path('/storage/training session/1/profile pictures/'.$val->picture()->name) }}" alt="" style="width: 91px; height: 89.7px; border-radius: 50%;">
+                        <img src="{{ public_path('/storage/training session/'.$session_id.'/profile pictures/'.$val->picture()->name) }}" alt="" style="width: 91px; height: 89.7px; border-radius: 50%;">
                     @else
                         <img src="img/profile_empty.jpg" style="width: 91px; height: 89.7px; border-radius: 50%;">
                     @endif
@@ -47,7 +47,7 @@
                     <strong>{{ $val->approvedApplicant->trainingPlacement->deployment->woredaIntake?->woreda->name }}</strong>
                 </p>
                 <p style="position: relative;text-align: center; top: 18px; background-color: inherit; font-size: 13px; color: blue;">
-                    <strong style="font-family: 'Noto Serif Ethiopic'"> 
+                    <strong style="font-family: 'Noto Serif Ethiopic'">
                         በጎነት ለአብሮነት
                     </strong><strong>!</strong>
                 </p>
@@ -81,13 +81,13 @@
                 </p>
                 <div style="position: relative; float: right; top: -68px;">
                     @if ($val->picture()->name)
-                        <img src="{{ public_path('/storage/training session/1/profile pictures/'.$val->picture()->name) }}" alt="" style="width: 67px; height: 61px; border-radius: 5%;">
+                        <img src="{{ public_path('/storage/training session/'.$session_id.'/profile pictures/'.$val->picture()->name) }}" alt="" style="width: 67px; height: 61px; border-radius: 5%;">
                     @else
                         <img src="img/profile_empty.jpg" alt="" style="width: 67px; height: 61px; border-radius: 5%;">
                     @endif
                 </div>
                 <p style="position: relative; left: 8px; top: -10px; background-color: inherit; font-size: 10px; color: black; font-style: italic; letter-spacing: 0.5px;">
-                    <strong>Full Name:</strong>                
+                    <strong>Full Name:</strong>
                 </p>
                 <p style="position: relative; left: 8px; top: -18px; background-color: inherit; font-size: 10px; color: black; letter-spacing: 0.5px;">
                     <strong>{{ $val->first_name }}  {{ $val->father_name }}</strong>
@@ -129,7 +129,7 @@
         @endforeach
     @elseif($check == 'checkedIn' && $trainer == null)
         @foreach ($html as $key=>$val)
-        
+
             @if ($key%4 === 0)
             <div style="clear: both; margin-top:25px;"></div>
             @endif
@@ -137,11 +137,11 @@
                 <div style="width: 201.6px; height: 326.4px; background-size: cover; background-image: url('img/mopfrontdes.png'); float: left; margin-right: 30px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: -30px;">
                     <div style="position: relative; left: 54px; top: 120px;">
                         @if ($val->picture()->name)
-                            <img src="{{ public_path('/storage/training session/1/profile pictures/'.$val->picture()->name) }}" style="width: 91px; height: 89.7px; border-radius: 50%;">    
+                            <img src="{{ public_path('/storage/training session/'.$session_id.'/profile pictures/'.$val->picture()->name) }}" style="width: 91px; height: 89.7px; border-radius: 50%;">
                         @else
                             <img src="img/profile_empty.jpg" alt="" style="width: 91px; height: 89.7px; border-radius: 50%;">
                         @endif
-                        
+
                     </div>
                     <p style="position: relative; left: 56px; top: 110px; background-color: inherit; font-size: 10px; color: blue;">
                         <strong>ID: </strong>
@@ -150,7 +150,7 @@
                         <strong>{{ $val->id_number }}</strong>
                     </p>
                     <p style="position: relative; left: 42px; top: 84px; background-color: inherit; font-size: 10px; color: blue;">
-                        <strong>Name: </strong> 
+                        <strong>Name: </strong>
                     </p>
                     <p style="position: relative; left: 76px; top: 62.5px; background-color: inherit; font-size: 10px; color: blue;">
                         <strong>{{ $val->first_name }}  {{ $val->father_name }}</strong>
@@ -188,7 +188,7 @@
                 <div style="width: 201.6px; height: 326.4px; background-size: cover; background-image: url('img/mopfrontdes.png'); float: left; margin-right: 30px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: -30px;">
                     <div style="position: relative; left: 54px; top: 120px;">
                         @if ($val->picture()->name)
-                            <img src="{{ public_path('/storage/training session/1/profile pictures/'.$val->picture()->name) }}" alt="" style="width: 91px; height: 89.7px; border-radius: 50%;">
+                            <img src="{{ public_path('/storage/training session/'.$session_id.'/profile pictures/'.$val->picture()->name) }}" alt="" style="width: 91px; height: 89.7px; border-radius: 50%;">
                         @else
                             <img src="img/profile_empty.jpg" style="width: 91px; height: 89.7px; border-radius: 50%;">
                         @endif
@@ -200,7 +200,7 @@
                         <strong>{{ $val->id_number }}</strong>
                     </p>
                     <p style="position: relative; left: 42px; top: 84px; background-color: inherit; font-size: 10px; color: blue;">
-                        <strong>Name: </strong> 
+                        <strong>Name: </strong>
                     </p>
                     <p style="position: relative; left: 76px; top: 62.5px; background-color: inherit; font-size: 10px; color: blue;">
                         <strong>{{ $val->first_name }}  {{ $val->father_name }}</strong>
@@ -258,7 +258,7 @@
                     <strong>{{ ($userType == 'mop user')? $val->user->first_name.' '.$val->user->father_name : $val->master->user->first_name.' '.$val->master->user->father_name   }}</strong>
                 </p>
                 <p style="position: relative; left: 18px; top: -242px; background-color: inherit; font-size: 12.5px; color: rgb(0, 0, 0);">
-                    <strong>Training Center:</strong> 
+                    <strong>Training Center:</strong>
                 </p>
                 <p style="position: relative; left: 117px; top: -268px; background-color: inherit; font-size: 11px;">
                     <strong>{{ $center }}</strong>
