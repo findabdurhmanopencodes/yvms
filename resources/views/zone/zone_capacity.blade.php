@@ -18,7 +18,6 @@
         .select2-container--below {
             width: 100% !important;
         }
-
     </style>
 @endpush
 @push('js')
@@ -29,6 +28,16 @@
             });
 
         });
+        function changeSession(){
+            if(($('#sessionChanger').val()))
+            {
+                var currentLocation = window.location.href;
+                $newLocation = currentLocation.split('/');
+                $newLocation[3] = $('#sessionChanger').val();
+                $newLocation = $newLocation.join('/');
+                window.location.href = $newLocation;
+            }
+        }
     </script>
 @endpush
 @section('content')
@@ -77,13 +86,19 @@
 
         @if (count($intake_exist) < 1 && count($curr_sess) > 0)
             <div>
-                <a class="btn btn-primary btn-sm float-right mx-2 my-2" data-toggle="modal" data-target="#addCapacity"><i class="fa  fa-plus"></i>Add zone Intake</a>
+                <a class="btn btn-primary btn-sm float-right mx-2 my-2" data-toggle="modal" data-target="#addCapacity"><i
+                        class="fa  fa-plus"></i>Add zone Intake</a>
             </div>
         @endif
 
         <div class="card-body">
-            <h5 class="card-title">{{ $trainingSession->moto }} - {{ $zone->name }} Zone ({{ $zoneAllIntake }} more)</h5>
-
+            <h5 class="card-title">{{ $trainingSession->moto }} - {{ $zone->name }} Zone ({{ $zoneAllIntake }} more) </h5>
+            <select name="" id="sessionChanger" onchange="changeSession()" class="form-control col-md-6">
+                <option value="">Change session</option>
+                @foreach ($sessions as $session)
+                    <option value="{{ $session->id }}">{{ $session->moto }}</option>
+                @endforeach
+            </select>
             <table class="table table-light">
                 <thead>
                     <th>#</th>
@@ -96,7 +111,7 @@
 
                     @foreach ($intake_exist as $key => $zoneIntake)
                         <tr>
-                            <td>{{ $key+1 }}</td>
+                            <td>{{ $key + 1 }}</td>
                             <td>{{ $trainingSession->moto }}</td>
                             <td> {{ $zoneIntake->intake }}</td>
 
@@ -104,9 +119,11 @@
                                     class="text text-success font-weight-bolder"> to</span>
                                 {{ $capacityHistory->trainningSession?->end_date }}</td>
                             <td> --}}
-                            <td>    
-                                
-                                <a class="btn" href="{{ route('session.zone.intake_edit', ['training_session'=>$trainingSession->id,'zone_id'=>$zone->id]) }}"><i class="fa fa-edit"></i></a>
+                            <td>
+
+                                <a class="btn"
+                                    href="{{ route('session.zone.intake_edit', ['training_session' => $trainingSession->id, 'zone_id' => $zone->id]) }}"><i
+                                        class="fa fa-edit"></i></a>
                                 {{-- <span class="badge badge-danger badge-pill">Can't Change Capacity</span> --}}
                             </td>
                         </tr>
@@ -121,7 +138,8 @@
     <div class="modal fade" id="addCapacity" tabindex="-1" role="dialog" aria-labelledby="addCapacityLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <form method="POST" action="{{ route('session.zone.intake_store', ['zone_id'=>$zone->id, 'training_session'=>$trainingSession->id]) }}">
+            <form method="POST"
+                action="{{ route('session.zone.intake_store', ['zone_id' => $zone->id, 'training_session' => $trainingSession->id]) }}">
                 {{-- <input type="hidden" name="trainingCenterId" value="{{ $region->id }}"> --}}
                 @csrf
                 <div class="modal-content">
@@ -134,7 +152,8 @@
                     <div class="modal-body">
                         <div class="col-lg-6">
                             <label>Capacity:</label>
-                            <input type="number" class="form-control" placeholder="Capacity" name="capacity" min="0" max="{{ $zoneAllIntake }}" required />
+                            <input type="number" class="form-control" placeholder="Capacity" name="capacity" min="0"
+                                max="{{ $zoneAllIntake }}" required />
                         </div>
                     </div>
                     <div class="modal-footer">

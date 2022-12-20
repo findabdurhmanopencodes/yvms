@@ -33,13 +33,14 @@ class StoreCindicationRoomRequest extends FormRequest
         if ($availableQuota <= 0) {
             throw ValidationException::withMessages(['number_of_volunteers' => 'Reached maximum placement']);
         }
+
         $counter = $this->request->get('counter');
         $numberOfVolunteers = $this->request->get('number_of_volunteers');
         if (intval($availableQuota) < intval($counter * $numberOfVolunteers)) {
             throw ValidationException::withMessages(['counter' => 'Reached maximum placement']);
         }
         return [
-            'number' => 'required|unique:cindication_rooms,number',
+            // 'number' => 'required|unique:cindication_rooms,number',
             'number_of_volunteers' => ['required', 'numeric', 'min:1', 'max:' . ($availableQuota)],
             'counter' => ['required', 'numeric', 'min:1'],
         ];

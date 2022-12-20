@@ -535,7 +535,7 @@ class TraininingCenterController extends Controller
             ->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')
             ->leftJoin('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
             ->where('trainining_centers.id', $trainingCenter->id)
-            ->select('*')
+            ->select('*')->where('volunteers.training_session_id',$trainingSession->id)
             ->paginate(10);
 
         $trainingSchedules = TrainingSchedule::all();

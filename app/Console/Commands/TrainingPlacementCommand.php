@@ -89,8 +89,7 @@ class TrainingPlacementCommand extends Command
         if (!$activeSession)
             $errorMessage = "No Active Session is Available to place volunteers";
 
-        $applicants = ApprovedApplicant::all();
-
+        $applicants = ApprovedApplicant::where('training_session_id',$trainingSessionId)->get();
         if ($applicants->isEmpty())
             $errorMessage = "No Approved Applicants Available to place";
 

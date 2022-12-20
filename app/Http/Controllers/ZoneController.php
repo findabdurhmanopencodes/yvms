@@ -247,8 +247,10 @@ class ZoneController extends Controller
         }
         if ($region->regionIntakes?->last()) {
             $zoneAllIntake = $region->regionIntakes?->where('training_session_id', $trainingSession->id)->last()?->intake - $zoneAllIntake;
-            $zone = Zone::where('id', $zone_id)?->get()[0];
-            return view('zone.zone_capacity', compact('zone', 'trainingSession', 'intake_exist', 'curr_sess', 'zoneAllIntake'));
+            $zone = Zone::where('id', $zone_id)?->first();
+            $sessions = TrainingSession::where('end_date','>=',now())->get();
+            $sessions = TrainingSession::all();
+            return view('zone.zone_capacity', compact('zone', 'trainingSession','sessions', 'intake_exist', 'curr_sess', 'zoneAllIntake'));
         } else {
             return redirect()->route('zone.index')->with('error', 'Specify Region First!!');
         }
