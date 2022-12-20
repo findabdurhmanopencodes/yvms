@@ -28,9 +28,9 @@ table {
     </div>
     <h1 style="margin-top:10px; color:#01afee;text-align:center; font-size:25px;">
         <span style="text-align:center;">
-            <p style="font-size: 19px"> <b>  Ministery of Peace </b> </p>
-            <p style="font-size: 14px"><b>   Youth Volunterism Managment System </b></p>
-            <p style="font-size: 12px"><b>   Training session Report </b></p>
+            <p style="font-size: 30px"> <b>  Ministery of Peace </b> </p>
+            <p style="font-size: 25px"><b>   Youth Volunterism Managment System </b></p>
+            <p style="font-size: 20px"><b>   Training session Report [ ] </b></p>
 
         </span>
 
@@ -43,41 +43,34 @@ table {
 
             <br>
             <tr>
-                <th><u></u> 1. Voluneteer Application Repprt : </u></th>
-
-            </tr>
+                <th style="text-align: left;">I. Voluneteer Application Repprt : </th>
+            </tr>  <br><hr>
 
             <tr>
 
-                <th>Total Vouleneters :</th>
 
-                <th>Male:</th>
-                <td>  7,855</td>
-                <th>Female:</th>
-                <td>  7,855</td>
+
+                <th style="text-align:right;">Total Vouleneters :</th>
+                <th><u>7,991 </u> </th>
+                <th> Male:</th>
+                <td> <u> 5,000 </u></td>
+                <th> Female:</th>
+                <td><u>2,991 </u> </td>
               </tr>
               <br>
-
-
-    <?php $i =0; ?>
+            <?php $i =0; ?>
               @foreach ($regions  as $region)
-
 
             <tr>
                 <th style="text-align:left;">{{ ++$i }} &nbsp;
                 {{$region->name   }}:</th>
 
-                <th> Quatat: {{ number_format($region->qoutaInpercent*100 ,1,'.',',')  }} %
-
-
+                  <th> Quata: {{ number_format($region->qoutaInpercent*100 ,1,'.',',')  }} %
                     </th>
-
-                <th>Male:</th>
-
-                <td>  7,855</td>
-                <th>Female:</th>
-                <td> 7,855</td>
-
+                    <th> Male:</th>
+                    <td> <u>4,000 </u></td>
+                    <th> Female:</th>
+                    <td> <u>2,991 </u></td>
             </tr>
             @endforeach
             <div class="page_break"></div>
@@ -86,45 +79,73 @@ table {
 
 
             <tr>
-                <th><u></u> 2.Selected Voluneteers for placement : </u></th>
+                <th style="text-align: left;"> II. Selected Voluneteers for placement : </th>
 
-            </tr>
-
-
+            </tr> <br><hr>
             <tr>
 
-                <th>Total Vouleneters :</th>
-                <td> 7,855</td></td>
-                <th>Male:</th>
-                <td>  7,855</td></td>
-                <th>Female:</th>
-                <td>  7,855</td></td>
+                <th style="text-align:right;">Total Vouleneters :</th>
+                <th> <u>9,917 </u> </th>
+                <th>  Male:</th>
+                <td> <u> 6,700</u></td>
+                <th> <u> Female:</u></th>
+                <td> <u>1,291 </u> </td>
             </tr><br>
-
-
-
-
               <br>
 
 
-    <?php $i =0; ?>
+         <?php $i =0; ?>
               @foreach ($training_centers  as $training_center)
 
 
             <tr>
                 <th style="text-align:left;">{{ ++$i }} &nbsp;
-                {{$training_center->name   }}:</th>
-
-                <th> Intake capacity: {{ '0'}} </th>
-
+                 {{$training_center->name   }}: </th>
+                <th> Intake capacity: <u> {{ '2,000'}} </u></th>
                 <th>Male:</th>
-                <td>  7,855</td>
+                <td> <u> 5,855</u></td>
                 <th>Female:</th>
-                <td> 7,855</td>
+                <td> <u>2,855 </u></td>
 
-            </tr>
+            </tr> <br>
             @endforeach
-            <br>
+
+
+
+
+            <tr>
+                <th style="text-align: left;"> III. Voluneteers Deployement report: </th>
+
+            </tr> <br><hr>
+            <tr>
+
+                <th style="text-align:right;">Total deployed :</th>
+                <th> <u>9,917 </u> </th>
+                <th>  Male:</th>
+                <td> <u> 6,700</u></td>
+                <th> <u> Female:</u></th>
+                <td> <u>1,291 </u> </td>
+            </tr><br>
+              <br>
+
+            <?php $i =0; ?>
+            @foreach ($regions  as $region)
+
+          <tr>
+              <th style="text-align:left;">{{ ++$i }} &nbsp;
+              {{$region->name   }}:</th>
+
+                <th>  Total deployed: {{ number_format($region->qoutaInpercent*100 ,1,'.',',')  }} %
+                  </th>
+                  <th> Male:</th>
+                  <td> <u>4,000 </u></td>
+                  <th> Female:</th>
+                  <td> <u>2,991 </u></td>
+          </tr>
+          @endforeach
+          <div class="page_break"></div>
+
+          <br>    <br>    <br>
 
         </tbody>
     </table>

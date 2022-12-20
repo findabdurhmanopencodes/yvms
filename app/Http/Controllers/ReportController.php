@@ -38,7 +38,6 @@ class ReportController extends Controller
 
     public function getReport(Request $request){
 
-
         $regions  = Region::all();
         $payroll_sheets = PayrollSheet::select('*')->where('payroll_id', '=',1)->paginate(10);
         $training_centers = TraininingCenter::all();
@@ -46,13 +45,10 @@ class ReportController extends Controller
 
         return view('report.index', compact('training_centers', 'payroll_sheets','regions', 'training_sessions'));
 
-
     }
     public function getPdf(Request $request){
 
-
         $training_session = $request->get('training_session');
-
         $report = 'training_session_report';
         $placedVolunteers  = Volunteer::all();
         $regions  = Region::all();
@@ -61,12 +57,9 @@ class ReportController extends Controller
         if (null != $request->get('training_session')) {
             $pdf = PDF::loadView('report.training_session_report_pdf', compact(
                 'placedVolunteers',  'regions','training_centers'
-
             ))->setPaper('A4', 'landscape');
             return $pdf->download('training_session_report-'.now()->year.'pdf');
         }
-
-
     }
     public function placedVolunteersList($tsID)
     {
