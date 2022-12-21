@@ -211,6 +211,7 @@ class PermissionSeeder extends Seeder
         Permission::findOrCreate('SyndicationRoom.destroy');
 
         Permission::findOrCreate('centerCooridnator.assign');
+        Permission::findOrCreate('trainingSession.report');
     }
 
     public function ms()
@@ -254,6 +255,8 @@ class PermissionSeeder extends Seeder
         Permission::findOrCreate('distance.setting');
         Permission::findOrCreate('transport.tarif');
         Permission::findOrCreate('translation.index');
+        Permission::findOrCreate('assigned.trainner');
+
     }
     public function ajaib()
     {
@@ -274,6 +277,8 @@ class PermissionSeeder extends Seeder
         //updating trainingSession Permission
         Permission::findOrCreate('TrainingSession.allResource');
         Permission::findOrCreate('TrainingSession.showResource');
+        Permission::findOrCreate('deployment.checkIn');
+
     }
 
     public function seid()
@@ -305,6 +310,5 @@ class PermissionSeeder extends Seeder
         } catch (Exception $f) {
             // Permission::findOrCreate(explode('`', $f->getMessage())[1]);
         }
-        Permission::findOrCreate('deployment.checkIn');
     }
 }

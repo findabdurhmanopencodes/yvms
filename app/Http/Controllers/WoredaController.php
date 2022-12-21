@@ -56,7 +56,7 @@ class WoredaController extends Controller
             }
             if ($request->ajax()) {
                 return datatables()->of(Woreda::whereIn('zone_id', $zone_ids)->select())->addColumn('zone', function (Woreda $woreda){
-                   return $woreda->zone->name; 
+                   return $woreda->zone->name;
                 })->make(true);
             }
             $woredas = Woreda::whereIn('zone_id', $zone_ids)->get();
@@ -67,7 +67,7 @@ class WoredaController extends Controller
             $zone_id = Auth::user()->getCordinatingZone()->id;
             if ($request->ajax()) {
                 return datatables()->of(Woreda::where('zone_id', $zone_id)->select())->addColumn('zone', function (Woreda $woreda){
-                   return $woreda->zone->name; 
+                   return $woreda->zone->name;
                 })->make(true);
             }
             $woredas = Woreda::where('zone_id', $zone_id)->get();
@@ -227,7 +227,7 @@ class WoredaController extends Controller
             }
         }
         if ($zone->zoneIntakes->last()) {
-            $woredaAllIntake = $zone->zoneIntakes?->where('training_session_id',$trainingSession->id)->last()->intake - $woredaAllIntake;
+            $woredaAllIntake = $zone->zoneIntakes?->where('training_session_id',$trainingSession->id)->last()?->intake - $woredaAllIntake;
             $woreda = Woreda::where('id', $woreda_id)?->get()[0];
             return view('woreda.woreda_capacity', compact('woreda', 'trainingSession', 'intake_exist', 'curr_sess', 'woredaAllIntake'));
         }else{

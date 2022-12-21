@@ -267,15 +267,13 @@ class TraininingCenterController extends Controller
     }
     public function checkInView()
     {
-        if (!Auth::user()->can('checker')) {
-
+        if (!Auth::user()->can('deployment.checkIn')) {
             return abort(403);
         }
         return view('training_center.check_in.check_in');
     }
     public function result(Request $request)
     {
-
         // $permission = Permission::findOrCreate('checker');
         // dd(Auth::user()->id);
         if (!Auth::user()->can('checker')) {
@@ -541,7 +539,7 @@ class TraininingCenterController extends Controller
         $trainingSchedules = TrainingSchedule::all();
 
         foreach ($applicants as $key => $applicant) {
-            if ($applicant->acceptance_status == 7) {
+            if ($applicant->acceptance_status >= 7) {
                 array_push($check_deployed, $applicant);
             }
         }

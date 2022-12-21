@@ -38,6 +38,9 @@ class ReportController extends Controller
 
     public function getReport(Request $request){
 
+        if(!Auth::user()->can('trainingSession.report')){
+            abort(403);
+        }
         $regions  = Region::all();
         $payroll_sheets = PayrollSheet::select('*')->where('payroll_id', '=',1)->paginate(10);
         $training_centers = TraininingCenter::all();
