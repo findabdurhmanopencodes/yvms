@@ -271,10 +271,9 @@ class PayrollSheetController extends Controller
 
    ///////////////////////////////////////////////////////////////////////////////
         if ($request->get('payment_type') == '1' ) {  // for monthly  money payment
-           $fixedAmount = PaymentType::where('id', 1)->first();
+            $fixedAmount = PaymentType::where('id', 1)->first();
             $placedVolunteers = Volunteer::whereRelation('status','acceptance_status', Constants::VOLUNTEER_STATUS_DEPLOYED)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->get();
             $total_volunteers = Volunteer::whereRelation('status','acceptance_status',  Constants::VOLUNTEER_STATUS_DEPLOYED)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $request->get('session'))->count();
-
             ////////// to count total payable volunteers /////////
             $total =0;
             foreach ($placedVolunteers as $placedVolunteer) {
@@ -295,7 +294,7 @@ class PayrollSheetController extends Controller
                     return redirect()->route('payrollSheet.index')->with('error', 'Report not successfull!');
                 }
 
-            if ($request->get('format') != null and $request->get('format') == 'pdf') {
+      if ($request->get('format') != null and $request->get('format') == 'pdf') {
                 $pdf = PDF::loadView('payrollSheet.pocket_money_pdf', compact(
                     'placedVolunteers',
                     'title',

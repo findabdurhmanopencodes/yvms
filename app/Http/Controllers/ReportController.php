@@ -49,11 +49,8 @@ class ReportController extends Controller
     public function getPdf(Request $request){
 
         $training_session = $request->get('training_session');
-
-
         $training_sessions = TrainingSession::where('id', '=',  $training_session)->get();
          //dd( $training_sessions );
-
         $report = 'training_session_report';
         $placedVolunteers  = Volunteer::all();
         $regions  = Region::all();
