@@ -308,7 +308,8 @@ class PayrollSheetController extends Controller
                     'tarif'
                 ))->setPaper('A4', 'landscape');
                 return $pdf->download('payroll' . $year . 'pdf');
-            } else {
+            }
+            else {
                 return redirect()->route('payrollSheet.index')->with('message', 'Sorry currently We have no Ms exceel file');
             }
         }

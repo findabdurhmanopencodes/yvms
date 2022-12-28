@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Andegna\DateTimeFactory;
+use App\Constants;
 use App\Models\PayrollSheet;
 use App\Models\Region;
 use App\Models\TrainingPlacement;
@@ -53,15 +54,34 @@ class ReportController extends Controller
          //dd( $training_sessions );
         $report = 'training_session_report';
         $placedVolunteers  = Volunteer::all();
+
+        $all_approveds = Volunteer::whereRelation('status','acceptance_status',  Constants::VOLUNTEER_STATUS_SELECTED)->whereRelation('approvedApplicant', 'training_session_id', $training_session)->count();
+        $male_approveds = Volunteer::whereRelation('status','acceptance_status',  Constants::VOLUNTEER_STATUS_SELECTED)->where('gender','M')->whereRelation('approvedApplicant', 'training_session_id', $training_session)->count();
+        $female_approveds = Volunteer::whereRelation('status','acceptance_status',  Constants::VOLUNTEER_STATUS_SELECTED)->where('gender','F')->whereRelation('approvedApplicant', 'training_session_id', $training_session)->count();
+
+        // $all_approveds = Volunteer::whereRelation('status','acceptance_status',  Constants::VOLUNTEER_STATUS_SELECTED)->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $training_session)->count();
+        // $male_approveds = Volunteer::whereRelation('status','acceptance_status',  Constants::VOLUNTEER_STATUS_SELECTED)->where('gender','M')->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $training_session)->count();
+        // $female_approveds = Volunteer::whereRelation('status','acceptance_status',  Constants::VOLUNTEER_STATUS_SELECTED)->where('gender','F')->whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $request->get('center'))->whereRelation('approvedApplicant', 'training_session_id', $training_session)->count();
+
+
         $regions  = Region::all();
         $training_centers = TraininingCenter::all();
        // if (null != $request->get('training_session') and $request->get('format') == 'pdf') {
-        if (null != $request->get('training_session')) {
+       if (null != $request->get('training_session')) {
             $pdf = PDF::loadView('report.training_session_report_pdf', compact(
-                'placedVolunteers',  'regions','training_centers','training_sessions'
+                'placedVolunteers',
+                 'regions',
+                 'female_approveds',
+                 'male_approveds',
+                 'training_centers',
+                 'all_approveds',
+                 'training_sessions'
             ))->setPaper('A4', 'landscape');
             return $pdf->download('training_session_report-'.now()->year.'pdf');
-        }
+       }
+       else {
+        return redirect()->route('report.index')->with('message', 'Please! Select any training session');
+    }
     }
     public function placedVolunteersList($tsID)
     {
