@@ -303,7 +303,6 @@ class ZoneController extends Controller
 
     public function import()
     {
-        dd('none');
         $binZones = ImporterFiles::ZONE_IMPORTS;
         $region = null;
         $totalZones = 0;
@@ -331,7 +330,6 @@ class ZoneController extends Controller
     }
     public function result(Request $request)
     {
-
         if (Auth::user()->hasRole(Constants::SUPER_ADMIN)) {
             if ($request->ajax()) {
                 $output = '';
@@ -357,11 +355,9 @@ class ZoneController extends Controller
             }
         } else {
             $user = Auth::user();
-
             if ($request->ajax()) {
                 $query = $request->get('query');
                 if ($user->hasRole('regional-coordinator')) {
-
                     $region = UserRegion::where('user_id', $user->id)->where('levelable_type', Region::class)->first();
                     $volunteerQuery = Volunteer::with('woreda.zone.region', 'approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter')->where('id_number', 'MoP-' . $query)->whereRelation('approvedApplicant.trainingPlacement.deployment.woredaIntake.woreda.zone.region', 'id', $region->levelable_id);
                 }
@@ -383,7 +379,6 @@ class ZoneController extends Controller
                         return json_encode(['status' => 505]);
                     }
                     return json_encode(['status' => 200, 'data' => $data, 'center' => $trainingCenter, 'deployed_woreda' => $deployedworedaName, 'deployed_zone' => $deployedZone, 'deployed_region' => $deployedRegion]);
-                    // }
                 } else {
                     return json_encode(['status' => 404]);
                 }

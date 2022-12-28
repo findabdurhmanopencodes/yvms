@@ -78,12 +78,12 @@
                     @endcan
 
                     @can('TraininingCenter.graduatedIDPrint')
-                        @if ($check_deployed)    
+                        @if ($check_deployed)
                             <a class="btn ml-4 btn-sm btn-primary" href="#" onclick="$('#IdForm').submit();"><i class="fal flaticon2-print"></i> Print ID
                             </a>
                         @endif
                     @endcan
-        
+
                 </div>
             </div>
         @endif
@@ -100,7 +100,7 @@
                         <th>Status</th>
                     </tr>
                 </thead>
-                <tbody> 
+                <tbody>
                     @if (count($applicants) > 0)
                         @foreach ($applicants as $key => $applicant)
                             <tr>
@@ -110,7 +110,7 @@
                                     @else
                                         {{ $key + 1 }}
                                     @endif
-                                   
+
                                 <td>
                                     {{ $applicant->id_number }}
                                 </td>

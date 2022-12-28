@@ -24,7 +24,7 @@
 @endpush
 
 @section('content')
-<form method="POST" id="myForm" action="{{ route('id.download') }}">
+<form method="POST" id="myForm" action="{{ route('session.id.download',['training_session'=>$trainingSession->id]) }}">
     @csrf
     <input type="hidden" name="center" value="{{ $center }}">
     <input type="hidden" name="checkVal" value="deployment">
@@ -88,7 +88,7 @@
                                             <p style="font-style: italic; color: black; left: 202px; top: -47px; font-size: 10px; position: relative;">Exp. date</p>
                                         </div>
                                     </div>
-                                    
+
 
                                     {{-- <div class="card-footer">
                                         <div class="card-toolbar">
@@ -142,7 +142,7 @@
                 end+=300;
                 document.getElementById('htmlValue').value = JSON.stringify(items);
                 document.getElementById("myForm").submit();
-                
+
             }else{
                 document.getElementById('print_btn').style.visibility = 'hidden';
                 document.getElementById('progressBar').style.width = '100%';
@@ -168,7 +168,7 @@
 
             // document.getElementById("myForm").submit();
             // mywindow.document.close();
-            
+
 
             mywindow.focus();
 
