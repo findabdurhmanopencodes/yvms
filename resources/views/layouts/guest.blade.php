@@ -165,26 +165,35 @@
                                         </a>
                                     </li>
                                     <li
-                                    class="menu-item {{ strpos(Route::currentRouteName(), 'evene.all') === 0 ? 'menu-item-active' : '' }}">
-                                    <a href="{{ route('event.all') }}" class="menu-link">
-                                        <i style="color:#5dade2 !important;" class="fal fa-album-collection"></i>
-
-
-                                        <span style="color:#5dade2 !important;" class="menu-text"> &nbsp; Events
-                                        </span>
-                                        <i class="menu-arrow"></i>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    @if (Auth::check())
-                                    <a target="_blank" class="navi-link" href="{{ asset('/manual/User_Manaual_YVMS.pdf') }}">
-                                        <span class="symbol symbol-20 mr-3">
-                                            <i class="fa fa-download"></i>
-                                        </span>
-                                       User Manual Download
-                                    </a>
-                                    @endif
-                                </li>
+                                        class="menu-item {{ strpos(Route::currentRouteName(), 'evene.all') === 0 ? 'menu-item-active' : '' }}">
+                                        <a href="{{ route('event.all') }}" class="menu-link">
+                                            <i style="color:#5dade2 !important;" class="fal fa-album-collection"></i>
+                                            <span style="color:#5dade2 !important;" class="menu-text"> &nbsp; Events
+                                            </span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                    </li>
+                                    <li
+                                        class="menu-item {{ strpos(Route::currentRouteName(), 'developers') === 0 ? 'menu-item-active' : '' }}">
+                                        <a href="{{ route('developers') }}" class="menu-link">
+                                            {{-- <i class="fal fa-album-collection"></i> --}}
+                                            <i class="fad fa-user-secret" style="color:#5dade2 !important;"></i>
+                                            <span style="color:#5dade2 !important;" class="menu-text"> &nbsp; Developers
+                                            </span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item">
+                                        @if (Auth::check())
+                                            <a target="_blank" class="navi-link"
+                                                href="{{ asset('/manual/User_Manaual_YVMS.pdf') }}">
+                                                <span class="symbol symbol-20 mr-3">
+                                                    <i class="fa fa-download"></i>
+                                                </span>
+                                                User Manual Download
+                                            </a>
+                                        @endif
+                                    </li>
                                 </ul>
                                 <!--end::Header Nav-->
                             </div>
@@ -247,14 +256,17 @@
                         class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
                         <!--begin::Copyright-->
                         <div class="text-dark order-2 order-md-1">
-                            <span class="text-muted font-weight-bold mr-2">2020©</span>
+                            <span class="text-muted font-weight-bold mr-2"></span>
                             <a href="{{ route('home', []) }}" target="_blank"
-                                class="text-dark-75 text-hover-primary">Ministry Of Peace</a>
+                                class="text-dark-75 text-hover-primary">Copyright © {{ Carbon\Carbon::now()->year }}
+                                <b>Ministry of Peace</b>, Ethiopia Developed By <b>Jimma University</b>. All Rights
+                                Reserved.</a>
                         </div>
                         <!--end::Copyright-->
                         <!--begin::Nav-->
                         <div class="nav nav-dark">
-                            <a href="{{ route('aboutus', []) }}" target="_blank" class="nav-link pl-0 pr-5">About</a>
+                            <a href="{{ route('aboutus', []) }}" target="_blank"
+                                class="nav-link pl-0 pr-5">About</a>
                             <a href="{{ route('contactus', ['id' => 1]) }}" target="_blank"
                                 class="nav-link pl-0 pr-0">Contact</a>
                         </div>

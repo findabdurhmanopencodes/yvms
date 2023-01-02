@@ -100,6 +100,7 @@ Route::get('importWoreda', [WoredaController::class, 'import']);
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
+Route::view('developers', 'developers')->name('developers');
 
 Route::get('/', function () {
     return view('menu.home');
