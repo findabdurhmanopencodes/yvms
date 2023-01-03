@@ -192,7 +192,7 @@
                     <!--begin::User-->
                     <div class="mt-7">
                         <div class="symbol symbol-circle symbol-lg-75">
-                            <img src="{{ asset('user.png') }}" alt="image">
+                            <img src="{{ asset('img/ajaib_img.jpeg') }}" alt="image">
                         </div>
                         <div class="symbol symbol-lg-75 symbol-circle symbol-primary d-none">
                             <span class="font-size-h3 font-weight-boldest">Mr. Ajaib Mohammed</span>
@@ -210,13 +210,13 @@
                     <!--end::Label-->
                     <!--begin::Buttons-->
                     <div class="mt-9 mb-6">
-                        <a href="#" class="btn btn-md btn-icon btn-light-facebook btn-pill mx-2">
-                            <i class="socicon-facebook"></i>
+                        <a href="mailto:findajaib@gmail.com" class="btn btn-md btn-icon btn-light-google btn-pill mx-2">
+                            <i class="socicon-google"></i>
                         </a>
-                        <a href="#" class="btn btn-md btn-icon btn-light-twitter btn-pill mx-2">
+                        <a href="http://twitter.com/AjaibMohammed4" class="btn btn-md btn-icon btn-light-twitter btn-pill mx-2">
                             <i class="socicon-twitter"></i>
                         </a>
-                        <a href="#" class="btn btn-md btn-icon btn-light-linkedin btn-pill mx-2">
+                        <a href="https://www.linkedin.com/in/ajaib-mohammed-55b46a215" target="_blank" class="btn btn-md btn-icon btn-light-linkedin btn-pill mx-2">
                             <i class="socicon-linkedin"></i>
                         </a>
                     </div>
@@ -237,7 +237,7 @@
                     <!--begin::User-->
                     <div class="mt-7">
                         <div class="symbol symbol-circle symbol-lg-75">
-                            <img src="{{ asset('user.png') }}" alt="image">
+                            <img src="{{ asset('img/milki_img.jpg') }}" alt="image">
                         </div>
                         <div class="symbol symbol-lg-75 symbol-circle symbol-primary d-none">
                             <span class="font-size-h3 font-weight-boldest">Mr. Milki Seifu</span>
@@ -254,13 +254,13 @@
                     <!--end::Label-->
                     <!--begin::Buttons-->
                     <div class="mt-9 mb-6">
-                        <a href="#" class="btn btn-md btn-icon btn-light-facebook btn-pill mx-2">
-                            <i class="socicon-facebook"></i>
+                        <a href="mailto:milkyseifuban@gmail.com" class="btn btn-md btn-icon btn-light-google btn-pill mx-2">
+                            <i class="socicon-google"></i>
                         </a>
-                        <a href="#" class="btn btn-md btn-icon btn-light-twitter btn-pill mx-2">
+                        <a href="http://twitter.com/BentiMilky" class="btn btn-md btn-icon btn-light-twitter btn-pill mx-2">
                             <i class="socicon-twitter"></i>
                         </a>
-                        <a href="#" class="btn btn-md btn-icon btn-light-linkedin btn-pill mx-2">
+                        <a href="http://linkedin.com/in/milky-seifu-b3365420a" class="btn btn-md btn-icon btn-light-linkedin btn-pill mx-2">
                             <i class="socicon-linkedin"></i>
                         </a>
                     </div>
@@ -281,7 +281,7 @@
                     <!--begin::User-->
                     <div class="mt-7">
                         <div class="symbol symbol-circle symbol-lg-75">
-                            <img src="{{ asset('user.png') }}" alt="image">
+                            <img src="{{ asset('img/seid_img.jpg') }}" alt="image">
                         </div>
                         <div class="symbol symbol-lg-75 symbol-circle symbol-primary d-none">
                             <span class="font-size-h3 font-weight-boldest">Seid Mohammed</span>
@@ -299,13 +299,13 @@
                     <!--end::Label-->
                     <!--begin::Buttons-->
                     <div class="mt-9 mb-6">
-                        <a href="#" class="btn btn-md btn-icon btn-light-facebook btn-pill mx-2">
-                            <i class="socicon-facebook"></i>
+                        <a href="mailto:seidm9815@gmail.com" class="btn btn-md btn-icon btn-light-google btn-pill mx-2">
+                            <i class="socicon-google"></i>
                         </a>
-                        <a href="#" class="btn btn-md btn-icon btn-light-twitter btn-pill mx-2">
+                        <a href="#+251985192541" class="btn btn-md btn-icon btn-light-twitter btn-pill mx-2">
                             <i class="socicon-twitter"></i>
                         </a>
-                        <a href="#" class="btn btn-md btn-icon btn-light-linkedin btn-pill mx-2">
+                        <a href="https://www.linkedin.com/in/seid-mohammed-039949227/" class="btn btn-md btn-icon btn-light-linkedin btn-pill mx-2">
                             <i class="socicon-linkedin"></i>
                         </a>
                     </div>
