@@ -5,6 +5,9 @@ namespace App\Imports;
 use App\Constants;
 use App\Http\Controllers\WoredaController;
 use App\Models\ApprovedApplicant;
+use App\Models\Disablity;
+use App\Models\EducationalLevel;
+use App\Models\FeildOfStudy;
 use App\Models\Region;
 use App\Models\Status;
 use App\Models\TrainingPlacement;
@@ -35,21 +38,39 @@ class ApplicantImport implements ToCollection, WithStartRow
      */
     public function collection(Collection $rows)
     {
+        // dd($rows);
         foreach ($rows as $value) {
-            $gen = $value[5] ?? null;
-            $woreda = $value[6] ?? null;
+            // dump($value[7]);
+            if (count($value) > 12) {
+                if (!FeildOfStudy::where('name',$value[6])->first()) {
+                    if ($value[6]) {
+                        $feildOfStudy = FeildOfStudy::create(['name'=>$value[6]]);
+                    }
+                }else{
+                    $feildOfStudy = FeildOfStudy::where('name',$value[6])->first();
+                }
+                if (!Disablity::where('name',$value[12])->first()) {
+                    if ($value[12]) {
+                        $disability = Disablity::create(['name'=>$value[12]]);
+                    }
+                }else{
+                    $disability = Disablity::where('name',$value[12])->first();
+                }
+            }
+            $gen = $value[4] ?? null;
+            $woreda = $value[11] ?? null;
             $woreda_id = Woreda::where('name', $woreda)?->first()?->id;
             $gender = $gen == 'Male' ? 'M' : 'F';
 
-            $first_name = $value[0] ?? null;
-            $middle_name = $value[1] ?? null;
-            $last_name = $value[2] ?? null;
-            $email = $value[4] ?? null;
-            $dob = $value[7] ?? null;
-            $contact_name = $value[9] ?? null;
-            $contact_phone = $value[10] ?? null;
+            $first_name = $value[1] ?? null;
+            $middle_name = $value[2] ?? null;
+            $last_name = $value[3] ?? null;
+            $email = $value[14] ?? null;
+            $dob = $value[5] ?? null;
+            $contact_name = $value[15] ?? null;
+            $contact_phone = $value[16] ?? null;
             $gpa = $value[8] ?? null;
-            $phone = $value[3] ?? null;
+            $phone = $value[13] ?? null;
 
             if ($woreda_id) {
                 $user = new User();
@@ -75,6 +96,9 @@ class ApplicantImport implements ToCollection, WithStartRow
                 $volunteer->woreda_id = $woreda_id;
                 $volunteer->user_id = $user->id;
                 $volunteer->training_session_id = $this->trainingSession->id;
+                $volunteer->field_of_study_id  = $feildOfStudy->id;
+                $volunteer->educational_level = $edulcationLevel->id;
+                $volunteer->disablity_id = $disability->id;
                 $volunteer->save();
 
                 $status = new Status();
@@ -83,6 +107,7 @@ class ApplicantImport implements ToCollection, WithStartRow
                 $status->save();
             }
         }
+        // dd('dsfds');
     }
     /**
      * @return int
