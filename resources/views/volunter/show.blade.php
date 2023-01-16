@@ -515,7 +515,7 @@
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                @can('Volunteer.Screen',)
+                @can('Volunteer.verified.applicant',)
                     <form method="POST"
                         action="{{ route('session.applicant.screen', ['training_session' => Request::route('training_session'), 'volunteer' => $applicant->id]) }}">
                         @csrf
@@ -527,7 +527,6 @@
                             </button>
                         </div>
                         <div class="modal-body">
-
                             <div class="form-group mb-1">
                                 <label for="exampleTextarea">Rejection Reason</label>
                                 <textarea class="form-control" id="exampleTextarea" rows="3" name="rejection_reason"></textarea>
