@@ -223,9 +223,12 @@
                     <a class="btn btn-primary"
                         href="{{ route('verify.all', ['training_session' => Request::route('training_session')]) }}">Verify
                         All</a>
-                    <a class="btn btn-info"
+                        @hasRole(\App\Constants::SUPER_ADMIN)
+                        <a class="btn btn-info"
                         href="{{ route('resetVerify', ['training_session' => Request::route('training_session')]) }}">Reset
                         Verification </a>
+                        @endHasRole
+
                     @endif
                 </div>
                 <table class="table table-bordered">
