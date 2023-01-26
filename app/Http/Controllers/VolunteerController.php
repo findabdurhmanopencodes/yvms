@@ -19,6 +19,7 @@ use App\Models\FeildOfStudy;
 use App\Models\File;
 use App\Models\Qouta;
 use App\Models\Region;
+use App\Models\RegionIntake;
 use App\Models\Status;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingDocument;

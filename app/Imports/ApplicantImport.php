@@ -15,6 +15,7 @@ use App\Models\TraininingCenter;
 use App\Models\User;
 use App\Models\Volunteer;
 use App\Models\Woreda;
+use App\Models\Zone;
 use DateTime;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
@@ -38,82 +39,61 @@ class ApplicantImport implements ToCollection, WithStartRow
      */
     public function collection(Collection $rows)
     {
-        // dd($rows);
-        foreach ($rows as $value) {
-            // dump($value[7]);
-            if (count($value) > 12) {
-                if (!FeildOfStudy::where('name',$value[6])->first()) {
-                    if ($value[6]) {
-                        $feildOfStudy = FeildOfStudy::create(['name'=>$value[6]]);
-                    }
+        set_time_limit(2000);
+        foreach ($rows as $key => $row) {
+            $first_name = $row[1]??'UNKNOWN';
+            $middle_name = $row[2]??'UNKNOWN';
+            $last_name = $row[3]??'UNKNOWN';
+            $gender = $row[4] == 'Male' ? 'M' : 'F';
+            $dob = $row[5]??'UNKNOWN';
+            $field_of_study = $row[6]??'Other';
+            $educational_level = $row[7];
+            $gpa = $row[8]??'3';
+            $region = $row[9];
+            $zone = $row[10];
+            $woreda = $row[11]??'UNKNOWN';
+            $phone = $row[13]??'UNKNOWN';
+
+            $check_field = FeildOfStudy::where('name', $field_of_study)->first();
+            if (!$check_field) {
+                $field_id = FeildOfStudy::create(['name'=>$field_of_study]);
+                $field_of_study_id = $field_id->id;
+            }else{
+                $field_of_study_id = $check_field->id;
+            }
+
+            $check_region = Region::where('name', $region)->first();
+            if (!$check_region) {
+                $region_id = Region::create(['name'=>$region, 'code'=>substr($region, 0, 3), 'status'=>1]);
+                $zone_id = Zone::create(['name'=> $zone, 'code'=>substr($zone, 0, 3), 'region_id'=>$region_id->id, 'status'=>1]);
+                $woreda_id = Woreda::create(['name'=>$woreda, 'code'=>substr($woreda, 0, 3), 'zone_id'=>$zone_id->id, 'status'=>1]);
+            }else{
+                $check_zone = Zone::where('name', $zone)->where('region_id', $check_region->id)->first();
+                if (!$check_zone) {
+                    $zone_id = Zone::create(['name'=>$zone, 'code'=>substr($zone, 0, 3), 'region_id'=>$check_region->id, 'status'=>1]);
+                    $woreda_id = Woreda::create(['name'=>$woreda, 'code'=>substr($woreda, 0, 3), 'zone_id'=>$zone_id->id, 'status'=>1]);
                 }else{
-                    $feildOfStudy = FeildOfStudy::where('name',$value[6])->first();
-                }
-                if (!Disablity::where('name',$value[12])->first()) {
-                    if ($value[12]) {
-                        $disability = Disablity::create(['name'=>$value[12]]);
+                    $check_woreda = Woreda::where('name', $woreda)->where('zone_id', $check_zone->id)->first();
+                    if (!$check_woreda) {
+                        $woreda_id = Woreda::create(['name'=>$woreda, 'code'=>substr($woreda, 0, 3), 'zone_id'=>$check_zone->id, 'status'=>1]);
                     }
-                }else{
-                    $disability = Disablity::where('name',$value[12])->first();
                 }
             }
-            $gen = $value[4] ?? null;
-            $woreda = $value[11] ?? null;
-            $woreda_id = Woreda::where('name', $woreda)?->first()?->id;
-            $gender = $gen == 'Male' ? 'M' : 'F';
 
-            $first_name = $value[1] ?? null;
-            $middle_name = $value[2] ?? null;
-            $last_name = $value[3] ?? null;
-            $email = $value[14] ?? null;
-            $dob = $value[5] ?? null;
-            $contact_name = $value[15] ?? null;
-            $contact_phone = $value[16] ?? null;
-            $gpa = $value[8] ?? null;
-            $phone = $value[13] ?? null;
+            $password = Hash::make(substr($first_name, 0, 2).''.substr($middle_name, 0, 2).''.substr($last_name, 0, 2).''.$dob);
 
-            if ($woreda_id) {
-                $user = new User();
-                $user->first_name = $first_name;
-                $user->father_name = $middle_name;
-                $user->grand_father_name = $last_name;
-                $user->email = $email;
-                $user->dob = $dob;
-                $user->gender = $gender;
-                $user->save();
-                
-                $volunteer = new Volunteer();
-                $volunteer->first_name = $first_name;
-                $volunteer->father_name = $middle_name;
-                $volunteer->grand_father_name = $last_name;
-                $volunteer->email = $email;
-                $volunteer->dob = $dob;
-                $volunteer->gender = $gender;
-                $volunteer->phone = $phone;
-                $volunteer->contact_name = $contact_name;
-                $volunteer->contact_phone = $contact_phone;
-                $volunteer->gpa = $gpa;
-                $volunteer->woreda_id = $woreda_id;
-                $volunteer->user_id = $user->id;
-                $volunteer->training_session_id = $this->trainingSession->id;
-                $volunteer->field_of_study_id  = $feildOfStudy->id;
-                $volunteer->educational_level = $edulcationLevel->id;
-                $volunteer->disablity_id = $disability->id;
-                $volunteer->save();
+            $user_id = User::create(['first_name'=>$first_name, 'father_name'=>$middle_name, 'grand_father_name'=>$last_name, 'email'=>'unknown'.$key++.'@unknown.unknown', 'dob'=>$dob, 'gender'=>$gender, 'password'=>$password]);
 
-                $status = new Status();
-                $status->volunteer_id = $volunteer->id;
-                $status->acceptance_status = Constants::VOLUNTEER_STATUS_PENDING;
-                $status->save();
-            }
+            $volunteer_id = Volunteer::create(['first_name'=>$first_name, 'father_name'=>$middle_name, 'grand_father_name'=>$last_name, 'email'=>'unknown'.$key++.'@unknown.unknown', 'dob'=>$dob, 'gender'=>$gender, 'phone'=>$phone, 'contact_name'=>'UNKNOWN UNKNOWN', 'contact_phone'=>'UNKNOWN', 'gpa'=>$gpa, 'password'=>$password, 'educational_level'=>0, 'user_id'=>$user_id->id, 'training_session_id'=>$this->trainingSession->id, 'field_of_study_id'=>$field_of_study_id, 'woreda_id'=>$woreda_id->id]);
+
+            Status::create(['volunteer_id'=>$volunteer_id->id]);
         }
-        // dd('dsfds');
     }
     /**
      * @return int
      */
     public function startRow(): int
     {
-        return 2;
+        return 1;
     }
 }

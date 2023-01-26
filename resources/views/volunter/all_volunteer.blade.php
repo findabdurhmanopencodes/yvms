@@ -77,7 +77,7 @@
                         <div class="card-body">
                             <div class="form-group row">
                                 <div class="col-lg-6">
-                                    <label>Attendance File: </label>
+                                    <label>Volunteer File: </label>
                                     <input type="file" name="attendance" />
                                 </div>
                             </div>
