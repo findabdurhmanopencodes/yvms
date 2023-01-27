@@ -76,6 +76,8 @@ class ApplicantImport implements ToCollection, WithStartRow
                     $check_woreda = Woreda::where('name', $woreda)->where('zone_id', $check_zone->id)->first();
                     if (!$check_woreda) {
                         $woreda_id = Woreda::create(['name'=>$woreda, 'code'=>substr($woreda, 0, 3), 'zone_id'=>$check_zone->id, 'status'=>1]);
+                    }else{
+                        $woreda_id = $check_woreda;
                     }
                 }
             }
