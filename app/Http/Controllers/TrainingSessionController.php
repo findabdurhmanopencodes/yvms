@@ -716,6 +716,7 @@ class TrainingSessionController extends Controller
                         }
                     }
                 } else {
+                    dd($key);
                     return redirect()->back()->with('error', 'Check Your Woreda Quota');
                 }
             }
