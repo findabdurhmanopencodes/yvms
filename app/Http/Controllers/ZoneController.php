@@ -234,12 +234,11 @@ class ZoneController extends Controller
             return abort(403);
         }
         $today = Carbon::today();
+        dd($today);
         $curr_sess = TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
         $intake_exist = ZoneIntake::where('training_session_id', $trainingSession->id)->where('zone_id', $zone_id)->get();
         $region = Zone::where('id', $zone_id)->get()->first()->region;
         $zoneAllIntake = 0;
-        dump($curr_sess);
-        dd($intake_exist);
         foreach (Zone::where('status', 1)->get() as $key => $value) {
             // $zoneAllIntake
             $region_this = Zone::where('id', $value->id)->get()->first()->region;
