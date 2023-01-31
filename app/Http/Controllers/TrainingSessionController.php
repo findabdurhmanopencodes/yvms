@@ -716,8 +716,7 @@ class TrainingSessionController extends Controller
                         }
                     }
                 } else {
-                    
-                    return;
+                    continue;
                 }
             }
 
