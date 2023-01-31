@@ -716,7 +716,7 @@ class TrainingSessionController extends Controller
                         }
                     }
                 } else {
-                    continue;
+                    return redirect()->back()->with('error', 'Check Your Woreda Quota');
                 }
             }
 
@@ -736,7 +736,7 @@ class TrainingSessionController extends Controller
                         }
                     }
                 } else {
-                    continue;
+                    return redirect()->back()->with('error', 'Check Your Woreda Quota');
                 }
             }
 
