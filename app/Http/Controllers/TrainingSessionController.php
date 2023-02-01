@@ -750,8 +750,8 @@ class TrainingSessionController extends Controller
             $train_session = TrainingSession::where('id', $id)->get()[0]->quantity;
             $merge_arr = array_diff($arr, $accepted_arr);
 
-            dd(count($accepted_arr));
             if (count($accepted_arr) < $train_session) {
+                dd('aa');
                 foreach ($accepted_arr as $key => $acc) {
                     array_push($left_arr, $acc->woreda->zone->region->id);
                 }
@@ -809,6 +809,7 @@ class TrainingSessionController extends Controller
                     }
                 }
             }
+            dd('bb');
             $approved_applicants = ApprovedApplicant::where('training_session_id', $id)->delete();
 
             foreach ($accepted_arr as $key => $accepted) {
