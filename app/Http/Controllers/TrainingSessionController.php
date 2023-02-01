@@ -670,7 +670,7 @@ class TrainingSessionController extends Controller
         $sum = 0;
         $a = [];
         $status_table = Status::where('acceptance_status', 1)->orderBy('id', 'asc')->get();
-        dd($status_table);
+        // dd($status_table);
         if ($status_table) {
             foreach ($status_table as $key => $stat) {
                 array_push($arr, Volunteer::where('id', $stat->volunteer_id)->get()->first());
@@ -720,6 +720,7 @@ class TrainingSessionController extends Controller
                 }
             }
 
+            dd('dfdfdf');
             foreach ($grouped_array_female as $key => $group) {
                 $quota_woreda = Qouta::where('training_session_id', $id)->where('quotable_id', $key)->where('quotable_type', 'App\Models\Woreda')->get()->first();
                 if ($quota_woreda) {
