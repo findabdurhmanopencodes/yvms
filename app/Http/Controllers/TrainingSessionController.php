@@ -748,13 +748,13 @@ class TrainingSessionController extends Controller
             $group_zon = [];
 
             $train_session = TrainingSession::where('id', $id)->get()[0]->quantity;
-            dd($train_session);
             $merge_arr = array_diff($arr, $accepted_arr);
 
             if (count($accepted_arr) < $train_session) {
                 foreach ($accepted_arr as $key => $acc) {
                     array_push($left_arr, $acc->woreda->zone->region->id);
                 }
+                dd('sdfds');
 
                 foreach (array_count_values($left_arr) as $key_co => $count) {
                     $gr_reg = [];
