@@ -752,8 +752,9 @@ class TrainingSessionController extends Controller
 
             if (count($accepted_arr) < $train_session) {
                 foreach ($accepted_arr as $key => $acc) {
-                    array_push($left_arr, $acc?->woreda?->zone?->region?->id);
+                    array_push($left_arr, $acc->woreda->zone->region->id);
                 }
+                dd('dfdfd');
 
                 foreach (array_count_values($left_arr) as $key_co => $count) {
                     $gr_reg = [];
