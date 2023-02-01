@@ -772,7 +772,7 @@ class TrainingSessionController extends Controller
                             }
                         }
                     }
-                    dump($count_diff);
+                    // dump($count_diff);
                     sort($gr_reg);
                     $new_slice_arr = array_slice($gr_reg, 0, $count_diff);
                     array_push($group_reg, $new_slice_arr);
@@ -808,6 +808,7 @@ class TrainingSessionController extends Controller
                     }
                 }
             }
+            dd('sdfds');
             $approved_applicants = ApprovedApplicant::where('training_session_id', $id)->delete();
 
             foreach ($accepted_arr as $key => $accepted) {
