@@ -719,6 +719,7 @@ class TrainingSessionController extends Controller
                     return redirect()->back()->with('error', 'Check Your Woreda Quota');
                 }
             }
+            dd($accepted_arr);
 
             foreach ($grouped_array_female as $key => $group) {
                 $quota_woreda = Qouta::where('training_session_id', $id)->where('quotable_id', $key)->where('quotable_type', 'App\Models\Woreda')->get()->first();
