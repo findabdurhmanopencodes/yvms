@@ -664,7 +664,7 @@ class TrainingSessionController extends Controller
         if (!Auth::user()->can('TrainingSession.screen')) {
             return abort(403);
         }
-        set_time_limit(2000);
+        set_time_limit(1000);
         $arr = [];
         $accepted_arr = [];
         $sum = 0;
@@ -750,8 +750,6 @@ class TrainingSessionController extends Controller
             $train_session = TrainingSession::where('id', $id)->get()[0]->quantity;
             $merge_arr = array_diff($arr, $accepted_arr);
 
-            dump($accepted_arr);
-            dd($train_session);
             if (count($accepted_arr) < $train_session) {
                 foreach ($accepted_arr as $key => $acc) {
                     array_push($left_arr, $acc->woreda->zone->region->id);
