@@ -138,7 +138,7 @@ class TrainingPlacementController extends Controller
         // else
         //     $message = $output;
         $tp = new TrainingPlacementCommand();
-exit;
+
         // $tp->place($trainingSessionId);
         return redirect(route('session.placement.index', [$request->route('training_session')]))->with('message', 'Succefully Placed');
     }
