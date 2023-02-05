@@ -128,7 +128,7 @@ class TrainingPlacementController extends Controller
 
     public function place(Request $request,$trainingSessionId)
     {
-        set_time_limit(2000);
+        set_time_limit(7000);
         ini_set("memory_limit","100000M");
         // $output = shell_exec('php ../artisan training:place');
         // if (!$output)
