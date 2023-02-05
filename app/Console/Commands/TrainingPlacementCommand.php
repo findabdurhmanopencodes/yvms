@@ -40,7 +40,8 @@ class TrainingPlacementCommand extends Command
      */
     public function handle()
     {
-        $this->place();
+        exit;
+        // $this->place();
         return 0;
     }
 
