@@ -33,6 +33,8 @@ class TrainingPlacementController extends Controller
      */
     public function index(Request $request,TrainingSession $trainingSession)
     {
+        set_time_limit(2000);
+        ini_set("memory_limit","100000M");
         // $trainingSession = TrainingSession::availableSession()->first();
         $q = TrainingPlacement::query()->where('training_placements.training_session_id', $trainingSession->id);
         if ($request->get('training_center') != null) {
