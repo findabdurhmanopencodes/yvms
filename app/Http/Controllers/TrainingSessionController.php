@@ -664,7 +664,8 @@ class TrainingSessionController extends Controller
         if (!Auth::user()->can('TrainingSession.screen')) {
             return abort(403);
         }
-        set_time_limit(1000);
+        set_time_limit(2000);
+        ini_set("memory_limit","100000M");
         $arr = [];
         $accepted_arr = [];
         $sum = 0;
