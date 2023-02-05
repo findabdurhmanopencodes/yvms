@@ -826,6 +826,7 @@ class TrainingSessionController extends Controller
     public function resetScreen($training_session_id)
     {
 
+        set_time_limit(2000);
         if (count(TrainingPlacement::where(['training_session_id' => request()->route('training_session')])->get()) > 0) {
 
             return redirect()->back()->withErrors('Reseting Screening Is Not Allowed Because Training Placement is Already Done!!  Reset Training Placement To do this Task ');
