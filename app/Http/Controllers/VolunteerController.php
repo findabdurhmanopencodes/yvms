@@ -451,47 +451,6 @@ class VolunteerController extends Controller
     }
     public function volunteerAll(Request $request, $training_session)
     {
-        $tr_s = TrainingSession::find($training_session);
-        $all_data = count(Volunteer::all());
-        foreach (Region::all() as $key => $reg) {
-            $region_data = count(Volunteer::whereRelation('woreda', function ($query) use ($reg){
-                $query->whereRelation('zone', function ($query2) use ($reg){
-                    $query2->whereRelation('region', function ($query3) use ($reg){
-                        $query3->find($reg->id);
-                    });
-                });
-            })->get());
-            
-            $dat = $region_data/$all_data;
-            
-            $reg->update(['qoutaInpercent'=>$dat]);
-
-            $reg_q = $reg->qoutaInpercent * $all_data;
-            RegionIntake::create(['training_session_id' => $training_session, 'region_id' => $reg->id, 'intake' => $reg_q]);
-            
-            foreach ($reg->zones as $key => $value) {
-                $zone_data = count(Volunteer::whereRelation('woreda', function ($query) use ($value){
-                    $query->whereRelation('zone', function ($query2) use ($value){
-                        $query2->find($value->id);
-                    });
-                  })->get());
-                $zo_dat = $zone_data/$reg_q;
-    
-                $value->update(['qoutaInpercent'=>$zo_dat]);
-
-                $zone_q = $value->qoutaInpercent * $reg_q;
-                foreach ($value->woredas as $key => $wore) {
-                    $woreda_data = count(Volunteer::whereRelation('woreda', function ($query) use ($value){
-                        $query->find($value->id);
-                      })->get());
-
-                    $wor_dat = $woreda_data/$zone_q;
-        
-                    $wore->update(['qoutaInpercent'=>$wor_dat]);
-                }
-            }
-        }
-        dd('sfd');
         // $applicants = Volunteer::where('training_session_id', $training_session);
         $applicants = Volunteer::where('training_session_id', $training_session);
         $user = Auth::user();
