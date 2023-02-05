@@ -40,8 +40,8 @@ class TrainingPlacementCommand extends Command
      */
     public function handle()
     {
+        $this->stop();
         // $this->place();
-        exit;
         return 0;
     }
 
@@ -84,8 +84,6 @@ class TrainingPlacementCommand extends Command
 
     public function place($trainingSessionId)
     {
-        $this->stop();
-        dd('dfd');
         $activeSession = TrainingSession::find($trainingSessionId);
         $errorMessage = null;
 
