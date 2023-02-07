@@ -82,11 +82,12 @@ class ApplicantImport implements ToCollection, WithStartRow
                 }
             }
 
+            $email_key = count(Volunteer::all());
             $password = Hash::make(substr($first_name, 0, 2).''.substr($middle_name, 0, 2).''.substr($last_name, 0, 2).''.$dob);
 
-            $user_id = User::create(['first_name'=>$first_name, 'father_name'=>$middle_name, 'grand_father_name'=>$last_name, 'email'=>'unknown'.$key++.'@unknown.unknown', 'dob'=>$dob, 'gender'=>$gender, 'password'=>$password]);
+            $user_id = User::create(['first_name'=>$first_name, 'father_name'=>$middle_name, 'grand_father_name'=>$last_name, 'email'=>'unknown'.$email_key++.'@unknown.unknown', 'dob'=>$dob, 'gender'=>$gender, 'password'=>$password]);
 
-            $volunteer_id = Volunteer::create(['first_name'=>$first_name, 'father_name'=>$middle_name, 'grand_father_name'=>$last_name, 'email'=>'unknown'.$key++.'@unknown.unknown', 'dob'=>$dob, 'gender'=>$gender, 'phone'=>$phone, 'contact_name'=>'UNKNOWN UNKNOWN', 'contact_phone'=>'UNKNOWN', 'gpa'=>$gpa, 'password'=>$password, 'educational_level'=>0, 'user_id'=>$user_id->id, 'training_session_id'=>$this->trainingSession->id, 'field_of_study_id'=>$field_of_study_id, 'woreda_id'=>$woreda_id->id]);
+            $volunteer_id = Volunteer::create(['first_name'=>$first_name, 'father_name'=>$middle_name, 'grand_father_name'=>$last_name, 'email'=>'unknown'.$email_key++.'@unknown.unknown', 'dob'=>$dob, 'gender'=>$gender, 'phone'=>$phone, 'contact_name'=>'UNKNOWN UNKNOWN', 'contact_phone'=>'UNKNOWN', 'gpa'=>$gpa, 'password'=>$password, 'educational_level'=>0, 'user_id'=>$user_id->id, 'training_session_id'=>$this->trainingSession->id, 'field_of_study_id'=>$field_of_study_id, 'woreda_id'=>$woreda_id->id]);
 
             Status::create(['volunteer_id'=>$volunteer_id->id]);
         }
