@@ -523,11 +523,20 @@ class VolunteerController extends Controller
         return view('volunter.detail', ['volunteer' => $volunteer]);
     }
     public function exportVolunteers(TrainingSession $trainingSession){
-        $all_volunteers = DB::table('volunteers')->where('training_session_id', $trainingSession->id)->select(['id_number', 'first_name', 'father_name', 'grand_father_name', 'phone', 'email', 'gender', 'dob', 'gpa', 'contact_name', 'contact_phone'])->get();
+        $all_volunteers = DB::table('volunteers as v')
+        ->join('woredas as w', 'v.woreda_id', '=', 'w.id')
+        ->join('zones as z', 'w.zone_id', '=', 'z.id')
+        ->join('regions as r', 'z.region_id', '=', 'r.id')
+        ->leftJoin('approved_applicants', 'v.id', '=', 'approved_applicants.volunteer_id')
+        ->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')
+        ->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')
+        ->leftJoin('trainining_centers as tc', 'tc.id', '=', 'training_center_capacities.trainining_center_id')->where('v.training_session_id', $trainingSession->id)->select(['v.id_number', 'v.first_name', 'v.father_name', 'v.grand_father_name', 'v.phone', 'v.gender', 'r.name as region_name', 'z.name as zone_name','w.name as woreda_name', 'tc.name as center_name'])->get();
+
+        // dd($all_volunteers[0]);
 
         $woredas = Woreda::all()->pluck('name');
 
-        return Excel::download(new ApplicantExport($woredas,[], ['First Name', 'Father Name', 'Grand Father Name', 'Phone Number', 'E-mail', 'Gender', 'Woreda', 'Date of Birth', 'GPA', 'Contact Name', 'Contact Phone']), 'MopYVMS.xlsx');
+        return Excel::download(new ApplicantExport($woredas,$all_volunteers, ['ID Number','First Name', 'Father Name', 'Grand Father Name', 'Phone Number', 'Gender', 'Region','Zone','Woreda', 'Training Center']), 'MopYVMS.xlsx');
 
     }
     public function importVolunteers(Request $request, TrainingSession $trainingSession){
