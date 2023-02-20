@@ -534,9 +534,9 @@ class VolunteerController extends Controller
 
         // dd($all_volunteers[0]);
 
-        $woredas = Woreda::all()->pluck('name');
+        // $woredas = Woreda::all()->pluck('name');
 
-        return Excel::download(new ApplicantExport($woredas,$all_volunteers, ['ID Number','First Name', 'Father Name', 'Grand Father Name', 'Phone Number', 'Gender', 'Region','Zone','Woreda', 'Training Center']), 'MopYVMS.xlsx');
+        return Excel::download(new ApplicantExport($all_volunteers, ['ID Number','First Name', 'Father Name', 'Grand Father Name', 'Phone Number', 'Gender', 'Region','Zone','Woreda', 'Training Center']), 'MopYVMS.xlsx');
 
     }
     public function importVolunteers(Request $request, TrainingSession $trainingSession){
