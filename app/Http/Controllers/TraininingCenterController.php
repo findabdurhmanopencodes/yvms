@@ -11,6 +11,7 @@ use App\Imports\UsersImport;
 use App\Models\ApprovedApplicant;
 use App\Models\BarQRVolunteer;
 use App\Models\CindicationRoom;
+use App\Models\FeildOfStudy;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingSession;
 use App\Models\Zone;
@@ -270,7 +271,8 @@ class TraininingCenterController extends Controller
         if (!Auth::user()->can('deployment.checkIn')) {
             return abort(403);
         }
-        return view('training_center.check_in.check_in');
+        $field_of_studies = FeildOfStudy::all();
+        return view('training_center.check_in.check_in', compact('field_of_studies'));
     }
     public function result(Request $request)
     {
@@ -326,7 +328,7 @@ class TraininingCenterController extends Controller
     public function checkIn($training_session, $id)
     {
         Volunteer::find($id)->status->update(['acceptance_status' => 5]);
-        return redirect()->route('session.TrainingCenter.CheckIn', ['training_session' => $training_session]);
+        return redirect()->route('session.TrainingCenter.CheckIn', ['training_session' => $training_session])->with('volunteer checked in');
     }
     public function checkInAll(TrainingSession $trainingSession)
     {
@@ -625,5 +627,25 @@ class TraininingCenterController extends Controller
             BarQRVolunteer::create(['volunteer_id' => $volunteer_id, 'bar_code' => $request->barSrc, 'qr_code' => $request->qrSrc]);
         }
         return response()->json(array('success' => 'success'), 200);
+    }
+
+    public function centerUpdateProfile(Request $request, TrainingSession $trainingSession)
+    {
+        // dd($request);
+        $volunteer = Volunteer::find($request->get('volunteer_id'));
+        $first_name = $request->get('first_name');
+        $middle_name = $request->get('middle_name');
+        $last_name = $request->get('last_name');
+        $phone = $request->get('phone');
+        $email = $request->get('email');
+        $gender = $request->get('gender');
+        $education_level = $request->get('education_level');
+        $gpa = $request->get('gpa');
+        $Field_of_study = $request->get('Field_of_study');
+
+        $volunteer->update(['first_name'=>$first_name, 'father_name'=>$middle_name, 'grand_father_name'=>$last_name, 'phone'=>$phone, 'email'=>$email, 'gender'=>$gender, 'educational_level'=>$education_level, 'field_of_study_id'=>$Field_of_study]);
+
+        $volunteer->status->update(['acceptance_status' => 5]);
+        return redirect()->route('session.TrainingCenter.CheckIn', ['training_session' => $trainingSession->id])->with('volunteer successfully updated and checked in');
     }
 }

@@ -269,6 +269,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' =
     Route::get('{woreda_id}/woreda/capacity/edit', [WoredaController::class, 'woredaIntakeEdit'])->name('woreda.intake_edit');
     Route::put('{woreda_id}/woreda/capacity/update', [WoredaController::class, 'woredaIntakeUpdate'])->name('woreda_intake.update');
     Route::post('/download/idPDF', [IdGenerateController::class, 'pdfDownload'])->name('id.download');
+    Route::post('/center-update-profile', [TraininingCenterController::class, 'centerUpdateProfile'])->name('center.update.profile');
 });
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
 Route::middleware(['auth'])->group(function () {

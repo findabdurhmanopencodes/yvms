@@ -126,7 +126,15 @@
         <h5 id="phone">Phone</h5>
         <h5 id="region">Region</h5>
         <h5 id="center">Training Center</h5>
+        <div id="update_pro"></div>
         </div>
+
+        <form action="{{ route('session.center.update.profile', ['training_session'=> Request::route('training_session')]) }}" method="post">
+            @csrf
+            <div id="update_pro_form">
+                
+            </div>
+        </form>
     </div>
 @endsection
 
@@ -156,6 +164,10 @@
     <script src="{{ asset('js/qrcode.min.js') }}"></script>
     <script src="{{ asset('js/JsBarcode.all.min.js') }}"></script>
     <script>
+        var field_of_studies = {!! json_encode($field_of_studies) !!};
+        function myFunction(field_of_study) {
+           return '<option value="'+field_of_study.id+'">'+field_of_study.name+'</option>';
+        }
         function fetch_customer_data(query = '') {
             $.ajax({
                 url: 'result/',
@@ -224,19 +236,100 @@
                                 // alert(data.success);
                             }
                         })
-
                         $("#name").html('Name:' + data.data.first_name + data.data.father_name);
                         $("#phone").html('Phone:' + data.data.phone);
                         $("#region").html('Region:' + data.data.woreda.zone.region.name);
                         // $("#center").html('Training Center:' + data.data.placment().name);
                         $("#profile").attr("src", data.data.profilePhoto);
-                        $("#check").html('<h3><a class="btn btn-primary" href='+'/{{ Request::route('training_session') }}/check-in/action/' + data.data.id + '><i class="fa fa-check"> Check-In</a></h3>');
-
+                        $("#check").html('<h3><a class="btn btn-primary" href='+'/{{ Request::route('training_session') }}/check-in/action/' + data.data.id + '><i class="fa fa-check"> Check-In</a></h3> ');
+                        $("#update_pro").html('<a href="#" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal" data-username='+data.data.first_name+'>\
+                        <span class="svg-icon svg-icon-md">\
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->\
+                            <i class="fal fa-plus"></i>\
+                            <!--end::Svg Icon-->\
+                    </span>\
+                    Update Volunteer Pofile</a>')
+                        $('#update_pro_form').html('<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+                            <div class="modal-dialog modal-lg"  role="document">\
+                                <div class="modal-content">\
+                                    <div class="modal-header">\
+                                        <h5 class="modal-title" id="exampleModalLabel">Update Volunteer Profile</h5>\
+                                        <button type="button" class="close" data-dismiss="modal" -label="Close">\
+                                            <i aria-hidden="true" class="ki ki-close"></i>\
+                                        </button>\
+                                    </div>\
+                                    <div class="modal-body">\
+                                        <div class="card-body">\
+                                            <input type="hidden" class="form-control" name="volunteer_id" value="'+data.data.id+'"/>\
+                                            <div class="card-body">\
+                                                <div class="form-group row">\
+                                                    <div class="col-lg-4">\
+                                                        <label>First name:</label>\
+                                                        <input type="text" class="form-control" name="first_name" value="'+data.data.first_name+'" required/>\
+                                                    </div>\
+                                                    <div class="col-lg-4">\
+                                                        <label>Middle name:</label>\
+                                                        <input type="text" class="form-control" name="middle_name" value="'+data.data.father_name+'" required/>\
+                                                    </div>\
+                                                    <div class="col-lg-4">\
+                                                        <label>Last name:</label>\
+                                                        <input type="text" class="form-control" name="last_name" value="'+data.data.grand_father_name+'" required/>\
+                                                    </div>\
+                                                </div>\
+                                                <div class="form-group row">\
+                                                    <div class="col-lg-6">\
+                                                        <label>Phone number:</label>\
+                                                        <input type="text" class="form-control" name="phone" value="'+data.data.phone+'"/>\
+                                                    </div>\
+                                                    <div class="col-lg-6">\
+                                                        <label>E-mail:</label>\
+                                                        <input type="email" class="form-control" name="email" value="'+data.data.email+'" required/>\
+                                                    </div>\
+                                                </div>\
+                                                <div class="form-group row">\
+                                                    <div class="col-lg-4">\
+                                                        <label>E-mail:</label>\
+                                                        <select name="gender" class="form-control" required>\
+                                                            <option value="">select gender</option>\
+                                                            <option value="M">Male</option>\
+                                                            <option value="F">Female</option>\
+                                                        </select>\
+                                                    </div>\
+                                                    <div class="col-lg-4">\
+                                                        <label>E-mail:</label>\
+                                                        <select name="education_level" class="form-control" required>\
+                                                            <option value="">Select Educational Level</option>\
+                                                            <option value="0">BSc</option>\
+                                                            <option value="1">MSc</option>\
+                                                            <option value="2">Phd</option>\
+                                                        </select>\
+                                                    </div>\
+                                                    <div class="col-lg-4">\
+                                                        <label>Gpa:</label>\
+                                                        <input type="text" class="form-control" name="gpa" value="'+data.data.gpa+'" required/>\
+                                                    </div>\
+                                                </div>\
+                                                <div class="form-group row">\
+                                                    <div class="col-lg-4">\
+                                                        <label>E-mail:</label>\
+                                                        <select name="Field of study" class="form-control" required>\
+                                                            <option value="">Select field of study</option>\
+                                                            '+field_of_studies.map(myFunction)+'\
+                                                        </select>\
+                                                    </div>\
+                                                </div>\
+                                            </div>\
+                                        </div>\
+                                    </div>\
+                                    <div class="modal-footer">\
+                                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>\
+                                        <button type="submit" class="btn btn-primary font-weight-bold">Update &amp; Checkin</button>\
+                                    </div>\
+                                </div>\
+                            </div>\
+                        </div>')
                     }
                 }
-
-
-
             })
         }
         $(document).ready(function() {
@@ -256,6 +349,16 @@
                     }
                 }
             });
+        });
+
+        $('#exampleModal').on('show', function(e) {
+            var link     = e.relatedTarget(),
+                modal    = $(this),
+                data = link.data("username")
+
+                alert(data);
+                // modal.find("#first_name").val(data);
+                // modal.find("#username").val(username);
         });
     </script>
 @endpush
