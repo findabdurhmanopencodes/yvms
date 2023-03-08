@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Andegna\DateTimeFactory;
 use App\Constants;
 use App\Exports\UsersExport;
 use App\Models\TraininingCenter;
@@ -28,8 +29,10 @@ use App\Models\UserAttendance;
 use App\Models\Volunteer;
 use App\Models\Woreda;
 use App\Models\WoredaIntake;
+use Carbon\Carbon;
 use Database\Seeders\PermissionSeeder;
 use Database\Seeders\UserAttendanceSeeder;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -262,19 +265,59 @@ class TraininingCenterController extends Controller
         // dd($checker_id);
         $user = User::find($checker_id);
 
-
         $user->trainingCheckerOf()->dissociate();
         $user->save();
         return redirect()->back();
     }
-    public function checkInView()
+    public function checkInView(TrainingSession $trainingSession, Request $request)
     {
-        if (!Auth::user()->can('deployment.checkIn')) {
+        if (!Auth::user()->can('checker')) {
+            return abort(403);
+        }
+        $permission = Permission::findOrCreate('checker');
+        $trainingBasedPermission = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', Auth::user()->id)->where('permission_id', $permission->id)->first();
+        if (Auth::user()->hasRole('super-admin')) {
+            $volunteers = DB::table('volunteers')
+                ->join('statuses', 'statuses.volunteer_id', '=', 'volunteers.id')
+                ->where('volunteers.training_session_id', $trainingSession->id)
+                ->where('statuses.acceptance_status', '>=', Constants::VOLUNTEER_STATUS_CHECKEDIN);
+        }elseif($trainingBasedPermission){
+            $volunteers = DB::table('volunteers')
+                ->join('statuses', 'statuses.volunteer_id', '=', 'volunteers.id')
+                ->join('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')
+                ->join('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')
+                ->join('training_center_capacities', 'training_center_capacities.id', '=', 'training_placements.training_center_capacity_id')
+                ->join('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
+                ->where('trainining_centers.id', $trainingBasedPermission->traininingCenter->id)
+                ->where('volunteers.training_session_id', $trainingSession->id)
+                ->where('statuses.acceptance_status', '>=', Constants::VOLUNTEER_STATUS_CHECKEDIN);
+        }else{
             return abort(403);
         }
         $field_of_studies = FeildOfStudy::all();
         $educational_levels = EducationalLevel::$educationalLevel;
-        return view('training_center.check_in.check_in', compact('field_of_studies', 'educational_levels'));
+
+        if ($request->has('filter')) {
+            $id_number = $request->get('id_number');
+            $gender =$request->get('gender');
+            $checkedin_date = $request->get('checkedin_date');
+            if (!empty($id_number)) {
+                $volunteers->where('volunteers.id_number', $id_number);
+            }
+            if (!empty($gender)) {
+                $volunteers->where('volunteers.gender', $gender);
+            }
+            if (!empty($checkedin_date)) {
+                $checkedin_date_check = DateTime::createFromFormat('d/m/Y',$checkedin_date);
+                $checkedin_date_gregorian = DateTimeFactory::of($checkedin_date_check->format('Y'), $checkedin_date_check->format('m'), $checkedin_date_check->format('d'))->toGregorian();
+
+                $volunteers->where('statuses.updated_at', '<=',$checkedin_date_gregorian->format('Y-m-d 23:59:59'))->where('statuses.updated_at', '>=',$checkedin_date_gregorian->format('Y-m-d 00:00:00'));
+            }
+        }
+
+        $checkeInVolunteers = $volunteers->paginate(10);
+
+        return view('training_center.check_in.check_in', compact('field_of_studies', 'educational_levels', 'checkeInVolunteers'));
     }
     public function result(Request $request)
     {

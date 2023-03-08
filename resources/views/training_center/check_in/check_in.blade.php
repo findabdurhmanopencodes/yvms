@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('title','Chek-in')
+@push('css')
+    <link rel="stylesheet" type="text/css" href="{{ asset('calendar/css/redmond.calendars.picker.css') }}">
+@endpush
 {{-- @push('css')
     <style>
         #myTable {
@@ -136,9 +139,93 @@
             </div>
         </form>
     </div>
+    <div class="card">
+        <div class="card-header">
+            <h2>Check-In Volunteers ({{ $checkeInVolunteers->total() }})</h2>
+        </div>
+        <div class="card-body mb-0 pb-0">
+            <div class="accordion accordion-solid accordion-toggle-plus " id="accordionExample6">
+                <div class="card ">
+                    <div id="headingThree6" class="card-header text-white" style="background-color: rgba(15, 69, 105, 0.6);">
+                        <div class="card-title collapsed text-white" data-toggle="collapse" data-target="#collapseThree6"
+                            style="background-color: rgba(15, 69, 105, 0.6);">
+                            <i class="flaticon2-search fa-2x text-white"></i> Filter Applicants
+                        </div>
+                    </div>
+                    <div id="collapseThree6" class="collapse" data-parent="#accordionExample6">
+                        <div class="card-body">
+                            <form action="{{ route('session.TrainingCenter.CheckIn', ['training_session'=>Request::route('training_session')]) }}" method="GET">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="my-3">ID number:</label>
+                                        <input type="text" name="id_number" class="form-control">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="my-3">Gender:</label>
+                                        <select name="gender" class="form-control">
+                                            <option value="">select gender</option>
+                                            <option value="M">Male</option>
+                                            <option value="F">Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="my-3">Checked In Date:</label>
+                                        <input type="text" id="checkedin_date" class="form-control" name="checkedin_date" autocomplete="off" />
+                                    </div>
+                                <div>
+                                <button type="submit" class="btn btn-primary  mx-4 my-4" name="filter" value="filter">Filter</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-bordered ">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Full name</th>
+						<th>ID number</th>
+						<th>Gender</th>
+					</tr>
+				</thead>
+				<tbody>
+					@forelse ($checkeInVolunteers as $key => $checkeInVolunteer)
+                        <tr>
+                            <td>{{ $key+1 }}</td>
+                            <td>
+                                {{ $checkeInVolunteer->first_name }} {{ $checkeInVolunteer->father_name }} {{ $checkeInVolunteer->grand_father_name }} 
+                            </td>
+                            <td>
+                                {{ $checkeInVolunteer->id_number }}
+                            </td>
+                            <td>
+                                {{ $checkeInVolunteer->gender == 'M' ? 'Male' : 'Female' }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4">no records found</td>
+                        </tr>
+                    @endforelse
+				</tbody>
+			</table>
+			<div class="navigation">
+                {{ $checkeInVolunteers->links() }}
+			</div>
+        </div>
+    </div>
 @endsection
 
 @push('js')
+    <script src="{{ asset('calendar/js/jquery.plugin.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.plus.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.picker.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.ethiopian.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.ethiopian-am.js') }}"></script>
+    <script src="{{ asset('calendar/js/jquery.calendars.picker-am.js') }}"></script>
     {{-- <script>
         $(document).ready(function({
             function loadVolunteers(query = '') {
@@ -362,5 +449,12 @@
                 // modal.find("#first_name").val(data);
                 // modal.find("#username").val(username);
         });
+
+        $(function() {
+            var calendar = $.calendars.instance('ethiopian', 'am');
+            $('#checkedin_date').calendarsPicker({
+                calendar: calendar
+            });
+        })
     </script>
 @endpush
