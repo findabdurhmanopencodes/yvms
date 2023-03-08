@@ -165,8 +165,12 @@
     <script src="{{ asset('js/JsBarcode.all.min.js') }}"></script>
     <script>
         var field_of_studies = {!! json_encode($field_of_studies) !!};
+        var educational_levels = {!! json_encode($educational_levels) !!};
         function myFunction(field_of_study) {
            return '<option value="'+field_of_study.id+'">'+field_of_study.name+'</option>';
+        }
+        function myEducationLevel(educational_level) {
+           return '<option value="'+educational_level+'">'+educational_level+'</option>';
         }
         function fetch_customer_data(query = '') {
             $.ajax({
@@ -299,9 +303,7 @@
                                                         <label>E-mail:</label>\
                                                         <select name="education_level" class="form-control" required>\
                                                             <option value="">Select Educational Level</option>\
-                                                            <option value="0">BSc</option>\
-                                                            <option value="1">MSc</option>\
-                                                            <option value="2">Phd</option>\
+                                                            '+educational_levels.map(myEducationLevel)+'\
                                                         </select>\
                                                     </div>\
                                                     <div class="col-lg-4">\

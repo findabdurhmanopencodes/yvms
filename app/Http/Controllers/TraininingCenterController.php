@@ -11,6 +11,7 @@ use App\Imports\UsersImport;
 use App\Models\ApprovedApplicant;
 use App\Models\BarQRVolunteer;
 use App\Models\CindicationRoom;
+use App\Models\EducationalLevel;
 use App\Models\FeildOfStudy;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingSession;
@@ -272,7 +273,8 @@ class TraininingCenterController extends Controller
             return abort(403);
         }
         $field_of_studies = FeildOfStudy::all();
-        return view('training_center.check_in.check_in', compact('field_of_studies'));
+        $educational_levels = EducationalLevel::$educationalLevel;
+        return view('training_center.check_in.check_in', compact('field_of_studies', 'educational_levels'));
     }
     public function result(Request $request)
     {
@@ -639,7 +641,7 @@ class TraininingCenterController extends Controller
         $phone = $request->get('phone');
         $email = $request->get('email');
         $gender = $request->get('gender');
-        $education_level = $request->get('education_level');
+        $education_level = array_search($request->get('education_level'), EducationalLevel::$educationalLevel);
         $gpa = $request->get('gpa');
         $Field_of_study = $request->get('Field_of_study');
 
