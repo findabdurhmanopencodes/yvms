@@ -44,15 +44,15 @@ class CenterVolunteer implements FromCollection ,WithHeadings,WithEvents
        return [
            AfterSheet::class => function(AfterSheet $event) {
 
-               $event->sheet->getDelegate()->getColumnDimension('A')->setWidth(35);
-               $event->sheet->getDelegate()->getColumnDimension('B')->setWidth(35);
-               $event->sheet->getDelegate()->getColumnDimension('C')->setWidth(35);
-               $event->sheet->getDelegate()->getColumnDimension('D')->setWidth(35);
-               $event->sheet->getDelegate()->getColumnDimension('E')->setWidth(35);
-               $event->sheet->getDelegate()->getColumnDimension('F')->setWidth(35);
-               $event->sheet->getDelegate()->getColumnDimension('G')->setWidth(35);
-               $event->sheet->getDelegate()->getColumnDimension('H')->setWidth(35);
-               $event->sheet->getDelegate()->getColumnDimension('I')->setWidth(35);
+               $event->sheet->getDelegate()->getColumnDimension('A')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('B')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('C')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('D')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('E')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('F')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('G')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('H')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('I')->setWidth(20);
                $event->sheet->getProtection()->setPassword('password');
                $event->sheet->getProtection()->setSheet(true);
                $event->sheet->getStyle("E1:E".count($this->data)+1)->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
