@@ -998,7 +998,6 @@ class TrainingSessionController extends Controller
 
     public function trainingCenterShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
-
         $permission = Permission::findOrCreate('centerCooridnator');
         if(!Auth::user()->hasRole(Constants::SUPER_ADMIN)){
             $centers = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', Auth::user()->id)->where('permission_id', $permission->id)->where('trainining_center_id', $trainingCenter->id)->count();
