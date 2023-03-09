@@ -432,7 +432,7 @@ class TraininingCenterController extends Controller
             ->count();
 
         if (Auth::user()->can('TraininingCenter.giveResourceDetail')) {
-            if ($trainingCenterOfAuthUserId == $training_center_id) {
+            if ($trainingCenterOfAuthUserId == $training_center_id || Auth()->user()->hasRole('super-admin')) {
                 if ($vol > 0) {
                     $training_center = TraininingCenter::with('resources')->find($training_center_id);
                     return view('training_center.assign_resource_voluteer', ['training_center' => $training_center, 'volunteer' => Volunteer::find($volunter)]);
