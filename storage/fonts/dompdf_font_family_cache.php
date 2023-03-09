@@ -86,7 +86,7 @@ return array (
     'bold' => $fontDir . '/poppins_bold_8fe618268f56b4b8f1e70e87a9e99fc0',
   ),
   'ethiopian' => array(
-    'normal' => $fontDir . '/ethiopian_normal_f147aabff768e498965a871615e78644',
+    'normal' => $fontDir . '/ethiopian_normal_6506e044df23ed26ba03183d616553e4',
   ),
   'ethiopian12' => array(
     'normal' => $fontDir . '/ethiopian12_normal_e884b6c3f344f8ccf46067bf5b307504',

@@ -136,7 +136,7 @@
             @if ($key%8 !== 0 || $key == 0)
                 <div style="width: 201.6px; height: 326.4px; background-size: cover; background-image: url('img/mopfrontdes.png'); float: left; margin-right: 30px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: -30px;">
                     <div style="position: relative; left: 54px; top: 120px;">
-                        @if ($val->picture()->name)
+                        @if ($val->picture())
                             <img src="{{ public_path('/storage/training session/'.$session_id.'/profile pictures/'.$val->picture()->name) }}" style="width: 91px; height: 89.7px; border-radius: 50%;">
                         @else
                             <img src="img/profile_empty.jpg" alt="" style="width: 91px; height: 89.7px; border-radius: 50%;">
