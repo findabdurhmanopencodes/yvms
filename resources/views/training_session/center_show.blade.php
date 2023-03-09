@@ -82,15 +82,17 @@
                                                 <span class="navi-text">Export</span>
                                             </a>
                                         </li>
-                                        <li class="navi-item">
-                                            <a href="{{ route('session.center.volunteers.export', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
-                                                class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="fa fa-file-export"></i>
-                                                </span>
-                                                <span class="navi-text">Export Placed Volunteers</span>
-                                            </a>
-                                        </li>
+                                        @can('placedvolunteer.export')
+                                            <li class="navi-item">
+                                                <a href="{{ route('session.center.volunteers.export', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+                                                    class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="fa fa-file-export"></i>
+                                                    </span>
+                                                    <span class="navi-text">Export Placed Volunteers</span>
+                                                </a>
+                                            </li>
+                                        @endcan
                                     </ul>
                                     <!--end::Navigation-->
                                 </div>

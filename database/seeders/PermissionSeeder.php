@@ -256,6 +256,7 @@ class PermissionSeeder extends Seeder
         Permission::findOrCreate('transport.tarif');
         Permission::findOrCreate('translation.index');
         Permission::findOrCreate('assigned.trainner');
+        Permission::findOrCreate('placedvolunteer.export');
 
     }
     public function ajaib()
