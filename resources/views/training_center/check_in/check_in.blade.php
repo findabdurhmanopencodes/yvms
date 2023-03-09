@@ -379,7 +379,7 @@
                                                 </div>\
                                                 <div class="form-group row">\
                                                     <div class="col-lg-4">\
-                                                        <label>E-mail:</label>\
+                                                        <label>Gender:</label>\
                                                         <select name="gender" class="form-control" required>\
                                                             <option value="">select gender</option>\
                                                             <option value="M">Male</option>\
@@ -387,7 +387,7 @@
                                                         </select>\
                                                     </div>\
                                                     <div class="col-lg-4">\
-                                                        <label>E-mail:</label>\
+                                                        <label>Educational level:</label>\
                                                         <select name="education_level" class="form-control" required>\
                                                             <option value="">Select Educational Level</option>\
                                                             '+educational_levels.map(myEducationLevel)+'\
@@ -400,7 +400,7 @@
                                                 </div>\
                                                 <div class="form-group row">\
                                                     <div class="col-lg-4">\
-                                                        <label>E-mail:</label>\
+                                                        <label>Field of study:</label>\
                                                         <select name="Field of study" class="form-control" required>\
                                                             <option value="">Select field of study</option>\
                                                             '+field_of_studies.map(myFunction)+'\
