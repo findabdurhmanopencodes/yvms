@@ -332,7 +332,7 @@
                         $("#region").html('Region:' + data.data.woreda.zone.region.name);
                         // $("#center").html('Training Center:' + data.data.placment().name);
                         $("#profile").attr("src", data.data.profilePhoto);
-                        $("#check").html('<h3><a class="btn btn-primary" href='+'/{{ Request::route('training_session') }}/check-in/action/' + data.data.id + '><i class="fa fa-check"> Check-In</a></h3> ');
+                        $("#check").html('<h3><a class="btn btn-primary" href='+'/{{ Request::route('training_session')->id }}/check-in/action/' + data.data.id + '><i class="fa fa-check"> Check-In</a></h3> ');
                         $("#update_pro").html('<a href="#" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal" data-username='+data.data.first_name+'>\
                         <span class="svg-icon svg-icon-md">\
                             <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->\
