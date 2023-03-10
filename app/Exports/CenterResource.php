@@ -49,8 +49,8 @@ class CenterResource implements FromCollection ,WithHeadings,WithEvents
                $event->sheet->getDelegate()->getColumnDimension('E')->setWidth(20);
                $event->sheet->getDelegate()->getColumnDimension('F')->setWidth(20);
                $event->sheet->getDelegate()->getColumnDimension('G')->setWidth(30);
-               $event->sheet->getDelegate()->getColumnDimension('H')->setWidth(30);
-               $event->sheet->getDelegate()->getColumnDimension('I')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('H')->setWidth(50);
+               $event->sheet->getDelegate()->getColumnDimension('I')->setWidth(15);
             //    $event->sheet->getProtection()->setPassword('password');
             //    $event->sheet->getProtection()->setSheet(true);
             //    $event->sheet->getStyle("E1:E".count($this->data)+1)->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
