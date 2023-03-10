@@ -229,6 +229,7 @@ class IdGenerateController extends Controller
     public function pdfDownload(Request $request, TrainingSession $trainingSession, VolunteerDeployment $volunteerDeployment)
     {
         set_time_limit(2000);
+        ini_set('memory_limit', '9000M');
         $session_id = $trainingSession?->id;
 
         if ($request->get('checkVal') == 'deployment') {
