@@ -189,17 +189,10 @@ class VolunteerController extends Controller
      */
     public function edit(TrainingSession $trainingSession, $id)
     {
+        $field_of_studies = FeildOfStudy::all();
+        $educational_levels = EducationalLevel::$educationalLevel;
         $volunteer = Volunteer::find($id);
-        $before = Carbon::now()->subYears(18)->format('d/m/Y');
-        $after = Carbon::now()->subYears(35)->format('d/m/Y');
-        $disabilities = Disablity::all();
-        $regions = Region::where('status', '=', 1)->get();
-        $educationLevels = EducationalLevel::$educationalLevel;
-        $fields = FeildOfStudy::all();
-        $objectiveTexts = TranslationText::where('translation_type', 0)->get();
-        $birth_date = DateTimeFactory::fromDateTime(new DateTime($volunteer->dob))->format('d/m/Y');
-        $appTexts = TranslationText::where('translation_type', 1)->get();
-        return view('volunter.edit', compact('volunteer', 'trainingSession', 'before', 'after', 'disabilities', 'regions', 'educationLevels', 'fields', 'objectiveTexts', 'appTexts', 'birth_date'));
+        return view('volunter.edit', compact('field_of_studies', 'educational_levels', 'volunteer'));
     }
 
     /**
@@ -209,9 +202,21 @@ class VolunteerController extends Controller
      * @param  \App\Models\Volunteer  $volunteer
      * @return \Illuminate\Http\Response
      */
-    public function update(TrainingSession $trainingSession, Request $request, Volunteer $volunteer)
+    public function update(TrainingSession $trainingSession, $id, Request $request)
     {
-        dd($request);
+        $volunteer =  Volunteer::find($id);
+        $first_name = $request->get('first_name');
+        $middle_name = $request->get('middle_name');
+        $last_name =  $request->get('last_name');
+        $phone = $request->get('phone');
+        $email = $request->get('email');
+        $gender = $request->get('gender');
+        $education_level = $request->get('education_level');
+        $gpa = $request->get('gpa');
+        $field_of_study = $request->get('Field_of_study');
+
+        $volunteer->update(['first_name'=>$first_name, 'father_name'=>$middle_name, 'grand_father_name'=>$last_name, 'phone'=>$phone, 'email'=>$email, 'gender'=>$gender, 'educational_level'=>$education_level, 'gpa'=>$gpa, 'field_of_study_id'=>$field_of_study]);
+        return redirect()->route('session.volunteer.all', ['training_session'=>$trainingSession->id])->with('message', 'volunteer successfully updated');
     }
 
     /**

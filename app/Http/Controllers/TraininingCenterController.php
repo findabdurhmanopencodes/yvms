@@ -373,7 +373,7 @@ class TraininingCenterController extends Controller
     public function checkIn($training_session, $id)
     {
         Volunteer::find($id)->status->update(['acceptance_status' => 5]);
-        return redirect()->route('session.TrainingCenter.CheckIn', ['training_session' => $training_session])->with('volunteer checked in');
+        return redirect()->route('session.TrainingCenter.CheckIn', ['training_session' => $training_session])->with('message','volunteer checkedIn successfully');
     }
     public function checkInAll(TrainingSession $trainingSession)
     {
@@ -693,6 +693,6 @@ class TraininingCenterController extends Controller
         $volunteer->update(['first_name'=>$first_name, 'father_name'=>$middle_name, 'grand_father_name'=>$last_name, 'phone'=>$phone, 'email'=>$email, 'gender'=>$gender, 'educational_level'=>$education_level, 'field_of_study_id'=>$Field_of_study]);
 
         $volunteer->status->update(['acceptance_status' => 5]);
-        return redirect()->route('session.TrainingCenter.CheckIn', ['training_session' => $trainingSession->id])->with('volunteer successfully updated and checked in');
+        return redirect()->route('session.TrainingCenter.CheckIn', ['training_session' => $trainingSession->id])->with('volunteer successfully updated and checked in')->with('message', 'Volunteer updated and checkedIn successfully');
     }
 }

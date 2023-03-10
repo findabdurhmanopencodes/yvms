@@ -45,7 +45,31 @@
                     <span class="text-muted pt-2 font-size-sm d-block"> </span>
                 </h3>
             </div>
-
+            <div class="toolbar">
+                <div class="my-1 my-lg-0">
+                    <div class="dropdown dropdown-inline">
+                        <a href="#" class="px-5 btn btn-sm btn-primary font-weight-bolder dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Export</a>
+                        <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="">
+                            <!--begin::Navigation-->
+                            <ul class="navi navi-hover">
+                                @can('placedvolunteer.export')
+                                    <li class="navi-item">
+                                        <a href="{{ route('session.resource.volunteers.export', ['training_session' => Request::route('training_session'), 'training_center' => $training_center_id]) }}"
+                                            class="navi-link">
+                                            <span class="navi-icon">
+                                                <i class="fa fa-file-export"></i>
+                                            </span>
+                                            <span class="navi-text">Export volunteer resource</span>
+                                        </a>
+                                    </li>
+                                @endcan
+                            </ul>
+                            <!--end::Navigation-->
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <table class="table" width="100">
