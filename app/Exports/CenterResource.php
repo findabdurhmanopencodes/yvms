@@ -48,8 +48,8 @@ class CenterResource implements FromCollection ,WithHeadings,WithEvents
                $event->sheet->getDelegate()->getColumnDimension('D')->setWidth(20);
                $event->sheet->getDelegate()->getColumnDimension('E')->setWidth(20);
                $event->sheet->getDelegate()->getColumnDimension('F')->setWidth(20);
-               $event->sheet->getDelegate()->getColumnDimension('G')->setWidth(20);
-               $event->sheet->getDelegate()->getColumnDimension('H')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('G')->setWidth(30);
+               $event->sheet->getDelegate()->getColumnDimension('H')->setWidth(30);
                $event->sheet->getDelegate()->getColumnDimension('I')->setWidth(20);
             //    $event->sheet->getProtection()->setPassword('password');
             //    $event->sheet->getProtection()->setSheet(true);
