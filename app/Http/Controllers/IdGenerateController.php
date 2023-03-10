@@ -298,6 +298,8 @@ class IdGenerateController extends Controller
 
     public function certificateDownload(Request $request, TrainingSession $trainingSession)
     {
+        set_time_limit(3000);
+        ini_set('memory_limit', '20000M');
         $training_session_id = $trainingSession->id;
         $diff_arr = explode(',', $trainingSession->dateDiff());
         if ($diff_arr[0] > 0) {
