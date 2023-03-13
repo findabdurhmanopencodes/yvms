@@ -89,7 +89,7 @@
                                                     <span class="navi-icon">
                                                         <i class="fa fa-file-export"></i>
                                                     </span>
-                                                    <span class="navi-text">Export Placed Volunteers</span>
+                                                    <span class="navi-text">Export CheckedIn Volunteers</span>
                                                 </a>
                                             </li>
                                         @endcan

@@ -11,27 +11,29 @@
 @endsection
 
 @section('content')
-<form method="POST" action="{{ route('session.training_center.generate', ['training_session' => Request::route('training_session'),'training_center'=>Request::route('training_center')]) }}">
-    @csrf
-    <div class="card card-custom">
-    <input type="hidden" value="{{ $training_center_id }}" id="training_center_id">
+<div class="card card-custom">
     <div class="card-header flex-wrap  pt-6 ">
-        <div class="card-title mr-0">
-            <div class="form-group">
-                <h3 class="card-label">Checked In Applicant List</h3>
-                <br>
-                <input type="text" id="search" class="form-control" placeholder="search by ID..." />
-            </div>
-        </div>
-        @can('TraininingCenter.checkedInIDPrint')
-            @if ($applicants)
-                <div class="card-toolbar">
-                    <button type="submit" class="btn btn-primary font-weight-bolder" >
-                        <span class="svg-icon svg-icon-md" id="print_all">
-                            <i class="flaticon2-print" id="i_text"></i>Print All ID
-                        </span>
-                    </button>
+        <form action="{{ route('session.training_center.checkedIn_list', ['training_session'=>Request::route('training_session'),'training_center'=>$training_center_id]) }}" id="searchForm" method="get">
+            <div class="card-title mr-0">
+                <div class="form-group">
+                    <h3 class="card-label">Checked In Applicant List</h3>
+                    <br>
+                    <input type="text" name="searchbyid" class="form-control" placeholder="search by ID..." />
                 </div>
+            </div>
+        </form>
+        <form method="POST" action="{{ route('session.training_center.generate', ['training_session' => Request::route('training_session'),'training_center'=>Request::route('training_center')]) }}">
+            @csrf
+            <input type="hidden" value="{{ $training_center_id }}" id="training_center_id">
+            @can('TraininingCenter.checkedInIDPrint')
+            @if ($applicants)
+            <div class="card-toolbar">
+                <button type="submit" class="btn btn-primary font-weight-bolder" >
+                    <span class="svg-icon svg-icon-md" id="print_all">
+                        <i class="flaticon2-print" id="i_text"></i>Print All ID
+                    </span>
+                </button>
+            </div>
             @endif
         @endcan
 
@@ -83,11 +85,11 @@
                 </tbody>
             </table>
         </div>
+    </form>
     <div class="m-auto col-6 mt-3" id="paginate">
         {{ $applicants->withQueryString()->links() }}
     </div>
     </div>
-</form>
 @endsection
 
 @push('js')
@@ -100,11 +102,12 @@
         function getTableCell(c){
             return `<td>${c}</td>`;
         }
-        $('#search').on('keyup keypress', function(e) {
+        $('#').on('keyup keypress', function(e) {
             var keyCode = e.keyCode || e.which;
             if (keyCode === 13) {
                 e.preventDefault();
-                return false;
+                $( "#searchForm" ).submit();
+                // return false;
             }
         });
         $('#search').on('input', function(){

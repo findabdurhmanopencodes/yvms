@@ -41,9 +41,13 @@ class IdGenerateController extends Controller
             ->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')
             ->leftJoin('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
             ->where('trainining_centers.id', $training_center_id)
-            ->where('statuses.acceptance_status', '>=', Constants::VOLUNTEER_STATUS_CHECKEDIN)
-            ->select('*')
-            ->paginate(10);
+            ->where('statuses.acceptance_status', '>=', Constants::VOLUNTEER_STATUS_CHECKEDIN);
+            
+        if ($request->query('searchbyid')) {
+            $applicants->where('id_number', $request->query('searchbyid'));
+        }
+
+        $applicants = $applicants->select('*')->paginate(10);
         return view('id.checkedIn', compact('applicants', 'training_center_id'));
     }
     public function idGenerate(TrainingSession $trainingSession, Request $request, $training_center_id)

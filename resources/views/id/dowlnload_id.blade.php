@@ -65,7 +65,7 @@
                 </p>
                 <div style="position: relative; float: right; top: -79px;">
                     {{-- <img src="data:image{{ $exp[$key+1] }}" alt=""> --}}
-                    <img src="{{ $val->barQrVolunteer->qr_code }}" alt="">
+                    <img src="{{ $val->barQrVolunteer?->qr_code }}" alt="">
                 </div>
             </div>
 
@@ -94,7 +94,7 @@
                 </p>
                 <div style="position: relative; left: 142px; top: -60px;">
                     {{-- <img src="data:image{{ $expBar[$key+1] }}" style="color: black"> --}}
-                    <img src="{{ $val->barQrVolunteer->bar_code }}" style="color: black" alt="">
+                    <img src="{{ $val->barQrVolunteer?->bar_code }}" style="color: black" alt="">
                 </div>
                 <p style="position: relative; left: 8px; top: -80px; background-color: inherit; font-size: 10px; color: black; font-style: italic; letter-spacing: 0.5px;">
                     <strong>Nationality:</strong>
@@ -229,7 +229,7 @@
                         <strong>Volunteer</strong>
                     </p>
                     <div style="position: relative; float: right; top: -79px;">
-                        <img src="{{ $val->barQrVolunteer->qr_code }}" alt="">
+                        <img src="{{ $val->barQrVolunteer?->qr_code }}" alt="">
                     </div>
                 </div>
             @endif

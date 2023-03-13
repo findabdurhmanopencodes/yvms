@@ -44,7 +44,7 @@ class ImportExportController extends Controller
         foreach ($users as $key => $value) {
             $value->educational_level = EducationalLevel::$educationalLevel[$value->educational_level];
         }
-        return Excel::download(new CenterVolunteer($users, ['ID Number', 'First Name','Middle Name','Last Name', 'phone number', 'gender', 'Region', 'Zone', 'Woreda', 'Field of study', 'Educational Level', 'GPA']), ' '.TraininingCenter::find($id)->code.'_placed_volunteers_list.xlsx');
+        return Excel::download(new CenterVolunteer($users, ['ID Number', 'First Name','Middle Name','Last Name', 'phone number', 'gender', 'Region', 'Zone', 'Woreda', 'Field of study', 'Educational Level', 'GPA']), ' '.TraininingCenter::find($id)->code.'_checkedIn_volunteers_list.xlsx');
     }
 
     public function exportResourceVolunteer(TrainingSession $trainingSession, $id)
