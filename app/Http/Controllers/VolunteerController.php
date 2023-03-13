@@ -108,6 +108,10 @@ class VolunteerController extends Controller
             $phone = $request->get('phone');
             $woreda_id = $request->get('woreda_id');
             $gpa = $request->get('gpa');
+            $id_number =  $request->get('id_number');
+            if (!empty($id_number)) {
+                $applicants = $applicants->where('id_number', $id_number);
+            }
             if (!empty($first_name)) {
                 $applicants = $applicants->where('first_name', 'like', '%' . $first_name . '%');
             }
@@ -483,7 +487,11 @@ class VolunteerController extends Controller
             $woreda_id = $request->get('woreda_id');
             $gpa = $request->get('gpa');
             $status = $request->get('acceptance_status');
+            $id_number =  $request->get('id_number');
 
+            if (!empty($id_number)) {
+                $applicants = $applicants->where('id_number', $id_number);
+            }
             if (!empty($first_name)) {
                 $applicants = $applicants->where('first_name', 'like', '%' . $first_name . '%');
             }

@@ -108,6 +108,11 @@
                         @csrf
                         <div class="row">
                             <div class="col-sm-4">
+                                <label for="name" class=" col-sm-12 col-form-label">ID number</label>
+                                <input class="form-control" type="text" name="id_number" id="id_number">
+
+                            </div>
+                            <div class="col-sm-4">
                                 <label for="name" class=" col-sm-12 col-form-label">First Name</label>
                                 <input class="form-control" type="text" name="first_name" id="name">
 
