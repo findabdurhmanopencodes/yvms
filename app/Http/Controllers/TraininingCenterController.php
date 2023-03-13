@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Andegna\DateTimeFactory;
 use App\Constants;
+use App\Exports\CheckedInFilter;
 use App\Exports\UsersExport;
 use App\Models\TraininingCenter;
 use App\Http\Requests\StoreTraininingCenterRequest;
@@ -296,6 +297,7 @@ class TraininingCenterController extends Controller
         }
         $field_of_studies = FeildOfStudy::all();
         $educational_levels = EducationalLevel::$educationalLevel;
+        $queryResult = NULL;
 
         if ($request->has('filter')) {
             $id_number = $request->get('id_number');
@@ -313,11 +315,36 @@ class TraininingCenterController extends Controller
 
                 $volunteers->where('statuses.updated_at', '<=',$checkedin_date_gregorian->format('Y-m-d 23:59:59'))->where('statuses.updated_at', '>=',$checkedin_date_gregorian->format('Y-m-d 00:00:00'));
             }
+
+            $queryResult = json_encode($request->query());
+        }
+
+        if ($request->get('export')) {
+            $query_result = json_decode($request->get('query_result'));
+            if ($query_result) {
+                $id_number = $query_result->id_number;
+                $gender =$query_result->gender;
+                $checkedin_date = $query_result->checkedin_date;
+                if (!empty($id_number)) {
+                    $volunteers->where('volunteers.id_number', $id_number);
+                }
+                if (!empty($gender)) {
+                    $volunteers->where('volunteers.gender', $gender);
+                }
+                if (!empty($checkedin_date)) {
+                    $checkedin_date_check = DateTime::createFromFormat('d/m/Y',$checkedin_date);
+                    $checkedin_date_gregorian = DateTimeFactory::of($checkedin_date_check->format('Y'), $checkedin_date_check->format('m'), $checkedin_date_check->format('d'))->toGregorian();
+
+                    $volunteers->where('statuses.updated_at', '<=',$checkedin_date_gregorian->format('Y-m-d 23:59:59'))->where('statuses.updated_at', '>=',$checkedin_date_gregorian->format('Y-m-d 00:00:00'));
+                }
+            }
+            $volunteer_print = $volunteers->select('id_number', 'first_name','father_name','grand_father_name', 'phone', 'gender')->get();
+            return Excel::download(new CheckedInFilter($volunteer_print, ['ID Number', 'First Name','Middle Name','Last Name', 'phone number', 'gender']),'checkedIn.xlsx');
         }
 
         $checkeInVolunteers = $volunteers->paginate(10);
 
-        return view('training_center.check_in.check_in', compact('field_of_studies', 'educational_levels', 'checkeInVolunteers'));
+        return view('training_center.check_in.check_in', compact('field_of_studies', 'educational_levels', 'checkeInVolunteers', 'queryResult'));
     }
     public function result(Request $request)
     {
@@ -533,7 +560,8 @@ class TraininingCenterController extends Controller
 
     public function placeVolunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
-        $volunteerGroups = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->get()->groupBy('woreda.zone.region.id');
+        $volunteerGroups = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->whereRelation('status','acceptance_status',Constants::VOLUNTEER_STATUS_CHECKEDIN)->get()->groupBy('woreda.zone.region.id');
+        // dd($volunteerGroups);
         if (count($trainingCenter->rooms) <= 0) {
             return redirect()->back()->with('error', 'You have no syndication room!');
         }

@@ -143,6 +143,12 @@
         <div class="card-header">
             <h2>Check-In Volunteers ({{ $checkeInVolunteers->total() }})</h2>
         </div>
+        <div class="card-toolbar">
+            <form action="{{ route('session.TrainingCenter.CheckIn', ['training_session'=>Request::route('training_session')]) }}" method="GET">
+                <input type="hidden" name="query_result" value="{{ $queryResult }}">
+                <button type="submit" style="float: right" class="btn btn-primary mx-4 my-4" name="export" value="export">Export</button>
+            </form>
+        </div>
         <div class="card-body mb-0 pb-0">
             <div class="accordion accordion-solid accordion-toggle-plus " id="accordionExample6">
                 <div class="card ">

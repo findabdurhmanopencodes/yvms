@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants;
+use App\Exports\SyndicationExport;
 use App\Http\Requests\StoreCindicationRoomRequest;
 use App\Http\Requests\UpdateCindicationRoomRequest;
 use App\Models\CindicationRoom;
@@ -16,6 +18,8 @@ use App\Models\User;
 use App\Models\UserAttendance;
 use App\Models\Volunteer;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Permission;
 
 class CindicationRoomController extends Controller
@@ -135,5 +139,15 @@ class CindicationRoomController extends Controller
         }
         $trainingSchedules = TrainingSchedule::whereIn('training_session_training_id', TrainingSessionTraining::where('training_session_id', $trainingSession->id)->where('training_id', $training->id)->pluck('id'))->get();
         return view('training_center.training_center_attendance', compact('trainingSession', 'trainingCenter', 'training', 'applicants', 'trainingSchedules', 'att_history'));
+    }
+
+    public function export(TrainingSession $trainingSession, TraininingCenter $trainingCenter, CindicationRoom $cindicationRoom)
+    {
+        // dd($cindicationRoom);
+        $users = DB::table('volunteers')->join('statuses', 'volunteers.id', '=', 'statuses.volunteer_id')->where('acceptance_status','=',Constants::VOLUNTEER_STATUS_CHECKEDIN)->join('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->join('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->join('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')->join('trainining_centers','trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')->where('trainining_centers.id', $trainingCenter->id)->where('volunteers.cindication_room_id', $cindicationRoom->id)->select('id_number', 'first_name','father_name','grand_father_name', 'phone', 'gender')->get();
+        
+        // dd($users);
+
+        return Excel::download(new SyndicationExport($users, ['ID Number', 'First Name','Middle Name','Last Name', 'phone number', 'gender']), $trainingCenter->code.'_'.$cindicationRoom->number.'.xlsx');
     }
 }

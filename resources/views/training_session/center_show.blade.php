@@ -411,6 +411,10 @@
                                                 href="{{ route('session.cindication_room.show', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room' => $cindicationRoom->id]) }}">
                                                 <i class="fal fa-eye"></i>
                                             </a>
+                                            <a
+                                                href="{{ route('session.cindication_room.export', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room' => $cindicationRoom->id]) }}">
+                                                <i class="fal fa-users"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
