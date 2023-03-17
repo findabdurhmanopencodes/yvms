@@ -74,7 +74,7 @@
                                 <span class="navi-icon">
                                     <i class="flaticon2-shopping-cart-1"></i>
                                 </span>
-                                <span class="navi-text">Export Data</span>
+                                <span class="navi-text">Export Attendance Excel</span>
                             </a>
                         </li>
                     </form>
@@ -83,7 +83,7 @@
                             <span class="navi-icon">
                                 <i class="flaticon2-calendar-8"></i>
                             </span>
-                            <span class="navi-text">Import Data</span>
+                            <span class="navi-text">Import Attendance Excel</span>
                         </a>
                     </li>
                     </li>
@@ -101,6 +101,7 @@
                 <thead>
                     </tr>
                         {{-- <th> ID </th> --}}
+                        <th style="background-color:white;font-size:13px;width: 250px !important;position: sticky;left: 0;z-index: 999999;"> ID number </th>
                         <th style="background-color:white;font-size:13px;width: 250px !important;position: sticky;left: 0;z-index: 999999;"> Name </th>
                         @foreach ($trainingSchedules as $trainingSchedule)
                             @if (!$trainingSchedule->schedule->checkDateAtt())
@@ -119,7 +120,10 @@
                                     {{ $applicant->id }}
                                 </td> --}}
                                 <td style="background-color:white;width: 250px !important;position: sticky;left: 0;z-index: 999999;">
-                                    {{$applicant->first_name}}
+                                    {{$applicant->id_number}}
+                                </td>
+                                <td style="background-color:white;width: 250px !important;position: sticky;left: 0;z-index: 999999;">
+                                    {{$applicant->first_name}} {{$applicant->father_name}}
                                 </td>
                                 @foreach ($trainingSchedules as $trainingSchedule)
                                     @if (!$trainingSchedule->schedule->checkDateAtt())

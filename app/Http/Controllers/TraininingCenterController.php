@@ -547,7 +547,7 @@ class TraininingCenterController extends Controller
         $schedule_id = $request->get('schedule_id');
         $users = DB::table('volunteers')->leftJoin('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')->where('training_center_capacities.trainining_center_id', $trainingCenter->id)->where('cindication_room_id', $cindicationRoom->id)->select(['id_number', 'first_name', 'father_name', 'grand_father_name'])->get();
 
-        return Excel::download(new UsersExport($users, ['ID Number', 'First Name', 'Father Name', 'Grand Father Name', 'Status', $schedule_id]), 'attendance.xlsx');
+        return Excel::download(new UsersExport($users, ['ID Number', 'First Name', 'Father Name', 'Grand Father Name', 'Status', $schedule_id, Schedule::find($schedule_id)->dateET()]), $cindicationRoom->number.' attendance.xlsx');
         // return Excel::download(new UserAttendance(), 'attendance.xlsx');
     }
 
