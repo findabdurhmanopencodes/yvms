@@ -144,10 +144,10 @@ class CindicationRoomController extends Controller
     public function export(TrainingSession $trainingSession, TraininingCenter $trainingCenter, CindicationRoom $cindicationRoom)
     {
         // dd($cindicationRoom);
-        $users = DB::table('volunteers')->join('statuses', 'volunteers.id', '=', 'statuses.volunteer_id')->where('acceptance_status','=',Constants::VOLUNTEER_STATUS_CHECKEDIN)->join('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->join('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->join('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')->join('trainining_centers','trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')->where('trainining_centers.id', $trainingCenter->id)->where('volunteers.cindication_room_id', $cindicationRoom->id)->select('id_number', 'first_name','father_name','grand_father_name', 'phone', 'gender')->get();
+        $users = DB::table('volunteers')->join('statuses', 'volunteers.id', '=', 'statuses.volunteer_id')->where('acceptance_status','=',Constants::VOLUNTEER_STATUS_CHECKEDIN)->join('approved_applicants', 'volunteers.id', '=', 'approved_applicants.volunteer_id')->join('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->join('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')->join('trainining_centers','trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')->join('woredas as w', 'w.id', '=', 'volunteers.woreda_id')->join('zones as z', 'z.id', '=', 'w.zone_id')->join('regions as r', 'r.id', '=', 'z.region_id')->where('trainining_centers.id', $trainingCenter->id)->where('volunteers.cindication_room_id', $cindicationRoom->id)->select('id_number', 'first_name','father_name','grand_father_name', 'phone', 'gender', 'r.name', 'z.name', 'w.name')->get();
         
         // dd($users);
 
-        return Excel::download(new SyndicationExport($users, ['ID Number', 'First Name','Middle Name','Last Name', 'phone number', 'gender']), $trainingCenter->code.'_'.$cindicationRoom->number.'.xlsx');
+        return Excel::download(new SyndicationExport($users, ['ID Number', 'First Name','Middle Name','Last Name', 'phone number', 'gender', 'Region', 'Zone', 'Woreda']), $trainingCenter->code.'_'.$cindicationRoom->number.'.xlsx');
     }
 }
