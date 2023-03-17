@@ -560,6 +560,8 @@ class TraininingCenterController extends Controller
 
     public function placeVolunteers(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
     {
+        set_time_limit(3000);
+        ini_set('memory_limit', '20000M');
         $volunteerGroups = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->whereRelation('status','acceptance_status',Constants::VOLUNTEER_STATUS_CHECKEDIN)->get()->groupBy('woreda.zone.region.id');
         // dd($volunteerGroups);
         if (count($trainingCenter->rooms) <= 0) {
