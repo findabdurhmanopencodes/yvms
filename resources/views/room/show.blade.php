@@ -48,7 +48,7 @@
 
             </div>
         </div>
-        <div class=" {{ Auth::user()->can('coFacilitator') ?  'col-md-12' : 'col-md-6'}}">
+        <div class="col-md-6">
             <div class="card card-custom gutter-b">
                 <div class="py-5 border-0 card-header">
                     <h3 class="card-title align-items-start flex-column">
