@@ -150,4 +150,12 @@ class CindicationRoomController extends Controller
 
         return Excel::download(new SyndicationExport($users, ['ID Number', 'First Name','Middle Name','Last Name', 'phone number', 'gender', 'Region', 'Zone', 'Woreda']), $trainingCenter->code.'_'.$cindicationRoom->number.'.xlsx');
     }
+
+    public function list(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
+    {
+        $permission = Permission::findOrCreate('coFacilitator');
+        $syndicationRooms = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', Auth::user()->id)->where('permission_id', $permission->id)->paginate(10);
+
+        return view('training_center.list',compact('syndicationRooms', 'trainingCenter'));
+    }
 }

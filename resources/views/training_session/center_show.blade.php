@@ -336,6 +336,14 @@
                             Cindication Rooms</span>
                     </h3>
                     <div class="card-toolbar">
+                        <form action="{{ route('session.training_center.show', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}" method="GET" id="searchForm">
+                            <div class="input-icon">
+                                <input type="text" name="id_number" class="form-control" placeholder="Search..." id="search_by_syn"/>
+                                <span>
+                                    <i class="flaticon2-search-1 text-muted"></i>
+                                </span>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="pt-0 card-body">
@@ -705,6 +713,12 @@
                 }
             });
         }
+
+        $('#search_by_syn').on('keypress',function(e) {
+            if(e.which == 13) {
+                $('#searchForm').submit();
+            }
+        });
     </script>
 @endpush
 

@@ -275,6 +275,8 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' =
     Route::get('/resource/center/{training_center}', [ImportExportController::class, 'exportResourceVolunteer'])->name('resource.volunteers.export');
 
     Route::get('{training_center}/cindication_room/{cindication_room}/export', [CindicationRoomController::class, 'export'])->name('cindication_room.export');
+
+    Route::get('{training_center}/sydication/list', [CindicationRoomController::class, 'list'])->name('sydication.list');
 });
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
 Route::middleware(['auth'])->group(function () {

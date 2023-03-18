@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\TrainingCenterBasedPermission;
+use App\Models\TrainingSession;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -31,6 +34,13 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        $trainingSession = TrainingSession::availableSession()->first();
+        $permission = Permission::findOrCreate('coFacilitator');
+        $centers = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', Auth::user()->id)->where('permission_id', $permission->id);
+
+        if ($centers->get()->count() > 0) {
+            return redirect()->route('session.sydication.list', ['training_session'=>$trainingSession, 'training_center'=>$centers->first()->traininingCenter->id]);
+        }
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }

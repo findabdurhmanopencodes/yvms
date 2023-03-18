@@ -48,7 +48,7 @@
 
             </div>
         </div>
-        <div class="col-md-6">
+        <div class=" {{ Auth::user()->can('coFacilitator') ?  'col-md-12' : 'col-md-6'}}">
             <div class="card card-custom gutter-b">
                 <div class="py-5 border-0 card-header">
                     <h3 class="card-title align-items-start flex-column">
@@ -57,12 +57,14 @@
                             trainings in this session</span>
                     </h3>
                     <div class="card-toolbar">
-                        <a href="#" data-toggle="modal" data-target="#assignMasterModal"
+                        @if (!Auth::user()->can('coFacilitator'))
+                            <a href="#" data-toggle="modal" data-target="#assignMasterModal"
                             class="btn btn-success font-weight-bolder font-size-sm">
-                            <span class="svg-icon svg-icon-md svg-icon-white">
-                            </span>
-                            Assign master trainners
-                        </a>
+                                <span class="svg-icon svg-icon-md svg-icon-white">
+                                </span>
+                                Assign master trainners
+                            </a>
+                        @endif
                     </div>
                 </div>
                 <div class="pt-0 card-body">
@@ -123,89 +125,91 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card card-custom gutter-b">
-                <div class="py-5 border-0 card-header">
-                    <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label font-weight-bolder text-dark">Assign Co-facilitator</span>
-                    </h3>
-                </div>
-                <div class="pt-1 card-body">
-                    <form id="coFacilitatorForm"
-                        action="{{ route('session.training_center_based_permission.store', ['training_session' => Request::route('training_session')->id]) }}"
-                        method="POST">
-                        @csrf
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <input type="hidden" name="permission_id"
-                                    value="{{ Spatie\Permission\Models\Permission::findOrCreate('coFacilitator')->id }}">
-                                <input type="hidden" name="cindication_room_id" value="{{ $cindicationRoom->id }}">
-                                <input type="hidden" name="training_center_id" value="{{ $trainingCenter->id }}">
-                                <input type="hidden" name="training_session_id"
-                                    value="{{ Request::route('training_session')->id }}">
-                                <select name="user_id" id="user_id" required
-                                    class=" @error('user_id') is-invalid @enderror select2 form-control  form-control select2">
-                                    @foreach ($coFacilitatorUsers as $coFacilitatorUser)
-                                        <option
-                                            {{ old('coFacilitatorUser') != null ? (old('coFacilitatorUser') == $coFacilitatorUser->id ? 'selected' : '') : '' }}
-                                            value="{{ $coFacilitatorUser->id }}">
-                                            {{ $coFacilitatorUser->name }}
-                                        </option>
-                                    @endforeach
-                                    @if (count($coFacilitatorUsers) <= 0)
-                                        <option>
-                                            Please add co-facilitator
-                                        </option>
-                                    @endif
-                                </select>
-                                @error('user_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                <span class="form-text text-muted">Please select Checker User center.</span>
+        @can(!Auth::user()->can('coFacilitator'))
+            <div class="col-md-6">
+                <div class="card card-custom gutter-b">
+                    <div class="py-5 border-0 card-header">
+                        <h3 class="card-title align-items-start flex-column">
+                            <span class="card-label font-weight-bolder text-dark">Assign Co-facilitator</span>
+                        </h3>
+                    </div>
+                    <div class="pt-1 card-body">
+                        <form id="coFacilitatorForm"
+                            action="{{ route('session.training_center_based_permission.store', ['training_session' => Request::route('training_session')->id]) }}"
+                            method="POST">
+                            @csrf
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <input type="hidden" name="permission_id"
+                                        value="{{ Spatie\Permission\Models\Permission::findOrCreate('coFacilitator')->id }}">
+                                    <input type="hidden" name="cindication_room_id" value="{{ $cindicationRoom->id }}">
+                                    <input type="hidden" name="training_center_id" value="{{ $trainingCenter->id }}">
+                                    <input type="hidden" name="training_session_id"
+                                        value="{{ Request::route('training_session')->id }}">
+                                    <select name="user_id" id="user_id" required
+                                        class=" @error('user_id') is-invalid @enderror select2 form-control  form-control select2">
+                                        @foreach ($coFacilitatorUsers as $coFacilitatorUser)
+                                            <option
+                                                {{ old('coFacilitatorUser') != null ? (old('coFacilitatorUser') == $coFacilitatorUser->id ? 'selected' : '') : '' }}
+                                                value="{{ $coFacilitatorUser->id }}">
+                                                {{ $coFacilitatorUser->name }}
+                                            </option>
+                                        @endforeach
+                                        @if (count($coFacilitatorUsers) <= 0)
+                                            <option>
+                                                Please add co-facilitator
+                                            </option>
+                                        @endif
+                                    </select>
+                                    @error('user_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <span class="form-text text-muted">Please select Checker User center.</span>
+                                </div>
+                                <div class="ml-auto form-group col-md-12">
+                                    <input type="submit" value="Assign Coordinator"
+                                        class="float-right btn btn-success w-100 font-weight-bolder font-size-sm">
+                                </div>
                             </div>
-                            <div class="ml-auto form-group col-md-12">
-                                <input type="submit" value="Assign Coordinator"
-                                    class="float-right btn btn-success w-100 font-weight-bolder font-size-sm">
-                            </div>
-                        </div>
-                    </form>
-                    <table width="100%" class="table">
-                        <thead>
-                            </tr>
-                            <th> Name </th>
-                            <th> Role </th>
-                            <th> Action </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($coFacilitators as $coFacilitator)
-                                <tr style="font-size: 13px;">
-                                    <td>{{ $coFacilitator->name }}</td>
-                                    <td>
-                                        <span class="btn btn-light-info btn-sm font-weight-bold btn-upper btn-text">
-                                            Co-Facilitator
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('session.training_center_based_permission.remove', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter, 'cindication_room' => $cindicationRoom->id, 'user' => $coFacilitator->id, 'permission' => $coFacilitatorPermission->id]) }}"
-                                            id="remover">
-                                            <i class="fa fa-times"></i>
-                                        </a>
-                                    </td>
+                        </form>
+                        <table width="100%" class="table">
+                            <thead>
                                 </tr>
-                            @endforeach
-                            @if (count($coFacilitators) <= 0)
-                                <tr>
-                                    <td colspan="2" class="text-center">
-                                        Please add Co-Facilitator
-                                    </td>
+                                <th> Name </th>
+                                <th> Role </th>
+                                <th> Action </th>
                                 </tr>
-                            @endif
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($coFacilitators as $coFacilitator)
+                                    <tr style="font-size: 13px;">
+                                        <td>{{ $coFacilitator->name }}</td>
+                                        <td>
+                                            <span class="btn btn-light-info btn-sm font-weight-bold btn-upper btn-text">
+                                                Co-Facilitator
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('session.training_center_based_permission.remove', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter, 'cindication_room' => $cindicationRoom->id, 'user' => $coFacilitator->id, 'permission' => $coFacilitatorPermission->id]) }}"
+                                                id="remover">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                @if (count($coFacilitators) <= 0)
+                                    <tr>
+                                        <td colspan="2" class="text-center">
+                                            Please add Co-Facilitator
+                                        </td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endcan
     </div>
 
     <div class="modal fade" id="assignMasterModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"

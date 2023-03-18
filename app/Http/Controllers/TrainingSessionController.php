@@ -996,7 +996,7 @@ class TrainingSessionController extends Controller
         return view('training_session.centers', compact('trainingSession', 'trainingCenterCapacities'));
     }
 
-    public function trainingCenterShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
+    public function trainingCenterShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter, Request $request)
     {
         $permission = Permission::findOrCreate('centerCooridnator');
         if(!Auth::user()->hasRole(Constants::SUPER_ADMIN)){
@@ -1005,7 +1005,12 @@ class TrainingSessionController extends Controller
                 return abort(403);
             }
         }
-        $cindicationRooms = CindicationRoom::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->get();
+        $cindicationRooms = CindicationRoom::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id);
+        if ($request->get('id_number')) {
+            $id_number = $request->get('id_number');
+            $cindicationRooms->whereRelation('volunteers','id_number', $id_number);
+        }
+        $cindicationRooms = $cindicationRooms->get();
         $miniSide = 'aside-minimize';
         // $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->count();
         $tcId = $trainingCenter->id;
