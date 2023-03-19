@@ -64,6 +64,9 @@
                     @endforelse
                 </tbody>
             </table>
+            <div class="navigation">
+				{{ $syndicationRooms->links() }}
+			</div>
         </div>
     </div>
 
