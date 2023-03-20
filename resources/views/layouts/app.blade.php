@@ -324,6 +324,21 @@
                                             </a>
                                         </li>
                                     @endcan
+
+                                    @can('coFacilitator')
+                                        @if (\App\Models\TrainingCenterBasedPermission::where('training_session_id', Request::route('training_session')->id)->where('user_id', Auth::user()->id)->where('permission_id', \Spatie\Permission\Models\Permission::findOrCreate('coFacilitator')->id)->first())
+                                            <li class="menu-item menu-item-active"
+                                            aria-haspopup="true">
+                                                <a href="{{ route('session.sydication.list', ['training_session'=>Request::route('training_session'), 'training_center'=>\App\Models\TrainingCenterBasedPermission::where('training_session_id', Request::route('training_session')->id)->where('user_id', Auth::user()->id)->where('permission_id', \Spatie\Permission\Models\Permission::findOrCreate('coFacilitator')->id)->first()?->traininingCenter?->id]) }}"
+                                                    class="menu-link">
+                                                    <i class="menu-icon fal fa-map-marker-check"></i>
+
+                                                    <span class="menu-text">Take Attendance</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                    @endcan
+
                                     @can('TrainingSchedule.index')
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.schedule') === 0 ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
