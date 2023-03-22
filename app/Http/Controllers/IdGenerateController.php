@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants;
 use App\Models\ApprovedApplicant;
+use App\Models\CindicationRoom;
 use App\Models\IDcount;
 use App\Models\Status;
 use App\Models\Training;
@@ -59,8 +60,15 @@ class IdGenerateController extends Controller
         $trainer = '';
         $userType = '';
 
-        if ($request->get('applicant')) {
+        if ($request->get('applicant') || $request->get('syndication_room_id')) {
             $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()[0];
+            if ($request->get('applicant')) {
+                $appl = $request->get('applicant');
+            }
+            if ($request->get('syndication_room_id')) {
+                $syndicationRoom = CindicationRoom::find($request->get('syndication_room_id'));
+                $appl = $syndicationRoom->volunteers->pluck('id')->toArray();
+            }
             $applicants = DB::table('volunteers')
                 ->join('statuses', 'statuses.volunteer_id', '=', 'volunteers.id')
                 // ->join('users', 'users.id','=', 'volunteers.user_id')
@@ -70,9 +78,10 @@ class IdGenerateController extends Controller
                 ->leftJoin('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
                 ->where('trainining_centers.id', $training_center_id)
                 ->where('statuses.acceptance_status', '>=', Constants::VOLUNTEER_STATUS_CHECKEDIN)
-                ->whereIn('volunteers.id', $request->get('applicant'))
+                ->whereIn('volunteers.id', $appl)
                 ->select('*')
                 ->get();
+                
 
             $paginate_apps = DB::table('volunteers')
                 ->join('statuses', 'statuses.volunteer_id', '=', 'volunteers.id')
@@ -83,7 +92,7 @@ class IdGenerateController extends Controller
                 ->leftJoin('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
                 ->where('trainining_centers.id', $training_center_id)
                 // ->where('statuses.acceptance_status',Constants::VOLUNTEER_STATUS_CHECKEDIN)
-                ->whereIn('volunteers.id', $request->get('applicant'))
+                ->whereIn('volunteers.id', $appl)
                 ->select('*')
                 ->paginate(5);
             $table_name = 'volunteers';
