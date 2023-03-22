@@ -60,7 +60,6 @@ class IdGenerateController extends Controller
         $trainer = '';
         $userType = '';
 
-        dd($request->get('syndication_room_id'));
         if ($request->get('applicant') || $request->get('syndication_room_id')) {
             $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()[0];
             if ($request->get('applicant')) {
