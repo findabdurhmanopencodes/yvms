@@ -468,14 +468,20 @@
                                                             <li class="navi-item">
                                                                 <form method="POST" id="syndicPrintID" action="{{ route('session.training_center.generate', ['training_session' => Request::route('training_session'),'training_center'=>Request::route('training_center')]) }}">
                                                                 @csrf
-                                                                    <input type="hidden" name="syndication_room_id" id="sydic_room_id">
+                                                                    <input type="hidden" name="syndication_room_id" value="{{ $cindicationRoom->id }}">
                                                                 
-                                                                    <a href="#" onclick="syndicPrintID({{ $cindicationRoom->id }})" class="navi-link">
+                                                                    <button class="btn btn-default nav-link">
                                                                         <span class="navi-icon">
                                                                             <i class="flaticon2-print" id="i_text"></i>
                                                                         </span>
                                                                         <span class="navi-text">Print ID</span>
-                                                                    </a>
+                                                                    </button>
+                                                                    {{-- <a href="javascript: submit();" class="navi-link">
+                                                                        <span class="navi-icon">
+                                                                            <i class="flaticon2-print" id="i_text"></i>
+                                                                        </span>
+                                                                        <span class="navi-text">Print ID</span>
+                                                                    </a> --}}
                                                                 </form>
                                                             </li>
                                                         </ul>
@@ -780,8 +786,7 @@
             }
         });
 
-        function syndicPrintID(id) {
-            $("#sydic_room_id").val(id)
+        function syndicPrintID() {
             $("#syndicPrintID").submit();
         }
     </script>
