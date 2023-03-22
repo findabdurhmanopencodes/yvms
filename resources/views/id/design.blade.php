@@ -71,7 +71,7 @@
                                                 </td>
                                                 <td>
                                                     @if ($table_name == 'volunteers')
-                                                        {{ $applicant->first_name }}
+                                                        {{ $applicant->first_name }} {{ $applicant->father_name }}
                                                     @elseif ($userType == 'mop user')
                                                         {{ $applicant->user->first_name . ' ' . $applicant->user->father_name }}
                                                     @else
