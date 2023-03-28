@@ -325,7 +325,7 @@
                                         </li>
                                     @endcan
 
-                                    @dd(\App\Models\TrainingCenterBasedPermission::where('training_session_id', \App\Models\TrainingSession::availableSession()->first()->id)->where('user_id', Auth::user()->id)->where('permission_id', \Spatie\Permission\Models\Permission::findOrCreate('coFacilitator')->id)->first())
+                                    @dd(TrainingSession::availableSession()->first()->id)
                                     @can('coFacilitator')
                                         {{-- @if (\App\Models\TrainingCenterBasedPermission::where('training_session_id', \App\Models\TrainingSession::availableSession()->first()->id)->where('user_id', Auth::user()->id)->where('permission_id', \Spatie\Permission\Models\Permission::findOrCreate('coFacilitator')->id)->first()) --}}
                                             <li class="menu-item menu-item-active"
