@@ -326,7 +326,7 @@
                                     @endcan
 
                                     @can('coFacilitator')
-                                        @if (\App\Models\TrainingCenterBasedPermission::where('training_session_id', \App\Models\TrainingSession::availableSession()->first()->id)->where('user_id', Auth::user()->id)->where('permission_id', \Spatie\Permission\Models\Permission::findOrCreate('coFacilitator')->id)->first())
+                                        {{-- @if (\App\Models\TrainingCenterBasedPermission::where('training_session_id', \App\Models\TrainingSession::availableSession()->first()->id)->where('user_id', Auth::user()->id)->where('permission_id', \Spatie\Permission\Models\Permission::findOrCreate('coFacilitator')->id)->first()) --}}
                                             <li class="menu-item menu-item-active"
                                             aria-haspopup="true">
                                                 <a href="{{ route('session.sydication.list', ['training_session'=>Request::route('training_session'), 'training_center'=>\App\Models\TrainingCenterBasedPermission::where('training_session_id', \App\Models\TrainingSession::availableSession()->first()->id)->where('user_id', Auth::user()->id)->where('permission_id', \Spatie\Permission\Models\Permission::findOrCreate('coFacilitator')->id)->first()?->traininingCenter?->id]) }}"
@@ -336,7 +336,7 @@
                                                     <span class="menu-text">Take Attendance</span>
                                                 </a>
                                             </li>
-                                        @endif
+                                        {{-- @endif --}}
                                     @endcan
 
                                     @can('TrainingSchedule.index')
