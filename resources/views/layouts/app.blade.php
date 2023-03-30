@@ -326,7 +326,6 @@
 
                                     @can('coFacilitator')
                                         @if (request('training_session') != null && !Auth::user()->hasRole('super-admin'))
-                                        @dd(request('training_session'))
                                             @if (\App\Models\TrainingCenterBasedPermission::where('training_session_id', request('training_session')?->id)->where('user_id', Auth::user()->id)->where('permission_id', \Spatie\Permission\Models\Permission::findOrCreate('coFacilitator')?->id)->first())
                                                 <li class="menu-item menu-item-active" aria-haspopup="true">
                                                     <a href="{{ route('session.sydication.list', ['training_session' => Request::route('training_session'),'training_center' => \App\Models\TrainingCenterBasedPermission::where('training_session_id', request('training_session')?->id)->where('user_id', Auth::user()->id)->where('permission_id', \Spatie\Permission\Models\Permission::findOrCreate('coFacilitator')?->id)?->first()?->traininingCenter?->id]) }}"
