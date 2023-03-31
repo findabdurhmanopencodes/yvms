@@ -106,8 +106,8 @@
                                 {{ $capacityHistory->trainningSession?->end_date }}</td>
                             <td> --}}
                             <td>    
-                                {{-- <a class="btn" href="{{ route('session.region.intake_edit', ['training_session'=>$trainingSession->id,'region_id'=>$region->id]) }}"><i class="fa fa-edit"></i></a> --}}
-                                <span class="badge badge-danger badge-pill">Can't Change Capacity</span>
+                                <a class="btn" href="{{ route('session.region.intake_edit', ['training_session'=>$trainingSession->id,'region_id'=>$region->id]) }}"><i class="fa fa-edit"></i></a>
+                                {{-- <span class="badge badge-danger badge-pill">Can't Change Capacity</span> --}}
                             </td>
                         </tr>
                     @endforeach
