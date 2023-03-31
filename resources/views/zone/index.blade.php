@@ -69,7 +69,7 @@
         });
 
         $("#zon_quota").on("input", function(){
-            if ($("#zon_quota").val() >= 0) {
+            if ($("#zon_quota").val() > 0) {
                 value = $('#region').val();
                 if (value) {
                     $.ajax({
