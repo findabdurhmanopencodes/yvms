@@ -71,7 +71,7 @@
         });
 
         $("#woreda_quota").on("input", function(){
-            if ($("#woreda_quota").val() > 0) {
+            if ($("#woreda_quota").val() >= 0) {
                 value = $('#zone').val();
                 if (value) {
                     $.ajax({

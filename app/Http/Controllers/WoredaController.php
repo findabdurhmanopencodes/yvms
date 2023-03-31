@@ -199,6 +199,7 @@ class WoredaController extends Controller
             $a = $value->qoutaInpercent * 100;
             $sum += $a;
         }
+        dd($sum);
 
         $sum = ($sum - $request->prv_val)/100;
 
