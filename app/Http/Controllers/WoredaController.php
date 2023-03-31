@@ -197,6 +197,7 @@ class WoredaController extends Controller
         $sum = $request->qouta;
         foreach ($wor as $key => $value) {
             $a = $value->qoutaInpercent * 100;
+            dump($a);
             $sum += $a;
         }
         dd($sum);
