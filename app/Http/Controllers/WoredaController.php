@@ -99,7 +99,7 @@ class WoredaController extends Controller
         }
         $woredaInquota = $request->get('woreda_quota') / 100;
         // $woreda = new Woreda();
-        $request->validate(['name' => 'required|string|unique:woredas,name', 'code' => 'required|string|unique:woredas,code', 'woreda_quota'=>'required|numeric|min:0|not_in:0']);
+        $request->validate(['name' => 'required|string|unique:woredas,name', 'code' => 'required|string|unique:woredas,code', 'woreda_quota'=>'required|numeric|min:0']);
         // $zone->name = $request->get('name');
         // $zone->code = $request->get('code');
         // $zone->region_id = $request->get('region');
