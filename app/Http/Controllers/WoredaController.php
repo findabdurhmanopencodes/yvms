@@ -219,6 +219,7 @@ class WoredaController extends Controller
         $intake_exist = WoredaIntake::where('training_session_id', $trainingSession->id)->where('woreda_id', $woreda_id)->get();
         $zone = Woreda::where('id',$woreda_id)->get()->first()->zone;
         $woredaAllIntake = 0;
+        $sessions = TrainingSession::all();
         foreach (Woreda::where('status',1)->get() as $key => $value) {
             // $zoneAllIntake
             $zone_this = Woreda::where('id',$value->id)->get()->first()->zone;
@@ -229,7 +230,7 @@ class WoredaController extends Controller
         if ($zone->zoneIntakes->last()) {
             $woredaAllIntake = $zone->zoneIntakes?->where('training_session_id',$trainingSession->id)->last()?->intake - $woredaAllIntake;
             $woreda = Woreda::where('id', $woreda_id)?->get()[0];
-            return view('woreda.woreda_capacity', compact('woreda', 'trainingSession', 'intake_exist', 'curr_sess', 'woredaAllIntake'));
+            return view('woreda.woreda_capacity', compact('woreda', 'trainingSession', 'intake_exist', 'curr_sess', 'woredaAllIntake', 'sessions'));
         }else{
             return redirect()->route('woreda.index')->with('error', 'Specify Zone First!!');
         }

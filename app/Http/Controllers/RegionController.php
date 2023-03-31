@@ -233,7 +233,8 @@ class RegionController extends Controller
         $curr_sess = TrainingSession::where('start_date', '<=', $today)->where('end_date', '>=', $today)->get();
         $intake_exist = RegionIntake::where('training_session_id', $trainingSession->id)->where('region_id', $region_id)->get();
         $region = Region::where('id', $region_id)?->get()[0];
-        return view('region.region_capacity', compact('region', 'trainingSession', 'intake_exist', 'curr_sess'));
+        $sessions = TrainingSession::all();
+        return view('region.region_capacity', compact('region', 'trainingSession', 'intake_exist', 'curr_sess', 'sessions'));
     }
 
     public function regionIntakeStore(Request $request, TrainingSession $trainingSession, $region_id)
@@ -246,12 +247,12 @@ class RegionController extends Controller
     }
     public function regionIntakeEdit(TrainingSession $trainingSession, $region_id){
         $regions = Region::find($region_id);
-        $regionIntake = $regions->regionIntakes->last();
+        $regionIntake = $regions->regionIntakes->where('training_session_id', $trainingSession->id)->last();
         return view('region.regionIntake', compact('regionIntake', 'regions', 'trainingSession'));
     }
     public function regionIntakeUpdate(Request $request, TrainingSession $trainingSession, $region_id){
         $regions = Region::find($region_id);
-        $regionIntake = $regions->regionIntakes->last();
+        $regionIntake = $regions->regionIntakes->where('training_session_id', $trainingSession->id)->last();
         $regionIntake->intake = $request->get('capacity');
         $regionIntake->save();
         return redirect()->route('session.region.intake', ['training_session' => $trainingSession->id, 'region_id' => $region_id])->with('message', 'Region Intake updated successfully');
