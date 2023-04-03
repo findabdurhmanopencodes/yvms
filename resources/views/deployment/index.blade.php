@@ -119,7 +119,7 @@
             <div class="card-toolbar">
                 <div class="btn-group">
 
-                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
+                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_GRADUATED)
                         <a class="btn btn-sm btn-info"
                             href="{{ route('session.deployment.reset', [request()->route('training_session')]) }}">
                             <i class="fal fa-recycle"></i> Reset
