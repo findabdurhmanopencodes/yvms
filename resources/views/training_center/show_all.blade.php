@@ -118,7 +118,7 @@
                                     {{ $applicant->first_name }} {{ $applicant->father_name }}
                                 </td>
                                 <td>
-                                    {{ $userAttendance->where('user_id', $applicant->user?->id)->get()->count() }}
+                                    {{ $userAttendance->where('user_id', $applicant->user_id)->get()->count() }}
                                 </td>
                                 <td>
                                     @if ($applicant->acceptance_status == 6)
