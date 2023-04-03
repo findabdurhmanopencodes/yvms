@@ -655,6 +655,7 @@ class TraininingCenterController extends Controller
             foreach ($applicants as $key => $applicant) {
                 Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_GRADUATED]);
             }
+            $trainingSession->update(['status'=>Constants::TRAINING_SESSION_GRADUATED]);
         } else {
             foreach ($applicants as $key => $applicant) {
                 if ($applicant->user->attendances->count() >= $att_amount) {
@@ -669,6 +670,7 @@ class TraininingCenterController extends Controller
                 foreach ($att_count as $key => $applicant) {
                     Status::where('volunteer_id', $applicant->id)->update(['acceptance_status' => Constants::VOLUNTEER_STATUS_GRADUATED]);
                 }
+                $trainingSession->update(['status'=>Constants::TRAINING_SESSION_GRADUATED]);
             }
         }
         return redirect()->back()->with('message', 'Volunteer Successfully Graduated!!!');
