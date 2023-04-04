@@ -44,13 +44,15 @@ class DeployedVolunteer implements FromCollection ,WithHeadings,WithEvents
            AfterSheet::class => function(AfterSheet $event) {
             
 
-               $event->sheet->getDelegate()->getColumnDimension('A')->setWidth(30);
-               $event->sheet->getDelegate()->getColumnDimension('B')->setWidth(30);
-               $event->sheet->getDelegate()->getColumnDimension('C')->setWidth(30);
-               $event->sheet->getDelegate()->getColumnDimension('D')->setWidth(30);
-               $event->sheet->getDelegate()->getColumnDimension('E')->setWidth(30);
-               $event->sheet->getDelegate()->getColumnDimension('F')->setWidth(30);
-               $event->sheet->getDelegate()->getColumnDimension('G')->setWidth(30);
+               $event->sheet->getDelegate()->getColumnDimension('A')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('B')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('C')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('D')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('E')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('F')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('G')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('H')->setWidth(20);
+               $event->sheet->getDelegate()->getColumnDimension('I')->setWidth(20);
             //    $event->sheet->getProtection()->setPassword('password');
             //    $event->sheet->getProtection()->setSheet(true);
             //    $event->sheet->getStyle("E1:E".count($this->data)+1)->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);

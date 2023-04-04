@@ -71,11 +71,11 @@ class VolunteerDeploymentController extends Controller
                 $query->where('id', $request->get('fied_of_study'));
             });
         }
-        // if ($request->get('id_number')) {
-        //     $q->whereHas('trainingPlacement.approvedApplicant.volunteer', function ($query) use ($request) {
-        //         $query->where('id_number', $request->get('id_number'));
-        //     });
-        // }
+        if ($request->get('id_number')) {
+            $q->whereHas('trainingPlacement.approvedApplicant.volunteer', function ($query) use ($request) {
+                $query->where('id_number', $request->get('id_number'));
+            });
+        }
         $user = Auth::user();
         if ($user->getCordinatingRegion() != null) {
             $q->whereHas('woredaIntake.woreda.zone.region', function ($query) use ($user) {
@@ -95,9 +95,9 @@ class VolunteerDeploymentController extends Controller
 
         if ($request->get('print') == 2) {
             $filterData = $q->pluck('id')->toArray();
-            $volunteersDeps = DB::table('volunteer_deployments')->join('training_placements', 'training_placements.id', '=', 'volunteer_deployments.training_placement_id')->join('approved_applicants', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->join('volunteers', 'volunteers.id', 'approved_applicants.volunteer_id')->join('woreda_intakes', 'woreda_intakes.id', '=', 'volunteer_deployments.woreda_intake_id')->join('woredas', 'woredas.id', '=','woreda_intakes.woreda_id')->join('zones', 'zones.id', '=', 'woredas.zone_id')->join('regions', 'regions.id', '=', 'zones.region_id')->select('volunteers.id_number', 'volunteers.first_name', 'volunteers.father_name', 'volunteers.grand_father_name', 'regions.name as region_name', 'zones.name as zone_name', 'woredas.name as woreda_name')->whereIn('volunteer_deployments.id', $filterData)->get();
+            $volunteersDeps = DB::table('volunteer_deployments')->join('training_placements', 'training_placements.id', '=', 'volunteer_deployments.training_placement_id')->join('approved_applicants', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->join('volunteers', 'volunteers.id', 'approved_applicants.volunteer_id')->join('woredas as w', 'volunteers.woreda_id', '=', 'w.id')->join('zones as z', 'w.zone_id', '=', 'z.id')->join('regions as r', 'r.id', '=', 'z.region_id')->join('woreda_intakes', 'woreda_intakes.id', '=', 'volunteer_deployments.woreda_intake_id')->join('woredas', 'woredas.id', '=','woreda_intakes.woreda_id')->join('zones', 'zones.id', '=', 'woredas.zone_id')->join('regions', 'regions.id', '=', 'zones.region_id')->select('volunteers.id_number', 'volunteers.first_name', 'volunteers.father_name', 'volunteers.grand_father_name', 'r.name as volunteer_region', 'z.name as volunteer_zone', 'regions.name as region_name', 'zones.name as zone_name', 'woredas.name as woreda_name')->whereIn('volunteer_deployments.id', $filterData)->get();
             
-            return Excel::download(new DeployedVolunteer($volunteersDeps, ['ID Number', 'First Name','Middle Name','Last Name', 'Deployment Region', 'Deployment Zone', 'Deployment Woreda']),$trainingSession->moto.' deployed_volunteers.xlsx');
+            return Excel::download(new DeployedVolunteer($volunteersDeps, ['ID Number', 'First Name','Middle Name','Last Name', 'Volunteer Region', 'Volunteer Zone', 'Deployment Region', 'Deployment Zone', 'Deployment Woreda']),$trainingSession->moto.' deployed_volunteers.xlsx');
         }
         $fieldOfStudies = FeildOfStudy::all();
 
