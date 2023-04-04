@@ -72,7 +72,7 @@
                         <select name="fied_of_study" id="" class="form-control select2">
                             <option value="">Select Field of study</option>
                             @foreach ($fieldOfStudies as $fieldOfStudy)
-                                <option value="{{ $fieldOfStudy->id }}">{{ $fieldOfStudy->name }}</option>
+                                <option value="{{ $fieldOfStudy->id }}" {{ Request::get('fied_of_study') == $fieldOfStudy->id ? 'selected' : '' }}>{{ $fieldOfStudy->name }}</option>
                             @endforeach
                         </select>
                     </div>
