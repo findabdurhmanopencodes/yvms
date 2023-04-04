@@ -71,11 +71,11 @@ class VolunteerDeploymentController extends Controller
                 $query->where('id', $request->get('fied_of_study'));
             });
         }
-        if ($request->get('id_number')) {
-            $q->whereHas('trainingPlacement.approvedApplicant.volunteer', function ($query) use ($request) {
-                $query->where('id_number', $request->get('id_number'));
-            });
-        }
+        // if ($request->get('id_number')) {
+        //     $q->whereHas('trainingPlacement.approvedApplicant.volunteer', function ($query) use ($request) {
+        //         $query->where('id_number', $request->get('id_number'));
+        //     });
+        // }
         $user = Auth::user();
         if ($user->getCordinatingRegion() != null) {
             $q->whereHas('woredaIntake.woreda.zone.region', function ($query) use ($user) {

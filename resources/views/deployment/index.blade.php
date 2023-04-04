@@ -54,9 +54,9 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group col-3">
+                    {{-- <div class="form-group col-3">
                         <input type="text" name="id_number" class="form-control">
-                    </div>
+                    </div> --}}
                     <div class="form-group col-3">
                         <select name="training_center" id="" class="form-control select2">
                             <option value="">Select Training Center</option>
