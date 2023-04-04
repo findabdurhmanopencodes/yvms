@@ -16,7 +16,9 @@ use App\Models\Zone;
 use App\Models\ZoneIntake;
 use Illuminate\Http\Request;
 use App\Console\Commands\VoluteerDeploymentCommand;
+use App\Exports\DeployedVolunteer;
 use App\Models\DeploymentVolunteerAttendance;
+use App\Models\FeildOfStudy;
 use App\Models\HierarchyReport;
 use App\Models\Qouta;
 use App\Models\Region;
@@ -29,6 +31,7 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use PHPUnit\TextUI\XmlConfiguration\Constant;
 
 class VolunteerDeploymentController extends Controller
@@ -63,6 +66,16 @@ class VolunteerDeploymentController extends Controller
                 $query->where('id', $request->get('woreda'));
             });
         }
+        if ($request->get('fied_of_study')) {
+            $q->whereHas('trainingPlacement.approvedApplicant.volunteer.fieldOfStudy', function ($query) use ($request) {
+                $query->where('id', $request->get('fied_of_study'));
+            });
+        }
+        if ($request->get('id_number')) {
+            $q->whereHas('trainingPlacement.approvedApplicant.volunteer', function ($query) use ($request) {
+                $query->where('id_number', $request->get('id_number'));
+            });
+        }
         $user = Auth::user();
         if ($user->getCordinatingRegion() != null) {
             $q->whereHas('woredaIntake.woreda.zone.region', function ($query) use ($user) {
@@ -75,10 +88,18 @@ class VolunteerDeploymentController extends Controller
             });
         }
 
-        if ($request->get('print')) {
+        if ($request->get('print') == 1) {
             $pdf = PDF::loadView('report.deployed_volunteers_list', ['deployedVolunteers' => $q->get()]);
             return $pdf->stream();
         }
+
+        if ($request->get('print') == 2) {
+            $filterData = $q->pluck('id')->toArray();
+            $volunteersDeps = DB::table('volunteer_deployments')->join('training_placements', 'training_placements.id', '=', 'volunteer_deployments.training_placement_id')->join('approved_applicants', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')->join('volunteers', 'volunteers.id', 'approved_applicants.volunteer_id')->join('woreda_intakes', 'woreda_intakes.id', '=', 'volunteer_deployments.woreda_intake_id')->join('woredas', 'woredas.id', '=','woreda_intakes.woreda_id')->join('zones', 'zones.id', '=', 'woredas.zone_id')->join('regions', 'regions.id', '=', 'zones.region_id')->select('volunteers.id_number', 'volunteers.first_name', 'volunteers.father_name', 'volunteers.grand_father_name', 'regions.name as region_name', 'zones.name as zone_name', 'woredas.name as woreda_name')->whereIn('volunteer_deployments.id', $filterData)->get();
+            
+            return Excel::download(new DeployedVolunteer($volunteersDeps, ['ID Number', 'First Name','Middle Name','Last Name', 'Deployment Region', 'Deployment Zone', 'Deployment Woreda']),$trainingSession->moto.' deployed_volunteers.xlsx');
+        }
+        $fieldOfStudies = FeildOfStudy::all();
 
         $deployedVolunteers = $q->paginate(10);
 
@@ -94,7 +115,7 @@ class VolunteerDeploymentController extends Controller
         $trainingCenterCapacities = TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->get();
 
 
-        return view('deployment.index', compact('trainingSession', 'deployedVolunteers', 'trainingCenterCapacities', 'zoneIntakes', 'woredaIntakes', 'regionIntakes'));
+        return view('deployment.index', compact('trainingSession', 'deployedVolunteers', 'trainingCenterCapacities', 'zoneIntakes', 'woredaIntakes', 'regionIntakes', 'fieldOfStudies'));
     }
 
     public function resetDeployment()

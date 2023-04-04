@@ -86,4 +86,5 @@ class ImportExportController extends Controller
         $users = collect($userResources);
         return Excel::download(new CenterResource($users, ['ID Number', 'First Name','Middle Name','Last Name', 'phone number', 'gender', 'Training center', 'Resource name', 'Resource Amount']),TraininingCenter::find($id)->code.'_resource.xlsx');
     }
+
 }
