@@ -1096,12 +1096,18 @@ class TrainingSessionController extends Controller
         return view('training_session.resource.index', ['resources' => $resources->paginate(10)]);
     }
 
-    public function approvePlacment(TrainingSession $trainingSession)
+    public function approvePlacment(Request $request, TrainingSession $trainingSession)
     {
         $trainingSessionId = $trainingSession->id;
-        Artisan::call('id:generate ' . $trainingSessionId);
-        $trainingSession->update(['status' => Constants::TRAINING_SESSION_PLACEMENT_APPROVE]);
-        $trainingSession->save();
-        return redirect()->back()->with('message', 'Placment approved successfully');
+        if (!$request->get('deployment_approval')) {
+            Artisan::call('id:generate ' . $trainingSessionId);
+            $trainingSession->update(['status' => Constants::TRAINING_SESSION_PLACEMENT_APPROVE]);
+            $trainingSession->save();
+            return redirect()->back()->with('message', 'Placement approved successfully');
+        }else{
+            $trainingSession->update(['status' => Constants::TRAINING_SESSION_DEPLOYMENT_APPROVED]);
+            $trainingSession->save();
+            return redirect()->back()->with('message', 'Deployment approved successfully');
+        }
     }
 }

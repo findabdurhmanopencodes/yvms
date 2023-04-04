@@ -119,6 +119,7 @@
 
     <form id="approvePlacmentForm"
         action="{{ route('session.placment.approve', [request()->route('training_session')]) }}" method="POST">
+        <input type="hidden" name="deployment_approval" value="deployment_approval">
         @csrf
     </form>
 
