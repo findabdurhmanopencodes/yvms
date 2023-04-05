@@ -76,6 +76,17 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="form-group col-3">
+                        <select name="vol_region" id="" class="form-control select2">
+                            <option value="">Select Volunteer Region</option>
+                            @foreach ($regions as $region)
+                                <option value="{{ $regions->id }}"
+                                    @if (Request::get('vol_region') == $region->id) selected @endif>
+                                    {{ $region->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                     <button class="btn btn-primary btn-block"> Filter</button>
                 </div>
             </div>

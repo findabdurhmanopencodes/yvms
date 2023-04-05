@@ -66,6 +66,11 @@ class VolunteerDeploymentController extends Controller
                 $query->where('id', $request->get('woreda'));
             });
         }
+        if ($request->get('vol_region') != null) {
+            $q->whereHas('trainingPlacement.approvedApplicant.volunteer.woreda.zone.region', function ($query) use ($request) {
+                $query->where('id', $request->get('vol_region'));
+            });
+        }
         if ($request->get('fied_of_study')) {
             $q->whereHas('trainingPlacement.approvedApplicant.volunteer.fieldOfStudy', function ($query) use ($request) {
                 $query->where('id', $request->get('fied_of_study'));
@@ -100,6 +105,7 @@ class VolunteerDeploymentController extends Controller
             return Excel::download(new DeployedVolunteer($volunteersDeps, ['ID Number', 'First Name','Middle Name','Last Name', 'Volunteer Region', 'Volunteer Zone', 'Deployment Region', 'Deployment Zone', 'Deployment Woreda']),$trainingSession->moto.' deployed_volunteers.xlsx');
         }
         $fieldOfStudies = FeildOfStudy::all();
+        $regions = Region::all();
 
         $deployedVolunteers = $q->paginate(10);
 
@@ -115,7 +121,7 @@ class VolunteerDeploymentController extends Controller
         $trainingCenterCapacities = TrainingCenterCapacity::where('training_session_id', $trainingSession->id)->get();
 
 
-        return view('deployment.index', compact('trainingSession', 'deployedVolunteers', 'trainingCenterCapacities', 'zoneIntakes', 'woredaIntakes', 'regionIntakes', 'fieldOfStudies'));
+        return view('deployment.index', compact('trainingSession', 'deployedVolunteers', 'trainingCenterCapacities', 'zoneIntakes', 'woredaIntakes', 'regionIntakes', 'fieldOfStudies', 'regions'));
     }
 
     public function resetDeployment()
