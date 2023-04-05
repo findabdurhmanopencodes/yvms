@@ -80,7 +80,7 @@
                         <select name="vol_region" id="" class="form-control select2">
                             <option value="">Select Volunteer Region</option>
                             @foreach ($regions as $region)
-                                <option value="{{ $regions->id }}"
+                                <option value="{{ $region->id }}"
                                     @if (Request::get('vol_region') == $region->id) selected @endif>
                                     {{ $region->name }}
                                 </option>
