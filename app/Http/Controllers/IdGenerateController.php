@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants;
 use App\Models\ApprovedApplicant;
+use App\Models\CindicationRoom;
 use App\Models\IDcount;
 use App\Models\Status;
 use App\Models\Training;
@@ -41,9 +42,13 @@ class IdGenerateController extends Controller
             ->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')
             ->leftJoin('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
             ->where('trainining_centers.id', $training_center_id)
-            ->where('statuses.acceptance_status', '>=', Constants::VOLUNTEER_STATUS_CHECKEDIN)
-            ->select('*')
-            ->paginate(10);
+            ->where('statuses.acceptance_status', '>=', Constants::VOLUNTEER_STATUS_CHECKEDIN);
+            
+        if ($request->query('searchbyid')) {
+            $applicants->where('id_number', $request->query('searchbyid'));
+        }
+
+        $applicants = $applicants->select('*')->paginate(10);
         return view('id.checkedIn', compact('applicants', 'training_center_id'));
     }
     public function idGenerate(TrainingSession $trainingSession, Request $request, $training_center_id)
@@ -55,8 +60,15 @@ class IdGenerateController extends Controller
         $trainer = '';
         $userType = '';
 
-        if ($request->get('applicant')) {
+        if ($request->get('applicant') || $request->get('syndication_room_id')) {
             $trainingCenter = TraininingCenter::where('id', $training_center_id)?->get()[0];
+            if ($request->get('applicant')) {
+                $appl = $request->get('applicant');
+            }
+            if ($request->get('syndication_room_id')) {
+                $syndicationRoom = CindicationRoom::find($request->get('syndication_room_id'));
+                $appl = $syndicationRoom->volunteers->pluck('id')->toArray();
+            }
             $applicants = DB::table('volunteers')
                 ->join('statuses', 'statuses.volunteer_id', '=', 'volunteers.id')
                 // ->join('users', 'users.id','=', 'volunteers.user_id')
@@ -66,9 +78,10 @@ class IdGenerateController extends Controller
                 ->leftJoin('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
                 ->where('trainining_centers.id', $training_center_id)
                 ->where('statuses.acceptance_status', '>=', Constants::VOLUNTEER_STATUS_CHECKEDIN)
-                ->whereIn('volunteers.id', $request->get('applicant'))
+                ->whereIn('volunteers.id', $appl)
                 ->select('*')
                 ->get();
+                
 
             $paginate_apps = DB::table('volunteers')
                 ->join('statuses', 'statuses.volunteer_id', '=', 'volunteers.id')
@@ -79,7 +92,7 @@ class IdGenerateController extends Controller
                 ->leftJoin('trainining_centers', 'trainining_centers.id', '=', 'training_center_capacities.trainining_center_id')
                 ->where('trainining_centers.id', $training_center_id)
                 // ->where('statuses.acceptance_status',Constants::VOLUNTEER_STATUS_CHECKEDIN)
-                ->whereIn('volunteers.id', $request->get('applicant'))
+                ->whereIn('volunteers.id', $appl)
                 ->select('*')
                 ->paginate(5);
             $table_name = 'volunteers';
@@ -229,6 +242,7 @@ class IdGenerateController extends Controller
     public function pdfDownload(Request $request, TrainingSession $trainingSession, VolunteerDeployment $volunteerDeployment)
     {
         set_time_limit(2000);
+        ini_set('memory_limit', '9000M');
         $session_id = $trainingSession?->id;
 
         if ($request->get('checkVal') == 'deployment') {
@@ -297,6 +311,8 @@ class IdGenerateController extends Controller
 
     public function certificateDownload(Request $request, TrainingSession $trainingSession)
     {
+        set_time_limit(3000);
+        ini_set('memory_limit', '20000M');
         $training_session_id = $trainingSession->id;
         $diff_arr = explode(',', $trainingSession->dateDiff());
         if ($diff_arr[0] > 0) {

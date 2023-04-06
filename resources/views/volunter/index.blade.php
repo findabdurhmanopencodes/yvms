@@ -52,7 +52,6 @@
         .select2-container--below {
             width: 100% !important;
         }
-
     </style>
 @endpush
 
@@ -159,15 +158,16 @@
 
                             <div class="col-sm-4">
                                 <label for="gpa" class=" col-sm-12 col-form-label">G.p.A</label>
-                                <input class="form-control" type="number" name="gpa" id="gpa" min="2" max="4">
+                                <input class="form-control" type="number" name="gpa" id="gpa" min="2"
+                                    max="4">
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label  for="graduation_date" class=" col-sm-12 col-form-label">Year Of Gruduation</label>
+                                    <label for="graduation_date" class=" col-sm-12 col-form-label">Year Of
+                                        Gruduation</label>
                                     <input name="graduation_date" id="graduation_date"
-                                        class="@error('graduation_date') is-invalid @enderror form-control"
-                                        type="text" value="{{ old('graduation_date') }}" max="4"
-                                        min="1" />
+                                        class="@error('graduation_date') is-invalid @enderror form-control" type="text"
+                                        value="{{ old('graduation_date') }}" max="4" min="1" />
 
                                     @error('graduation_date')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -219,13 +219,14 @@
             <div class="datatable datatable-default datatable-bordered datatable-loaded">
                 <div class="btn-group float-right mb-4">
                     @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
-
-                    <a class="btn btn-primary"
-                        href="{{ route('verify.all', ['training_session' => Request::route('training_session')]) }}">Verify
-                        All</a>
-                    <a class="btn btn-info"
-                        href="{{ route('resetVerify', ['training_session' => Request::route('training_session')]) }}">Reset
-                        Verification </a>
+                        <a class="btn btn-primary"
+                            href="{{ route('verify.all', ['training_session' => Request::route('training_session')]) }}">Verify
+                            All</a>
+                        @can('super-admin')
+                            <a class="btn btn-info"
+                                href="{{ route('resetVerify', ['training_session' => Request::route('training_session')]) }}">Reset
+                                Verification </a>
+                        @endcan
                     @endif
                 </div>
                 <table class="table table-bordered">

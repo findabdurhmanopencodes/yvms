@@ -664,7 +664,8 @@ class TrainingSessionController extends Controller
         if (!Auth::user()->can('TrainingSession.screen')) {
             return abort(403);
         }
-        set_time_limit(1000);
+        set_time_limit(2000);
+        ini_set("memory_limit","100000M");
         $arr = [];
         $accepted_arr = [];
         $sum = 0;
@@ -826,6 +827,7 @@ class TrainingSessionController extends Controller
     public function resetScreen($training_session_id)
     {
 
+        set_time_limit(2000);
         if (count(TrainingPlacement::where(['training_session_id' => request()->route('training_session')])->get()) > 0) {
 
             return redirect()->back()->withErrors('Reseting Screening Is Not Allowed Because Training Placement is Already Done!!  Reset Training Placement To do this Task ');
@@ -994,9 +996,8 @@ class TrainingSessionController extends Controller
         return view('training_session.centers', compact('trainingSession', 'trainingCenterCapacities'));
     }
 
-    public function trainingCenterShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter)
+    public function trainingCenterShow(TrainingSession $trainingSession, TraininingCenter $trainingCenter, Request $request)
     {
-
         $permission = Permission::findOrCreate('centerCooridnator');
         if(!Auth::user()->hasRole(Constants::SUPER_ADMIN)){
             $centers = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', Auth::user()->id)->where('permission_id', $permission->id)->where('trainining_center_id', $trainingCenter->id)->count();
@@ -1004,7 +1005,12 @@ class TrainingSessionController extends Controller
                 return abort(403);
             }
         }
-        $cindicationRooms = CindicationRoom::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id)->get();
+        $cindicationRooms = CindicationRoom::where('training_session_id', $trainingSession->id)->where('trainining_center_id', $trainingCenter->id);
+        if ($request->get('id_number')) {
+            $id_number = $request->get('id_number');
+            $cindicationRooms->whereRelation('volunteers','id_number', $id_number);
+        }
+        $cindicationRooms = $cindicationRooms->get();
         $miniSide = 'aside-minimize';
         // $volunteers = Volunteer::whereRelation('approvedApplicant.trainingPlacement.trainingCenterCapacity.trainingCenter', 'id', $trainingCenter->id)->count();
         $tcId = $trainingCenter->id;
@@ -1090,12 +1096,18 @@ class TrainingSessionController extends Controller
         return view('training_session.resource.index', ['resources' => $resources->paginate(10)]);
     }
 
-    public function approvePlacment(TrainingSession $trainingSession)
+    public function approvePlacment(Request $request, TrainingSession $trainingSession)
     {
         $trainingSessionId = $trainingSession->id;
-        Artisan::call('id:generate ' . $trainingSessionId);
-        $trainingSession->update(['status' => Constants::TRAINING_SESSION_PLACEMENT_APPROVE]);
-        $trainingSession->save();
-        return redirect()->back()->with('message', 'Placment approved successfully');
+        if (!$request->get('deployment_approval')) {
+            Artisan::call('id:generate ' . $trainingSessionId);
+            $trainingSession->update(['status' => Constants::TRAINING_SESSION_PLACEMENT_APPROVE]);
+            $trainingSession->save();
+            return redirect()->back()->with('message', 'Placement approved successfully');
+        }else{
+            $trainingSession->update(['status' => Constants::TRAINING_SESSION_DEPLOYMENT_APPROVED]);
+            $trainingSession->save();
+            return redirect()->back()->with('message', 'Deployment approved successfully');
+        }
     }
 }

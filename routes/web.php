@@ -100,6 +100,7 @@ Route::get('importWoreda', [WoredaController::class, 'import']);
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
+Route::view('developers', 'developers')->name('developers');
 
 Route::get('/', function () {
     return view('menu.home');
@@ -224,6 +225,7 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' =
     Route::get('{training_center}/{cindication_room}/{training}/volunteers', [CindicationRoomController::class, 'volunteers'])->name('cinidcation_room.training.volunteers');
 
     Route::resource('{training_center}/cindication_room', CindicationRoomController::class);
+    
     Route::resource('training_master_placement', TrainingMasterPlacementController::class);
 
     Route::get('{training_center}/trainer/list', [IdGenerateController::class, 'TrainerList'])->name('training_center.trainer_list');
@@ -268,6 +270,13 @@ Route::group(['prefix' => '{training_session}', 'middleware' => ['auth'], 'as' =
     Route::get('{woreda_id}/woreda/capacity/edit', [WoredaController::class, 'woredaIntakeEdit'])->name('woreda.intake_edit');
     Route::put('{woreda_id}/woreda/capacity/update', [WoredaController::class, 'woredaIntakeUpdate'])->name('woreda_intake.update');
     Route::post('/download/idPDF', [IdGenerateController::class, 'pdfDownload'])->name('id.download');
+    Route::post('/center-update-profile', [TraininingCenterController::class, 'centerUpdateProfile'])->name('center.update.profile');
+    Route::get('/center/volunteers/{training_center}', [ImportExportController::class, 'placedVolunteers'])->name('center.volunteers.export');
+    Route::get('/resource/center/{training_center}', [ImportExportController::class, 'exportResourceVolunteer'])->name('resource.volunteers.export');
+
+    Route::get('{training_center}/cindication_room/{cindication_room}/export', [CindicationRoomController::class, 'export'])->name('cindication_room.export');
+
+    Route::get('{training_center}/sydication/list', [CindicationRoomController::class, 'list'])->name('sydication.list');
 });
 // Route::get('result/', [VolunteerController::class, 'result'])->name('result');
 Route::middleware(['auth'])->group(function () {

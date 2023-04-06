@@ -40,7 +40,8 @@ class UsersImport implements ToCollection,  WithStartRow
         foreach ($arr as $key => $value) {
             
             if ($schedule->checkDateAtt() == true) {
-                $training_schedule_id = TrainingSchedule::where('training_session_training_id', TrainingSessionTraining::where('training_session_id', $this->trainingSession->id)->pluck('id'))->where('schedule_id', $schedule->id)->get()[0]->id;
+                $training_schedule_id = TrainingSchedule::whereIn('training_session_training_id', TrainingSessionTraining::where('training_session_id', $this->trainingSession->id)->pluck('id'))->where('schedule_id', $schedule->id)->get()[0]->id;
+                // dd($training_schedule_id);
                 
                 $user_id = User::whereRelation('volunteer', 'id_number', $value[0])->get()[0]->id;
 

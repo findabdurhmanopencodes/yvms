@@ -82,6 +82,17 @@
                                                 <span class="navi-text">Export</span>
                                             </a>
                                         </li>
+                                        @can('placedvolunteer.export')
+                                            <li class="navi-item">
+                                                <a href="{{ route('session.center.volunteers.export', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}"
+                                                    class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="fa fa-file-export"></i>
+                                                    </span>
+                                                    <span class="navi-text">Export CheckedIn Volunteers</span>
+                                                </a>
+                                            </li>
+                                        @endcan
                                     </ul>
                                     <!--end::Navigation-->
                                 </div>
@@ -325,6 +336,14 @@
                             Cindication Rooms</span>
                     </h3>
                     <div class="card-toolbar">
+                        <form action="{{ route('session.training_center.show', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id]) }}" method="GET" id="searchForm">
+                            <div class="input-icon">
+                                <input type="text" name="id_number" class="form-control" placeholder="Search..." id="search_by_syn"/>
+                                <span>
+                                    <i class="flaticon2-search-1 text-muted"></i>
+                                </span>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="pt-0 card-body">
@@ -392,7 +411,7 @@
                                         <td>{{ $cindicationRoom->number_of_volunteers }}</td>
                                         <td>{{ count($cindicationRoom->volunteers) }}</td>
                                         <td>
-                                            <a href="#"
+                                            {{-- <a href="#"
                                                 onclick="confirmDeleteRoom('{{ route('session.cindication_room.destroy', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room' => $cindicationRoom->id]) }}')">
                                                 <i class="fal fa-trash"></i>
                                             </a>
@@ -400,6 +419,76 @@
                                                 href="{{ route('session.cindication_room.show', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room' => $cindicationRoom->id]) }}">
                                                 <i class="fal fa-eye"></i>
                                             </a>
+                                            <a
+                                                href="{{ route('session.cindication_room.export', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room' => $cindicationRoom->id]) }}">
+                                                <i class="fal fa-users"></i>
+                                            </a>
+                                            <form method="POST" action="{{ route('session.training_center.generate', ['training_session' => Request::route('training_session'),'training_center'=>Request::route('training_center')]) }}">
+                                                <input type="hidden" name="syndication_room_id" value="{{ $cindicationRoom }}">
+                                                <a href="#">
+                                                    <i class="flaticon2-print" id="i_text"></i>
+                                            </a>
+                                            </form> --}}
+                                            <div class="my-1 my-lg-0">
+                                                <div class="dropdown dropdown-inline">
+                                                    <a href="#" class="px-5 btn btn-sm btn-primary font-weight-bolder dropdown-toggle"
+                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</a>
+                                                    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="">
+                                                        <!--begin::Navigation-->
+                                                        <ul class="navi navi-hover">
+                                                            <li class="navi-item">
+                                                                <a href="#"
+                                                                    onclick="confirmDeleteRoom('{{ route('session.cindication_room.destroy', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room' => $cindicationRoom->id]) }}')" class="navi-link">
+                                                                    <span class="navi-icon">
+                                                                        <i class="fal fa-trash"></i>
+                                                                    </span>
+                                                                    <span class="navi-text">Remove Syndication room</span>
+                                                                </a>
+                                                            </li>
+                    
+                                                            <li class="navi-item">
+                                                                <a href="{{ route('session.cindication_room.show', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room' => $cindicationRoom->id]) }}"
+                                                                    class="navi-link">
+                                                                    <span class="navi-icon">
+                                                                        <i class="fal fa-eye"></i>
+                                                                    </span>
+                                                                    <span class="navi-text">Show Syndication room </span>
+                                                                </a>
+                                                            </li>
+                    
+                                                            <li class="navi-item">
+                                                                <a href="{{ route('session.cindication_room.export', ['training_session' => Request::route('training_session')->id, 'training_center' => $trainingCenter->id, 'cindication_room' => $cindicationRoom->id]) }}"
+                                                                    class="navi-link">
+                                                                    <span class="navi-icon">
+                                                                        <i class="fal fa-users"></i>
+                                                                    </span>
+                                                                    <span class="navi-text">Export Volunteers</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="navi-item">
+                                                                <form method="POST" id="syndicPrintID" action="{{ route('session.training_center.generate', ['training_session' => Request::route('training_session'),'training_center'=>Request::route('training_center')]) }}">
+                                                                @csrf
+                                                                    <input type="hidden" name="syndication_room_id" value="{{ $cindicationRoom->id }}">
+                                                                
+                                                                    <button class="btn btn-default nav-link">
+                                                                        <span class="navi-icon">
+                                                                            <i class="flaticon2-print" id="i_text"></i>
+                                                                        </span>
+                                                                        <span class="navi-text">Print ID</span>
+                                                                    </button>
+                                                                    {{-- <a href="javascript: submit();" class="navi-link">
+                                                                        <span class="navi-icon">
+                                                                            <i class="flaticon2-print" id="i_text"></i>
+                                                                        </span>
+                                                                        <span class="navi-text">Print ID</span>
+                                                                    </a> --}}
+                                                                </form>
+                                                            </li>
+                                                        </ul>
+                                                        <!--end::Navigation-->
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -689,6 +778,16 @@
                     $('#deleteRoomForm').submit();
                 }
             });
+        }
+
+        $('#search_by_syn').on('keypress',function(e) {
+            if(e.which == 13) {
+                $('#searchForm').submit();
+            }
+        });
+
+        function syndicPrintID() {
+            $("#syndicPrintID").submit();
         }
     </script>
 @endpush

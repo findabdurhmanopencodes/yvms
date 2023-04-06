@@ -65,7 +65,7 @@ class Schedule extends Model implements Auditable
         $check_date_att = false;
         $date_now_et = DateTimeFactory::fromDateTime(new DateTime(Carbon::now()))->format('d/m/Y');
 
-        if ($this->dateET() == $date_now_et) {
+        if ($this->dateET() <= $date_now_et) {
             $check_date_att = true;
         }
         return $check_date_att;

@@ -19,6 +19,7 @@ use App\Models\FeildOfStudy;
 use App\Models\File;
 use App\Models\Qouta;
 use App\Models\Region;
+use App\Models\RegionIntake;
 use App\Models\Status;
 use App\Models\TrainingCenterCapacity;
 use App\Models\TrainingDocument;
@@ -107,6 +108,10 @@ class VolunteerController extends Controller
             $phone = $request->get('phone');
             $woreda_id = $request->get('woreda_id');
             $gpa = $request->get('gpa');
+            $id_number =  $request->get('id_number');
+            if (!empty($id_number)) {
+                $applicants = $applicants->where('id_number', $id_number);
+            }
             if (!empty($first_name)) {
                 $applicants = $applicants->where('first_name', 'like', '%' . $first_name . '%');
             }
@@ -188,17 +193,10 @@ class VolunteerController extends Controller
      */
     public function edit(TrainingSession $trainingSession, $id)
     {
+        $field_of_studies = FeildOfStudy::all();
+        $educational_levels = EducationalLevel::$educationalLevel;
         $volunteer = Volunteer::find($id);
-        $before = Carbon::now()->subYears(18)->format('d/m/Y');
-        $after = Carbon::now()->subYears(35)->format('d/m/Y');
-        $disabilities = Disablity::all();
-        $regions = Region::where('status', '=', 1)->get();
-        $educationLevels = EducationalLevel::$educationalLevel;
-        $fields = FeildOfStudy::all();
-        $objectiveTexts = TranslationText::where('translation_type', 0)->get();
-        $birth_date = DateTimeFactory::fromDateTime(new DateTime($volunteer->dob))->format('d/m/Y');
-        $appTexts = TranslationText::where('translation_type', 1)->get();
-        return view('volunter.edit', compact('volunteer', 'trainingSession', 'before', 'after', 'disabilities', 'regions', 'educationLevels', 'fields', 'objectiveTexts', 'appTexts', 'birth_date'));
+        return view('volunter.edit', compact('field_of_studies', 'educational_levels', 'volunteer'));
     }
 
     /**
@@ -208,9 +206,21 @@ class VolunteerController extends Controller
      * @param  \App\Models\Volunteer  $volunteer
      * @return \Illuminate\Http\Response
      */
-    public function update(TrainingSession $trainingSession, Request $request, Volunteer $volunteer)
+    public function update(TrainingSession $trainingSession, $id, Request $request)
     {
-        dd($request);
+        $volunteer =  Volunteer::find($id);
+        $first_name = $request->get('first_name');
+        $middle_name = $request->get('middle_name');
+        $last_name =  $request->get('last_name');
+        $phone = $request->get('phone');
+        $email = $request->get('email');
+        $gender = $request->get('gender');
+        $education_level = $request->get('education_level');
+        $gpa = $request->get('gpa');
+        $field_of_study = $request->get('Field_of_study');
+
+        $volunteer->update(['first_name'=>$first_name, 'father_name'=>$middle_name, 'grand_father_name'=>$last_name, 'phone'=>$phone, 'email'=>$email, 'gender'=>$gender, 'educational_level'=>$education_level, 'gpa'=>$gpa, 'field_of_study_id'=>$field_of_study]);
+        return redirect()->route('session.volunteer.all', ['training_session'=>$trainingSession->id])->with('message', 'volunteer successfully updated');
     }
 
     /**
@@ -477,7 +487,11 @@ class VolunteerController extends Controller
             $woreda_id = $request->get('woreda_id');
             $gpa = $request->get('gpa');
             $status = $request->get('acceptance_status');
+            $id_number =  $request->get('id_number');
 
+            if (!empty($id_number)) {
+                $applicants = $applicants->where('id_number', $id_number);
+            }
             if (!empty($first_name)) {
                 $applicants = $applicants->where('first_name', 'like', '%' . $first_name . '%');
             }
@@ -522,11 +536,20 @@ class VolunteerController extends Controller
         return view('volunter.detail', ['volunteer' => $volunteer]);
     }
     public function exportVolunteers(TrainingSession $trainingSession){
-        $all_volunteers = DB::table('volunteers')->where('training_session_id', $trainingSession->id)->select(['id_number', 'first_name', 'father_name', 'grand_father_name', 'phone', 'email', 'gender', 'dob', 'gpa', 'contact_name', 'contact_phone'])->get();
+        $all_volunteers = DB::table('volunteers as v')
+        ->join('woredas as w', 'v.woreda_id', '=', 'w.id')
+        ->join('zones as z', 'w.zone_id', '=', 'z.id')
+        ->join('regions as r', 'z.region_id', '=', 'r.id')
+        ->leftJoin('approved_applicants', 'v.id', '=', 'approved_applicants.volunteer_id')
+        ->leftJoin('training_placements', 'approved_applicants.id', '=', 'training_placements.approved_applicant_id')
+        ->leftJoin('training_center_capacities', 'training_placements.training_center_capacity_id', '=', 'training_center_capacities.id')
+        ->leftJoin('trainining_centers as tc', 'tc.id', '=', 'training_center_capacities.trainining_center_id')->where('v.training_session_id', $trainingSession->id)->select(['v.id_number', 'v.first_name', 'v.father_name', 'v.grand_father_name', 'v.phone', 'v.gender', 'r.name as region_name', 'z.name as zone_name','w.name as woreda_name', 'tc.name as center_name'])->get();
 
-        $woredas = Woreda::all()->pluck('name');
+        // dd($all_volunteers[0]);
 
-        return Excel::download(new ApplicantExport($woredas,[], ['First Name', 'Father Name', 'Grand Father Name', 'Phone Number', 'E-mail', 'Gender', 'Woreda', 'Date of Birth', 'GPA', 'Contact Name', 'Contact Phone']), 'MopYVMS.xlsx');
+        // $woredas = Woreda::all()->pluck('name');
+
+        return Excel::download(new ApplicantExport($all_volunteers, ['ID Number','First Name', 'Father Name', 'Grand Father Name', 'Phone Number', 'Gender', 'Region','Zone','Woreda', 'Training Center']), 'MopYVMS.xlsx');
 
     }
     public function importVolunteers(Request $request, TrainingSession $trainingSession){

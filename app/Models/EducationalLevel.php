@@ -25,5 +25,8 @@ class EducationalLevel extends Model implements Auditable
         0 => 'BSc',
         1 => 'MSc',
         2 => 'PHD',
+        3 => 'Diploma',
+        4 => 'Level 4',
+        5 => 'BA',
     ];
 }

@@ -43,7 +43,7 @@ class TrainingCenterBasedPermissionController extends Controller
     {
         $data = $request->validated();
         $permission = Permission::findById($data['permission_id']);
-        $trainingCenterBasedPermissionQuery = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', $data['user_id'])->where('trainining_center_id', $data['training_center_id'])->where('permission_id', $data['permission_id'])->where('permission_id', $data['permission_id']);
+        $trainingCenterBasedPermissionQuery = TrainingCenterBasedPermission::where('training_session_id', $trainingSession->id)->where('user_id', $data['user_id'])->where('trainining_center_id', $data['training_center_id'])->where('cindication_room_id', $data['cindication_room_id'])->where('permission_id', $data['permission_id']);
         $trainingCenterBasedPermissionCount = $trainingCenterBasedPermissionQuery->count();
         if ($trainingCenterBasedPermissionCount == 0) {
             $validData = [
@@ -53,14 +53,13 @@ class TrainingCenterBasedPermissionController extends Controller
                 'permission_id' => $data['permission_id'],
             ];
             if(isset($data['cindication_room_id'])){
-
-            if($data['cindication_room_id']!=null){
-                $validData['cindication_room_id'] = $data['cindication_room_id'];
-            }
+                if($data['cindication_room_id']!=null){
+                    $validData['cindication_room_id'] = $data['cindication_room_id'];
+                }
             }
             TrainingCenterBasedPermission::create($validData);
         } else {
-            $trainingCenterBasedPermissionQuery->latest()->first()->delete();
+            // $trainingCenterBasedPermissionQuery->latest()->first()->delete();
             return redirect()->back()->with(['message' => 'User role removed successfully']);
         }
         return redirect()->back()->with(['message' => 'User role added successfully']);

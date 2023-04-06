@@ -77,7 +77,7 @@
                         <div class="card-body">
                             <div class="form-group row">
                                 <div class="col-lg-6">
-                                    <label>Attendance File: </label>
+                                    <label>Volunteer File: </label>
                                     <input type="file" name="attendance" />
                                 </div>
                             </div>
@@ -107,6 +107,11 @@
                     <form  method="GET" action="{{ route('session.volunteer.all', ['training_session' => Request::route('training_session')]) }}" >
                         @csrf
                         <div class="row">
+                            <div class="col-sm-4">
+                                <label for="name" class=" col-sm-12 col-form-label">ID number</label>
+                                <input class="form-control" type="text" name="id_number" id="id_number">
+
+                            </div>
                             <div class="col-sm-4">
                                 <label for="name" class=" col-sm-12 col-form-label">First Name</label>
                                 <input class="form-control" type="text" name="first_name" id="name">

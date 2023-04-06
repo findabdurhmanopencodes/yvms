@@ -33,6 +33,12 @@ class TrainingPlacementController extends Controller
      */
     public function index(Request $request,TrainingSession $trainingSession)
     {
+        $user = Auth::user();
+        if (!$user->can('TraininingCenter.placement')){
+            return abort(403);
+        }
+        set_time_limit(2000);
+        ini_set("memory_limit","100000M");
         // $trainingSession = TrainingSession::availableSession()->first();
         $q = TrainingPlacement::query()->where('training_placements.training_session_id', $trainingSession->id);
         if ($request->get('training_center') != null) {
@@ -128,6 +134,8 @@ class TrainingPlacementController extends Controller
 
     public function place(Request $request,$trainingSessionId)
     {
+        set_time_limit(7000);
+        ini_set("memory_limit","100000M");
         // $output = shell_exec('php ../artisan training:place');
         // if (!$output)
         //     $message = 'Succefully Placed Volunteers';

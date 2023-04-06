@@ -22,7 +22,7 @@
         @foreach ($html as $key=>$val)
             <div style="width: 201.6px; height: 326.4px; background-size: cover; background-image: url('img/mopfrontdes.png'); break-after: page; transform: rotate(90deg); transform-origin: 159px 159px; page-break-after: always; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: -43px; margin-left: -35px;">
                 <div style="position: relative; left: 54px; top: 120px;">
-                    @if ($val->picture()->name)
+                    @if ($val->picture())
                         <img src="{{ public_path('/storage/training session/'.$session_id.'/profile pictures/'.$val->picture()->name) }}" alt="" style="width: 91px; height: 89.7px; border-radius: 50%;">
                     @else
                         <img src="img/profile_empty.jpg" style="width: 91px; height: 89.7px; border-radius: 50%;">
@@ -65,7 +65,7 @@
                 </p>
                 <div style="position: relative; float: right; top: -79px;">
                     {{-- <img src="data:image{{ $exp[$key+1] }}" alt=""> --}}
-                    <img src="{{ $val->barQrVolunteer->qr_code }}" alt="">
+                    <img src="{{ $val->barQrVolunteer?->qr_code }}" alt="">
                 </div>
             </div>
 
@@ -80,7 +80,7 @@
                     +251(0)471117588
                 </p>
                 <div style="position: relative; float: right; top: -68px;">
-                    @if ($val->picture()->name)
+                    @if ($val->picture())
                         <img src="{{ public_path('/storage/training session/'.$session_id.'/profile pictures/'.$val->picture()->name) }}" alt="" style="width: 67px; height: 61px; border-radius: 5%;">
                     @else
                         <img src="img/profile_empty.jpg" alt="" style="width: 67px; height: 61px; border-radius: 5%;">
@@ -94,7 +94,7 @@
                 </p>
                 <div style="position: relative; left: 142px; top: -60px;">
                     {{-- <img src="data:image{{ $expBar[$key+1] }}" style="color: black"> --}}
-                    <img src="{{ $val->barQrVolunteer->bar_code }}" style="color: black" alt="">
+                    <img src="{{ $val->barQrVolunteer?->bar_code }}" style="color: black" alt="">
                 </div>
                 <p style="position: relative; left: 8px; top: -80px; background-color: inherit; font-size: 10px; color: black; font-style: italic; letter-spacing: 0.5px;">
                     <strong>Nationality:</strong>
@@ -136,7 +136,7 @@
             @if ($key%8 !== 0 || $key == 0)
                 <div style="width: 201.6px; height: 326.4px; background-size: cover; background-image: url('img/mopfrontdes.png'); float: left; margin-right: 30px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: -30px;">
                     <div style="position: relative; left: 54px; top: 120px;">
-                        @if ($val->picture()->name)
+                        @if ($val->picture())
                             <img src="{{ public_path('/storage/training session/'.$session_id.'/profile pictures/'.$val->picture()->name) }}" style="width: 91px; height: 89.7px; border-radius: 50%;">
                         @else
                             <img src="img/profile_empty.jpg" alt="" style="width: 91px; height: 89.7px; border-radius: 50%;">
@@ -187,7 +187,7 @@
                 </div>
                 <div style="width: 201.6px; height: 326.4px; background-size: cover; background-image: url('img/mopfrontdes.png'); float: left; margin-right: 30px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: -30px;">
                     <div style="position: relative; left: 54px; top: 120px;">
-                        @if ($val->picture()->name)
+                        @if ($val->picture())
                             <img src="{{ public_path('/storage/training session/'.$session_id.'/profile pictures/'.$val->picture()->name) }}" alt="" style="width: 91px; height: 89.7px; border-radius: 50%;">
                         @else
                             <img src="img/profile_empty.jpg" style="width: 91px; height: 89.7px; border-radius: 50%;">
@@ -229,7 +229,7 @@
                         <strong>Volunteer</strong>
                     </p>
                     <div style="position: relative; float: right; top: -79px;">
-                        <img src="{{ $val->barQrVolunteer->qr_code }}" alt="">
+                        <img src="{{ $val->barQrVolunteer?->qr_code }}" alt="">
                     </div>
                 </div>
             @endif

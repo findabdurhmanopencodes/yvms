@@ -29,6 +29,17 @@
             });
 
         });
+
+        function changeSession(){
+            if(($('#sessionChanger').val()))
+            {
+                var currentLocation = window.location.href;
+                $newLocation = currentLocation.split('/');
+                $newLocation[3] = $('#sessionChanger').val();
+                $newLocation = $newLocation.join('/');
+                window.location.href = $newLocation;
+            }
+        }
     </script>
 @endpush
 @section('content')
@@ -85,6 +96,12 @@
         <div class="card-body">
             <h5 class="card-title">{{ $region->name }} Region</h5>
 
+            <select name="" id="sessionChanger" onchange="changeSession()" class="form-control col-md-6">
+                <option value="">Change session</option>
+                @foreach ($sessions as $session)
+                    <option value="{{ $session->id }}">{{ $session->moto }}</option>
+                @endforeach
+            </select>
             <table class="table table-light">
                 <thead>
                     <th>#</th>
@@ -106,8 +123,8 @@
                                 {{ $capacityHistory->trainningSession?->end_date }}</td>
                             <td> --}}
                             <td>    
-                                {{-- <a class="btn" href="{{ route('session.region.intake_edit', ['training_session'=>$trainingSession->id,'region_id'=>$region->id]) }}"><i class="fa fa-edit"></i></a> --}}
-                                <span class="badge badge-danger badge-pill">Can't Change Capacity</span>
+                                <a class="btn" href="{{ route('session.region.intake_edit', ['training_session'=>Request::route('training_session')->id,'region_id'=>$region->id]) }}"><i class="fa fa-edit"></i></a>
+                                {{-- <span class="badge badge-danger badge-pill">Can't Change Capacity</span> --}}
                             </td>
                         </tr>
                     @endforeach

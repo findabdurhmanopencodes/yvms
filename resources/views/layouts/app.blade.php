@@ -173,11 +173,10 @@
                                                         <span class="menu-text">All Programs</span>
                                                     </a>
                                                 </li>
-                                                @can ('TrainingSession.store')
+                                                @can('TrainingSession.store')
                                                     <li class="menu-item {{ strpos(Route::currentRouteName(), 'training_session.create') === 0 ? 'menu-item-active' : '' }}"
                                                         aria-haspopup="true">
-                                                        <a href="{{ route('training_session.create', []) }}"
-                                                            class="menu-link">
+                                                        <a href="{{ route('training_session.create', []) }}" class="menu-link">
                                                             <i class="menu-bullet menu-bullet-dot">
                                                                 <span></span>
                                                             </i>
@@ -324,6 +323,22 @@
                                             </a>
                                         </li>
                                     @endcan
+
+                                    @can('coFacilitator')
+                                        @if (request('training_session') != null && !Auth::user()->hasRole('super-admin'))
+                                            @if (\App\Models\TrainingCenterBasedPermission::where('training_session_id', request('training_session')?->id)->where('user_id', Auth::user()->id)->where('permission_id', \Spatie\Permission\Models\Permission::findOrCreate('coFacilitator')?->id)->first())
+                                                <li class="menu-item menu-item-active" aria-haspopup="true">
+                                                    <a href="{{ route('session.sydication.list', ['training_session' => Request::route('training_session'),'training_center' => \App\Models\TrainingCenterBasedPermission::where('training_session_id', request('training_session')?->id)->where('user_id', Auth::user()->id)->where('permission_id', \Spatie\Permission\Models\Permission::findOrCreate('coFacilitator')?->id)?->first()?->traininingCenter?->id]) }}"
+                                                        class="menu-link">
+                                                        <i class="menu-icon fal fa-map-marker-check"></i>
+
+                                                        <span class="menu-text">Take Attendance</span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                        @endif
+                                    @endcan
+
                                     @can('TrainingSchedule.index')
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'session.schedule') === 0 ? 'menu-item-active' : '' }}"
                                             aria-haspopup="true">
@@ -593,37 +608,37 @@
 
 
                                 @canany(['trainingSession.report'])
-                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'report.bysession') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'FeildOfStudy') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
-                                    aria-haspopup="true" data-menu-toggle="hover">
-                                    <a href="javascript:;" class="menu-link menu-toggle">
-                                        {{-- <i class="menu-icon flaticon-file"></i> --}}
-                                        <i class=" menu-icon fal fas fa-print"></i>
-                                        <span class="menu-text"> Report</span>
-                                        <i class="menu-arrow"></i>
-                                    </a>
-                                    <div class="menu-submenu">
-                                        <i class="menu-arrow"></i>
-                                        <ul class="menu-subnav">
-                                            <li class="menu-item menu-item-parent" aria-haspopup="true">
-                                                <span class="menu-link">
-                                                    <span class="menu-text"> Report </span>
-                                                </span>
-                                            </li>
+                                    <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'report.bysession') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 || strpos(Route::currentRouteName(), 'FeildOfStudy') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ? 'menu-item-open' : '' }}"
+                                        aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="javascript:;" class="menu-link menu-toggle">
+                                            {{-- <i class="menu-icon flaticon-file"></i> --}}
+                                            <i class=" menu-icon fal fas fa-print"></i>
+                                            <span class="menu-text"> Report</span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                        <div class="menu-submenu">
+                                            <i class="menu-arrow"></i>
+                                            <ul class="menu-subnav">
+                                                <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                                    <span class="menu-link">
+                                                        <span class="menu-text"> Report </span>
+                                                    </span>
+                                                </li>
 
-                                            {{-- @can('Event.index') --}}
-                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'audits') === 0 ? 'menu-item-active' : '' }}"
-                                                aria-haspopup="true">
-                                                <a href="{{ route('report.bysession', []) }}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Training session report </span>
-                                                </a>
-                                            </li>
-                                            {{-- @endcan --}}
-                                        </ul>
-                                    </div>
-                                </li>
+                                                {{-- @can('Event.index') --}}
+                                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'audits') === 0 ? 'menu-item-active' : '' }}"
+                                                    aria-haspopup="true">
+                                                    <a href="{{ route('report.bysession', []) }}" class="menu-link">
+                                                        <i class="menu-bullet menu-bullet-dot">
+                                                            <span></span>
+                                                        </i>
+                                                        <span class="menu-text">Training session report </span>
+                                                    </a>
+                                                </li>
+                                                {{-- @endcan --}}
+                                            </ul>
+                                        </div>
+                                    </li>
                                 @endcanany
 
                                 @canany(['Event.index', 'Event.store'])

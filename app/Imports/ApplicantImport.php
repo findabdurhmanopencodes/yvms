@@ -5,6 +5,9 @@ namespace App\Imports;
 use App\Constants;
 use App\Http\Controllers\WoredaController;
 use App\Models\ApprovedApplicant;
+use App\Models\Disablity;
+use App\Models\EducationalLevel;
+use App\Models\FeildOfStudy;
 use App\Models\Region;
 use App\Models\Status;
 use App\Models\TrainingPlacement;
@@ -12,6 +15,7 @@ use App\Models\TraininingCenter;
 use App\Models\User;
 use App\Models\Volunteer;
 use App\Models\Woreda;
+use App\Models\Zone;
 use DateTime;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
@@ -35,53 +39,57 @@ class ApplicantImport implements ToCollection, WithStartRow
      */
     public function collection(Collection $rows)
     {
-        foreach ($rows as $value) {
-            $gen = $value[5] ?? null;
-            $woreda = $value[6] ?? null;
-            $woreda_id = Woreda::where('name', $woreda)?->first()?->id;
-            $gender = $gen == 'Male' ? 'M' : 'F';
+        set_time_limit(2000);
+        foreach ($rows as $key => $row) {
+            $first_name = $row[1]??'UNKNOWN';
+            $middle_name = $row[2]??'UNKNOWN';
+            $last_name = $row[3]??'UNKNOWN';
+            $gender = $row[4] == 'Male' ? 'M' : 'F';
+            $dob = $row[5]??'UNKNOWN';
+            $field_of_study = $row[6]??'Other';
+            $educational_level = $row[7];
+            $gpa = $row[8]??'3';
+            $region = $row[9];
+            $zone = $row[10];
+            $woreda = $row[11]??'UNKNOWN';
+            $phone = $row[13]??'UNKNOWN';
 
-            $first_name = $value[0] ?? null;
-            $middle_name = $value[1] ?? null;
-            $last_name = $value[2] ?? null;
-            $email = $value[4] ?? null;
-            $dob = $value[7] ?? null;
-            $contact_name = $value[9] ?? null;
-            $contact_phone = $value[10] ?? null;
-            $gpa = $value[8] ?? null;
-            $phone = $value[3] ?? null;
-
-            if ($woreda_id) {
-                $user = new User();
-                $user->first_name = $first_name;
-                $user->father_name = $middle_name;
-                $user->grand_father_name = $last_name;
-                $user->email = $email;
-                $user->dob = $dob;
-                $user->gender = $gender;
-                $user->save();
-                
-                $volunteer = new Volunteer();
-                $volunteer->first_name = $first_name;
-                $volunteer->father_name = $middle_name;
-                $volunteer->grand_father_name = $last_name;
-                $volunteer->email = $email;
-                $volunteer->dob = $dob;
-                $volunteer->gender = $gender;
-                $volunteer->phone = $phone;
-                $volunteer->contact_name = $contact_name;
-                $volunteer->contact_phone = $contact_phone;
-                $volunteer->gpa = $gpa;
-                $volunteer->woreda_id = $woreda_id;
-                $volunteer->user_id = $user->id;
-                $volunteer->training_session_id = $this->trainingSession->id;
-                $volunteer->save();
-
-                $status = new Status();
-                $status->volunteer_id = $volunteer->id;
-                $status->acceptance_status = Constants::VOLUNTEER_STATUS_PENDING;
-                $status->save();
+            $check_field = FeildOfStudy::where('name', $field_of_study)->first();
+            if (!$check_field) {
+                $field_id = FeildOfStudy::create(['name'=>$field_of_study]);
+                $field_of_study_id = $field_id->id;
+            }else{
+                $field_of_study_id = $check_field->id;
             }
+
+            $check_region = Region::where('name', $region)->first();
+            if (!$check_region) {
+                $region_id = Region::create(['name'=>$region, 'code'=>substr($region, 0, 3), 'status'=>1]);
+                $zone_id = Zone::create(['name'=> $zone, 'code'=>substr($zone, 0, 3), 'region_id'=>$region_id->id, 'status'=>1]);
+                $woreda_id = Woreda::create(['name'=>$woreda, 'code'=>substr($woreda, 0, 3), 'zone_id'=>$zone_id->id, 'status'=>1]);
+            }else{
+                $check_zone = Zone::where('name', $zone)->where('region_id', $check_region->id)->first();
+                if (!$check_zone) {
+                    $zone_id = Zone::create(['name'=>$zone, 'code'=>substr($zone, 0, 3), 'region_id'=>$check_region->id, 'status'=>1]);
+                    $woreda_id = Woreda::create(['name'=>$woreda, 'code'=>substr($woreda, 0, 3), 'zone_id'=>$zone_id->id, 'status'=>1]);
+                }else{
+                    $check_woreda = Woreda::where('name', $woreda)->where('zone_id', $check_zone->id)->first();
+                    if (!$check_woreda) {
+                        $woreda_id = Woreda::create(['name'=>$woreda, 'code'=>substr($woreda, 0, 3), 'zone_id'=>$check_zone->id, 'status'=>1]);
+                    }else{
+                        $woreda_id = $check_woreda;
+                    }
+                }
+            }
+
+            $email_key = count(Volunteer::all());
+            $password = Hash::make(substr($first_name, 0, 2).''.substr($middle_name, 0, 2).''.substr($last_name, 0, 2).''.$dob);
+
+            $user_id = User::create(['first_name'=>$first_name, 'father_name'=>$middle_name, 'grand_father_name'=>$last_name, 'email'=>'unknown'.$email_key++.'@unknown.unknown', 'dob'=>$dob, 'gender'=>$gender, 'password'=>$password]);
+
+            $volunteer_id = Volunteer::create(['first_name'=>$first_name, 'father_name'=>$middle_name, 'grand_father_name'=>$last_name, 'email'=>'unknown'.$email_key++.'@unknown.unknown', 'dob'=>$dob, 'gender'=>$gender, 'phone'=>$phone, 'contact_name'=>'UNKNOWN UNKNOWN', 'contact_phone'=>'UNKNOWN', 'gpa'=>$gpa, 'password'=>$password, 'educational_level'=>0, 'user_id'=>$user_id->id, 'training_session_id'=>$this->trainingSession->id, 'field_of_study_id'=>$field_of_study_id, 'woreda_id'=>$woreda_id->id]);
+
+            Status::create(['volunteer_id'=>$volunteer_id->id]);
         }
     }
     /**
@@ -89,6 +97,6 @@ class ApplicantImport implements ToCollection, WithStartRow
      */
     public function startRow(): int
     {
-        return 2;
+        return 1;
     }
 }

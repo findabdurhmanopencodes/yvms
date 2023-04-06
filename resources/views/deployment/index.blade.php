@@ -55,12 +55,34 @@
                         </select>
                     </div>
                     <div class="form-group col-3">
+                        <input type="text" name="id_number" class="form-control" placeholder="ID number">
+                    </div>
+                    <div class="form-group col-3">
                         <select name="training_center" id="" class="form-control select2">
                             <option value="">Select Training Center</option>
                             @foreach ($trainingCenterCapacities as $trainingCenterCapacity)
                                 <option value="{{ $trainingCenterCapacity->trainingCenter->id }}"
                                     @if (Request::get('training_center') == $trainingCenterCapacity->trainingCenter->id) selected @endif>
                                     {{ $trainingCenterCapacity->trainingCenter->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-3">
+                        <select name="fied_of_study" id="" class="form-control select2">
+                            <option value="">Select Field of study</option>
+                            @foreach ($fieldOfStudies as $fieldOfStudy)
+                                <option value="{{ $fieldOfStudy->id }}" {{ Request::get('fied_of_study') == $fieldOfStudy->id ? 'selected' : '' }}>{{ $fieldOfStudy->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-3">
+                        <select name="vol_region" id="" class="form-control select2">
+                            <option value="">Select Volunteer Region</option>
+                            @foreach ($regions as $region)
+                                <option value="{{ $region->id }}"
+                                    @if (Request::get('vol_region') == $region->id) selected @endif>
+                                    {{ $region->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -108,6 +130,7 @@
 
     <form id="approvePlacmentForm"
         action="{{ route('session.placment.approve', [request()->route('training_session')]) }}" method="POST">
+        <input type="hidden" name="deployment_approval" value="deployment_approval">
         @csrf
     </form>
 
@@ -119,7 +142,7 @@
             <div class="card-toolbar">
                 <div class="btn-group">
 
-                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_STARTED)
+                    @if ($trainingSession->status == \App\Constants::TRAINING_SESSION_GRADUATED)
                         <a class="btn btn-sm btn-info"
                             href="{{ route('session.deployment.reset', [request()->route('training_session')]) }}">
                             <i class="fal fa-recycle"></i> Reset
@@ -133,9 +156,38 @@
                             <span class="label label-xl label-light-success label-inline">Volunteer Deployment Approved</span>
                         </a>
                     @endif
-                    <a class="btn btn-sm btn-primary" href="#" onclick="document.filterForm.print.value = '1';document.filterForm.submit();">
+                    {{-- <a class="btn btn-sm btn-primary" href="#" onclick="document.filterForm.print.value = '1';document.filterForm.submit();">
                         <i class="fal fa-print"></i> Print
-                    </a>
+                    </a> --}}
+                    <div class="my-1 my-lg-0">
+                        <div class="dropdown dropdown-inline">
+                            <a href="#" class="px-5 btn btn-sm btn-primary font-weight-bolder dropdown-toggle"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">print</a>
+                            <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="">
+                                <!--begin::Navigation-->
+                                <ul class="navi navi-hover">
+                                    <li class="navi-item">
+                                        <a data-toggle="modal" data-target="#import" class="navi-link" onclick="document.filterForm.print.value = '1';document.filterForm.submit();">
+                                            <span class="navi-icon">
+                                                <i class="fa fa-file-import"></i>
+                                            </span>
+                                            <span class="navi-text">PDF</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" onclick="document.filterForm.print.value = '2';document.filterForm.submit();"
+                                            class="navi-link">
+                                            <span class="navi-icon">
+                                                <i class="fa fa-file-export"></i>
+                                            </span>
+                                            <span class="navi-text">Excel</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!--end::Navigation-->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

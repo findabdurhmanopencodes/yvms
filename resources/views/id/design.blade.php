@@ -60,6 +60,7 @@
                                         <tr>
                                             <th> # </th>
                                             <th> Name </th>
+                                            <th>ID number</th>
                                             <th> Center </th>
                                         </tr>
                                     </thead>
@@ -71,7 +72,7 @@
                                                 </td>
                                                 <td>
                                                     @if ($table_name == 'volunteers')
-                                                        {{ $applicant->first_name }}
+                                                        {{ $applicant->first_name }} {{ $applicant->father_name }}
                                                     @elseif ($userType == 'mop user')
                                                         {{ $applicant->user->first_name . ' ' . $applicant->user->father_name }}
                                                     @else
@@ -79,6 +80,7 @@
                                                     @endif
                                                     {{-- {{($applicant->getTable() == 'volunteers'? $applicant->first_name:($userType == 'mop user'))? $applicant->user->first_name.' '.$applicant->user->father_name : $applicant->master->user->first_name.' '.$applicant->master->user->father_name}} --}}
                                                 </td>
+                                                <td>{{ $applicant->id_number }}</td>
                                                 <td>
                                                     {{ $trainingCenter->code }}
                                                 </td>

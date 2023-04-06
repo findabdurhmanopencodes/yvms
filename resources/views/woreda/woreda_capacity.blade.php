@@ -29,6 +29,17 @@
             });
 
         });
+
+        function changeSession(){
+            if(($('#sessionChanger').val()))
+            {
+                var currentLocation = window.location.href;
+                $newLocation = currentLocation.split('/');
+                $newLocation[3] = $('#sessionChanger').val();
+                $newLocation = $newLocation.join('/');
+                window.location.href = $newLocation;
+            }
+        }
     </script>
 @endpush
 @section('content')
@@ -85,6 +96,12 @@
         <div class="card-body">
             <h5 class="card-title">{{ $trainingSession->moto }} - {{ $woreda->name }} Woreda ({{ $woredaAllIntake }} more)</h5>
 
+            <select name="" id="sessionChanger" onchange="changeSession()" class="form-control col-md-6">
+                <option value="">Change session</option>
+                @foreach ($sessions as $session)
+                    <option value="{{ $session->id }}">{{ $session->moto }}</option>
+                @endforeach
+            </select>
             <table class="table table-light">
                 <thead>
                     <th>#</th>
