@@ -331,7 +331,7 @@ class VolunteerController extends Controller
             'token' => sha1(time())
         ]);
         Status::Create(['volunteer_id' => $volunteer->id, 'acceptance_status' => 0]);
-        dispatch(new SendEmailJob($volunteer->email, new VerifyMail($volunteer)));
+        // dispatch(new SendEmailJob($volunteer->email, new VerifyMail($volunteer)));
         return redirect()->route('home')->with('apply_success', 'You successfully applied! Check your email');
     }
     public function Screen(Request $request, $session_id, Volunteer $volunteer)
