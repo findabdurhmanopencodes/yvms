@@ -13,10 +13,10 @@ Youth Volunteer Management System (YVMS) is a web-based application developed by
 ## Screenshots
 
 ![Screenshot 1](https://github.com/findabdurhmanopencodes/yvms/blob/master/screenshot/01.png)
-![Screenshot 2]([link_to_screenshot2](https://github.com/findabdurhmanopencodes/yvms/blob/master/screenshot/02.png))
-![Screenshot 3]([link_to_screenshot3](https://github.com/findabdurhmanopencodes/yvms/blob/master/screenshot/03.png))
-![Screenshot 4]([link_to_screenshot3](https://github.com/findabdurhmanopencodes/yvms/blob/master/screenshot/04.png))
-![Screenshot 5]([link_to_screenshot3](https://github.com/findabdurhmanopencodes/yvms/blob/master/screenshot/05.png))
+![Screenshot 2](https://github.com/findabdurhmanopencodes/yvms/blob/master/screenshot/02.png)
+![Screenshot 3](https://github.com/findabdurhmanopencodes/yvms/blob/master/screenshot/03.png)
+![Screenshot 4](https://github.com/findabdurhmanopencodes/yvms/blob/master/screenshot/04.png)
+![Screenshot 5](https://github.com/findabdurhmanopencodes/yvms/blob/master/screenshot/05.png)
 
 ## Technologies Used
 
