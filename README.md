@@ -1,48 +1,70 @@
-Youth Volunteer Management System (YVMS)
-The Youth Volunteer Management System (YVMS) is a web-based application developed by Jimma University's ICT Development Office in collaboration with the Ministry of Peace, National Volunteerism Program. It aims to streamline the entire process of the national volunteerism program, from online application to deployment and community engagement.
-
-Features
-Online Application: Allows volunteers to apply online through a user-friendly interface.
-Deployment Management: Facilitates the deployment of volunteers to various community projects.
-Community Engagement: Tracks and manages volunteer activities and engagements within communities.
-Administrative Dashboard: Provides administrators with tools to manage applications, deployments, and volunteer data.
-Reporting: Generates reports on volunteer activities, impact assessments, and program effectiveness.
-Technologies Used
-Frontend: HTML, CSS, JavaScript, Bootstrap
-Backend: PHP, Laravel framework
-Database: MySQL
-Deployment: Apache Server
-Getting Started
-To get a local copy up and running, follow these simple steps:
-
-Clone the repository:
-
-bash
-Copy code
-git clone http://yvms.mop.gov.et/developers
-Set up the environment:
-
-Install PHP and MySQL.
-Configure your web server to serve the application.
-Database setup:
-
-Create a MySQL database.
-Import the database schema from database/schema.sql.
-Configuration:
-
-Rename .env.example to .env and configure database credentials.
-Run the application:
-
-Start your web server and visit the application URL.
-Screenshots
-
-Description of screenshot 1.
-
-
-Description of screenshot 2.
-
-Contributing
-Contributions are welcome! Please fork the repository and submit pull requests to contribute.
-
-License
-This project is licensed under the MIT License.    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youth Volunteer Management System (YVMS)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .project-description {
+            margin-bottom: 20px;
+        }
+        .screenshots {
+            margin-top: 20px;
+        }
+        .screenshot {
+            margin-bottom: 10px;
+        }
+        .screenshot img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            padding: 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        .link {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Youth Volunteer Management System (YVMS)</h1>
+    
+    <div class="project-description">
+        <p>Youth Volunteer Management System (YVMS) is a web-based application developed by Jimma University ICT Development Office in collaboration with the Ministry of Peace, National Volunteerism Program. The system aims to automate the entire process of the national volunteerism program, from online application to deployment and community engagement.</p>
+    </div>
+    
+    <div class="screenshots">
+        <h2>Screenshots</h2>
+        <div class="screenshot">
+            <img src="path/to/screenshot1.png" alt="Screenshot 1">
+        </div>
+        <div class="screenshot">
+            <img src="path/to/screenshot2.png" alt="Screenshot 2">
+        </div>
+        <!-- Add more screenshots as needed -->
+    </div>
+    
+    <div class="link">
+        <h2>Project Link</h2>
+        <p>Explore the project: <a href="http://yvms.mop.gov.et/developers" target="_blank">Youth Volunteer Management System</a></p>
+    </div>
+    
+    <hr>
+    
+    <footer>
+        <p>Developed by Abdurhman Abrar Abdela</p>
+        <p>Contact: findabdurhman@gmail.com</p>
+        <p>GitHub: <a href="https://github.com/abdurhmanongithub" target="_blank">abdurhmanongithub</a></p>
+    </footer>
+</body>
+</html>
